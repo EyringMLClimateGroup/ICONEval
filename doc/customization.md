@@ -296,7 +296,7 @@ scheduler, run ICONEval with the command line argument `--dask=False`.
 ## Tags
 
 All default recipe templates are marked with tags. An overview of all available
-tags is given [here](doc/tags.md). To only run a subset of recipes associated with certain tags, use
+tags is given [here](tags.md). To only run a subset of recipes associated with certain tags, use
 
 ```bash
 iconeval --tags=timeseries,maps

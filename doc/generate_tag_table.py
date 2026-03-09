@@ -37,7 +37,7 @@ def main() -> None:
         for tag in recipe_template.tags:
             tags[tag].append(
                 f"[{recipe_template.name}](https://github.com/"
-                f"EyringMLClimateGroup/ICONEval/tree/main/iconeval/"
+                f"EyringMLClimateGroup/ICONEval/blob/main/iconeval/"
                 f"recipe_templates/{recipe_template.path.name})",
             )
     tags = dict(sorted(tags.items()))
