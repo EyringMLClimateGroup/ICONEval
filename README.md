@@ -1,3 +1,9 @@
+> [!IMPORTANT]
+> Currently (March 2026), this repository contains an early (non-released)
+> version of ICONEval.
+
+---
+
 [![LICENSE](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ---
