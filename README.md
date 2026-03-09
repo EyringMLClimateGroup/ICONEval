@@ -1,6 +1,8 @@
 > [!IMPORTANT]
 > Currently (March 2026), this repository contains an early (non-released)
-> version of ICONEval.
+> version of ICONEval, which is targeted to the evaluation of
+> [ICON](https://www.icon-model.org/) output on [DKRZ's
+> Levante](https://docs.dkrz.de/doc/levante/).
 
 ---
 
@@ -23,10 +25,10 @@ ICON model output evaluation with ESMValTool.
 
 ## Quick Start
 
-ICONEval facilitates the evaluation of ICON model output with
-[ESMValTool](doc/esmvaltool.md) by automatically running a set of predefined
-ESMValTool recipes. Its only necessary input is a valid path to ICON model
-output:
+ICONEval facilitates the evaluation of [ICON
+model](https://www.icon-model.org/) output with [ESMValTool](doc/esmvaltool.md)
+by automatically running a set of predefined ESMValTool recipes. Its only
+necessary input is a valid path to ICON model output:
 
 ```bash
 iconeval path/to/ICON_output
@@ -50,7 +52,8 @@ recipes with default settings are run. If ICONEval is run as a standalone
 script, one [Slurm](https://slurm.schedmd.com/) job per recipe is launched. If
 ICONEval is run within an `sbatch` script or `salloc` session, one job step per
 recipe is created. The following `sbatch` script can be used to submit a job on
-a compute node of DKRZ's Levante in which 8 recipes are run in parallel (see
+a compute node of [DKRZ's Levante](https://docs.dkrz.de/doc/levante/) in which
+8 recipes are run in parallel (see
 [here](doc/customization.md#slurm-options-for-jobjob-step-submission) for
 details on this):
 
