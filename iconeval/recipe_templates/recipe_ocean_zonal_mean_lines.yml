@@ -27,7 +27,7 @@ datasets_cmip6: &datasets_cmip6
 
 datasets_tos: &datasets_tos
   - {project: OBS6, dataset: ESACCI-SST, type: sat, version: 3.0-L4-analysis, tier: 2, timerange: 20020101/20211231}  # 19800101/20211231
-  - {project: OBS, dataset: HadISST, type: reanaly, version: "1", tier: 2, timerange: "20020101/20211231"}  # 18700101/20211231
+  - {project: OBS, dataset: HadISST, type: reanaly, version: "1", tier: 2, timerange: 20020101/20211231}  # 18700101/20211231
   - {project: OBS6, dataset: NOAA-ERSSTv5, type: reanaly, version: v5, tier: 2, timerange: 20010101/20201231}  # 18540101/20201231
   - {project: OBS6, dataset: WOA, type: clim, version: "2018", tier: 2, timerange: 20000101/20001231}  # 20000101/20001231
 
