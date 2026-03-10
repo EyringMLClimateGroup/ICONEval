@@ -120,7 +120,7 @@ publish_html -- --help
 ## Example Results
 
 - [Fully coupled historical ICON-XPP
-  simulation)](https://swift.dkrz.de/v1/dkrz_4eefb34f-8803-415a-bd70-9c455db9a403/iconeval/iconeval_example/index.html)
+  simulation](https://swift.dkrz.de/v1/dkrz_4eefb34f-8803-415a-bd70-9c455db9a403/iconeval/iconeval_example/index.html)
 
 ## Prerequisites
 
