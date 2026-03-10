@@ -264,7 +264,7 @@ def _get_recipe_date(recipe_dir: Path) -> datetime:
     if regex is not None:
         date_str = regex.group("datetime")
         return datetime.strptime(date_str, "%Y%m%d_%H%M%S")
-    return datetime.now()  # noqa: DTZ005
+    return datetime.now()
 
 
 def _get_recipe_name(recipe_dir: Path) -> str:

@@ -41,10 +41,10 @@ def main() -> None:
                 f"recipe_templates/{recipe_template.path.name})",
             )
     tags = dict(sorted(tags.items()))
-    print("Found tags:")
+    print("Found tags:")  # noqa: T201
     for tag in tags:
-        print(f"- {tag}")
-    print()
+        print(f"- {tag}")  # noqa: T201
+    print()  # noqa: T201
 
     table: list[dict[str, str]] = [
         {"Tag": f"`{tag}`", "Recipes": ", ".join(recipes)}
@@ -58,7 +58,7 @@ def main() -> None:
 
     file_contents = HEADER + table_str
     TAGS_FILE.write_text(file_contents, encoding="utf-8")
-    print(f"Wrote {TAGS_FILE}")
+    print(f"Wrote {TAGS_FILE}")  # noqa: T201
 
 
 if __name__ == "__main__":

@@ -57,14 +57,12 @@ select = ["ALL"]
 ignore = [
     "ANN401",     # Dynamically typed expressions (typing.Any) are disallowed
     "C901",       # Function is too complex
-    "DTZ006",     # `datetime.datetime.fromtimestamp()` called without a `tz` argument
-    "DTZ007",     # Naive datetime constructed using `datetime.datetime.strptime()` without %z
-    "G004",       # Logging statement uses f-string"
+    "DTZ",        # Missing timezone information
+    "G004",       # Logging statement uses f-string
     "PLR0912",    # Too many branches
     "PLR0913",    # Too many arguments in function definition
     "PLR0915",    # Too many statements
     "PLW2901",    # `for` loop variable overwritten by assignment target
-    "T201",       # `print` found
 ]
 future-annotations = true
 [tool.ruff.lint.pydocstyle]

@@ -442,7 +442,7 @@ def _run_jobs(jobs: Sequence[Job], *, background: bool) -> None:
 
 def main() -> None:
     """Invoke ``fire`` to process command line arguments."""
-    print(HEADER)
+    print(HEADER)  # noqa: T201
     fire.Fire(icon_evaluation)
 
 
