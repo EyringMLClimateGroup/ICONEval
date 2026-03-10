@@ -9,9 +9,9 @@ on:
     - cron: "0 0 * * *"  # once per day
 
 # Required shell entrypoint to have properly configured bash shell
-# defaults:
-#   run:
-#     shell: bash -l {0}
+defaults:
+  run:
+    shell: bash -l {0}
 
 jobs:
   linux:
