@@ -1,0 +1,26 @@
+abstract: <p>ICON model output evaluation with ESMValTool.</p>
+
+  <p>See README.md for more information on the contents of this repository and how
+  to use them.</p>
+authors:
+- affiliation: Deutsches Zentrum für Luft- und Raumfahrt (DLR), Institut für Physik der Atmosphäre, Oberpfaffenhofen, Germany
+  family-names: Schlund
+  given-names: Manuel
+  orcid: https://orcid.org/0000-0001-5251-0158
+- affiliation: Deutsches Zentrum für Luft- und Raumfahrt (DLR), Institut für Physik der Atmosphäre, Oberpfaffenhofen, Germany
+  family-names: Bock
+  given-names: Lisa
+  orcid: https://orcid.org/0000-0001-7058-5938
+cff-version: 1.2.0
+date-released: 2026-03-10
+# doi: 10.5281/zenodo.14361733
+keywords:
+- ESMValTool
+- Earth System Models
+- CMIP
+license: Apache-2.0
+message: If you use this software, please cite it using the metadata from this file.
+title: ICONEval
+type: software
+url: https://github.com/EyringMLClimateGroup/ICONEval
+version: v0.10.0
