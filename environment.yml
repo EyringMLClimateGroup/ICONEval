@@ -18,3 +18,4 @@ dependencies:
   - pre-commit
   - py-markdown-table
   - pytest
+  - pytest-cov
