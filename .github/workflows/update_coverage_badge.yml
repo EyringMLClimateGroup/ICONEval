@@ -3,7 +3,6 @@ name: Update Coverage Badge
 
 permissions:
   contents: write
-  pull-requests: write
 
 on:
   push:
@@ -55,7 +54,6 @@ jobs:
       - name: Detect changes
         run: |
           echo "GIT_DIFF=$(git diff --stat | head -n 1)" >> $GITHUB_ENV
-          echo $GIT_DIFF
       - name: Commit changes
         if: ${{ env.GIT_DIFF != '' }}
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
