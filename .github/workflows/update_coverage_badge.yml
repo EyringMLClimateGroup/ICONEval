@@ -57,7 +57,7 @@ jobs:
           echo "GIT_DIFF=$(git diff)" >> $GITHUB_ENV
           echo $GIT_DIFF
       - name: Commit changes
-        if: ${{ env.GIT_DIFF != "" }}
+        if: ${{ env.GIT_DIFF != '' }}
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         with:
           branch: ${{ env.TARGET_BRANCH }}
