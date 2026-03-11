@@ -7,6 +7,8 @@ import pytest
 import iconeval._dependencies
 import iconeval._job
 
+pytest.register_assert_rewrite("tests.integration")
+
 
 @pytest.fixture
 def expected_output_dir() -> Path:
