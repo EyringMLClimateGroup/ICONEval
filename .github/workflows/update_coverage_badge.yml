@@ -52,4 +52,5 @@ jobs:
         with:
           branch: auto_pr_update_coverage_badge
           commit_message: Update coverage badge
+          create_branch: true
           file_pattern: README.md
