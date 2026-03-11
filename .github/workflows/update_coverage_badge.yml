@@ -8,6 +8,11 @@ on:
   push:
     branches: [main]
 
+# Required shell entrypoint to have properly configured bash shell
+defaults:
+  run:
+    shell: bash -l {0}
+
 jobs:
   update_badge:
     runs-on: ubuntu-latest

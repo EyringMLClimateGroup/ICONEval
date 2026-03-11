@@ -10,6 +10,11 @@ on:
     branches:
       - '*'
 
+# Required shell entrypoint to have properly configured bash shell
+defaults:
+  run:
+    shell: bash -l {0}
+
 jobs:
   comment_pytest_coverage_on_prs:
     runs-on: ubuntu-latest
