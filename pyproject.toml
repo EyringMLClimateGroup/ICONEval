@@ -40,6 +40,7 @@ develop = [
     "pre-commit",
     "py-markdown-table",
     "pytest",
+    "pytest-cov",
 ]
 
 [project.scripts]
