@@ -1,19 +1,17 @@
 ---
-name: Comment Pytest coverage
+name: Update Coverage Badge
 
 permissions:
-  contents: read
-  pull-requests: write
+  contents: write
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  push:
+    branches: [main]
 
 jobs:
-  comment_pytest_coverage_on_prs:
+  update_badge:
     runs-on: ubuntu-latest
-    name: Comment Pytest coverage
+    name: Update Coverage Badge
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -37,3 +35,14 @@ jobs:
         with:
           pytest-xml-coverage-path: ./coverage.xml
           junitxml-path: ./pytest.xml
+          hide-comment: true
+      - name: Update README
+        run: |
+          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n${STEPS_COVERAGE_OUTPUTS_COVERAGEHTML}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+        env:
+          STEPS_COVERAGE_OUTPUTS_COVERAGEHTML: ${{ steps.coverage.outputs.coverageHtml }}
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
+        with:
+          commit_message: "Update coverage badge"
+          file_pattern: README.md

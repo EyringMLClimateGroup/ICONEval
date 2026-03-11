@@ -14,35 +14,45 @@ defaults:
     shell: bash -l {0}
 
 jobs:
-  linux:
+  run_tests_on_linux:
     runs-on: ubuntu-latest
-    if: github.repository == 'EyringMLClimateGroup/ICONEval'  # do not run in forks
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.12", "3.13", "3.14"]
     name: Run tests on Linux Python ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
+      - name: Setup Conda environment
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
         with:
           activate-environment: iconeval
           environment-file: environment.yml
           python-version: ${{ matrix.python-version }}
           miniforge-version: "latest"
           use-mamba: true
-      - run: mkdir -p test_linux_artifacts_python_${{ matrix.python-version }}
-      - run: conda --version 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/conda_version.txt
-      - run: python -V 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/python_version.txt
-      - run: conda list
-      - run: pip install --no-deps -e .[develop] 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/install.txt
-      - run: conda list
-      - run: pip check
-      - run: pytest 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/test_report.txt
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      - name: Create artifacts directory
+        run: mkdir -p test_linux_artifacts_python_${{ matrix.python-version }}
+      - name: Report Conda version
+        run: conda --version 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/conda_version.txt
+      - name: Report Python version
+        run: python -V 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/python_version.txt
+      - name: Show environment
+        run: conda list
+      - name: Install ICONEval
+        run: pip install --no-deps -e .[develop] 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/install.txt
+      - name: Show environment
+        run: conda list
+      - name: Check dependencies
+        run: pip check
+      - name: Run tests
+        run: pytest 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/test_report.txt
+      - name: Upload artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ always() }} # upload artifacts even if fail
         with:
           name: Test_Linux_python_${{ matrix.python-version }}

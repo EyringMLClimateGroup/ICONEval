@@ -11,6 +11,8 @@
 [![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/EyringMLClimateGroup/ICONEval/main.svg)](https://results.pre-commit.ci/latest/github/EyringMLClimateGroup/ICONEval/main)
 [![Tests](https://github.com/EyringMLClimateGroup/ICONEval/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/EyringMLClimateGroup/ICONEval/actions/workflows/tests.yml)
+<!-- Pytest Coverage Comment:Begin -->
+<!-- Pytest Coverage Comment:End -->
 
 ---
 
