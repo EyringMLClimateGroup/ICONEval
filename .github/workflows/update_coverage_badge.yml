@@ -54,7 +54,7 @@ jobs:
           STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
       - name: Detect changes
         run: |
-          echo "GIT_DIFF=$(git diff)" >> $GITHUB_ENV
+          echo "GIT_DIFF=$(git diff --stat | head -n 1)" >> $GITHUB_ENV
           echo $GIT_DIFF
       - name: Commit changes
         if: ${{ env.GIT_DIFF != '' }}
