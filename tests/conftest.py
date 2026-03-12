@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from importlib.resources import files
 from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import sentinel
@@ -19,7 +20,7 @@ pytest.register_assert_rewrite("tests.integration")
 
 @pytest.fixture
 def expected_output_dir() -> Path:
-    return Path(__file__).absolute().parent / "expected_output"
+    return Path(str(files("tests"))).resolve() / "expected_output"
 
 
 @pytest.fixture
@@ -40,4 +41,4 @@ def mocked_subprocess__job(mocker: MockerFixture) -> Mock:
 
 @pytest.fixture
 def sample_data_path() -> Path:
-    return Path(__file__).absolute().parent / "sample_data"
+    return Path(str(files("tests"))).resolve() / "sample_data"

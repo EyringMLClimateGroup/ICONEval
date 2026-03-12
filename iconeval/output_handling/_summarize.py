@@ -430,7 +430,7 @@ def _write_debug_html(output_dir: Path) -> None:
 
     index_file = output_dir / "debug.html"
     index_file.write_text(text)
-    logger.debug(f"Wrote file://{index_file.absolute()}")
+    logger.debug(f"Wrote file://{index_file.resolve()}")
 
 
 def _write_index_html(
@@ -524,4 +524,4 @@ def _write_index_html(
 
     index_file = output_dir / _get_index_html_name(realm)
     index_file.write_text(text)
-    logger.debug(f"Wrote file://{index_file.absolute()}")
+    logger.debug(f"Wrote file://{index_file.resolve()}")

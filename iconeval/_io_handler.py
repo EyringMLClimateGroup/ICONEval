@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from importlib.resources import files
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -23,7 +24,7 @@ logger = logger.opt(colors=True)
 class IconEvalIOHandler:
     """Class that manages IO dirs and files for ICON output evaluation."""
 
-    PROJECT_ROOT_DIR = Path(__file__).parent.resolve()
+    PROJECT_ROOT_DIR = Path(str(files("iconeval"))).resolve()
 
     CFG_TEMPLATE = PROJECT_ROOT_DIR / "esmvaltool_config_template.yml"
     DEFAULT_RECIPE_TEMPLATE_DIR = PROJECT_ROOT_DIR / "recipe_templates"
