@@ -1,7 +1,12 @@
 """Create summary HTML for ESMValTool runs.
 
-Copied and slightly modified version of
+Copied and modified version of
 https://github.com/ESMValGroup/ESMValTool/blob/main/esmvaltool/utils/testing/regression/summarize.py.
+
+ESMValTool is licensed under a Apache License 2.0. A copy of this license is
+available at https://github.com/ESMValGroup/ESMValTool/blob/main/LICENSE.
+
+
 For example, it is necessary to explicitly link to index.html of recipes for
 swift.
 
