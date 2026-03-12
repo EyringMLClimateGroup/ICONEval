@@ -13,7 +13,18 @@ def assert_output(
     input_dirs: list[Path],
     actual_output: Path,
     expected_output: Path,
+    empty_dirs: list[str] | None = None,
 ) -> None:
+    # Empty directories cannot be checked out on git, so we need to account for
+    # this here
+    if empty_dirs is None:
+        empty_dirs = []
+    for empty_dir in empty_dirs:
+        empty_path = actual_output / empty_dir
+        assert empty_path.is_dir()
+        assert len(list(empty_path.iterdir())) == 0
+        empty_path.rmdir()
+
     # Check that all files and directories exist
     for _root, _dirs, _files in expected_output.walk():
         relative_actual_output = actual_output / _root.relative_to(expected_output)
