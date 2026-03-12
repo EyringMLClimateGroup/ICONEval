@@ -11,40 +11,43 @@ from iconeval._dependencies import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from unittest.mock import Mock
 
 
-def test_latex_is_available_true(patched_subprocess_return_0: Callable) -> None:
+def test_latex_is_available_true(mocked_subprocess__dependencies: Mock) -> None:
     assert latex_is_available() is True
 
 
-def test_latex_is_available_false(patched_subprocess_return_1: Callable) -> None:
+def test_latex_is_available_false(mocked_subprocess__dependencies: Mock) -> None:
+    mocked_subprocess__dependencies.run.return_value.returncode = 1
     assert latex_is_available() is False
 
 
 def test_verify_esmvaltool_installation_success(
-    patched_subprocess_return_0: Callable,
+    mocked_subprocess__dependencies: Mock,
 ) -> None:
     verify_esmvaltool_installation("esmvaltool")
 
 
 def test_verify_esmvaltool_installation_fail(
-    patched_subprocess_return_1: Callable,
+    mocked_subprocess__dependencies: Mock,
 ) -> None:
+    mocked_subprocess__dependencies.run.return_value.returncode = 1
     msg = r"esmvaltool command not found"
     with pytest.raises(RuntimeError, match=msg):
         verify_esmvaltool_installation("esmvaltool")
 
 
 def test_verify_slurm_installation_success(
-    patched_subprocess_return_0: Callable,
+    mocked_subprocess__dependencies: Mock,
 ) -> None:
     verify_slurm_installation("srun")
 
 
 def test_verify_slurm_installation_fail(
-    patched_subprocess_return_1: Callable,
+    mocked_subprocess__dependencies: Mock,
 ) -> None:
+    mocked_subprocess__dependencies.run.return_value.returncode = 1
     msg = r"srun command not found"
     with pytest.raises(RuntimeError, match=msg):
         verify_slurm_installation("srun")

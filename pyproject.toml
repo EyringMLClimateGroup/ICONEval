@@ -41,6 +41,7 @@ develop = [
     "py-markdown-table",
     "pytest",
     "pytest-cov",
+    "pytest-mock",
 ]
 
 [project.scripts]

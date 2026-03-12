@@ -6,14 +6,15 @@ from iconeval.main import icon_evaluation
 from tests.integration import assert_output
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
     from pathlib import Path
+    from unittest.mock import Mock
 
 
 def test_icon_evaluation_single_input(
     expected_output_dir: Path,
     tmp_path: Path,
-    patched_subprocess_return_0: Callable,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
 ) -> None:
     input_dir = tmp_path / "input"
     output_dir = tmp_path / "output"
