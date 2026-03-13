@@ -15,13 +15,23 @@ if TYPE_CHECKING:
     from unittest.mock import Mock
 
 
-def test_main_fail() -> None:
+def test_main_fail(
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+) -> None:
     msg = r"No input directory given"
     with pytest.raises(ValueError, match=msg):
         main()
 
 
-def test_main_script_fail() -> None:
+def test_main_script_fail(
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+) -> None:
     process = subprocess.run(["iconeval"], check=False, capture_output=True)  # noqa: S607
     assert process.returncode == 1
 
