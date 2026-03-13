@@ -284,6 +284,7 @@ def _valid_swift_token_available() -> bool:
 
 def main() -> None:
     """Invoke ``fire`` to process command line arguments."""
+    logger.remove()  # remove any potential handlers
     fire.Fire(publish_esmvaltool_html)
 
 

@@ -7,6 +7,8 @@ from importlib.resources import files
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from loguru import logger
+
 from iconeval._job import Job
 from iconeval._simulation_info import SimulationInfo
 from iconeval._templates import ESMValToolConfigTemplate, RecipeTemplate
@@ -16,7 +18,6 @@ if TYPE_CHECKING:
 
     from iconeval._typing import FacetType, OptionValueType
 
-from loguru import logger
 
 logger = logger.opt(colors=True)
 

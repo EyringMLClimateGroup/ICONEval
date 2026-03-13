@@ -11,9 +11,12 @@ if TYPE_CHECKING:
     from pathlib import Path
     from unittest.mock import Mock
 
+    import pytest
+
 
 def test_icon_evaluation_single_input_success(
     expected_output_dir: Path,
+    caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
     mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
@@ -25,7 +28,11 @@ def test_icon_evaluation_single_input_success(
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    actual_output = icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
+    actual_output = icon_evaluation(
+        input_dir,
+        log_file=None,
+        output_dir=output_dir,
+    )
 
     # Check output
     expected_output = expected_output_dir / "test_icon_evaluation_single_input_success"
@@ -92,10 +99,21 @@ def test_icon_evaluation_single_input_success(
     mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_not_called()
 
+    # Check logging output
+    assert f"- {input_dir.stem}" in caplog.text
+    assert f"(Path: {input_dir})" in caplog.text
+    for recipe in recipes:
+        assert (
+            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            in caplog.text
+        )
+        assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
+
 
 def test_icon_evaluation_multi_input_success(
     expected_output_dir: Path,
     recipe_template_dir: Path,
+    caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
     mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
@@ -226,3 +244,237 @@ def test_icon_evaluation_multi_input_success(
         for f in (expected_output / "esmvaltool_output").iterdir()
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
+
+    # Check logging output
+    assert f"- {input_dir.stem}" in caplog.text
+    assert f"(Path: {input_dir})" in caplog.text
+    for recipe in recipes:
+        assert (
+            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            in caplog.text
+        )
+        assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
+
+
+def test_icon_evaluation_single_input_background(
+    expected_output_dir: Path,
+    recipe_template_dir: Path,
+    caplog: pytest.LogCaptureFixture,
+    tmp_path: Path,
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SLURM_JOB_ACCOUNT", "custom_slurm_account")
+
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    actual_output = icon_evaluation(
+        input_dir,
+        recipe_templates=recipe_template_dir / "recipe_basics_timeseries.yml",
+        log_file=None,
+        output_dir=output_dir,
+        background=True,
+        dask=False,
+    )
+
+    # Check output
+    expected_output = (
+        expected_output_dir / "test_icon_evaluation_single_input_background"
+    )
+    assert_output(
+        [input_dir],
+        actual_output,
+        expected_output,
+        empty_dirs=["esmvaltool_output", "pdfs", "slurm"],
+    )
+
+    # Check mock calls
+    assert mocked_subprocess__dependencies.run.mock_calls == [
+        call(
+            ["which", "esmvaltool"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+        call(
+            ["which", "srun"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+    ]
+
+    recipes = list((expected_output / "recipes").glob("*.yml"))
+    assert mocked_subprocess__job.Popen.call_count == len(recipes)
+    mocked_subprocess__job.Popen.return_value.communicate.assert_not_called()
+    for recipe in recipes:
+        cmd = [
+            "srun",
+            f"--job-name={recipe.stem}",
+            "--mpi=cray_shasta",
+            "--ntasks=1",
+            "--account=custom_slurm_account",
+            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            "--",
+            "esmvaltool",
+            "run",
+            str(actual_output / "recipes" / recipe.name),
+        ]
+        env = dict(os.environ)
+        env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
+        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        mocked_subprocess__job.Popen.assert_any_call(
+            cmd,
+            shell=False,
+            stdout=sentinel.PIPE,
+            stderr=sentinel.PIPE,
+            encoding="utf-8",
+            env=env,
+        )
+
+    mocked_plots2pdf.assert_not_called()
+    mocked_swift_service.assert_not_called()
+
+    # Check logging output
+    assert f"- {input_dir.stem}" in caplog.text
+    assert f"(Path: {input_dir})" in caplog.text
+    for recipe in recipes:
+        assert (
+            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            in caplog.text
+        )
+        assert f"[+] Job {recipe.stem} finished successfully" not in caplog.text
+
+
+def test_icon_evaluation_single_input_fail(
+    expected_output_dir: Path,
+    recipe_template_dir: Path,
+    caplog: pytest.LogCaptureFixture,
+    tmp_path: Path,
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+) -> None:
+    mocked_subprocess__job.Popen.return_value.returncode = 42
+    mocked_subprocess__job.Popen.return_value.poll.return_value = 42
+
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    actual_output = icon_evaluation(
+        input_dir,
+        publish_html=True,
+        create_pdfs=True,
+        recipe_templates=str(recipe_template_dir / "recipe_basics_timeseries.yml"),
+        log_file=None,
+        output_dir=output_dir,
+    )
+
+    # Check output
+    expected_output = expected_output_dir / "test_icon_evaluation_single_input_fail"
+    assert_output(
+        [input_dir],
+        actual_output,
+        expected_output,
+        empty_dirs=["pdfs", "slurm"],
+    )
+
+    # Check mock calls
+    assert mocked_subprocess__dependencies.run.mock_calls == [
+        call(
+            ["which", "esmvaltool"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+        call(
+            ["which", "srun"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+        call(
+            ["which", "latex"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+    ]
+
+    recipes = list((expected_output / "recipes").glob("*.yml"))
+    assert mocked_subprocess__job.Popen.call_count == len(recipes)
+    assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
+        recipes,
+    )
+    for recipe in recipes:
+        cmd = [
+            "srun",
+            f"--job-name={recipe.stem}",
+            "--mpi=cray_shasta",
+            "--ntasks=1",
+            "--cpus-per-task=16",
+            "--mem-per-cpu=1940M",
+            "--nodes=1",
+            "--partition=interactive",
+            "--time=03:00:00",
+            "--account=bd1179",
+            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            "--",
+            "esmvaltool",
+            "run",
+            str(actual_output / "recipes" / recipe.name),
+        ]
+        env = dict(os.environ)
+        env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
+        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        mocked_subprocess__job.Popen.assert_any_call(
+            cmd,
+            shell=False,
+            stdout=sentinel.PIPE,
+            stderr=sentinel.PIPE,
+            encoding="utf-8",
+            env=env,
+        )
+
+    mocked_plots2pdf.assert_not_called()
+    mocked_swift_service.assert_any_call(
+        {"os_auth_token": "token", "os_storage_url": "url"},
+    )
+    mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
+    assert mocked_service_instance.post.mock_calls == [
+        call(container="iconeval"),
+        call(container="iconeval", options={"read_acl": ".r:*"}),
+    ]
+    assert mocked_service_instance.upload.call_count == 1
+    upload_call = mocked_service_instance.upload.mock_calls[0]
+    assert upload_call.args == ()
+    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert upload_call.kwargs["container"] == "iconeval"
+    objects_to_upload = [
+        (
+            str(actual_output / "esmvaltool_output" / f.name),
+            f"{actual_output.name}/{f.name}",
+        )
+        for f in (expected_output / "esmvaltool_output").iterdir()
+    ]
+    assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
+
+    # Check logging output
+    assert f"- {input_dir.stem}" in caplog.text
+    assert f"(Path: {input_dir})" in caplog.text
+    for recipe in recipes:
+        assert (
+            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            in caplog.text
+        )
+        assert f"[-] Job {recipe.stem} failed with code 42" in caplog.text
+    assert "Skipping PDF creation since job failed" in caplog.text

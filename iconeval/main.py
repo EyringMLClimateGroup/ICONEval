@@ -67,9 +67,10 @@ def icon_evaluation(
     srun_options: dict | None = None,
     dask_options: dict | None = None,
     tags: str | list[str] | None = None,
+    setup_logging: bool = True,
     **extra_facets: FacetType,
 ) -> Path:
-    """Conveniently evaluate ICON model output with ESMValTool.
+    """Evaluate ICON model output with ESMValTool.
 
     Specify a directory containing ICON simulation output and automatically run
     several (customizable) ESMValTool recipes on this output.
@@ -165,6 +166,8 @@ def icon_evaluation(
         recipes. An overview of all available tags in the default recipe
         templates can be found here
         (https://github.com/EyringMLClimateGroup/ICONEval/blob/main/doc/tags.md).
+    setup_logging:
+        If `True`, set up new logging handlers; if `False`, skip that step.
     **extra_facets:
         Additional options are considered as extra facets for the ICON data.
         All possible extra facets for ICON are given here
@@ -195,7 +198,8 @@ def icon_evaluation(
     TIMES["start"] = datetime.now(UTC)
 
     # Initialize tool
-    configure_logging(log_level, log_file=log_file)
+    if setup_logging:
+        configure_logging(log_level, log_file=log_file)
     logger.info("Starting ICONEval")
     logger.info(f"ICONEval version: {iconeval.__version__}")
     logger.info(f"Debug log: <cyan>{log_file}</cyan>")
@@ -449,6 +453,7 @@ def _run_jobs(jobs: Sequence[Job], *, background: bool) -> None:
 
 def main() -> None:
     """Invoke ``fire`` to process command line arguments."""
+    logger.remove()  # remove any potential handlers
     print(HEADER)  # noqa: T201
     fire.Fire(icon_evaluation)
 

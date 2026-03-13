@@ -50,7 +50,7 @@ def plots2pdf(
     overwrite: bool = False,
     setup_logging: bool = True,
 ) -> Path:
-    """Conveniently collect ESMValTool plots in a single PDF.
+    """Collect ESMValTool plots in a single PDF.
 
     Collect all plots of an ESMValTool output directory (considering all
     subdirectories) in a single PDF (one page per figure). If provenance
@@ -502,6 +502,7 @@ def _write_header(
 
 def main() -> None:
     """Invoke ``fire`` to process command line arguments."""
+    logger.remove()  # remove any potential handlers
     fire.Fire(plots2pdf)
 
 

@@ -15,9 +15,6 @@ def configure_logging(
     log_file: str | Path | None = None,
 ) -> None:
     """Configure logging."""
-    # Remove default handler
-    logger.remove()
-
     # Console
     format_str = (
         "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "

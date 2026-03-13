@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import yaml
+from loguru import logger
 
 from iconeval import get_user_name
 from iconeval._templates import RecipeTemplate
@@ -27,7 +28,6 @@ if TYPE_CHECKING:
     from iconeval._io_handler import IconEvalIOHandler
     from iconeval._typing import RealmType
 
-from loguru import logger
 
 logger = logger.opt(colors=True)
 

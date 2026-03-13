@@ -6,6 +6,8 @@ import os
 import subprocess
 from typing import TYPE_CHECKING
 
+from loguru import logger
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -13,7 +15,6 @@ if TYPE_CHECKING:
     from iconeval._recipe import Recipe
     from iconeval._typing import OptionValueType
 
-from loguru import logger
 
 logger = logger.opt(colors=True)
 

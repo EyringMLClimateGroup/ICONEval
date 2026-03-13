@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 from unittest.mock import sentinel
 
 import pytest
+from loguru import logger
 
 import iconeval._dependencies
 import iconeval._job
@@ -16,11 +17,14 @@ import iconeval.output_handling._summarize
 import iconeval.output_handling.publish_html
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
     from unittest.mock import Mock
 
     from pytest_mock import MockerFixture
 
 pytest.register_assert_rewrite("tests.integration")
+
+logger = logger.opt(colors=True)
 
 
 @pytest.fixture(autouse=True)
@@ -43,6 +47,20 @@ def always_ignore_swift_token(mocker: MockerFixture) -> None:
         autospec=True,
         return_value=("token", "url", datetime(2000, 1, 1, 0, 0, 0)),
     )
+
+
+@pytest.fixture
+def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixture]:
+    """Overwrite default caplog feature so it works with loguru."""
+    handler_id = logger.add(
+        caplog.handler,
+        format="{message}",
+        level=0,
+        filter=lambda record: record["level"].no >= caplog.handler.level,
+        enqueue=False,
+    )
+    yield caplog
+    logger.remove(handler_id)
 
 
 @pytest.fixture
@@ -95,6 +113,7 @@ def mocked_subprocess__dependencies(mocker: MockerFixture) -> Mock:
 @pytest.fixture
 def mocked_subprocess__job(mocker: MockerFixture) -> Mock:
     mock = mocker.patch.object(iconeval._job, "subprocess", autospec=True)
+    mock.Popen.return_value.returncode = 0
     mock.Popen.return_value.poll.return_value = 0
     mock.Popen.return_value.communicate.return_value = ("stdout", "stderr")
     mock.PIPE = sentinel.PIPE
