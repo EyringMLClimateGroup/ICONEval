@@ -1,17 +1,29 @@
 from __future__ import annotations
 
 import os
+import subprocess
 from typing import TYPE_CHECKING
 from unittest.mock import call, sentinel
 
-from iconeval.main import icon_evaluation
+import pytest
+
+from iconeval.main import icon_evaluation, main
 from tests.integration import assert_output
 
 if TYPE_CHECKING:
     from pathlib import Path
     from unittest.mock import Mock
 
-    import pytest
+
+def test_main_fail() -> None:
+    msg = r"No input directory given"
+    with pytest.raises(ValueError, match=msg):
+        main()
+
+
+def test_main_script_fail() -> None:
+    process = subprocess.run(["iconeval"], check=False, capture_output=True)  # noqa: S607
+    assert process.returncode == 1
 
 
 def test_icon_evaluation_single_input_success(
