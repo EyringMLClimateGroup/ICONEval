@@ -21,7 +21,9 @@ def test_main_fail(
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    monkeypatch.setattr(sys, "argv", [""])
     msg = r"No input directory given"
     with pytest.raises(ValueError, match=msg):
         main()
