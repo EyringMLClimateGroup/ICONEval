@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import subprocess
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from unittest.mock import call, sentinel
 
 import pytest
@@ -76,6 +76,7 @@ def test_icon_evaluation_single_input_success(
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
     )
+    mocked_subprocess__job.Popen.return_value.terminate.assert_not_called()
     for recipe in recipes:
         cmd = [
             "srun",
@@ -201,6 +202,7 @@ def test_icon_evaluation_multi_input_success(
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
     )
+    mocked_subprocess__job.Popen.return_value.terminate.assert_not_called()
     for recipe in recipes:
         cmd = [
             "srun executable",
@@ -325,6 +327,7 @@ def test_icon_evaluation_single_input_background(
     recipes = list((expected_output / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     mocked_subprocess__job.Popen.return_value.communicate.assert_not_called()
+    mocked_subprocess__job.Popen.return_value.terminate.assert_not_called()
     for recipe in recipes:
         cmd = [
             "srun",
@@ -427,6 +430,7 @@ def test_icon_evaluation_single_input_fail(
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
     )
+    mocked_subprocess__job.Popen.return_value.terminate.assert_not_called()
     for recipe in recipes:
         cmd = [
             "srun",
@@ -490,3 +494,124 @@ def test_icon_evaluation_single_input_fail(
         )
         assert f"[-] Job {recipe.stem} failed with code 42" in caplog.text
     assert "Skipping PDF creation since job failed" in caplog.text
+
+
+def test_icon_evaluation_single_input_run_longer(
+    expected_output_dir: Path,
+    recipe_template_dir: Path,
+    caplog: pytest.LogCaptureFixture,
+    tmp_path: Path,
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+) -> None:
+    # Make final LaTeX check fail
+    class MockedProcessRun:
+        def __init__(self, cmd: list[str], *_: Any, **__: Any) -> None:
+            self.cmd = cmd
+
+        @property
+        def returncode(self) -> int:
+            if self.cmd == ["which", "latex"]:
+                return 1
+            return 0
+
+    mocked_subprocess__dependencies.run = MockedProcessRun
+
+    # Let one job wait for a sec, the other finish immediately
+    mocked_subprocess__job.Popen.return_value.poll.side_effect = [
+        None,  # call to is_running of first job within _run_jobs
+        1,  # call to is_running of second job within _run_jobs
+        1,  # call to is_running of second job within job_status
+        1,  # call to is_successful of second job within job_status
+        1,  # call to is_successful of second job within _run_jobs
+        0,  # call to is_running of first job within _run_jobs
+        0,  # call to is_running of first job within job_status
+        0,  # call to is_successful of first job within job_status
+        0,  # call to is_successful of first job within _run_jobs
+        1,  # call to is_running of second job within _run_jobs
+        None,  # call to is_running of first job within finally block
+        1,  # call to is_running of second job within finally block
+    ]
+
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    actual_output = icon_evaluation(
+        input_dir,
+        create_pdfs=True,
+        recipe_templates=[
+            str(recipe_template_dir / "recipe_basics_timeseries.yml"),
+            recipe_template_dir / "recipe_basics_maps.yml",
+        ],
+        log_file=None,
+        output_dir=output_dir,
+    )
+
+    # Check output
+    expected_output = (
+        expected_output_dir / "test_icon_evaluation_single_input_run_longer"
+    )
+    assert_output(
+        [input_dir],
+        actual_output,
+        expected_output,
+        empty_dirs=["pdfs", "slurm"],
+    )
+
+    # Check mock calls
+    recipes = list((expected_output / "recipes").glob("*.yml"))
+    assert mocked_subprocess__job.Popen.call_count == len(recipes)
+    assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
+        recipes,
+    )
+    mocked_subprocess__job.Popen.return_value.terminate.assert_called_once_with()
+    for recipe in recipes:
+        cmd = [
+            "srun",
+            f"--job-name={recipe.stem}",
+            "--mpi=cray_shasta",
+            "--ntasks=1",
+            "--cpus-per-task=16",
+            "--mem-per-cpu=1940M",
+            "--nodes=1",
+            "--partition=interactive",
+            "--time=03:00:00",
+            "--account=bd1179",
+            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            "--",
+            "esmvaltool",
+            "run",
+            str(actual_output / "recipes" / recipe.name),
+        ]
+        if "portrait_plot" in recipe.stem:
+            cmd.append("--max_parallel_tasks=1")
+        env = dict(os.environ)
+        env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
+        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        mocked_subprocess__job.Popen.assert_any_call(
+            cmd,
+            shell=False,
+            stdout=sentinel.PIPE,
+            stderr=sentinel.PIPE,
+            encoding="utf-8",
+            env=env,
+        )
+
+    mocked_plots2pdf.assert_not_called()
+    mocked_swift_service.assert_not_called()
+
+    # Check logging output
+    assert f"- {input_dir.stem}" in caplog.text
+    assert f"(Path: {input_dir})" in caplog.text
+    assert "[-] Job recipe_basics_timeseries failed with code 0" in caplog.text
+    assert "[+] Job recipe_basics_maps finished successfully" in caplog.text
+    for recipe in recipes:
+        assert (
+            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            in caplog.text
+        )
+    assert "No LaTeX distribution found, cannot create PDFs" in caplog.text

@@ -141,6 +141,12 @@ def recipe_template_dir() -> Path:
     return Path(str(files("iconeval"))).resolve() / "recipe_templates"
 
 
+@pytest.fixture(autouse=True)
+def remove_default_logger_handlers() -> None:
+    """Remove all potential logging handlers."""
+    logger.remove()
+
+
 @pytest.fixture
 def sample_data_path() -> Path:
     return Path(str(files("tests"))).resolve() / "sample_data"
