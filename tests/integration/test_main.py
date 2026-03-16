@@ -652,6 +652,7 @@ def test_icon_evaluation_single_input_custom_srun(
         recipe_templates=sample_data_path
         / "recipe_templates"
         / "recipe_basics_zonal_mean_lines.yml",
+        project="EMAC",
     )
 
     # Check output
