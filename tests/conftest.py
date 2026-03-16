@@ -122,12 +122,12 @@ def mocked_subprocess__job(mocker: MockerFixture) -> Mock:
 
 @pytest.fixture
 def mocked_swift_service(mocker: MockerFixture) -> Mock:
-    mock_upload_object = mocker.patch.object(
+    mocked_upload_object = mocker.patch.object(
         iconeval.output_handling.publish_html,
         "SwiftUploadObject",
         autospec=True,
     )
-    mock_upload_object.side_effect = lambda f, object_name=None: (f, object_name)
+    mocked_upload_object.side_effect = lambda f, object_name=None: (f, object_name)
 
     return mocker.patch.object(
         iconeval.output_handling.publish_html,
