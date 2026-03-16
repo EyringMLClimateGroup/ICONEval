@@ -1,0 +1,110 @@
+# ESMValTool
+#TAGS atmosphere
+#TAGS basics
+#TAGS precipitation
+#TAGS zonal-means
+#SRUN --cpus-per-task=64
+---
+documentation:
+  title: Basic Model Evaluation (Zonal Means).
+  description: Zonal mean line plots of basic physical variables of the climate system.
+  authors:
+    - schlund_manuel
+    - lauer_axel
+
+
+# YAML anchors for later use
+
+datasets_pr: &datasets_pr
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, timerange: "{{timerange}}"}  # 19590101/20211231
+  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, reference_for_monitor_diags: true, timerange: "{{timerange}}"}  # 19790101/20230430
+
+plot_script: &plot_script
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  figure_kwargs:
+    figsize: [7, 5]
+  group_variables_by: variable_group
+  plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+  plot_folder: "{plot_dir}"
+
+variable_vs_lat_plot: &variable_vs_lat_plot
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor: [0.5, -0.4]
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: "{title} ({{timerange}})"
+  plot_kwargs:
+    "{{alias_plot_kwargs}}":
+      label: "{dataset} ({exp})"
+      linewidth: 1.25
+      zorder: 2.5
+    default:  # These will be used for CMIP6 models
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: "{project}"  # just to have one label for the gray lines
+    CMIP6_CESM2:
+      label: "{project}"  # just to have one label for the gray lines
+    OBS: &obs_format
+      color: black
+      label: "{dataset}"
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6: &obs6_format
+      <<: *obs_format
+      linestyle: dashdot
+    native6: &native6_format
+      <<: *obs_format
+      linestyle: dotted
+    native6_ERA5: *native6_format
+    ERA5: *native6_format
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  create_zonal_mean_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    zonal_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: mm day-1
+
+
+diagnostics:
+
+  zonal_means_pr:
+    description: Zonal mean line plots of precipitation.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      pr:
+        mip: Amon
+        preprocessor: create_zonal_mean_pr
+        title: Precipitation
+        additional_datasets: *datasets_pr
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          variable_vs_lat:
+            <<: *variable_vs_lat_plot

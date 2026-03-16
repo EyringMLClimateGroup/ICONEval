@@ -630,3 +630,103 @@ def test_icon_evaluation_single_input_run_longer(
             in caplog.text
         )
     assert "No LaTeX distribution found, cannot create PDFs" in caplog.text
+
+
+def test_icon_evaluation_single_input_custom_srun_ignore(
+    expected_output_dir: Path,
+    sample_data_path: Path,
+    caplog: pytest.LogCaptureFixture,
+    tmp_path: Path,
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+) -> None:
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    actual_output = icon_evaluation(
+        input_dir,
+        recipe_templates=sample_data_path
+        / "recipe_templates"
+        / "recipe_basics_zonal_mean_lines.yml",
+        ignore_recipe_srun_options=True,
+    )
+
+    # Check output
+    expected_output = (
+        expected_output_dir / "test_icon_evaluation_single_input_custom_srun_ignore"
+    )
+    assert_output(
+        [input_dir],
+        actual_output,
+        expected_output,
+        empty_dirs=["pdfs", "slurm"],
+    )
+
+    # Check mock calls
+    assert mocked_subprocess__dependencies.run.mock_calls == [
+        call(
+            ["which", "esmvaltool"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+        call(
+            ["which", "srun"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+    ]
+
+    recipes = list((expected_output / "recipes").glob("*.yml"))
+    assert mocked_subprocess__job.Popen.call_count == len(recipes)
+    assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
+        recipes,
+    )
+    mocked_subprocess__job.Popen.return_value.terminate.assert_not_called()
+    for recipe in recipes:
+        cmd = [
+            "srun",
+            f"--job-name={recipe.stem}",
+            "--mpi=cray_shasta",
+            "--ntasks=1",
+            "--cpus-per-task=16",
+            "--mem-per-cpu=1940M",
+            "--nodes=1",
+            "--partition=interactive",
+            "--time=03:00:00",
+            "--account=bd1179",
+            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            "--",
+            "esmvaltool",
+            "run",
+            str(actual_output / "recipes" / recipe.name),
+        ]
+        env = dict(os.environ)
+        env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
+        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        mocked_subprocess__job.Popen.assert_any_call(
+            cmd,
+            shell=False,
+            stdout=sentinel.PIPE,
+            stderr=sentinel.PIPE,
+            encoding="utf-8",
+            env=env,
+        )
+
+    mocked_plots2pdf.assert_not_called()
+    mocked_swift_service.assert_not_called()
+
+    # Check logging output
+    assert f"- {input_dir.stem}" in caplog.text
+    assert f"(Path: {input_dir})" in caplog.text
+    for recipe in recipes:
+        assert (
+            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            in caplog.text
+        )
+        assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
