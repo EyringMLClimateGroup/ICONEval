@@ -60,12 +60,12 @@ variable_vs_lat_plot:
       linewidth: 1.25
       zorder: 2.5
       color: C0
-    EMAC_ICON:
+    EMAC_EMAC:
       label: '{dataset} ({exp})'
       linewidth: 1.25
       zorder: 2.5
       color: C0
-    EMAC_ICON_input:
+    EMAC_EMAC_input:
       label: '{dataset} ({exp})'
       linewidth: 1.25
       zorder: 2.5
@@ -118,7 +118,7 @@ datasets:
     skip: true
   - short_name: sftof
     skip: true
-  dataset: ICON
+  dataset: EMAC
   exp: input
   project: EMAC
 preprocessors:
@@ -198,12 +198,12 @@ diagnostics:
                 linewidth: 1.25
                 zorder: 2.5
                 color: C0
-              EMAC_ICON:
+              EMAC_EMAC:
                 label: '{dataset} ({exp})'
                 linewidth: 1.25
                 zorder: 2.5
                 color: C0
-              EMAC_ICON_input:
+              EMAC_EMAC_input:
                 label: '{dataset} ({exp})'
                 linewidth: 1.25
                 zorder: 2.5
