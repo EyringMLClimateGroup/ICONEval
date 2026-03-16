@@ -56,6 +56,11 @@ packages = ['iconeval']
 [tool.codespell]
 ignore-words-list = "emac,oce,pres"
 
+[tool.pytest.ini_options]
+addopts = ["-ra", "--strict-config", "--strict-markers"]
+minversion = "6.0"
+xfail_strict = true
+
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
@@ -81,6 +86,6 @@ future-annotations = true
     "S101",       # Use of `assert` detected
     "SLF001",     # Private member accessed
 ]
-[tool.ruff.lint.pydocstyle]
 
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
