@@ -3,7 +3,9 @@
 #TAGS basics
 #TAGS precipitation
 #TAGS zonal-means
+#ESMVALTOOL --max_parallel_tasks=1
 #SRUN --cpus-per-task=64
+#DASK --type=dask_jobqueue.SLURMCluster
 ---
 documentation:
   title: Basic Model Evaluation (Zonal Means).

@@ -144,8 +144,6 @@ dask:
   profiles:
     iconeval:
       cluster:
-        memory_limit: 3880MB
-        n_workers: 8
-        threads_per_worker: 2
-        type: distributed.LocalCluster
+        account: bd1179
+        type: dask_jobqueue.SLURMCluster
 output_dir: /home/b/b309141/repos/ICONEval/output_iconeval/input_20260316_143405UTC/esmvaltool_output
