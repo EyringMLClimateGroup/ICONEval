@@ -23,6 +23,20 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
     mocked_fire.Fire.assert_called_once_with(icon_evaluation)
 
 
+def test_icon_evaluation_empty_input_dir_fail(
+    tmp_path: Path,
+    mocked_plots2pdf: Mock,
+    mocked_subprocess__dependencies: Mock,
+    mocked_subprocess__job: Mock,
+    mocked_swift_service: Mock,
+) -> None:
+    output_dir = tmp_path / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    msg = r"No input directory given"
+    with pytest.raises(ValueError, match=msg):
+        icon_evaluation(log_file=None, output_dir=output_dir)
+
+
 def test_icon_evaluation_invalid_input_dir_fail(
     tmp_path: Path,
     mocked_plots2pdf: Mock,
