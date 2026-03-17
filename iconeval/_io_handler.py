@@ -39,7 +39,7 @@ class IconEvalIOHandler:
 
     def __init__(
         self,
-        input_dirs: tuple[str | Path, ...],
+        input_dirs: Iterable[str | Path],
         parent_output_dir: str | Path | None,
         run_name: str | None,
     ) -> None:
@@ -74,7 +74,7 @@ class IconEvalIOHandler:
         """Return string representation of class instance."""
         return (
             f"IconEvalIOHandler(input_dirs={self.input_dirs!r}, "
-            f"output_dir={self.output_dir!r})"
+            f"output_dir={self.output_dir!r}, run_name={self.run_name!r})"
         )
 
     @property

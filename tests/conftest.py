@@ -72,6 +72,8 @@ def expected_output_dir() -> Path:
 def fix_time(mocker: MockerFixture) -> None:
     mock = mocker.patch.object(iconeval.main, "datetime", autospec=True)
     mock.now.return_value = datetime(2000, 1, 1, 0, 0, 0)
+    mock = mocker.patch.object(iconeval._io_handler, "datetime", autospec=True)
+    mock.now.return_value = datetime(2000, 1, 1, 0, 0, 0)
     mock = mocker.patch.object(iconeval._simulation_info, "datetime", autospec=True)
     mock.fromtimestamp.return_value = datetime(2000, 1, 1, 0, 0, 0)
     mock = mocker.patch.object(
