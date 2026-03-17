@@ -632,7 +632,7 @@ def test_icon_evaluation_single_input_run_longer(
     assert "No LaTeX distribution found, cannot create PDFs" in caplog.text
 
 
-def test_icon_evaluation_single_input_custom_srun(
+def test_icon_evaluation_single_input_custom_recipe_options(
     expected_output_dir: Path,
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
@@ -658,7 +658,7 @@ def test_icon_evaluation_single_input_custom_srun(
 
     # Check output
     expected_output = (
-        expected_output_dir / "test_icon_evaluation_single_input_custom_srun"
+        expected_output_dir / "test_icon_evaluation_single_input_custom_recipe_options"
     )
     assert_output(
         [input_dir],
@@ -706,6 +706,7 @@ def test_icon_evaluation_single_input_custom_srun(
             "esmvaltool",
             "run",
             str(actual_output / "recipes" / recipe.name),
+            "--max_parallel_tasks=1"
         ]
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
@@ -733,7 +734,7 @@ def test_icon_evaluation_single_input_custom_srun(
         assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
 
 
-def test_icon_evaluation_single_input_custom_srun_ignore(
+def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     expected_output_dir: Path,
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
@@ -753,12 +754,14 @@ def test_icon_evaluation_single_input_custom_srun_ignore(
         recipe_templates=sample_data_path
         / "recipe_templates"
         / "recipe_basics_zonal_mean_lines.yml",
+        ignore_recipe_esmvaltool_options=True,
         ignore_recipe_srun_options=True,
+        ignore_recipe_dask_options=True,
     )
 
     # Check output
     expected_output = (
-        expected_output_dir / "test_icon_evaluation_single_input_custom_srun_ignore"
+        expected_output_dir / "test_icon_evaluation_single_input_custom_recipe_options_ignore"
     )
     assert_output(
         [input_dir],
