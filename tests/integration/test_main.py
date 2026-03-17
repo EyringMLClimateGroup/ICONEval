@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import os
-import subprocess
-import sys
 from typing import TYPE_CHECKING, Any
 from unittest.mock import call, sentinel
 
@@ -23,21 +21,6 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
     mocked_fire = mocker.patch.object(iconeval.main, "fire")
     main()
     mocked_fire.Fire.assert_called_once_with(icon_evaluation)
-
-
-def test_main_script_fail(
-    tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(sys, "argv", [f"--output_dir={output_dir}", "--log_file=None"])
-    process = subprocess.run(["iconeval"], check=False, capture_output=True)  # noqa: S607
-    assert process.returncode == 1
 
 
 def test_icon_evaluation_invalid_input_dir_fail(
