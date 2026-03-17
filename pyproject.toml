@@ -83,6 +83,7 @@ future-annotations = true
     "D102",       # Missing docstring in public method
     "D103",       # Missing docstring in public function
     "D104",       # Missing docstring in public package
+    "FBT001",     # Boolean-typed positional argument in function definition
     "S101",       # Use of `assert` detected
     "SLF001",     # Private member accessed
 ]

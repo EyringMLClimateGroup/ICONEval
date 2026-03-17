@@ -58,7 +58,7 @@ class Job:
         return (
             f"Job({self.recipe!r}, "
             f"esmvaltool_config={self.esmvaltool_config!r}, "
-            f"account={self.account})"
+            f"account={self.account!r})"
         )
 
     def __str__(self) -> str:
