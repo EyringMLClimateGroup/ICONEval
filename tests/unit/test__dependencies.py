@@ -7,7 +7,6 @@ import pytest
 
 import iconeval._dependencies
 from iconeval._dependencies import (
-    latex_is_available,
     verify_esmvaltool_installation,
     verify_slurm_installation,
 )
@@ -21,28 +20,6 @@ if TYPE_CHECKING:
 @pytest.fixture(autouse=True)
 def mocked_subprocess(mocker: MockerFixture) -> Mock:
     return mocker.patch.object(iconeval._dependencies, "subprocess", autospec=True)
-
-
-def test_latex_is_available_true(mocked_subprocess: Mock) -> None:
-    mocked_subprocess.run.return_value.returncode = 0
-    assert latex_is_available() is True
-    mocked_subprocess.run.assert_called_once_with(
-        ["which", "latex"],
-        shell=False,
-        check=False,
-        capture_output=True,
-    )
-
-
-def test_latex_is_available_false(mocked_subprocess: Mock) -> None:
-    mocked_subprocess.run.return_value.returncode = 1
-    assert latex_is_available() is False
-    mocked_subprocess.run.assert_called_once_with(
-        ["which", "latex"],
-        shell=False,
-        check=False,
-        capture_output=True,
-    )
 
 
 def test_verify_esmvaltool_installation_success(mocked_subprocess: Mock) -> None:

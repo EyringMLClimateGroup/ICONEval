@@ -324,12 +324,10 @@ tags using the syntax
   if `None`, use the name of the output directory (default: `None`). Use this
   to get a consistent URL (this will potentially overwrite existing data!).
   Ignored if `--publish_html=False`.
-- `--create_pdfs`: Enable/Disable creation of summary PDFs (default: `False`).
 - `--log_level`: Log level for ICONEval (default: `info`).
 - `--output_dir`: Output directory for ICONEval (default: `./output_iconeval`).
 - `--background`: Terminate ICONEval after submitting all jobs/job steps
-  (default: `False`). Neither summary HTMLs nor PDFs can be published/written
-  in this mode.
+  (default: `False`). Summary HTMLs cannot be published/written in this mode.
 - `--esmvaltool_executable`: Path to ESMValTool executable (default:
   `esmvaltool`).
 - `--srun_executable`: Path to `srun` executable (default: `srun`).

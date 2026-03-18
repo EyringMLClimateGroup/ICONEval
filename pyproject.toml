@@ -29,7 +29,6 @@ dependencies = [
     "fire",
     "loguru",
     "prov",
-    "pylatex",
     "python-swiftclient",
     "pyyaml",
     "requests",
@@ -46,7 +45,6 @@ develop = [
 
 [project.scripts]
 iconeval = "iconeval.main:main"
-plots2pdf = "iconeval.output_handling.plots2pdf:main"
 publish_html = "iconeval.output_handling.publish_html:main"
 
 
