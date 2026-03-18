@@ -61,11 +61,13 @@ def test___repr__(sentinel_job: Job) -> None:
     )
 
 
-def test_output_dir(sentinel_job: Job, tmp_path: Path) -> None:
+@pytest.mark.parametrize("recipe_dir_exists", [True, False])
+def test_output_dir(recipe_dir_exists: bool, sentinel_job: Job, tmp_path: Path) -> None:
     esmvaltool_output_dir = tmp_path / "esmvaltool_output"
     esmvaltool_output_dir.mkdir(parents=True, exist_ok=True)
     recipe_output_dir = esmvaltool_output_dir / "recipe_test_20000101_000000"
-    recipe_output_dir.mkdir(parents=True, exist_ok=True)
+    if recipe_dir_exists:
+        recipe_output_dir.mkdir(parents=True, exist_ok=True)
     recipe = Recipe(
         tmp_path / "recipe_test.yml",
         sentinel.recipe_test_template,
@@ -82,7 +84,10 @@ def test_output_dir(sentinel_job: Job, tmp_path: Path) -> None:
     sentinel_job._recipe = recipe
     sentinel_job._esmvaltool_config = esmvaltool_config
 
-    assert sentinel_job.output_dir == recipe_output_dir
+    if recipe_dir_exists:
+        assert sentinel_job.output_dir == recipe_output_dir
+    else:
+        assert sentinel_job.output_dir is None
 
 
 @pytest.mark.parametrize(
