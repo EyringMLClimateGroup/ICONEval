@@ -41,7 +41,7 @@ def test_from_path(
     namelist_files: list[str | Path],
     sample_data_path: Path,
 ) -> None:
-    sample_data = sample_data_path / exp
+    sample_data = sample_data_path / "icon_output" / exp
     namelist_files = [sample_data / n for n in namelist_files]
 
     simulation_info = SimulationInfo.from_path(sample_data)
@@ -67,7 +67,7 @@ def test_from_path(
     ],
 )
 def test__guess_dataset(exp: str, dataset: str, sample_data_path: Path) -> None:
-    path = sample_data_path / exp
+    path = sample_data_path / "icon_output" / exp
     assert SimulationInfo._guess_dataset(path) == dataset
 
 
