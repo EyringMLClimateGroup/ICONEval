@@ -46,96 +46,6 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
     mocked_fire.Fire.assert_called_once_with(icon_evaluation)
 
 
-def test_icon_evaluation_empty_input_dir_fail(tmp_path: Path) -> None:
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    msg = r"No input directory given"
-    with pytest.raises(ValueError, match=msg):
-        icon_evaluation(log_file=None, output_dir=output_dir)
-
-
-def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
-    input_dir = tmp_path / "this_dir_does_not_exist"
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    msg = r"does not exist"
-    with pytest.raises(NotADirectoryError, match=msg):
-        icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
-
-
-def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
-    input_dirs = [
-        tmp_path / "input_1" / "exp",
-        tmp_path / "input_2" / "exp",
-    ]
-    for input_dir in input_dirs:
-        input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    msg = r"Multiple experiments with the same name are not supported"
-    with pytest.raises(ValueError, match=msg):
-        icon_evaluation(*input_dirs, log_file=None, output_dir=output_dir)
-
-
-def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    msg = r"No recipe template matching"
-    with pytest.raises(FileNotFoundError, match=msg):
-        icon_evaluation(
-            input_dir,
-            log_file=None,
-            output_dir=output_dir,
-            recipe_templates=tmp_path / "non_existing_recipe.yml",
-        )
-
-
-@pytest.mark.parametrize(
-    ("tags", "error_msg"),
-    [
-        (None, r"No recipe templates given"),
-        ("tag", r"No recipe templates for tags \['tag'\] given"),
-        (["t1", "t2"], r"No recipe templates for tags \['t1', 't2'\] given"),
-    ],
-)
-def test_icon_evaluation_invalid_no_recipe_templates_fail(
-    tags: list[str] | None,
-    error_msg: str,
-    tmp_path: Path,
-) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(ValueError, match=error_msg):
-        icon_evaluation(
-            input_dir,
-            log_file=None,
-            output_dir=output_dir,
-            recipe_templates=[],
-            tags=tags,
-        )
-
-
-def test_icon_evaluation_invalid_recipe_template_invalid_glob_fail(
-    tmp_path: Path,
-) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    msg = r"No recipe template matching"
-    with pytest.raises(FileNotFoundError, match=msg):
-        icon_evaluation(
-            input_dir,
-            log_file=None,
-            output_dir=output_dir,
-            recipe_templates=tmp_path / "*.yml",
-        )
-
-
 def test_icon_evaluation_single_input_success(
     expected_output_dir: Path,
     caplog: pytest.LogCaptureFixture,
@@ -945,3 +855,93 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
             in caplog.text
         )
         assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
+
+
+def test_icon_evaluation_empty_input_dir_fail(tmp_path: Path) -> None:
+    output_dir = tmp_path / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    msg = r"No input directory given"
+    with pytest.raises(ValueError, match=msg):
+        icon_evaluation(log_file=None, output_dir=output_dir)
+
+
+def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
+    input_dir = tmp_path / "this_dir_does_not_exist"
+    output_dir = tmp_path / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    msg = r"does not exist"
+    with pytest.raises(NotADirectoryError, match=msg):
+        icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
+
+
+def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
+    input_dirs = [
+        tmp_path / "input_1" / "exp",
+        tmp_path / "input_2" / "exp",
+    ]
+    for input_dir in input_dirs:
+        input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = tmp_path / "output"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    msg = r"Multiple experiments with the same name are not supported"
+    with pytest.raises(ValueError, match=msg):
+        icon_evaluation(*input_dirs, log_file=None, output_dir=output_dir)
+
+
+def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    msg = r"No recipe template matching"
+    with pytest.raises(FileNotFoundError, match=msg):
+        icon_evaluation(
+            input_dir,
+            log_file=None,
+            output_dir=output_dir,
+            recipe_templates=tmp_path / "non_existing_recipe.yml",
+        )
+
+
+@pytest.mark.parametrize(
+    ("tags", "error_msg"),
+    [
+        (None, r"No recipe templates given"),
+        ("tag", r"No recipe templates for tags \['tag'\] given"),
+        (["t1", "t2"], r"No recipe templates for tags \['t1', 't2'\] given"),
+    ],
+)
+def test_icon_evaluation_invalid_no_recipe_templates_fail(
+    tags: list[str] | None,
+    error_msg: str,
+    tmp_path: Path,
+) -> None:
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with pytest.raises(ValueError, match=error_msg):
+        icon_evaluation(
+            input_dir,
+            log_file=None,
+            output_dir=output_dir,
+            recipe_templates=[],
+            tags=tags,
+        )
+
+
+def test_icon_evaluation_invalid_recipe_template_invalid_glob_fail(
+    tmp_path: Path,
+) -> None:
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    msg = r"No recipe template matching"
+    with pytest.raises(FileNotFoundError, match=msg):
+        icon_evaluation(
+            input_dir,
+            log_file=None,
+            output_dir=output_dir,
+            recipe_templates=tmp_path / "*.yml",
+        )
