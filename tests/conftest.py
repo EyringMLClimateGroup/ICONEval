@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+import requests
 from loguru import logger
 
 import iconeval._io_handler
@@ -47,10 +48,9 @@ def expected_output_dir() -> Path:
 
 @pytest.fixture(autouse=True)
 def fix_time(mocker: MockerFixture) -> None:
-    # datetime
+    # datetime.now
     modules = [
         iconeval._io_handler,
-        iconeval._simulation_info,
         iconeval.main,
         iconeval.output_handling._summarize,
         iconeval.output_handling.publish_html,
@@ -58,14 +58,18 @@ def fix_time(mocker: MockerFixture) -> None:
     for module in modules:
         mock = mocker.patch.object(module, "datetime", autospec=True)
         mock.now.return_value = datetime(2000, 1, 1, 0, 0, 0)
-        mock.fromtimestamp.return_value = datetime(2000, 1, 1, 0, 0, 0)
+        mock.fromtimestamp = datetime.fromtimestamp
         mock.strptime = datetime.strptime
+
+    # datetime.fromtimestamp
+    mock = mocker.patch.object(iconeval._simulation_info, "datetime", autospec=True)
+    mock.fromtimestamp.return_value = datetime(2000, 1, 1, 0, 0, 0)
 
     # time
     modules = [iconeval.main, iconeval.output_handling.publish_html]
     for module in modules:
         mock = mocker.patch.object(module, "time", autospec=True)
-        mock.tzname = ["NOT_MY_TIMEZONE", "MY_TIMEZONE"]
+        mock.tzname = ["UTC"]
         mock.time.return_value = 0
 
 
@@ -118,10 +122,11 @@ def mocked_requests(mocker: MockerFixture) -> Mock:
         return_value="super secret password",
     )
     mock.get.return_value.headers = {
-        "x-auth-token": "my x-auth-token",
-        "x-storage-url": "my x-storage-url",
+        "x-auth-token": "my-x-auth-token",
+        "x-storage-url": "my-x-storage-url",
         "x-auth-token-expires": "42",
     }
+    mock.RequestException = requests.RequestException
     return mock
 
 
