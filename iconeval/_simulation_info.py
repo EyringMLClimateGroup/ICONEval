@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from iconeval import get_user_name
@@ -31,7 +31,7 @@ class SimulationInfo:
         dir_stat = path.stat()
 
         # Date and time
-        date = datetime.fromtimestamp(dir_stat.st_ctime).strftime(
+        date = datetime.fromtimestamp(dir_stat.st_ctime, tz=UTC).strftime(
             "%Y-%m-%d %H:%M:%S%z",
         )
 

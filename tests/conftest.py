@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import builtins
+import locale
 from datetime import datetime
 from importlib.resources import files
 from pathlib import Path
@@ -47,6 +48,11 @@ def expected_output_dir() -> Path:
 
 
 @pytest.fixture(autouse=True)
+def fix_locale() -> None:
+    locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+
+
+@pytest.fixture(autouse=True)
 def fix_time(mocker: MockerFixture) -> None:
     # datetime.now
     modules = [
@@ -69,7 +75,6 @@ def fix_time(mocker: MockerFixture) -> None:
     modules = [iconeval.main, iconeval.output_handling.publish_html]
     for module in modules:
         mock = mocker.patch.object(module, "time", autospec=True)
-        mock.tzname = ["UTC"]
         mock.time.return_value = 0
 
 
