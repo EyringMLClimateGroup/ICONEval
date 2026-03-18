@@ -38,14 +38,14 @@ def assert_output(
             expected_file = _root / _file
             assert actual_file.is_file()
 
-            # Recipes and debug.html are expected to be identical
+            # Recipes, debug.html, and swiftenv are expected to be identical
             if expected_file.name.startswith("recipe_"):
                 with actual_file.open(encoding="utf-8") as file:
                     actual_content = yaml.safe_load(file)
                 with expected_file.open(encoding="utf-8") as file:
                     expected_content = yaml.safe_load(file)
                 assert actual_content == expected_content
-            elif expected_file.name == "debug.html":
+            elif expected_file.name in ("debug.html", "swiftenv"):
                 actual_content = actual_file.read_text(encoding="utf-8")
                 expected_content = expected_file.read_text(encoding="utf-8")
                 assert actual_content == expected_content

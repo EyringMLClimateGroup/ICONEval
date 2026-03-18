@@ -1,0 +1,6 @@
+#token expires on: Thu 01. Jan 01:00:42 UTC 1970
+setenv OS_AUTH_TOKEN my-x-auth-token
+setenv OS_STORAGE_URL my-x-storage-url
+setenv OS_AUTH_URL " "
+setenv OS_USERNAME " "
+setenv OS_PASSWORD " "

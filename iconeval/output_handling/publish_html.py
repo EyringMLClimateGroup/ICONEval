@@ -22,6 +22,8 @@ SWIFT_BASE = "https://swift.dkrz.de/"
 SWIFTENV = Path().home() / ".swiftenv"
 SWIFT = {}
 
+MAX_FILE_SIZE_FOR_UPLOAD = 4_500_000_000  # 4.5 GB
+
 
 def publish_esmvaltool_html(
     esmvaltool_output_dir: str | Path,
@@ -216,8 +218,7 @@ def _publish_html(
         # 5 GB; segmenting does not work on the HTML output)
         files_to_upload = []
         for file in esmvaltool_output_dir.rglob("*"):
-            max_file_size = 4_500_000_000  # 4.5 GB
-            if file.stat().st_size > max_file_size:
+            if file.stat().st_size > MAX_FILE_SIZE_FOR_UPLOAD:
                 logger.warning(f"Ignoring {file} (> 4.5 GB)")
             else:
                 files_to_upload.append(file)
