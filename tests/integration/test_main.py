@@ -18,8 +18,10 @@ if TYPE_CHECKING:
 
 
 def test_main(mocker: pytest_mock.MockerFixture) -> None:
+    mocked_logger = mocker.patch.object(iconeval.main, "logger")
     mocked_fire = mocker.patch.object(iconeval.main, "fire")
     main()
+    mocked_logger.remove.assert_called_once_with()
     mocked_fire.Fire.assert_called_once_with(icon_evaluation)
 
 
