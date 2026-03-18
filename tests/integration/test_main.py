@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from datetime import datetime
 from typing import TYPE_CHECKING
 from unittest.mock import call, sentinel
 
@@ -23,28 +22,6 @@ if TYPE_CHECKING:
 
 
 @pytest.fixture(autouse=True)
-def always_ignore_swift_token(mocker: MockerFixture) -> None:
-    mocker.patch.object(
-        iconeval.output_handling.publish_html,
-        "_valid_swift_token_available",
-        autospec=True,
-        return_value=False,
-    )
-    mocker.patch.object(
-        iconeval.output_handling.publish_html,
-        "_create_swift_token",
-        autospec=True,
-        return_value=None,
-    )
-    mocker.patch.object(
-        iconeval.output_handling.publish_html,
-        "_read_swiftenv",
-        autospec=True,
-        return_value=("token", "url", datetime(2000, 1, 1, 0, 0, 0)),
-    )
-
-
-@pytest.fixture(autouse=True)
 def mocked_subprocess__dependencies(mocker: MockerFixture) -> Mock:
     mock = mocker.patch.object(iconeval._dependencies, "subprocess", autospec=True)
     mock.run.return_value.returncode = 0
@@ -59,22 +36,6 @@ def mocked_subprocess__job(mocker: MockerFixture) -> Mock:
     mock.Popen.return_value.communicate.return_value = ("stdout", "stderr")
     mock.PIPE = sentinel.PIPE
     return mock
-
-
-@pytest.fixture(autouse=True)
-def mocked_swift_service(mocker: MockerFixture) -> Mock:
-    mocked_upload_object = mocker.patch.object(
-        iconeval.output_handling.publish_html,
-        "SwiftUploadObject",
-        autospec=True,
-    )
-    mocked_upload_object.side_effect = lambda f, object_name=None: (f, object_name)
-
-    return mocker.patch.object(
-        iconeval.output_handling.publish_html,
-        "SwiftService",
-        autospec=True,
-    )
 
 
 def test_main(mocker: pytest_mock.MockerFixture) -> None:
@@ -179,8 +140,10 @@ def test_icon_evaluation_single_input_success(
     expected_output_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
 ) -> None:
     input_dir = tmp_path / "input"
@@ -257,6 +220,8 @@ def test_icon_evaluation_single_input_success(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -275,8 +240,10 @@ def test_icon_evaluation_multi_input_success(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
 ) -> None:
     input_dirs = [tmp_path / "input_1", tmp_path / "input_2"]
@@ -373,8 +340,16 @@ def test_icon_evaluation_multi_input_success(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_called_once_with(
+        "url/to/swift_storage/my_folder",
+        "this_is_a_very_nice_token",
+    )
     mocked_swift_service.assert_any_call(
-        {"os_auth_token": "token", "os_storage_url": "url"},
+        {
+            "os_auth_token": "this_is_a_very_nice_token",
+            "os_storage_url": "url/to/swift_storage/my_folder",
+        },
     )
     mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
     assert mocked_service_instance.post.mock_calls == [
@@ -411,8 +386,10 @@ def test_icon_evaluation_single_input_background(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -488,6 +465,8 @@ def test_icon_evaluation_single_input_background(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -506,8 +485,10 @@ def test_icon_evaluation_single_input_fail(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
 ) -> None:
     mocked_subprocess__job.Popen.return_value.returncode = 42
@@ -587,8 +568,16 @@ def test_icon_evaluation_single_input_fail(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_called_once_with(
+        "url/to/swift_storage/my_folder",
+        "this_is_a_very_nice_token",
+    )
     mocked_swift_service.assert_any_call(
-        {"os_auth_token": "token", "os_storage_url": "url"},
+        {
+            "os_auth_token": "this_is_a_very_nice_token",
+            "os_storage_url": "url/to/swift_storage/my_folder",
+        },
     )
     mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
     assert mocked_service_instance.post.mock_calls == [
@@ -625,8 +614,10 @@ def test_icon_evaluation_single_input_run_longer(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
 ) -> None:
     # Let one job wait for a sec, the other finish immediately
@@ -725,6 +716,8 @@ def test_icon_evaluation_single_input_run_longer(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -744,8 +737,10 @@ def test_icon_evaluation_single_input_custom_recipe_options(
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
 ) -> None:
     input_dir = tmp_path / "input"
@@ -829,6 +824,8 @@ def test_icon_evaluation_single_input_custom_recipe_options(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -847,8 +844,10 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
+    mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
+    mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
 ) -> None:
     input_dir = tmp_path / "input"
@@ -933,6 +932,8 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
             env=env,
         )
 
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
