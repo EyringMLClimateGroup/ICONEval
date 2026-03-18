@@ -76,6 +76,3 @@ version of ESMValTool and ESMValCore.
    cd ICONEval
    pip install --no-deps --editable '.[develop]'
    ```
-
-8. (*Optional*) Install [Tex Live](https://tug.org/texlive/) for the creation
-   of PDFs.

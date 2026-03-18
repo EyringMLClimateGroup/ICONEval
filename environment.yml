@@ -8,7 +8,6 @@ dependencies:
   - fire
   - loguru
   - prov
-  - pylatex
   - python>=3.12
   - python-swiftclient
   - pyyaml

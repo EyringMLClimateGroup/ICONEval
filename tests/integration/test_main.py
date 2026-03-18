@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from unittest.mock import call, sentinel
 
 import pytest
@@ -42,11 +42,6 @@ def always_ignore_swift_token(mocker: MockerFixture) -> None:
         autospec=True,
         return_value=("token", "url", datetime(2000, 1, 1, 0, 0, 0)),
     )
-
-
-@pytest.fixture(autouse=True)
-def mocked_plots2pdf(mocker: MockerFixture) -> Mock:
-    return mocker.patch.object(iconeval.main, "plots2pdf", autospec=True)
 
 
 @pytest.fixture(autouse=True)
@@ -184,7 +179,6 @@ def test_icon_evaluation_single_input_success(
     expected_output_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
@@ -206,7 +200,7 @@ def test_icon_evaluation_single_input_success(
         [input_dir],
         actual_output,
         expected_output,
-        empty_dirs=["pdfs", "slurm"],
+        empty_dirs=["slurm"],
     )
 
     # Check mock calls
@@ -263,7 +257,6 @@ def test_icon_evaluation_single_input_success(
             env=env,
         )
 
-    mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -282,7 +275,6 @@ def test_icon_evaluation_multi_input_success(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
@@ -297,7 +289,6 @@ def test_icon_evaluation_multi_input_success(
         *input_dirs,
         publish_html=True,
         html_name="my_html_name",
-        create_pdfs=True,
         recipe_templates=[
             recipe_template_dir / "recipe_basics_timeseries.yml",
             recipe_template_dir / "recipe_basics_maps.yml",
@@ -326,7 +317,7 @@ def test_icon_evaluation_multi_input_success(
         input_dirs,
         actual_output,
         expected_output,
-        empty_dirs=["pdfs", "slurm"],
+        empty_dirs=["slurm"],
     )
 
     # Check mock calls
@@ -339,12 +330,6 @@ def test_icon_evaluation_multi_input_success(
         ),
         call(
             ["which", "srun executable"],
-            shell=False,
-            check=False,
-            capture_output=True,
-        ),
-        call(
-            ["which", "latex"],
             shell=False,
             check=False,
             capture_output=True,
@@ -388,9 +373,6 @@ def test_icon_evaluation_multi_input_success(
             env=env,
         )
 
-    assert mocked_plots2pdf.mock_calls == [
-        call(None, output_dir=actual_output / "pdfs", setup_logging=False),
-    ] * len(recipes)
     mocked_swift_service.assert_any_call(
         {"os_auth_token": "token", "os_storage_url": "url"},
     )
@@ -429,7 +411,6 @@ def test_icon_evaluation_single_input_background(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
@@ -459,7 +440,7 @@ def test_icon_evaluation_single_input_background(
         [input_dir],
         actual_output,
         expected_output,
-        empty_dirs=["esmvaltool_output", "pdfs", "slurm"],
+        empty_dirs=["esmvaltool_output", "slurm"],
     )
 
     # Check mock calls
@@ -507,7 +488,6 @@ def test_icon_evaluation_single_input_background(
             env=env,
         )
 
-    mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -526,7 +506,6 @@ def test_icon_evaluation_single_input_fail(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
@@ -542,7 +521,6 @@ def test_icon_evaluation_single_input_fail(
     actual_output = icon_evaluation(
         input_dir,
         publish_html=True,
-        create_pdfs=True,
         recipe_templates=str(recipe_template_dir / "recipe_basics_timeseries.yml"),
         log_file=None,
         output_dir=output_dir,
@@ -554,7 +532,7 @@ def test_icon_evaluation_single_input_fail(
         [input_dir],
         actual_output,
         expected_output,
-        empty_dirs=["pdfs", "slurm"],
+        empty_dirs=["slurm"],
     )
 
     # Check mock calls
@@ -567,12 +545,6 @@ def test_icon_evaluation_single_input_fail(
         ),
         call(
             ["which", "srun"],
-            shell=False,
-            check=False,
-            capture_output=True,
-        ),
-        call(
-            ["which", "latex"],
             shell=False,
             check=False,
             capture_output=True,
@@ -615,7 +587,6 @@ def test_icon_evaluation_single_input_fail(
             env=env,
         )
 
-    mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_any_call(
         {"os_auth_token": "token", "os_storage_url": "url"},
     )
@@ -647,7 +618,6 @@ def test_icon_evaluation_single_input_fail(
             in caplog.text
         )
         assert f"[-] Job {recipe.stem} failed with code 42" in caplog.text
-    assert "Skipping PDF creation since job failed" in caplog.text
 
 
 def test_icon_evaluation_single_input_run_longer(
@@ -655,24 +625,10 @@ def test_icon_evaluation_single_input_run_longer(
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
 ) -> None:
-    # Make final LaTeX check fail
-    class MockedProcessRun:
-        def __init__(self, cmd: list[str], *_: Any, **__: Any) -> None:
-            self.cmd = cmd
-
-        @property
-        def returncode(self) -> int:
-            if self.cmd == ["which", "latex"]:
-                return 1
-            return 0
-
-    mocked_subprocess__dependencies.run = MockedProcessRun
-
     # Let one job wait for a sec, the other finish immediately
     mocked_subprocess__job.Popen.return_value.poll.side_effect = [
         None,  # call to is_running of first job within _run_jobs
@@ -696,7 +652,6 @@ def test_icon_evaluation_single_input_run_longer(
 
     actual_output = icon_evaluation(
         input_dir,
-        create_pdfs=True,
         recipe_templates=[
             str(recipe_template_dir / "recipe_basics_timeseries.yml"),
             recipe_template_dir / "recipe_basics_maps.yml",
@@ -713,10 +668,25 @@ def test_icon_evaluation_single_input_run_longer(
         [input_dir],
         actual_output,
         expected_output,
-        empty_dirs=["pdfs", "slurm"],
+        empty_dirs=["slurm"],
     )
 
     # Check mock calls
+    assert mocked_subprocess__dependencies.run.mock_calls == [
+        call(
+            ["which", "esmvaltool"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+        call(
+            ["which", "srun"],
+            shell=False,
+            check=False,
+            capture_output=True,
+        ),
+    ]
+
     recipes = list((expected_output / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
@@ -755,7 +725,6 @@ def test_icon_evaluation_single_input_run_longer(
             env=env,
         )
 
-    mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -768,7 +737,6 @@ def test_icon_evaluation_single_input_run_longer(
             f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
-    assert "No LaTeX distribution found, cannot create PDFs" in caplog.text
 
 
 def test_icon_evaluation_single_input_custom_recipe_options(
@@ -776,7 +744,6 @@ def test_icon_evaluation_single_input_custom_recipe_options(
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
@@ -806,7 +773,7 @@ def test_icon_evaluation_single_input_custom_recipe_options(
         [input_dir],
         actual_output,
         expected_output,
-        empty_dirs=["pdfs", "slurm"],
+        empty_dirs=["slurm"],
     )
 
     # Check mock calls
@@ -862,7 +829,6 @@ def test_icon_evaluation_single_input_custom_recipe_options(
             env=env,
         )
 
-    mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output
@@ -881,7 +847,6 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_service: Mock,
@@ -913,7 +878,7 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
         [input_dir],
         actual_output,
         expected_output,
-        empty_dirs=["pdfs", "slurm"],
+        empty_dirs=["slurm"],
     )
 
     # Check mock calls
@@ -968,7 +933,6 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
             env=env,
         )
 
-    mocked_plots2pdf.assert_not_called()
     mocked_swift_service.assert_not_called()
 
     # Check logging output

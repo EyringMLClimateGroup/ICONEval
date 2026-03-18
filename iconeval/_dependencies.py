@@ -9,18 +9,6 @@ from loguru import logger
 logger = logger.opt(colors=True)
 
 
-def latex_is_available() -> bool:
-    """Check if LaTeX commands are available."""
-    logger.debug("Checking availability of LaTeX distribution")
-    process = subprocess.run(
-        ["which", "latex"],  # noqa: S607
-        shell=False,
-        check=False,
-        capture_output=True,
-    )
-    return not bool(process.returncode)
-
-
 def verify_esmvaltool_installation(esmvaltool_executable: str) -> None:
     """Check that esmvaltool is installed properly.
 

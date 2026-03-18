@@ -12,14 +12,12 @@ from loguru import logger
 
 import iconeval
 from iconeval._dependencies import (
-    latex_is_available,
     verify_esmvaltool_installation,
     verify_slurm_installation,
 )
 from iconeval._io_handler import IconEvalIOHandler
 from iconeval._logging import configure_logging
 from iconeval.output_handling._summarize import get_html_description, summarize
-from iconeval.output_handling.plots2pdf import plots2pdf
 from iconeval.output_handling.publish_html import publish_esmvaltool_html
 
 if TYPE_CHECKING:
@@ -49,7 +47,6 @@ def icon_evaluation(
     *input_dirs: str | Path,
     publish_html: bool = False,
     html_name: str | None = None,
-    create_pdfs: bool = False,
     recipe_templates: str | Path | Iterable[str | Path] | None = None,
     always_use_default_recipe_templates: bool = False,
     log_level: str = "info",
@@ -92,9 +89,6 @@ def icon_evaluation(
         get a consistent URL (this will potentially overwrite existing data!).
         If not given, use the (concatenated) experiment names of the input
         simulations including a datetime string.
-    create_pdfs:
-        Create PDFs that contain an overview of all plots (one PDF for each
-        recipe).
     recipe_templates:
         Run the specified recipe templates. Unix-style wildcards are supported.
         To run multiple recipe (patterns), use the syntax
@@ -125,8 +119,8 @@ def icon_evaluation(
         that is used for `sbatch`/`salloc` (if ICONEval is run within `sbatch`
         script or `salloc` session), or `'bd1179'` otherwise.
     background:
-        Terminate ICONEval after submitting all jobs/job steps. Neither
-        summary HTMLs nor PDFs can be published/written in this mode.
+        Terminate ICONEval after submitting all jobs/job steps. Summary HTMLs
+        cannot be published/written in this mode.
     dask:
         If `True`, use Dask distributed scheduler when running ESMValTool. If
         `False`, use default (thread-based) Dask scheduler when running
@@ -211,7 +205,6 @@ def icon_evaluation(
     logger.debug(f"{'input_dirs':<35} = {input_dirs}")
     logger.debug(f"{'publish_html':<35} = {publish_html}")
     logger.debug(f"{'html_name':<35} = {html_name}")
-    logger.debug(f"{'create_pdfs':<35} = {create_pdfs}")
     logger.debug(f"{'recipe_templates':<35} = {recipe_templates}")
     logger.debug(
         f"{'always_use_default_recipe_templates':<35} = "
@@ -310,10 +303,6 @@ def icon_evaluation(
     )
     logger.info("")
 
-    # Create PDFs if desired
-    if create_pdfs:
-        _create_pdfs(io_handler, jobs)
-
     # Print summary
     TIMES["end"] = datetime.now(UTC)
     logger.info("Ending ICONEval")
@@ -322,31 +311,6 @@ def icon_evaluation(
     )
 
     return io_handler.output_dir
-
-
-def _create_pdfs(io_handler: IconEvalIOHandler, jobs: list[Job]) -> None:
-    """Create PDFs."""
-    TIMES["start_pdfs"] = datetime.now(UTC)
-    logger.info("PDF output:")
-    logger.info("-----------")
-    if latex_is_available():
-        for job in jobs:
-            logger.info(f"- {job}:")
-            if not job.is_successful():
-                logger.warning("  Skipping PDF creation since job failed")
-            else:
-                plots2pdf(
-                    job.output_dir,  # type: ignore[arg-type]
-                    output_dir=io_handler.output_dir_pdfs,
-                    setup_logging=False,
-                )
-    else:
-        logger.warning("No LaTeX distribution found, cannot create PDFs")
-    TIMES["end_pdfs"] = datetime.now(UTC)
-    logger.debug(
-        f"Time for creating the PDFs was {TIMES['end_pdfs'] - TIMES['start_pdfs']}",
-    )
-    logger.info("")
 
 
 def _create_summary_html(io_handler: IconEvalIOHandler) -> None:

@@ -111,13 +111,11 @@ iconeval -- --help
 
 or have a look at the section on [Customization](#customization).
 
-Installing ICONEval also provides the command line tools `plots2pdf` (create
-summary PDF for arbitrary ESMValTool output) and `publish_html` (publish
-summary HTML on public website for arbitrary ESMValTool output). For more
-information on them, run
+Installing ICONEval also provides the command line tool `publish_html`, which
+can be used to publish a summary HTML on a public website for arbitrary
+ESMValTool output. For more information, run
 
 ```bash
-plots2pdf -- --help
 publish_html -- --help
 ```
 

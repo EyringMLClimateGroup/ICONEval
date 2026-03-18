@@ -33,7 +33,6 @@ class IconEvalIOHandler:
     DEFAULT_OUTPUT_DIR_NAME = "output_iconeval"
     OUTPUT_DIR_CONFIG = "config"
     OUTPUT_DIR_ESMVALTOOL = "esmvaltool_output"
-    OUTPUT_DIR_PDFS = "pdfs"
     OUTPUT_DIR_RECIPES = "recipes"
     OUTPUT_DIR_SLURM = "slurm"
 
@@ -65,7 +64,6 @@ class IconEvalIOHandler:
         logger.info(f"Output directory: <cyan>{self.output_dir}</cyan>")
         logger.debug(f"Configuration: {self.output_dir_config}")
         logger.debug(f"ESMValTool: {self.output_dir_esmvaltool}")
-        logger.debug(f"PDFs: {self.output_dir_pdfs}")
         logger.debug(f"Recipes: {self.output_dir_recipes}")
         logger.debug(f"Slurm: {self.output_dir_slurm}")
         logger.info("")
@@ -98,13 +96,6 @@ class IconEvalIOHandler:
     def output_dir_esmvaltool(self) -> Path:
         """Output directory."""
         output_dir = self.output_dir / self.OUTPUT_DIR_ESMVALTOOL
-        output_dir.mkdir(parents=True, exist_ok=True)
-        return output_dir
-
-    @property
-    def output_dir_pdfs(self) -> Path:
-        """PDF output directory."""
-        output_dir = self.output_dir / self.OUTPUT_DIR_PDFS
         output_dir.mkdir(parents=True, exist_ok=True)
         return output_dir
 
