@@ -2,7 +2,7 @@
 
 import logging
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from getpass import getpass
 from pathlib import Path
 
@@ -140,7 +140,6 @@ def _create_swift_token() -> None:
     username = input("DKRZ username: ")
     password = getpass()
 
-    timezone = time.tzname[-1]
     expires = None
     token = None
     storage_url = None
@@ -159,8 +158,8 @@ def _create_swift_token() -> None:
         token = response.headers["x-auth-token"]
         storage_url = response.headers["x-storage-url"]
         expires_in = int(response.headers["x-auth-token-expires"])
-        expires_at = datetime.fromtimestamp(time.time() + expires_in)
-        expires = expires_at.strftime(f"%a %d. %b %H:%M:%S {timezone} %Y")
+        expires_at = datetime.fromtimestamp(time.time() + expires_in, tz=UTC)
+        expires = expires_at.strftime("%a %d. %b %H:%M:%S UTC %Y")
 
         if expires and token and storage_url:
             SWIFTENV.write_text(
