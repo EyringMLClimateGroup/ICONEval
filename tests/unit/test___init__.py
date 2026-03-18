@@ -33,7 +33,7 @@ class MockedStructPasswd:
     def pw_gecos(self) -> str:
         if self.raise_on_pw_gecos:
             raise KeyError
-        return "ICONEval User, iconevaluser"
+        return "User of ICONEval, iconevaluser"
 
     @property
     def pw_name(self) -> str:
@@ -52,7 +52,7 @@ def test_get_user_name_full_name(uid: int | None, mocker: MockerFixture) -> None
     mocked_pwd = mocker.patch.object(iconeval, "pwd", autospec=True)
     mocked_pwd.getpwuid.return_value = MockedStructPasswd()
     user_name = get_user_name(uid)
-    assert user_name == "ICONEval User"
+    assert user_name == "User of ICONEval"
 
 
 @pytest.mark.parametrize("uid", [-27182, None])
