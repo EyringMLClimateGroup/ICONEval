@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime
 from typing import TYPE_CHECKING, Any
 from unittest.mock import call, sentinel
 
 import pytest
 
+import iconeval._dependencies
+import iconeval._job
 import iconeval.main
+import iconeval.output_handling.publish_html
 from iconeval.main import icon_evaluation, main
 from tests.integration import assert_output
 
@@ -15,6 +19,67 @@ if TYPE_CHECKING:
     from unittest.mock import Mock
 
     import pytest_mock
+    from pytest_mock import MockerFixture
+
+
+@pytest.fixture(autouse=True)
+def always_ignore_swift_token(mocker: MockerFixture) -> None:
+    mocker.patch.object(
+        iconeval.output_handling.publish_html,
+        "_valid_swift_token_available",
+        autospec=True,
+        return_value=False,
+    )
+    mocker.patch.object(
+        iconeval.output_handling.publish_html,
+        "_create_swift_token",
+        autospec=True,
+        return_value=None,
+    )
+    mocker.patch.object(
+        iconeval.output_handling.publish_html,
+        "_read_swiftenv",
+        autospec=True,
+        return_value=("token", "url", datetime(2000, 1, 1, 0, 0, 0)),
+    )
+
+
+@pytest.fixture(autouse=True)
+def mocked_plots2pdf(mocker: MockerFixture) -> Mock:
+    return mocker.patch.object(iconeval.main, "plots2pdf", autospec=True)
+
+
+@pytest.fixture(autouse=True)
+def mocked_subprocess__dependencies(mocker: MockerFixture) -> Mock:
+    mock = mocker.patch.object(iconeval._dependencies, "subprocess", autospec=True)
+    mock.run.return_value.returncode = 0
+    return mock
+
+
+@pytest.fixture(autouse=True)
+def mocked_subprocess__job(mocker: MockerFixture) -> Mock:
+    mock = mocker.patch.object(iconeval._job, "subprocess", autospec=True)
+    mock.Popen.return_value.returncode = 0
+    mock.Popen.return_value.poll.return_value = 0
+    mock.Popen.return_value.communicate.return_value = ("stdout", "stderr")
+    mock.PIPE = sentinel.PIPE
+    return mock
+
+
+@pytest.fixture(autouse=True)
+def mocked_swift_service(mocker: MockerFixture) -> Mock:
+    mocked_upload_object = mocker.patch.object(
+        iconeval.output_handling.publish_html,
+        "SwiftUploadObject",
+        autospec=True,
+    )
+    mocked_upload_object.side_effect = lambda f, object_name=None: (f, object_name)
+
+    return mocker.patch.object(
+        iconeval.output_handling.publish_html,
+        "SwiftService",
+        autospec=True,
+    )
 
 
 def test_main(mocker: pytest_mock.MockerFixture) -> None:
@@ -25,13 +90,7 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
     mocked_fire.Fire.assert_called_once_with(icon_evaluation)
 
 
-def test_icon_evaluation_empty_input_dir_fail(
-    tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
-) -> None:
+def test_icon_evaluation_empty_input_dir_fail(tmp_path: Path) -> None:
     output_dir = tmp_path / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"No input directory given"
@@ -39,13 +98,7 @@ def test_icon_evaluation_empty_input_dir_fail(
         icon_evaluation(log_file=None, output_dir=output_dir)
 
 
-def test_icon_evaluation_invalid_input_dir_fail(
-    tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
-) -> None:
+def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
     input_dir = tmp_path / "this_dir_does_not_exist"
     output_dir = tmp_path / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -54,13 +107,7 @@ def test_icon_evaluation_invalid_input_dir_fail(
         icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
 
 
-def test_icon_evaluation_invalid_exps_fail(
-    tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
-) -> None:
+def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
     input_dirs = [
         tmp_path / "input_1" / "exp",
         tmp_path / "input_2" / "exp",
@@ -74,13 +121,7 @@ def test_icon_evaluation_invalid_exps_fail(
         icon_evaluation(*input_dirs, log_file=None, output_dir=output_dir)
 
 
-def test_icon_evaluation_invalid_recipe_template_fail(
-    tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
-) -> None:
+def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
     input_dir = tmp_path / "input"
     output_dir = tmp_path / "output"
     input_dir.mkdir(parents=True, exist_ok=True)
@@ -107,10 +148,6 @@ def test_icon_evaluation_invalid_no_recipe_templates_fail(
     tags: list[str] | None,
     error_msg: str,
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
 ) -> None:
     input_dir = tmp_path / "input"
     output_dir = tmp_path / "output"
@@ -128,10 +165,6 @@ def test_icon_evaluation_invalid_no_recipe_templates_fail(
 
 def test_icon_evaluation_invalid_recipe_template_invalid_glob_fail(
     tmp_path: Path,
-    mocked_plots2pdf: Mock,
-    mocked_subprocess__dependencies: Mock,
-    mocked_subprocess__job: Mock,
-    mocked_swift_service: Mock,
 ) -> None:
     input_dir = tmp_path / "input"
     output_dir = tmp_path / "output"
