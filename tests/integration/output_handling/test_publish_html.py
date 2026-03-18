@@ -72,6 +72,7 @@ def test_publish_esmvaltool_html(
 def test_publish_esmvaltool_html_files_to_large(
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
+    tmp_path: Path,
     mocked_requests: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
@@ -84,21 +85,28 @@ def test_publish_esmvaltool_html_files_to_large(
     )
     esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
 
+    # Avoid overwriting existing tokens
+    swift_token = tmp_path / "swift" / "swiftenv"
+    swift_token.parent.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+
     url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
 
-    assert (
-        url == "url/to/swift_storage/my_folder/iconeval/recipes_zonal-means/index.html"
-    )
+    assert url == "my-x-storage-url/iconeval/recipes_zonal-means/index.html"
 
-    mocked_requests.get.assert_not_called()
-    mocked_swift_head_account.assert_called_once_with(
-        "url/to/swift_storage/my_folder",
-        "this_is_a_very_nice_token",
+    mocked_requests.get.assert_called_once_with(
+        "url/to/swift_storage/auth/v1.0",
+        headers={
+            "X-Auth-User": "user input:user input",
+            "X-Auth-Key": "super secret password",
+        },
+        timeout=30,
     )
+    mocked_swift_head_account.assert_not_called()
     mocked_swift_service.assert_any_call(
         {
-            "os_auth_token": "this_is_a_very_nice_token",
-            "os_storage_url": "url/to/swift_storage/my_folder",
+            "os_auth_token": "my-x-auth-token",
+            "os_storage_url": "my-x-storage-url",
         },
     )
     mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
@@ -135,9 +143,10 @@ def test_publish_esmvaltool_html_force(
     for subdir in subdirs:
         shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
 
-    # Do not overwrite existing swiftenv sample file
+    # Do not overwrite existing swiftenv sample file, copy existing token to
+    # make sure it is overwritten by force_new_token=True
     swift_token = esmvaltool_output / "swiftenv"
-    swift_token.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
     monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
 
     url = publish_esmvaltool_html(
