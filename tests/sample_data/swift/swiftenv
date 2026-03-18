@@ -1,0 +1,6 @@
+#token expires on: Sat 01. Jan 00:00:01 CET 2000
+setenv OS_AUTH_TOKEN this_is_a_very_nice_token
+setenv OS_STORAGE_URL url/to/swift_storage/my_folder
+setenv OS_AUTH_URL " "
+setenv OS_USERNAME " "
+setenv OS_PASSWORD " "

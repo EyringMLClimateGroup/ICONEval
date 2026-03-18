@@ -8,8 +8,9 @@ from pathlib import Path
 
 import fire
 import requests
-import swiftclient
 from loguru import logger
+from swiftclient import ClientException
+from swiftclient.client import head_account
 from swiftclient.service import SwiftError, SwiftService, SwiftUploadObject
 
 from iconeval._logging import configure_logging
@@ -279,8 +280,8 @@ def _valid_swift_token_available() -> bool:
 
     # Check token itself
     try:
-        swiftclient.client.head_account(url, token)
-    except swiftclient.ClientException:
+        head_account(url, token)
+    except ClientException:
         logger.warning(f"Swift token ({SWIFTENV}) is corrupted")
         return False
 
