@@ -27,6 +27,7 @@ def publish_esmvaltool_html(
     container_name: str | None = None,
     dir_name: str | None = None,
     log_level: str = "info",
+    log_file: str | Path | None = "~/.iconeval/debug.log",
     summary_description: str | None = None,
     *,
     force_new_token: bool = False,
@@ -56,6 +57,9 @@ def publish_esmvaltool_html(
         the `esmvaltool_output_dir`.
     log_level:
         Log level. Must be one of `debug`, `info`, `warning`, `error`.
+    log_file:
+        File where ICONEval debug output is logged. If `None`, do not log to a
+        file. New messages are attached to existing files.
     summary_description:
         Additional description for the summary HTML. Only used if
         `esmvaltool_output_dir` contains multiple ESMValTool output
@@ -67,7 +71,8 @@ def publish_esmvaltool_html(
         If `True`, force the creation of a new summary HTML; if `False`, only
         create it if necessary.
     setup_logging:
-        If `True`, set up new logging handlers; if `False`, skip that step.
+        If `True`, set up new logging handlers; if `False`, skip that step
+        (`log_level` and `log_file` are ignored in that case).
 
     Returns
     -------
@@ -91,7 +96,7 @@ def publish_esmvaltool_html(
 
     """
     if setup_logging:
-        configure_logging(log_level)
+        configure_logging(log_level, log_file=log_file)
 
     esmvaltool_output_dir = Path(esmvaltool_output_dir).expanduser().resolve()
     if not esmvaltool_output_dir.is_dir():
