@@ -5,6 +5,7 @@ from unittest.mock import sentinel
 
 import pytest
 
+import iconeval._dependencies
 from iconeval._dependencies import (
     latex_is_available,
     verify_esmvaltool_installation,
@@ -14,10 +15,18 @@ from iconeval._dependencies import (
 if TYPE_CHECKING:
     from unittest.mock import Mock
 
+    from pytest_mock import MockerFixture
 
-def test_latex_is_available_true(mocked_subprocess__dependencies: Mock) -> None:
+
+@pytest.fixture(autouse=True)
+def mocked_subprocess(mocker: MockerFixture) -> Mock:
+    return mocker.patch.object(iconeval._dependencies, "subprocess", autospec=True)
+
+
+def test_latex_is_available_true(mocked_subprocess: Mock) -> None:
+    mocked_subprocess.run.return_value.returncode = 0
     assert latex_is_available() is True
-    mocked_subprocess__dependencies.run.assert_called_once_with(
+    mocked_subprocess.run.assert_called_once_with(
         ["which", "latex"],
         shell=False,
         check=False,
@@ -25,10 +34,10 @@ def test_latex_is_available_true(mocked_subprocess__dependencies: Mock) -> None:
     )
 
 
-def test_latex_is_available_false(mocked_subprocess__dependencies: Mock) -> None:
-    mocked_subprocess__dependencies.run.return_value.returncode = 1
+def test_latex_is_available_false(mocked_subprocess: Mock) -> None:
+    mocked_subprocess.run.return_value.returncode = 1
     assert latex_is_available() is False
-    mocked_subprocess__dependencies.run.assert_called_once_with(
+    mocked_subprocess.run.assert_called_once_with(
         ["which", "latex"],
         shell=False,
         check=False,
@@ -36,12 +45,11 @@ def test_latex_is_available_false(mocked_subprocess__dependencies: Mock) -> None
     )
 
 
-def test_verify_esmvaltool_installation_success(
-    mocked_subprocess__dependencies: Mock,
-) -> None:
+def test_verify_esmvaltool_installation_success(mocked_subprocess: Mock) -> None:
     esmvaltool_executable = sentinel.esmvaltool
+    mocked_subprocess.run.return_value.returncode = 0
     verify_esmvaltool_installation(esmvaltool_executable)
-    mocked_subprocess__dependencies.run.assert_called_once_with(
+    mocked_subprocess.run.assert_called_once_with(
         ["which", esmvaltool_executable],
         shell=False,
         check=False,
@@ -49,15 +57,13 @@ def test_verify_esmvaltool_installation_success(
     )
 
 
-def test_verify_esmvaltool_installation_fail(
-    mocked_subprocess__dependencies: Mock,
-) -> None:
+def test_verify_esmvaltool_installation_fail(mocked_subprocess: Mock) -> None:
+    mocked_subprocess.run.return_value.returncode = 1
     esmvaltool_executable = sentinel.esmvaltool
-    mocked_subprocess__dependencies.run.return_value.returncode = 1
     msg = r"esmvaltool command not found"
     with pytest.raises(RuntimeError, match=msg):
         verify_esmvaltool_installation(esmvaltool_executable)
-    mocked_subprocess__dependencies.run.assert_called_once_with(
+    mocked_subprocess.run.assert_called_once_with(
         ["which", esmvaltool_executable],
         shell=False,
         check=False,
@@ -65,12 +71,11 @@ def test_verify_esmvaltool_installation_fail(
     )
 
 
-def test_verify_slurm_installation_success(
-    mocked_subprocess__dependencies: Mock,
-) -> None:
+def test_verify_slurm_installation_success(mocked_subprocess: Mock) -> None:
+    mocked_subprocess.run.return_value.returncode = 0
     srun_executable = sentinel.srun
     verify_slurm_installation(srun_executable)
-    mocked_subprocess__dependencies.run.assert_called_once_with(
+    mocked_subprocess.run.assert_called_once_with(
         ["which", srun_executable],
         shell=False,
         check=False,
@@ -78,15 +83,13 @@ def test_verify_slurm_installation_success(
     )
 
 
-def test_verify_slurm_installation_fail(
-    mocked_subprocess__dependencies: Mock,
-) -> None:
+def test_verify_slurm_installation_fail(mocked_subprocess: Mock) -> None:
+    mocked_subprocess.run.return_value.returncode = 1
     srun_executable = sentinel.srun
-    mocked_subprocess__dependencies.run.return_value.returncode = 1
     msg = r"srun command not found"
     with pytest.raises(RuntimeError, match=msg):
         verify_slurm_installation(srun_executable)
-    mocked_subprocess__dependencies.run.assert_called_once_with(
+    mocked_subprocess.run.assert_called_once_with(
         ["which", srun_executable],
         shell=False,
         check=False,
