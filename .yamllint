@@ -4,6 +4,7 @@ extends: default
 
 ignore:
   - tests/expected_output
+  - tests/sample_data/esmvaltool_output
 
 rules:
   line-length:
