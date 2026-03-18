@@ -160,6 +160,7 @@ def icon_evaluation(
         recipes. An overview of all available tags in the default recipe
         templates can be found here
         (https://github.com/EyringMLClimateGroup/ICONEval/blob/main/doc/tags.md).
+        To specify multiple tags, use the syntax `--tags='["tag1", "tag2"]'`.
     setup_logging:
         If `True`, set up new logging handlers; if `False`, skip that step
         (`log_level` and `log_file` are ignored in that case).
