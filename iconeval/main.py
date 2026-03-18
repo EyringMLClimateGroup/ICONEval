@@ -161,7 +161,8 @@ def icon_evaluation(
         templates can be found here
         (https://github.com/EyringMLClimateGroup/ICONEval/blob/main/doc/tags.md).
     setup_logging:
-        If `True`, set up new logging handlers; if `False`, skip that step.
+        If `True`, set up new logging handlers; if `False`, skip that step
+        (`log_level` and `log_file` are ignored in that case).
     **extra_facets:
         Additional options are considered as extra facets for the ICON data.
         All possible extra facets for ICON are given here
