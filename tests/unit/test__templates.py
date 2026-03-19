@@ -106,40 +106,20 @@ def test_recipe_template__check_placeholders_fail(
         RecipeTemplate(recipe_template_path)
 
 
-def test_recipe_template__parse_additional_options_no_option(
+@pytest.mark.parametrize(
+    "option",
+    [
+        "#OPTION",
+        "#OPTION --custom_option",
+        "#OPTION --custom_option=1=2",
+        "#OPTION invalid_option=1",
+    ],
+)
+def test_recipe_template__parse_additional_options_fail(
+    option: str,
     recipe_template_path: Path,
 ) -> None:
-    recipe_template_path.write_text("#OPTION")
-    template = RecipeTemplate(recipe_template_path, check_placeholders=False)
-    msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=re.escape(msg)):
-        template._parse_additional_options("#OPTION")
-
-
-def test_recipe_template__parse_additional_options_too_short_fail(
-    recipe_template_path: Path,
-) -> None:
-    recipe_template_path.write_text("#OPTION --custom_option")
-    template = RecipeTemplate(recipe_template_path, check_placeholders=False)
-    msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=re.escape(msg)):
-        template._parse_additional_options("#OPTION")
-
-
-def test_recipe_template__parse_additional_options_too_long_fail(
-    recipe_template_path: Path,
-) -> None:
-    recipe_template_path.write_text("#OPTION --custom_option=1=2")
-    template = RecipeTemplate(recipe_template_path, check_placeholders=False)
-    msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=re.escape(msg)):
-        template._parse_additional_options("#OPTION")
-
-
-def test_recipe_template__parse_additional_options_invalid_option(
-    recipe_template_path: Path,
-) -> None:
-    recipe_template_path.write_text("#OPTION invalid_option=1")
+    recipe_template_path.write_text(option)
     template = RecipeTemplate(recipe_template_path, check_placeholders=False)
     msg = r"Invalid option option given in recipe template"
     with pytest.raises(ValueError, match=re.escape(msg)):
