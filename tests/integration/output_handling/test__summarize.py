@@ -74,6 +74,35 @@ def test_summarize_empty_logs(
     )
 
 
+def test_summarize_no_debug_log(
+    expected_output_dir: Path,
+    sample_data_path: Path,
+    tmp_path: Path,
+) -> None:
+    # Copy sample output to temporary directory so files can be created
+    src_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
+    esmvaltool_output = tmp_path / "recipes_maps"
+    esmvaltool_output.mkdir(parents=True, exist_ok=True)
+    subdirs = ["recipe_basics_maps"]
+    for subdir in subdirs:
+        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
+
+    # Remove debug log
+    debug_log = esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
+    debug_log.unlink()
+
+    summarize(esmvaltool_output)
+
+    # Check output; for this, we remove the previously created subdirectories
+    for subdir in subdirs:
+        shutil.rmtree(esmvaltool_output / subdir)
+    assert_output(
+        [],
+        esmvaltool_output,
+        expected_output_dir / "test_summarize_no_debug_log",
+    )
+
+
 def test_summarize_debug_log_single_line(
     expected_output_dir: Path,
     sample_data_path: Path,
