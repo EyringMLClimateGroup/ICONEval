@@ -12,7 +12,6 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-
 @pytest.mark.parametrize(
     ("description", "expected_output_name"),
     [
