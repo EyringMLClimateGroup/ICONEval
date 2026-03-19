@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 class ESMValToolConfig:
     """Represents an ESMValTool configuration file."""
 
-    path: Path
-    template: ESMValToolConfigTemplate
-    simulations_info: list[SimulationInfo]
-    output_dir: Path
-    dask_config: dict[str, Any]
+    path: Path = field(kw_only=True)
+    template: ESMValToolConfigTemplate = field(repr=False, kw_only=True)
+    simulations_info: list[SimulationInfo] = field(repr=False, kw_only=True)
+    output_dir: Path = field(repr=False, kw_only=True)
+    dask_config: dict[str, Any] = field(repr=False, kw_only=True)
 
     @property
     def dir(self) -> Path:
