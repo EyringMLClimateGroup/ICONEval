@@ -27,7 +27,7 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
     mocked_fire.Fire.assert_called_once_with(publish_esmvaltool_html)
 
 
-def test_publish_esmvaltool_html(
+def test_publish_esmvaltool_html_multiple_recipes(
     sample_data_path: Path,
     mocked_requests: Mock,
     mocked_swift_head_account: Mock,
@@ -64,6 +64,60 @@ def test_publish_esmvaltool_html(
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (str(f), str(Path("recipes_zonal-means") / f.relative_to(esmvaltool_output)))
+        for f in esmvaltool_output.rglob("*")
+    ]
+    assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
+
+
+def test_publish_esmvaltool_html_single_recipe(
+    sample_data_path: Path,
+    mocked_requests: Mock,
+    mocked_swift_head_account: Mock,
+    mocked_swift_service: Mock,
+) -> None:
+    esmvaltool_output = (
+        sample_data_path
+        / "esmvaltool_output"
+        / "recipes_zonal-means"
+        / "recipe_basics_zonal_mean_lines_20260318_093429"
+    )
+
+    url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+
+    assert (
+        url == "url/to/swift_storage/my_folder/iconeval/"
+        "recipe_basics_zonal_mean_lines_20260318_093429/index.html"
+    )
+
+    mocked_requests.get.assert_not_called()
+    mocked_swift_head_account.assert_called_once_with(
+        "url/to/swift_storage/my_folder",
+        "this_is_a_very_nice_token",
+    )
+    mocked_swift_service.assert_any_call(
+        {
+            "os_auth_token": "this_is_a_very_nice_token",
+            "os_storage_url": "url/to/swift_storage/my_folder",
+        },
+    )
+    mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
+    assert mocked_service_instance.post.mock_calls == [
+        call(container="iconeval"),
+        call(container="iconeval", options={"read_acl": ".r:*"}),
+    ]
+    assert mocked_service_instance.upload.call_count == 1
+    upload_call = mocked_service_instance.upload.mock_calls[0]
+    assert upload_call.args == ()
+    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert upload_call.kwargs["container"] == "iconeval"
+    objects_to_upload = [
+        (
+            str(f),
+            str(
+                Path("recipe_basics_zonal_mean_lines_20260318_093429")
+                / f.relative_to(esmvaltool_output),
+            ),
+        )
         for f in esmvaltool_output.rglob("*")
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
@@ -219,8 +273,8 @@ def test_publish_esmvaltool_invalid_token_fail(
 ) -> None:
     esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
 
-    # Copy expired token to temporary location to avoid overwriting existing
-    # files
+    # Force creating new token by using expired token. Copy expired token to
+    # temporary location to avoid overwriting existing files.
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(sample_data_path / "swift" / "expired_swiftenv", swift_token)
