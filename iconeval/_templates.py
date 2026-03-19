@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import os
+from collections import defaultdict
 from copy import deepcopy
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import yaml
 
@@ -13,39 +15,34 @@ from iconeval._config import ESMValToolConfig
 from iconeval._recipe import Recipe
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from iconeval._simulation_info import SimulationInfo
     from iconeval._typing import FacetType, OptionValueType
 
 
+# Note: Templates need to be hashable; thus, we use a frozen dataclass here
+@dataclass(frozen=True)
 class Template:
     """Base class for templates."""
 
-    REQUIRED_PLACEHOLDERS: tuple[str, ...] = ()
-    TEMPLATE_TYPE: str = "template"
+    path: Path
+    check_placeholders: bool = field(default=True, kw_only=True)
+    content: str = field(init=False, repr=False)
+    name: str = field(init=False, repr=False)
 
-    def __init__(self, path: Path, *, check_placeholders: bool = True) -> None:
+    REQUIRED_PLACEHOLDERS: ClassVar[tuple[str, ...]] = ()
+    TEMPLATE_TYPE: ClassVar[str] = "template"
+
+    def __post_init__(self) -> None:
         """Initialize class."""
-        self._path = path
-        self._content = self._get_content(check_placeholders=check_placeholders)
-
-    def __repr__(self) -> str:
-        """Return string representation of class instance."""
-        return f"{self.__class__.__name__}(path={self.path!r})"
-
-    @property
-    def content(self) -> str:
-        """Content of template file."""
-        return self._content
-
-    @property
-    def name(self) -> str:
-        """Name of template file."""
-        return self._path.stem
-
-    @property
-    def path(self) -> Path:
-        """Path to template file."""
-        return self._path
+        # See https://docs.python.org/3/library/dataclasses.html#frozen-instances
+        object.__setattr__(
+            self,
+            "content",
+            self._get_content(check_placeholders=self.check_placeholders),
+        )
+        object.__setattr__(self, "name", self.path.stem)
 
     def _check_placeholders(self, content: str) -> None:
         """Check that required placeholders are present."""
@@ -134,56 +131,45 @@ class Template:
 class RecipeTemplate(Template):
     """Represents a recipe template."""
 
-    REQUIRED_PLACEHOLDERS: tuple[str, ...] = ("{{dataset_list}}",)
+    dask_options: dict[str, OptionValueType] = field(init=False, repr=False)
+    esmvaltool_options: dict[str, OptionValueType] = field(init=False, repr=False)
+    srun_options: dict[str, OptionValueType] = field(init=False, repr=False)
+    tags: list[str] = field(init=False, repr=False)
+
+    REQUIRED_PLACEHOLDERS = ("{{dataset_list}}",)
     TEMPLATE_TYPE = "recipe template"
 
-    DASK_OPTIONS_MARKER = "#DASK"
-    ESMVALTOOL_OPTIONS_MARKER = "#ESMVALTOOL"
-    SRUN_OPTIONS_MARKER = "#SRUN"
-    TAGS_MARKER = "#TAGS"
+    DASK_OPTIONS_MARKER: ClassVar[str] = "#DASK"
+    ESMVALTOOL_OPTIONS_MARKER: ClassVar[str] = "#ESMVALTOOL"
+    SRUN_OPTIONS_MARKER: ClassVar[str] = "#SRUN"
+    TAGS_MARKER: ClassVar[str] = "#TAGS"
 
-    def __init__(self, path: Path, *, check_placeholders: bool = True) -> None:
+    def __post_init__(self) -> None:
         """Initialize class."""
-        self._dask_options: dict[str, OptionValueType] | None = None
-        self._esmvaltool_options: dict[str, OptionValueType] | None = None
-        self._srun_options: dict[str, OptionValueType] | None = None
-        self._tags: list[str] | None = None
-        super().__init__(path, check_placeholders=check_placeholders)
-
-    @property
-    def dask_options(self) -> dict[str, OptionValueType]:
-        """Additional dask options used to run this recipe."""
-        if self._dask_options is None:
-            self._dask_options = self._parse_additional_options(
+        super().__post_init__()
+        object.__setattr__(
+            self,
+            "dask_options",
+            self._parse_additional_options(
                 self.DASK_OPTIONS_MARKER,
                 lstrip=True,
-            )
-        return self._dask_options
-
-    @property
-    def esmvaltool_options(self) -> dict[str, OptionValueType]:
-        """Additional ESMValTool options used to run this recipe."""
-        if self._esmvaltool_options is None:
-            self._esmvaltool_options = self._parse_additional_options(
+            ),
+        )
+        object.__setattr__(
+            self,
+            "esmvaltool_options",
+            self._parse_additional_options(
                 self.ESMVALTOOL_OPTIONS_MARKER,
-            )
-        return self._esmvaltool_options
-
-    @property
-    def srun_options(self) -> dict[str, OptionValueType]:
-        """Additional srun options used to run this recipe."""
-        if self._srun_options is None:
-            self._srun_options = self._parse_additional_options(
+            ),
+        )
+        object.__setattr__(
+            self,
+            "srun_options",
+            self._parse_additional_options(
                 self.SRUN_OPTIONS_MARKER,
-            )
-        return self._srun_options
-
-    @property
-    def tags(self) -> list[str]:
-        """Recipe tags."""
-        if self._tags is None:
-            self._tags = self._parse_tags()
-        return self._tags
+            ),
+        )
+        object.__setattr__(self, "tags", self._parse_tags())
 
     def get_recipe(
         self,
@@ -246,7 +232,12 @@ class RecipeTemplate(Template):
         recipe_content += yaml.safe_dump(recipe_yaml, sort_keys=False)
         path.write_text(recipe_content, encoding="utf-8")
 
-        return Recipe(path, self, simulations_info, timerange)
+        return Recipe(
+            path=path,
+            template=self,
+            simulations_info=simulations_info,
+            timerange=timerange,
+        )
 
     def _fill_alias_plot_kwargs(
         self,
@@ -372,13 +363,20 @@ class RecipeTemplate(Template):
             if not line.startswith(self.TAGS_MARKER):
                 continue
             tags.extend(line.replace(self.TAGS_MARKER, "").strip().split())
+        for tag in tags:
+            if tag.startswith("!"):
+                msg = (
+                    f"Found tag '{tag}' in recipe template {self.path}; tags "
+                    f"must not start with '!'"
+                )
+                raise ValueError(msg)
         return tags
 
 
 class ESMValToolConfigTemplate(Template):
     """Represents an ESMValTool configuration template."""
 
-    REQUIRED_PLACEHOLDERS: tuple[str, ...] = ()
+    REQUIRED_PLACEHOLDERS = ()
     TEMPLATE_TYPE = "ESMValTool configuration template"
 
     def write_config(
@@ -401,11 +399,11 @@ class ESMValToolConfigTemplate(Template):
             encoding="utf-8",
         )
         return ESMValToolConfig(
-            path,
-            self,
-            simulations_info,
-            output_dir,
-            dask_config,
+            path=path,
+            template=self,
+            simulations_info=simulations_info,
+            output_dir=output_dir,
+            dask_config=dask_config,
         )
 
     def _fill_projects(
@@ -468,3 +466,15 @@ class ESMValToolConfigTemplate(Template):
 
         config_yaml["projects"] = projects
         return config_yaml
+
+
+def map_tags_to_recipes(
+    recipe_template_paths: Iterable[Path],
+) -> dict[str, list[RecipeTemplate]]:
+    """Extract tags from recipe templates and map tags to recipe templates."""
+    tag_map: dict[str, list[RecipeTemplate]] = defaultdict(list)
+    for recipe_template_path in recipe_template_paths:
+        recipe_template = RecipeTemplate(recipe_template_path)
+        for tag in recipe_template.tags:
+            tag_map[tag].append(recipe_template)
+    return tag_map

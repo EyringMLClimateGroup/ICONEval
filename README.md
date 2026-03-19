@@ -94,11 +94,16 @@ details. The raw files (figures and data) from published results can be
 accessed via DKRZ's [Swiftbrowser](https://swiftbrowser.dkrz.de/).
 
 To only run a subset of available recipes, you can specify `--tags` when
-running ICONEval:
+running ICONEval. To deselect specific recipes, use the syntax `!tag`.
+
+For example,
 
 ```bash
-iconeval path/to/ICON_output --tags=timeseries,maps
+iconeval path/to/ICON_output --tags='["atmosphere", "!subdaily"]'
 ```
+
+will run all recipes marked with `atmosphere` excluding those marked as
+`subdaily`.
 
 An overview of all tags available in the default recipe templates is given
 [here](doc/tags.md).

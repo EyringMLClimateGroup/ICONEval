@@ -47,7 +47,9 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
     mocked_fire.Fire.assert_called_once_with(icon_evaluation)
 
 
+@pytest.mark.parametrize("tags", [[], None])
 def test_icon_evaluation_single_input_success(
+    tags: list[str] | None,
     expected_output_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
@@ -66,6 +68,7 @@ def test_icon_evaluation_single_input_success(
         input_dir,
         log_file=None,
         output_dir=output_dir,
+        tags=tags,
     )
 
     # Check output
@@ -168,8 +171,8 @@ def test_icon_evaluation_multi_input_success(
         publish_html=True,
         html_name="my_html_name",
         recipe_templates=[
-            recipe_template_dir / "recipe_basics_timeseries.yml",
-            recipe_template_dir / "recipe_basics_maps.yml",
+            recipe_template_dir / "recipe_basics_*.yml",
+            recipe_template_dir / "recipe_ocean_*.yml",
             recipe_template_dir / "recipe_portrait_plot.yml",
         ],
         log_level="debug",
@@ -184,7 +187,7 @@ def test_icon_evaluation_multi_input_success(
         esmvaltool_options={"--auxiliary_data_dir": "/path/to/a"},
         srun_options={"--cpus-per-task": 17},
         dask_options={"--n_workers": 17},
-        tags=["maps", "portrait-plots"],
+        tags=["maps", "subdaily", "!annual-cycles", "portrait-plots", "!ocean"],
         timerange="19990101/20000101",
         ugrid=False,
     )
@@ -663,7 +666,8 @@ def test_icon_evaluation_single_input_custom_recipe_options(
         input_dir,
         recipe_templates=sample_data_path
         / "recipe_templates"
-        / "recipe_basics_zonal_mean_*.yml",
+        / "recipe_basics_zonal_mean_lines.yml",
+        always_use_default_recipe_templates=True,
         log_file=None,
         output_dir=output_dir,
         tags="_custom_tag_",
@@ -768,15 +772,18 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
 
     actual_output = icon_evaluation(
         input_dir,
-        recipe_templates=sample_data_path
-        / "recipe_templates"
-        / "recipe_basics_zonal_mean_*.yml",
+        recipe_templates=[
+            sample_data_path
+            / "recipe_templates"
+            / "recipe_basics_zonal_mean_lines.yml",
+            sample_data_path / "recipe_templates" / "recipe_basics_maps.yml",
+        ],
         log_file=None,
         output_dir=output_dir,
         ignore_recipe_esmvaltool_options=True,
         ignore_recipe_srun_options=True,
         ignore_recipe_dask_options=True,
-        tags="_custom_tag_",
+        tags="!maps",
     )
 
     # Check output
@@ -909,7 +916,7 @@ def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
     [
         (None, r"No recipe templates given"),
         ("tag", r"No recipe templates for tags ['tag'] given"),
-        (["t1", "t2"], r"No recipe templates for tags ['t1', 't2'] given"),
+        (["t1", "!t2"], r"No recipe templates for tags ['t1', '!t2'] given"),
     ],
 )
 def test_icon_evaluation_invalid_no_recipe_templates_fail(
