@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -101,7 +102,7 @@ def test_recipe_template__check_placeholders_fail(
     recipe_template_path: Path,
 ) -> None:
     msg = r"is not a valid recipe template, it needs to include '{{dataset_list}}'"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         RecipeTemplate(recipe_template_path)
 
 
@@ -111,7 +112,7 @@ def test_recipe_template__parse_additional_options_no_option(
     recipe_template_path.write_text("#OPTION")
     template = RecipeTemplate(recipe_template_path, check_placeholders=False)
     msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         template._parse_additional_options("#OPTION")
 
 
@@ -121,7 +122,7 @@ def test_recipe_template__parse_additional_options_too_short_fail(
     recipe_template_path.write_text("#OPTION --custom_option")
     template = RecipeTemplate(recipe_template_path, check_placeholders=False)
     msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         template._parse_additional_options("#OPTION")
 
 
@@ -131,7 +132,7 @@ def test_recipe_template__parse_additional_options_too_long_fail(
     recipe_template_path.write_text("#OPTION --custom_option=1=2")
     template = RecipeTemplate(recipe_template_path, check_placeholders=False)
     msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         template._parse_additional_options("#OPTION")
 
 
@@ -141,5 +142,5 @@ def test_recipe_template__parse_additional_options_invalid_option(
     recipe_template_path.write_text("#OPTION invalid_option=1")
     template = RecipeTemplate(recipe_template_path, check_placeholders=False)
     msg = r"Invalid option option given in recipe template"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         template._parse_additional_options("#OPTION")

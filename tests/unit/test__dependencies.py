@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING
 from unittest.mock import sentinel
 
@@ -38,7 +39,7 @@ def test_verify_esmvaltool_installation_fail(mocked_subprocess: Mock) -> None:
     mocked_subprocess.run.return_value.returncode = 1
     esmvaltool_executable = sentinel.esmvaltool
     msg = r"esmvaltool command not found"
-    with pytest.raises(RuntimeError, match=msg):
+    with pytest.raises(RuntimeError, match=re.escape(msg)):
         verify_esmvaltool_installation(esmvaltool_executable)
     mocked_subprocess.run.assert_called_once_with(
         ["which", esmvaltool_executable],
@@ -64,7 +65,7 @@ def test_verify_slurm_installation_fail(mocked_subprocess: Mock) -> None:
     mocked_subprocess.run.return_value.returncode = 1
     srun_executable = sentinel.srun
     msg = r"srun command not found"
-    with pytest.raises(RuntimeError, match=msg):
+    with pytest.raises(RuntimeError, match=re.escape(msg)):
         verify_slurm_installation(srun_executable)
     mocked_subprocess.run.assert_called_once_with(
         ["which", srun_executable],
