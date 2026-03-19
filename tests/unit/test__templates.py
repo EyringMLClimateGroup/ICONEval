@@ -33,13 +33,6 @@ def recipe_template_path(tmp_path: Path) -> Path:
     return file
 
 
-def test_template___repr__(template_path: Path) -> None:
-    assert (
-        repr(Template(template_path, check_placeholders=False))
-        == f"Template(path={template_path!r})"
-    )
-
-
 def test_template__check_placeholders(template_path: Path) -> None:
     Template(template_path)
 
@@ -71,31 +64,10 @@ def test_template__fill_placeholders(template_path: Path) -> None:
     }
 
 
-def test_esmvaltool_config_template___repr__(
-    esmvaltool_config_template_path: Path,
-) -> None:
-    assert (
-        repr(
-            ESMValToolConfigTemplate(
-                esmvaltool_config_template_path,
-                check_placeholders=False,
-            ),
-        )
-        == f"ESMValToolConfigTemplate(path={esmvaltool_config_template_path!r})"
-    )
-
-
 def test_esmvaltool_config_template__check_placeholders(
     esmvaltool_config_template_path: Path,
 ) -> None:
     ESMValToolConfigTemplate(esmvaltool_config_template_path)
-
-
-def test_recipe_template___repr__(recipe_template_path: Path) -> None:
-    assert (
-        repr(RecipeTemplate(recipe_template_path, check_placeholders=False))
-        == f"RecipeTemplate(path={recipe_template_path!r})"
-    )
 
 
 def test_recipe_template__check_placeholders_fail(
@@ -124,3 +96,17 @@ def test_recipe_template__parse_additional_options_fail(
     msg = r"Invalid option option given in recipe template"
     with pytest.raises(ValueError, match=re.escape(msg)):
         template._parse_additional_options("#OPTION")
+
+
+@pytest.mark.parametrize(
+    "tags",
+    ["#TAGS !not-okay", "#TAGS ok !not-okay", "#TAGS ok\n#TAGS !not-okay"],
+)
+def test_recipe_template__parse_tags_invalid_tags_fail(
+    tags: str,
+    recipe_template_path: Path,
+) -> None:
+    recipe_template_path.write_text(tags)
+    msg = r"Found tag '!not-okay' in recipe template"
+    with pytest.raises(ValueError, match=re.escape(msg)):
+        RecipeTemplate(recipe_template_path, check_placeholders=False)

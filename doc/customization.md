@@ -299,10 +299,12 @@ All default recipe templates are marked with tags. An overview of all available
 tags is given [here](tags.md). To only run a subset of recipes associated with certain tags, use
 
 ```bash
-iconeval --tags=timeseries,maps
+iconeval path/to/ICON_output --tags='["atmosphere", "!subdaily"]'
 ```
 
-This will run all timeseries and maps recipes.
+This will run all recipes marked with `atmosphere` excluding those marked as
+`subdaily` (the syntax `!tag` can be used to exclude recipes marked with
+`tag`).
 
 Custom [recipe templates](#esmvaltool-recipes) can be marked with arbitrary
 tags using the syntax

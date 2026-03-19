@@ -5,13 +5,17 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from importlib.resources import files
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from loguru import logger
 
 from iconeval._job import Job
 from iconeval._simulation_info import SimulationInfo
-from iconeval._templates import ESMValToolConfigTemplate, RecipeTemplate
+from iconeval._templates import (
+    ESMValToolConfigTemplate,
+    RecipeTemplate,
+    map_tags_to_recipes,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -25,16 +29,16 @@ logger = logger.opt(colors=True)
 class IconEvalIOHandler:
     """Class that manages IO dirs and files for ICON output evaluation."""
 
-    PROJECT_ROOT_DIR = Path(str(files("iconeval"))).resolve()
+    PROJECT_ROOT_DIR: ClassVar[Path] = Path(str(files("iconeval"))).resolve()
 
-    CFG_TEMPLATE = PROJECT_ROOT_DIR / "esmvaltool_config_template.yml"
-    DEFAULT_RECIPE_TEMPLATE_DIR = PROJECT_ROOT_DIR / "recipe_templates"
+    CFG_TEMPLATE: ClassVar[Path] = PROJECT_ROOT_DIR / "esmvaltool_config_template.yml"
+    DEFAULT_RECIPE_TEMPLATE_DIR: ClassVar[Path] = PROJECT_ROOT_DIR / "recipe_templates"
 
-    DEFAULT_OUTPUT_DIR_NAME = "output_iconeval"
-    OUTPUT_DIR_CONFIG = "config"
-    OUTPUT_DIR_ESMVALTOOL = "esmvaltool_output"
-    OUTPUT_DIR_RECIPES = "recipes"
-    OUTPUT_DIR_SLURM = "slurm"
+    DEFAULT_OUTPUT_DIR_NAME: ClassVar[str] = "output_iconeval"
+    OUTPUT_DIR_CONFIG: ClassVar[str] = "config"
+    OUTPUT_DIR_ESMVALTOOL: ClassVar[str] = "esmvaltool_output"
+    OUTPUT_DIR_RECIPES: ClassVar[str] = "recipes"
+    OUTPUT_DIR_SLURM: ClassVar[str] = "slurm"
 
     def __init__(
         self,
@@ -304,8 +308,6 @@ class IconEvalIOHandler:
         logger.debug("Recipe templates:")
         logger.debug("-----------------")
         recipe_template_list: list[Path] = []
-        if isinstance(tags, str):
-            tags = [tags]
 
         # Use default templates if none are specified or
         # always_use_default_recipe_templates is True
@@ -330,22 +332,46 @@ class IconEvalIOHandler:
         recipe_template_list = self._resolve_globs(recipe_template_list)
         recipe_template_list = sorted(set(recipe_template_list))
 
-        # Check if recipe templates exist and filter tags
-        recipe_templates: list[RecipeTemplate] = []
+        # Check if recipe templates exist
         for recipe_template_path in recipe_template_list:
             if not recipe_template_path.is_file():
                 msg = f"No recipe template matching '{recipe_template_path}' found"
                 raise FileNotFoundError(msg)
-            recipe_template = RecipeTemplate(recipe_template_path)
 
-            if tags is not None:
-                for tag in tags:
-                    if tag in recipe_template.tags:
-                        break
+        # Filter recipe templates according to tags
+        recipe_templates: list[RecipeTemplate]
+        if isinstance(tags, str):
+            tags = [tags]
+        if tags is None:
+            recipe_templates = [RecipeTemplate(r) for r in recipe_template_list]
+        else:
+            tag_map = map_tags_to_recipes(recipe_template_list)
+            unique_recipe_templates: set[RecipeTemplate] = set()
+            select_tags: list[str] = []
+            deselect_tags: list[str] = []
+            for tag in tags:
+                if tag.startswith("!"):
+                    deselect_tags.append(tag[1:])
                 else:
-                    continue
+                    select_tags.append(tag)
 
-            recipe_templates.append(recipe_template)
+            # Select tags; if there are no tags to select recipes, use all
+            if not select_tags:
+                unique_recipe_templates = {
+                    RecipeTemplate(r) for r in recipe_template_list
+                }
+            else:
+                for tag in select_tags:
+                    unique_recipe_templates |= set(tag_map.get(tag, []))
+
+            # Deselect tags
+            for tag in deselect_tags:
+                for recipe_template in tag_map.get(tag, []):
+                    unique_recipe_templates.discard(recipe_template)
+
+            recipe_templates = list(unique_recipe_templates)
+
+        for recipe_template in recipe_templates:
             logger.debug(f"  - {recipe_template.path}")
 
         if not recipe_templates:
