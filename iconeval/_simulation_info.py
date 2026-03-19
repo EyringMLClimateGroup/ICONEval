@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
@@ -17,13 +17,13 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class SimulationInfo:
-    date: str
-    exp: str
-    grid_info: str  # Only stores the extracted resolution, e.g., "R02B04"
-    guessed_facets: dict[str, FacetType]
-    namelist_files: list[Path]
-    owner: str
-    path: Path
+    date: str = field(repr=False, kw_only=True)
+    exp: str = field(repr=False, kw_only=True)
+    grid_info: str = field(repr=False, kw_only=True)
+    guessed_facets: dict[str, FacetType] = field(repr=False, kw_only=True)
+    namelist_files: list[Path] = field(repr=False, kw_only=True)
+    owner: str = field(repr=False, kw_only=True)
+    path: Path = field(kw_only=True)
 
     @classmethod
     def from_path(cls, path: Path) -> SimulationInfo:

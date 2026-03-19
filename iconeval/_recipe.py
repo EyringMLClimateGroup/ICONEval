@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -17,10 +17,10 @@ if TYPE_CHECKING:
 class Recipe:
     """Class representing an ESMValTool recipe."""
 
-    path: Path
-    template: RecipeTemplate
-    simulations_info: list[SimulationInfo]
-    timerange: FacetType
+    path: Path = field(kw_only=True)
+    template: RecipeTemplate = field(repr=False, kw_only=True)
+    simulations_info: list[SimulationInfo] = field(repr=False, kw_only=True)
+    timerange: FacetType = field(repr=False, kw_only=True)
 
     @property
     def name(self) -> str:
