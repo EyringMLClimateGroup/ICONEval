@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, NamedTuple
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -11,7 +12,8 @@ if TYPE_CHECKING:
     from iconeval._templates import ESMValToolConfigTemplate
 
 
-class ESMValToolConfig(NamedTuple):
+@dataclass(frozen=True)
+class ESMValToolConfig:
     """Represents an ESMValTool configuration file."""
 
     path: Path
