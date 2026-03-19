@@ -25,7 +25,6 @@ def test_summarize(
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     # Copy sample output to temporary directory so files can be created
     src_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
@@ -47,4 +46,29 @@ def test_summarize(
         [],
         esmvaltool_output,
         expected_output_dir / expected_output_name,
+    )
+
+
+def test_summarize_info_missing(
+    expected_output_dir: Path,
+    sample_data_path: Path,
+    tmp_path: Path,
+) -> None:
+    # Copy sample output to temporary directory so files can be created
+    src_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
+    esmvaltool_output = tmp_path / "recipes_maps"
+    esmvaltool_output.mkdir(parents=True, exist_ok=True)
+    subdirs = ["recipe_basics_maps"]
+    for subdir in subdirs:
+        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
+
+    summarize(esmvaltool_output)
+
+    # Check output; for this, we remove the previously created subdirectories
+    for subdir in subdirs:
+        shutil.rmtree(esmvaltool_output / subdir)
+    assert_output(
+        [],
+        esmvaltool_output,
+        expected_output_dir / "test_summarize_info_missing",
     )
