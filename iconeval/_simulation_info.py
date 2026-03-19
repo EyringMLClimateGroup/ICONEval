@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from iconeval._typing import FacetType
 
 
-@dataclass
+@dataclass(frozen=True)
 class SimulationInfo:
     date: str
     exp: str
