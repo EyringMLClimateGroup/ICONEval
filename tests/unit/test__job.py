@@ -69,17 +69,17 @@ def test_output_dir(recipe_dir_exists: bool, sentinel_job: Job, tmp_path: Path) 
     if recipe_dir_exists:
         recipe_output_dir.mkdir(parents=True, exist_ok=True)
     recipe = Recipe(
-        tmp_path / "recipe_test.yml",
-        sentinel.recipe_test_template,
-        [],
-        "*",
+        path=tmp_path / "recipe_test.yml",
+        template=sentinel.recipe_test_template,
+        simulations_info=[],
+        timerange="*",
     )
     esmvaltool_config = ESMValToolConfig(
-        tmp_path / "esmvaltool_config.yml",
-        sentinel.esmvaltool_config_templates,
-        [],
-        esmvaltool_output_dir,
-        {},
+        path=tmp_path / "esmvaltool_config.yml",
+        template=sentinel.esmvaltool_config_templates,
+        simulations_info=[],
+        output_dir=esmvaltool_output_dir,
+        dask_config={},
     )
     sentinel_job._recipe = recipe
     sentinel_job._esmvaltool_config = esmvaltool_config
