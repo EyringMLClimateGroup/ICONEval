@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from typing import TYPE_CHECKING
 from unittest.mock import call, sentinel
 
@@ -861,7 +862,7 @@ def test_icon_evaluation_empty_input_dir_fail(tmp_path: Path) -> None:
     output_dir = tmp_path / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"No input directory given"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         icon_evaluation(log_file=None, output_dir=output_dir)
 
 
@@ -870,7 +871,7 @@ def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
     output_dir = tmp_path / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"does not exist"
-    with pytest.raises(NotADirectoryError, match=msg):
+    with pytest.raises(NotADirectoryError, match=re.escape(msg)):
         icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
 
 
@@ -884,7 +885,7 @@ def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
     output_dir = tmp_path / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"Multiple experiments with the same name are not supported"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         icon_evaluation(*input_dirs, log_file=None, output_dir=output_dir)
 
 
@@ -894,7 +895,7 @@ def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"No recipe template matching"
-    with pytest.raises(FileNotFoundError, match=msg):
+    with pytest.raises(FileNotFoundError, match=re.escape(msg)):
         icon_evaluation(
             input_dir,
             log_file=None,
@@ -907,8 +908,8 @@ def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
     ("tags", "error_msg"),
     [
         (None, r"No recipe templates given"),
-        ("tag", r"No recipe templates for tags \['tag'\] given"),
-        (["t1", "t2"], r"No recipe templates for tags \['t1', 't2'\] given"),
+        ("tag", r"No recipe templates for tags ['tag'] given"),
+        (["t1", "t2"], r"No recipe templates for tags ['t1', 't2'] given"),
     ],
 )
 def test_icon_evaluation_invalid_no_recipe_templates_fail(
@@ -920,7 +921,7 @@ def test_icon_evaluation_invalid_no_recipe_templates_fail(
     output_dir = tmp_path / "output"
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
-    with pytest.raises(ValueError, match=error_msg):
+    with pytest.raises(ValueError, match=re.escape(error_msg)):
         icon_evaluation(
             input_dir,
             log_file=None,
@@ -938,7 +939,7 @@ def test_icon_evaluation_invalid_recipe_template_invalid_glob_fail(
     input_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"No recipe template matching"
-    with pytest.raises(FileNotFoundError, match=msg):
+    with pytest.raises(FileNotFoundError, match=re.escape(msg)):
         icon_evaluation(
             input_dir,
             log_file=None,

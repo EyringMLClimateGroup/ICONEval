@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import shutil
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -261,7 +262,7 @@ def test_publish_esmvaltool_html_force(
 def test_publish_esmvaltool_html_no_dir_fail(sample_data_path: Path) -> None:
     esmvaltool_output = sample_data_path / "esmvaltool_output" / "non_existing_dir"
     msg = r"is not a directory"
-    with pytest.raises(NotADirectoryError, match=msg):
+    with pytest.raises(NotADirectoryError, match=re.escape(msg)):
         publish_esmvaltool_html(esmvaltool_output, log_file=None)
 
 
@@ -284,7 +285,7 @@ def test_publish_esmvaltool_invalid_token_fail(
     mocked_requests.get.return_value.headers["x-auth-token"] = None
 
     msg = r"Failed to create new swift token"
-    with pytest.raises(ValueError, match=msg):
+    with pytest.raises(ValueError, match=re.escape(msg)):
         publish_esmvaltool_html(esmvaltool_output, log_file=None)
 
 
@@ -313,7 +314,7 @@ def test_publish_esmvaltool_invalid_request_fail(
     )
 
     msg = r"Failed to create new swift token: failed request"
-    with pytest.raises(requests.RequestException, match=msg):
+    with pytest.raises(requests.RequestException, match=re.escape(msg)):
         publish_esmvaltool_html(
             esmvaltool_output,
             log_file=None,
@@ -333,7 +334,7 @@ def test_publish_esmvaltool_upload_fail(
     mocked_service_instance.upload.return_value = [{"success": False, "error": 42}]
 
     msg = r"Upload of {'success': False, 'error': 42} failed: 42"
-    with pytest.raises(SwiftError, match=msg):
+    with pytest.raises(SwiftError, match=re.escape(msg)):
         publish_esmvaltool_html(
             esmvaltool_output,
             log_file=None,
