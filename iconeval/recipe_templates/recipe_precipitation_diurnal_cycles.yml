@@ -17,7 +17,7 @@ documentation:
 # YAML anchors for later use
 
 datasets_pr: &datasets_pr
-  - {project: native6, dataset: ERA5, alias: ERA5, type: reanaly, version: v1, frequency: 1hr, tier: 3, timerange: "{{timerange}}"}  # 19790101/20201231
+  - {project: native6, dataset: ERA5, alias: ERA5, type: reanaly, version: v1, frequency: 1hr, tier: 3, timerange: 20190101/20201231}  # 19790101/20201231
 
 supplementary_variables: &supplementary_variables
   - {short_name: areacella, skip: true}

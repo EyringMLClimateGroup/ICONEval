@@ -194,26 +194,26 @@ diagnostics:
           map:
             <<: *map_plot
 
-  maps_lwcre:
-    description: Map plots of TOA longwave cloud radiative effect.
-    themes:
-      - clouds
-    realms:
-      - atmos
-    variables:
-      lwcre:
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_map
-        title: TOA Longwave Cloud Radiative Effect
-        additional_datasets: *datasets_lwcre
-    scripts:
-      plot:
-        <<: *plot_script
-        plots:
-          map:
-            <<: *map_plot_cre
+  # maps_lwcre:
+  #   description: Map plots of TOA longwave cloud radiative effect.
+  #   themes:
+  #     - clouds
+  #   realms:
+  #     - atmos
+  #   variables:
+  #     lwcre:
+  #       mip: Amon
+  #       derive: true
+  #       force_derivation: true
+  #       preprocessor: create_map
+  #       title: TOA Longwave Cloud Radiative Effect
+  #       additional_datasets: *datasets_lwcre
+  #   scripts:
+  #     plot:
+  #       <<: *plot_script
+  #       plots:
+  #         map:
+  #           <<: *map_plot_cre
 
   maps_lwp:
     description: Map plots of liquid water path.
@@ -254,23 +254,23 @@ diagnostics:
           map:
             <<: *map_plot
 
-  maps_swcre:
-    description: Map plots of TOA shortwave cloud radiative effect.
-    themes:
-      - clouds
-    realms:
-      - atmos
-    variables:
-      swcre:
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_map
-        title: TOA Shortwave Cloud Radiative Effect
-        additional_datasets: *datasets_swcre
-    scripts:
-      plot:
-        <<: *plot_script
-        plots:
-          map:
-            <<: *map_plot_cre
+  # maps_swcre:
+  #   description: Map plots of TOA shortwave cloud radiative effect.
+  #   themes:
+  #     - clouds
+  #   realms:
+  #     - atmos
+  #   variables:
+  #     swcre:
+  #       mip: Amon
+  #       derive: true
+  #       force_derivation: true
+  #       preprocessor: create_map
+  #       title: TOA Shortwave Cloud Radiative Effect
+  #       additional_datasets: *datasets_swcre
+  #   scripts:
+  #     plot:
+  #       <<: *plot_script
+  #       plots:
+  #         map:
+  #           <<: *map_plot_cre

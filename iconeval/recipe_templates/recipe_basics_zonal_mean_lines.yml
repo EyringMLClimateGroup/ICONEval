@@ -15,8 +15,8 @@ documentation:
 # YAML anchors for later use
 
 datasets_pr: &datasets_pr
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, timerange: "{{timerange}}"}  # 19590101/20211231
-  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, reference_for_monitor_diags: true, timerange: "{{timerange}}"}  # 19790101/20230430
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, timerange: 20000101/20211231}  # 19590101/20211231
+  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, reference_for_monitor_diags: true, timerange: 20030101/20221231}  # 19790101/20230430
 
 plot_script: &plot_script
   script: monitor/multi_datasets.py
@@ -37,7 +37,7 @@ variable_vs_lat_plot: &variable_vs_lat_plot
     bbox_to_anchor: [0.5, -0.4]
     borderaxespad: 0.0
   pyplot_kwargs:
-    title: "{title} ({{timerange}})"
+    title: "{title}"
   plot_kwargs:
     "{{alias_plot_kwargs}}":
       label: "{dataset} ({exp})"

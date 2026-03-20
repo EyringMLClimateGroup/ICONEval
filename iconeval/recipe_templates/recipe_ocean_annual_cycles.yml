@@ -18,7 +18,7 @@ defaults_cmip6: &defaults_cmip6
   exp: historical
   ensemble: r1i1p1f1
   grid: gn
-  timerange: "{{timerange}}"  # 18500101/20141231
+  timerange: 19950101/20141231  # 18500101/20141231
 
 datasets_cmip6: &datasets_cmip6  # fix list of models to avoid CMOR check error
   - {<<: *defaults_cmip6, dataset: ACCESS-CM2}
@@ -65,7 +65,7 @@ annual_cycle_plot: &annual_cycle_plot
     bbox_to_anchor: [0.5, -0.4]
     borderaxespad: 0.0
   pyplot_kwargs:
-    title: "{title} ({{timerange}})"
+    title: "{title}"
   plot_kwargs:
     "{{alias_plot_kwargs}}":
       label: "{dataset} ({exp})"

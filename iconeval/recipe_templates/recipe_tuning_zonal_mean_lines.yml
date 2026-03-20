@@ -234,13 +234,13 @@ diagnostics:
         preprocessor: create_zonal_mean
         title: Condensed Water Path
         additional_datasets: *datasets_clwvi
-      lwcre:
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_zonal_mean
-        title: TOA Longwave Cloud Radiative Effect
-        additional_datasets: *datasets_lwcre
+      # lwcre:
+      #   mip: Amon
+      #   derive: true
+      #   force_derivation: true
+      #   preprocessor: create_zonal_mean
+      #   title: TOA Longwave Cloud Radiative Effect
+      #   additional_datasets: *datasets_lwcre
       lwp:
         mip: Amon
         derive: true
@@ -266,13 +266,13 @@ diagnostics:
         mip: Amon
         preprocessor: create_zonal_mean
         title: TOA Net Downward Total Radiation
-      swcre:
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_zonal_mean
-        title: TOA Shortwave Cloud Radiative Effect
-        additional_datasets: *datasets_swcre
+      # swcre:
+      #   mip: Amon
+      #   derive: true
+      #   force_derivation: true
+      #   preprocessor: create_zonal_mean
+      #   title: TOA Shortwave Cloud Radiative Effect
+      #   additional_datasets: *datasets_swcre
     additional_datasets: *datasets_cmip6
     scripts:
       plot:

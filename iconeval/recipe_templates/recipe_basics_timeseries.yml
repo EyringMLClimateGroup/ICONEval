@@ -70,6 +70,7 @@ timeseries_plot: &timeseries_plot
     borderaxespad: 0.0
   pyplot_kwargs:
     title: "{title}"
+    ylabel: "{ylabel} [{ylabel_units}]"
   plot_kwargs:
     "{{alias_plot_kwargs}}":
       label: "{dataset} ({exp})"
@@ -133,6 +134,18 @@ preprocessors:
     convert_units:
       units: mm day-1
 
+  create_global_annual_mean_time_series_tas:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+    convert_units:
+      units: celsius
+
 
 diagnostics:
 
@@ -149,41 +162,55 @@ diagnostics:
         title: Global Mean Surface Upward Latent Heat Flux
         additional_datasets: *datasets_hfls
         supplementary_variables: *supplementary_variables
+        ylabel: hfls
+        ylabel_units: W m-2
       hfss:
         mip: Amon
         preprocessor: create_global_annual_mean_time_series
         title: Global Mean Surface Upward Sensible Heat Flux
         additional_datasets: *datasets_hfss
         supplementary_variables: *supplementary_variables
+        ylabel: hfss
+        ylabel_units: W m-2
       pr:
         mip: Amon
         preprocessor: create_global_annual_mean_time_series_pr
         title: Global Mean Precipitation
         additional_datasets: *datasets_pr
         supplementary_variables: *supplementary_variables
+        ylabel: Precipitation
+        ylabel_units: mm/day
       rlut:
         mip: Amon
         preprocessor: create_global_annual_mean_time_series
         title: Global Mean TOA Outgoing Longwave Radiation
         additional_datasets: *datasets_rlut
         supplementary_variables: *supplementary_variables
+        ylabel: rlut
+        ylabel_units: W m-2
       rsut:
         mip: Amon
         preprocessor: create_global_annual_mean_time_series
         title: Global Mean TOA Outgoing Shortwave Radiation
         additional_datasets: *datasets_rsut
         supplementary_variables: *supplementary_variables
+        ylabel: rsut
+        ylabel_units: W m-2
       rtmt:
         mip: Amon
         preprocessor: create_global_annual_mean_time_series
         title: Global Mean TOA Net Downward Total Radiation
         supplementary_variables: *supplementary_variables
+        ylabel: rtmt
+        ylabel_units: W m-2
       tas:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series
+        preprocessor: create_global_annual_mean_time_series_tas
         title: Global Mean Near-Surface Air Temperature
         additional_datasets: *datasets_tas
         supplementary_variables: *supplementary_variables
+        ylabel: T
+        ylabel_units: °C
     additional_datasets: *datasets_cmip6
     scripts:
       plot:

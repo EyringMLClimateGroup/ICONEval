@@ -18,7 +18,7 @@ defaults_cmip6: &defaults_cmip6
   exp: historical
   ensemble: r1i1p1f1
   grid: gn
-  timerange: 19790101/20141231  # 18500101/20141231
+  timerange: 19790101/20141231 # 18500101/20141231
 
 datasets_cmip6: &datasets_cmip6  # fix list of models to avoid CMOR check error
   - {<<: *defaults_cmip6, dataset: ACCESS-CM2}

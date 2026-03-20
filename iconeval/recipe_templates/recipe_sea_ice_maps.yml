@@ -15,10 +15,10 @@ documentation:
 # YAML anchors for later use
 
 datasets_siconc_nh: &datasets_siconc_nh
-  - {project: OBS, dataset: OSI-450-nh, type: reanaly, version: v3, tier: 2, mip: OImon, reference_for_monitor_diags: true, alias: OSI-450-nh, timerange: "{{timerange}}"}  # 19790101/20201231
+  - {project: OBS, dataset: OSI-450-nh, type: reanaly, version: v3, tier: 2, mip: OImon, reference_for_monitor_diags: true, alias: OSI-450-nh, timerange: 20010101/20191231}  # 19790101/20201231
 
 datasets_siconc_sh: &datasets_siconc_sh
-  - {project: OBS, dataset: OSI-450-sh, type: reanaly, version: v3, tier: 2, mip: OImon, reference_for_monitor_diags: true, alias: OSI-450-sh, timerange: "{{timerange}}"}  # 19790101/20201231
+  - {project: OBS, dataset: OSI-450-sh, type: reanaly, version: v3, tier: 2, mip: OImon, reference_for_monitor_diags: true, alias: OSI-450-sh, timerange: 20010101/20191231}  # 19790101/20201231
 
 plot_script: &plot_script
   script: monitor/multi_datasets.py
@@ -40,7 +40,7 @@ map_plot_nh: &map_plot_nh
   projection_kwargs:
     central_longitude: 270
   pyplot_kwargs:
-    suptitle: "{title} ({{timerange}})"
+    suptitle: "{title}"
   plot_kwargs:
     default:
       cmap: Blues_r
@@ -59,7 +59,7 @@ map_plot_sh: &map_plot_sh
   projection_kwargs:
     central_longitude: 270
   pyplot_kwargs:
-    suptitle: "{title} ({{timerange}})"
+    suptitle: "{title}"
   plot_kwargs:
     default:
       cmap: Blues_r

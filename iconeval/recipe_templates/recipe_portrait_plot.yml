@@ -251,24 +251,24 @@ diagnostics:
         split: ref_1
         variable: hus400
         additional_datasets: *datasets_hus_ref_1
-      lwcre_ref_1:
-        short_name: lwcre
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_rmse_surface
-        split: ref_1
-        variable: lwcre
-        additional_datasets: *datasets_lwcre_ref_1
-      lwcre_ref_2:
-        short_name: lwcre
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_rmse_surface
-        split: ref_2
-        variable: lwcre
-        additional_datasets: *datasets_lwcre_ref_2
+      # lwcre_ref_1:
+      #   short_name: lwcre
+      #   mip: Amon
+      #   derive: true
+      #   force_derivation: true
+      #   preprocessor: create_rmse_surface
+      #   split: ref_1
+      #   variable: lwcre
+      #   additional_datasets: *datasets_lwcre_ref_1
+      # lwcre_ref_2:
+      #   short_name: lwcre
+      #   mip: Amon
+      #   derive: true
+      #   force_derivation: true
+      #   preprocessor: create_rmse_surface
+      #   split: ref_2
+      #   variable: lwcre
+      #   additional_datasets: *datasets_lwcre_ref_2
       lwp_ref_1:
         short_name: lwp
         mip: Amon
@@ -320,24 +320,24 @@ diagnostics:
         split: ref_1
         variable: rsut
         additional_datasets: *datasets_rsut_ref_1
-      swcre_ref_1:
-        short_name: swcre
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_rmse_surface
-        split: ref_1
-        variable: swcre
-        additional_datasets: *datasets_swcre_ref_1
-      swcre_ref_2:
-        short_name: swcre
-        mip: Amon
-        derive: true
-        force_derivation: true
-        preprocessor: create_rmse_surface
-        split: ref_2
-        variable: swcre
-        additional_datasets: *datasets_swcre_ref_2
+      # swcre_ref_1:
+      #   short_name: swcre
+      #   mip: Amon
+      #   derive: true
+      #   force_derivation: true
+      #   preprocessor: create_rmse_surface
+      #   split: ref_1
+      #   variable: swcre
+      #   additional_datasets: *datasets_swcre_ref_1
+      # swcre_ref_2:
+      #   short_name: swcre
+      #   mip: Amon
+      #   derive: true
+      #   force_derivation: true
+      #   preprocessor: create_rmse_surface
+      #   split: ref_2
+      #   variable: swcre
+      #   additional_datasets: *datasets_swcre_ref_2
       ta200_ref_1:
         short_name: ta
         mip: Amon

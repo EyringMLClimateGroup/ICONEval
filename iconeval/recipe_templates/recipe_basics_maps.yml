@@ -17,10 +17,10 @@ documentation:
 # YAML anchors for later use
 
 datasets_tas: &datasets_tas
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: "{{timerange}}"}  # 19790101/20211231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20020101/20211231}  # 19790101/20211231
 
 datasets_pr: &datasets_pr
-  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, reference_for_monitor_diags: true, alias: GPCP-SG, timerange: "{{timerange}}"}  # 19790101/20230430
+  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, reference_for_monitor_diags: true, alias: GPCP-SG, timerange: 20030101/20221231}  # 19790101/20230430
 
 plot_script: &plot_script
   script: monitor/multi_datasets.py
@@ -37,7 +37,7 @@ map_plot: &map_plot
     linewidth: 0.5
     alpha: 0.3
   pyplot_kwargs:
-    suptitle: "{title} ({{timerange}})"
+    suptitle: "{title}"
   plot_kwargs:
     default:
       cmap: plasma
@@ -71,6 +71,19 @@ preprocessors:
     convert_units:
       units: mm day-1
 
+  create_map_tas:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: celsius
+
+
 diagnostics:
 
   maps_tas:
@@ -82,7 +95,7 @@ diagnostics:
     variables:
       tas:
         mip: Amon
-        preprocessor: create_map
+        preprocessor: create_map_tas
         title: Near-Surface Air Temperature
         additional_datasets: *datasets_tas
     scripts:

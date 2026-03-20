@@ -18,13 +18,13 @@ documentation:
 # YAML anchors for later use
 
 datasets_hus: &datasets_hus
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: "{{timerange}}"}  # 19790101/20191231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20000101/20191231}  # 19790101/20191231
 
 datasets_ta: &datasets_ta
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: "{{timerange}}"}  # 19790101/20211231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20020101/20211231}  # 19790101/20211231
 
 datasets_ua: &datasets_ua
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: "{{timerange}}"}  # 19790101/20201231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20010101/20201231}  # 19790101/20201231
 
 plot_script: &plot_script
   script: monitor/multi_datasets.py
@@ -37,7 +37,7 @@ zonal_mean_profile_plot: &zonal_mean_profile_plot
   common_cbar: true
   fontsize: 8
   pyplot_kwargs:
-    suptitle: "{title} ({{timerange}})"
+    suptitle: "{title}"
   plot_kwargs:
     default:
       cmap: plasma

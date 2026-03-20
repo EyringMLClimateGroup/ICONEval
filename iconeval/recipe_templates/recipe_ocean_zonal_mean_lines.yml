@@ -32,7 +32,7 @@ datasets_tos: &datasets_tos
   - {project: OBS6, dataset: WOA, type: clim, version: "2018", tier: 2, timerange: 20000101/20001231}  # 20000101/20001231
 
 datasets_so: &datasets_so
-  - {project: OBS6, dataset: WOA, type: clim, version: "2018", tier: 2, timerange: 20000101/20001231}  # 20000101/20001231
+  - {project: OBS6, dataset: WOA, type: clim, version: "2018", tier: 2, mip: Omon, timerange: 20000101/20001231}  # 20000101/20001231
 
 plot_script: &plot_script
   script: monitor/multi_datasets.py
@@ -163,7 +163,7 @@ diagnostics:
       - ocean
     variables:
       so:
-        mip: Omon
+        mip: Oyr
         preprocessor: create_zonal_mean_sos
         title: Sea Surface Salinity
         additional_datasets: *datasets_so
