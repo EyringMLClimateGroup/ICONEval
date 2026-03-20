@@ -156,10 +156,12 @@ def icon_evaluation(
         `--dask=False`. Use the syntax `--dask_options='{"--option":
         "value"}'`.
     tags:
-        Only recipes with the given tags are run. To not run specific recipes,
-        use the syntax `!tag`. Deselection takes priority over selection. If
-        not given or empty, run all recipes. An overview of all available tags
-        in the default recipe templates can be found here
+        Only recipes with the given tags are run (e.g., `--tags=tag`).  To not
+        run specific recipes, use the syntax `!tag` (e.g., `--tags='!tag'`;
+        make sure to properly escape the string via `'`).  Deselection takes
+        priority over selection. If not given or empty, run all recipes. An
+        overview of all available tags in the default recipe templates can be
+        found here
         (https://github.com/EyringMLClimateGroup/ICONEval/blob/main/doc/tags.md).
         To specify multiple tags, use the syntax `'["tag1", "tag2", "!tag3"]'`.
     setup_logging:
