@@ -47,7 +47,10 @@ jobs:
           pytest-xml-coverage-path: ./coverage.xml
           report-only-changed-files: true
       - name: Check coverage
-        if: ${{ steps.coverage.outputs.coverage < 100 }}
+        # if: ${{ steps.coverage.outputs.coverage < 100 }}
         run: |
+          echo ${STEPS_COVERAGE_OUTPUTS_COVERAGE}
           echo "Coverage is below 100%"
           exit 1
+        env:
+          STEPS_COVERAGE_OUTPUTS_COVERAGE: ${{ steps.coverage.outputs.coverage }}
