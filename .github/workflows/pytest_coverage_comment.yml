@@ -47,9 +47,15 @@ jobs:
           pytest-xml-coverage-path: ./coverage.xml
           report-only-changed-files: true
       - name: Check coverage
-        if: ${{ steps.coverage.outputs.coverage != '100%' }}
         run: |
-          echo "Test coverage is ${STEPS_COVERAGE_OUTPUTS_COVERAGE}, needs to be 100%"
-          exit 1
+          echo "Test coverage: ${STEPS_COVERAGE_OUTPUTS_COVERAGE} (target: 100%)"
+          echo "${STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML}" >> $GITHUB_STEP_SUMMARY
+          if [ ${STEPS_COVERAGE_OUTPUTS_COVERAGE} == '100%' ]; then
+            echo "Total coverage: ${STEPS_COVERAGE_OUTPUTS_COVERAGE} (target: 100%) ✅" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Total coverage: ${STEPS_COVERAGE_OUTPUTS_COVERAGE} (target: 100%) ❌" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
         env:
           STEPS_COVERAGE_OUTPUTS_COVERAGE: ${{ steps.coverage.outputs.coverage }}
+          STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
