@@ -63,7 +63,7 @@ jobs:
           echo "GIT_DIFF=${GIT_DIFF}" >> ${GITHUB_ENV}
           if [ ${GIT_DIFF} == '' ]; then
             echo "No changes detected"
-          else:
+          else
             echo "Changes detected"
           fi
       - name: Commit changes
