@@ -23,7 +23,8 @@ jobs:
     steps:
       - name: Set name of target branch
         run: |
-          echo "TARGET_BRANCH=update_coverage_badge_$(date +%s)" >> ${GITHUB_ENV}
+          export TARGET_BRANCH=update_coverage_badge_$(date +%s)
+          echo "TARGET_BRANCH=${TARGET_BRANCH}" >> ${GITHUB_ENV}
           echo "Target branch: ${TARGET_BRANCH}"
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -58,7 +59,8 @@ jobs:
           STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
       - name: Detect changes
         run: |
-          echo "GIT_DIFF=$(git diff --stat | head -n 1)" >> ${GITHUB_ENV}
+          export GIT_DIFF=$(git diff --stat | head -n 1)
+          echo "GIT_DIFF=${GIT_DIFF}" >> ${GITHUB_ENV}
           if [ ${GIT_DIFF} == '' ]; then
             echo "No changes detected"
           else:
