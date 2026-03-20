@@ -24,6 +24,7 @@ jobs:
       - name: Set name of target branch
         run: |
           echo "TARGET_BRANCH=update_coverage_badge_$(date +%s)" >> ${GITHUB_ENV}
+          echo "Target branch: ${TARGET_BRANCH}"
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -58,6 +59,11 @@ jobs:
       - name: Detect changes
         run: |
           echo "GIT_DIFF=$(git diff --stat | head -n 1)" >> ${GITHUB_ENV}
+          if [ ${GIT_DIFF} == '' ]; then
+            echo "No changes detected"
+          else:
+            echo "Changes detected"
+          fi
       - name: Commit changes
         if: ${{ env.GIT_DIFF != '' }}
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
