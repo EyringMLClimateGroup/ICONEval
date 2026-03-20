@@ -61,7 +61,7 @@ jobs:
         run: |
           export GIT_DIFF=$(git diff --stat | head -n 1)
           echo "GIT_DIFF=${GIT_DIFF}" >> ${GITHUB_ENV}
-          if [ ${GIT_DIFF} == '' ]; then
+          if [ "${GIT_DIFF}" == '' ]; then
             echo "No changes detected"
           else
             echo "Changes detected"
