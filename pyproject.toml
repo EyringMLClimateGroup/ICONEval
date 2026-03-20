@@ -41,6 +41,7 @@ develop = [
     "pytest",
     "pytest-cov",
     "pytest-mock",
+    "pytest-xdist",
 ]
 
 [project.scripts]
