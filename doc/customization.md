@@ -306,6 +306,14 @@ This will run all recipes marked with `atmosphere` excluding those marked as
 `subdaily` (the syntax `!tag` can be used to exclude recipes marked with
 `tag`).
 
+To run all recipes except for ones marked as `subdaily`, use
+
+```bash
+iconeval path/to/ICON_output --tags='!subdaily'
+```
+
+Make sure to properly escape the string via `'`.
+
 Custom [recipe templates](#esmvaltool-recipes) can be marked with arbitrary
 tags using the syntax
 
