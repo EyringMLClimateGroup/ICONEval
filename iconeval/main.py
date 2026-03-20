@@ -194,9 +194,6 @@ def icon_evaluation(
     """
     TIMES["start"] = datetime.now(UTC)
 
-    if html_name == "aaaa":
-        logger.info("aaaa")
-
     # Initialize tool
     if setup_logging:
         configure_logging(log_level, log_file=log_file)
