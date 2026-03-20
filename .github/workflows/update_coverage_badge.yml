@@ -7,6 +7,9 @@ permissions:
 on:
   push:
     branches: [main]
+  pull_request:
+    branches:
+      - "*"
 
 # Required shell entrypoint to have properly configured bash shell
 defaults:
