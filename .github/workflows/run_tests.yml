@@ -54,7 +54,7 @@ jobs:
       - name: Check dependencies
         run: pip check
       - name: Run tests
-        run: pytest -vv 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/test_report.txt
+        run: pytest -n 2 -vv 2>&1 | tee test_linux_artifacts_python_${{ matrix.python-version }}/test_report.txt
       - name: Upload artifacts
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         if: ${{ always() }} # upload artifacts even if fail

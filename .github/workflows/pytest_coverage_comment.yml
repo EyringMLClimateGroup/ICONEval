@@ -37,11 +37,25 @@ jobs:
         run: pip install --no-deps -e .[develop]
       - name: Run tests
         run: |
-          pytest --cov-report=term-missing:skip-covered --junitxml=pytest.xml --cov-report=xml:coverage.xml --cov=iconeval tests/
+          pytest -n 2 --cov-report=term-missing:skip-covered --junitxml=pytest.xml --cov-report=xml:coverage.xml --cov=iconeval tests/
       - name: Comment coverage
+        id: coverage
         uses: MishaKav/pytest-coverage-comment@26f986d2599c288bb62f623d29c2da98609e9cd4 # v1.6.0
         with:
           coverage-path-prefix: iconeval/
           junitxml-path: ./pytest.xml
           pytest-xml-coverage-path: ./coverage.xml
           report-only-changed-files: true
+      - name: Check coverage
+        run: |
+          echo "Test coverage: ${STEPS_COVERAGE_OUTPUTS_COVERAGE} (target: 100%)"
+          echo "${STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML}" >> ${GITHUB_STEP_SUMMARY}
+          if [ "${STEPS_COVERAGE_OUTPUTS_COVERAGE}" == '100%' ]; then
+            echo "Target coverage: 100% ✅" >> ${GITHUB_STEP_SUMMARY}
+          else
+            echo "Target coverage: 100% ❌" >> ${GITHUB_STEP_SUMMARY}
+            exit 1
+          fi
+        env:
+          STEPS_COVERAGE_OUTPUTS_COVERAGE: ${{ steps.coverage.outputs.coverage }}
+          STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
