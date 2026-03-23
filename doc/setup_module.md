@@ -104,7 +104,6 @@ Environment](http://modules.sourceforge.net/).
      This will use a [containerized installation](esmvaltool_container.md) of
      ESMValTool available at `$PREFIX/bin`.
 
-
    Make sure to replace `$PREFIX` with your actual environment directory.
 
 4. Load the module:
