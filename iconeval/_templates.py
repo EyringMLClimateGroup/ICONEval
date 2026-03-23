@@ -22,14 +22,14 @@ if TYPE_CHECKING:
 
 
 # Note: Templates need to be hashable; thus, we use a frozen dataclass here
-@dataclass(frozen=True)
+@dataclass(frozen=True, order=True)
 class Template:
     """Base class for templates."""
 
     path: Path
     check_placeholders: bool = field(default=True, kw_only=True)
-    content: str = field(init=False, repr=False)
-    name: str = field(init=False, repr=False)
+    content: str = field(init=False, repr=False, compare=False)
+    name: str = field(init=False, repr=False, compare=False)
 
     REQUIRED_PLACEHOLDERS: ClassVar[tuple[str, ...]] = ()
     TEMPLATE_TYPE: ClassVar[str] = "template"
@@ -128,13 +128,26 @@ class Template:
         return content
 
 
+@dataclass(frozen=True, order=True)
 class RecipeTemplate(Template):
     """Represents a recipe template."""
 
-    dask_options: dict[str, OptionValueType] = field(init=False, repr=False)
-    esmvaltool_options: dict[str, OptionValueType] = field(init=False, repr=False)
-    srun_options: dict[str, OptionValueType] = field(init=False, repr=False)
-    tags: list[str] = field(init=False, repr=False)
+    dask_options: dict[str, OptionValueType] = field(
+        init=False,
+        repr=False,
+        compare=False,
+    )
+    esmvaltool_options: dict[str, OptionValueType] = field(
+        init=False,
+        repr=False,
+        compare=False,
+    )
+    srun_options: dict[str, OptionValueType] = field(
+        init=False,
+        repr=False,
+        compare=False,
+    )
+    tags: list[str] = field(init=False, repr=False, compare=False)
 
     REQUIRED_PLACEHOLDERS = ("{{dataset_list}}",)
     TEMPLATE_TYPE = "recipe template"
@@ -373,6 +386,7 @@ class RecipeTemplate(Template):
         return tags
 
 
+@dataclass(frozen=True, order=True)
 class ESMValToolConfigTemplate(Template):
     """Represents an ESMValTool configuration template."""
 
