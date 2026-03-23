@@ -114,7 +114,7 @@ For more information on this and a list of all options, run
 iconeval -- --help
 ```
 
-or have a look at the section on [Customization](#customization).
+or have a look at the section on [Customization](doc/customization.md).
 
 Installing ICONEval also provides the command line tool `publish_html`, which
 can be used to publish a summary HTML on a public website for arbitrary
