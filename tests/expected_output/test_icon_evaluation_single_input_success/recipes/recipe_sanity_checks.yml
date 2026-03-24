@@ -226,19 +226,19 @@ diagnostics:
     variables:
       clivi_mean:
         short_name: clivi
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       clivi_min:
         short_name: clivi
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       clivi_max:
         short_name: clivi
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -307,19 +307,19 @@ diagnostics:
     variables:
       clt_mean:
         short_name: clt
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       clt_min:
         short_name: clt
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       clt_max:
         short_name: clt
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -388,19 +388,19 @@ diagnostics:
     variables:
       hfls_mean:
         short_name: hfls
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       hfls_min:
         short_name: hfls
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       hfls_max:
         short_name: hfls
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -469,19 +469,19 @@ diagnostics:
     variables:
       hfss_mean:
         short_name: hfss
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       hfss_min:
         short_name: hfss
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       hfss_max:
         short_name: hfss
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -550,25 +550,25 @@ diagnostics:
     variables:
       lwcre_mean:
         short_name: lwcre
-        legend_label: global mean
-        preprocessor: global_mean
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       lwcre_min:
         short_name: lwcre
-        legend_label: global min
-        preprocessor: global_min
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       lwcre_max:
         short_name: lwcre
-        legend_label: global max
-        preprocessor: global_max
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -637,25 +637,25 @@ diagnostics:
     variables:
       lwp_mean:
         short_name: lwp
-        legend_label: global mean
-        preprocessor: global_mean
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       lwp_min:
         short_name: lwp
-        legend_label: global min
-        preprocessor: global_min
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       lwp_max:
         short_name: lwp
-        legend_label: global max
-        preprocessor: global_max
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -724,25 +724,25 @@ diagnostics:
     variables:
       netcre_mean:
         short_name: netcre
-        legend_label: global mean
-        preprocessor: global_mean
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       netcre_min:
         short_name: netcre
-        legend_label: global min
-        preprocessor: global_min
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       netcre_max:
         short_name: netcre
-        legend_label: global max
-        preprocessor: global_max
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -811,19 +811,19 @@ diagnostics:
     variables:
       pr_mean:
         short_name: pr
-        legend_label: global mean
-        preprocessor: global_mean_pr
         mip: Amon
+        preprocessor: global_mean_pr
+        legend_label: global mean
       pr_min:
         short_name: pr
-        legend_label: global min
-        preprocessor: global_min_pr
         mip: Amon
+        preprocessor: global_min_pr
+        legend_label: global min
       pr_max:
         short_name: pr
-        legend_label: global max
-        preprocessor: global_max_pr
         mip: Amon
+        preprocessor: global_max_pr
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -892,19 +892,19 @@ diagnostics:
     variables:
       prw_mean:
         short_name: prw
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       prw_min:
         short_name: prw
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       prw_max:
         short_name: prw
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -973,19 +973,19 @@ diagnostics:
     variables:
       rlut_mean:
         short_name: rlut
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       rlut_min:
         short_name: rlut
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       rlut_max:
         short_name: rlut
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -1054,25 +1054,25 @@ diagnostics:
     variables:
       rtnt_mean:
         short_name: rtnt
-        legend_label: global mean
-        preprocessor: global_mean
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       rtnt_min:
         short_name: rtnt
-        legend_label: global min
-        preprocessor: global_min
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       rtnt_max:
         short_name: rtnt
-        legend_label: global max
-        preprocessor: global_max
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -1141,19 +1141,19 @@ diagnostics:
     variables:
       rsut_mean:
         short_name: rsut
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       rsut_min:
         short_name: rsut
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       rsut_max:
         short_name: rsut
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -1222,25 +1222,25 @@ diagnostics:
     variables:
       swcre_mean:
         short_name: swcre
-        legend_label: global mean
-        preprocessor: global_mean
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       swcre_min:
         short_name: swcre
-        legend_label: global min
-        preprocessor: global_min
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       swcre_max:
         short_name: swcre
-        legend_label: global max
-        preprocessor: global_max
+        mip: Amon
         derive: true
         force_derivation: true
-        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -1309,19 +1309,19 @@ diagnostics:
     variables:
       tas_mean:
         short_name: tas
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       tas_min:
         short_name: tas
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       tas_max:
         short_name: tas
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
@@ -1390,19 +1390,19 @@ diagnostics:
     variables:
       tauu_mean:
         short_name: tauu
-        legend_label: global mean
-        preprocessor: global_mean
         mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
       tauu_min:
         short_name: tauu
-        legend_label: global min
-        preprocessor: global_min
         mip: Amon
+        preprocessor: global_min
+        legend_label: global min
       tauu_max:
         short_name: tauu
-        legend_label: global max
-        preprocessor: global_max
         mip: Amon
+        preprocessor: global_max
+        legend_label: global max
     scripts:
       timeseries:
         script: monitor/multi_datasets.py
