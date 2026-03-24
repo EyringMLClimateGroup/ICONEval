@@ -393,6 +393,8 @@ preprocessors:
       ignore_scalar_coords: true
       exclude:
       - ICON
+      - EMAC
+      - ICON
       - ICON-XPP
 diagnostics:
   maps_clivi:
