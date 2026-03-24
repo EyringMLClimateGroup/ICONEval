@@ -22,6 +22,30 @@ datasets_tos: &datasets_tos
   - {project: OBS, dataset: HadISST, type: reanaly, version: "1", tier: 2, timerange: 19790101/20211231}  # 18700101/20211231
   - {project: OBS6, dataset: NOAA-ERSSTv5, type: reanaly, version: v5, tier: 2, timerange: 19790101/20201231}  # 18540101/20201231
 
+defaults_cmip6: &defaults_cmip6
+  project: CMIP6
+  exp: historical
+  ensemble: r1i1p1f1
+  grid: gn
+  timerange: 19790101/20141231  # 18500101/20141231
+
+datasets_phcint_total: &datasets_phcint_total  # fix list of models to avoid CMOR check error
+  - {<<: *defaults_cmip6, dataset: ACCESS-CM2}
+  - {<<: *defaults_cmip6, dataset: ACCESS-ESM1-5}
+  - {<<: *defaults_cmip6, dataset: CAMS-CSM1-0}
+  - {<<: *defaults_cmip6, dataset: CanESM5}
+  - {<<: *defaults_cmip6, dataset: EC-Earth3}
+  - {<<: *defaults_cmip6, dataset: HadGEM3-GC31-LL, ensemble: r1i1p1f3}
+  - {<<: *defaults_cmip6, dataset: ICON-ESM-LR}
+  - {<<: *defaults_cmip6, dataset: IPSL-CM6A-LR}
+  - {<<: *defaults_cmip6, dataset: MPI-ESM-1-2-HAM}
+  - {<<: *defaults_cmip6, dataset: MPI-ESM1-2-HR}
+  - {<<: *defaults_cmip6, dataset: MPI-ESM1-2-LR}
+  - {<<: *defaults_cmip6, dataset: MRI-ESM2-0}
+  - {<<: *defaults_cmip6, dataset: UKESM1-0-LL, ensemble: r1i1p1f2}
+  - {project: OBS6, dataset: EN4, type: reanaly, version: 4.2.2, tier: 2, timerange: 19790101/20251231}  # 19000101/20251231
+  - {project: OBS6, dataset: IAP, type: reanaly, version: v4.2, tier: 2, timerange: 19790101/20241231}  # 19400101/20241231
+
 supplementary_variables: &supplementary_variables
   - {short_name: areacella, skip: true}
   - {short_name: areacello, skip: true}
@@ -60,7 +84,7 @@ timeseries_plot: &timeseries_plot
       zorder: 1.0
     CMIP6:
       label: "{project}"  # just to have one label for the gray lines
-    CMIP6_CESM2:
+    CMIP6_CanESM5:
       label: "{project}"  # just to have one label for the gray lines
     OBS: &obs_format
       color: black
@@ -74,7 +98,11 @@ timeseries_plot: &timeseries_plot
       <<: *obs_format
       linestyle: dotted
     OBS_HadISST: *obs_format
+    OBS6_EN4: *obs_format
     OBS6_ESACCI-SST:
+      <<: *obs_format
+      linestyle: dashed
+    OBS6_IAP:
       <<: *obs_format
       linestyle: dashed
     OBS6_NOAA-ERSSTv5: *obs6_format
@@ -84,7 +112,7 @@ datasets: "{{dataset_list}}"
 
 
 preprocessors:
-  create_global_annual_mean_time_series:
+  create_global_annual_mean_time_series_tos:
     custom_order: true
     regrid:
       target_grid: 2x2
@@ -116,6 +144,27 @@ preprocessors:
       window_length: 3
     area_statistics:
       operator: mean
+
+  create_ohc_anomaly_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    area_statistics:
+      operator: sum
+    annual_statistics:
+      operator: mean
+    anomalies:
+      period: full
+      reference:
+        start_year: 1995
+        start_month: 1
+        start_day: 1
+        end_year: 2014
+        end_month: 12
+        end_day: 31
+    convert_units:
+      units: ZJ
 
 
 diagnostics:
@@ -154,6 +203,27 @@ diagnostics:
               ylim: [-3, 3]
               ylabel: "Oceanic Nino Index (K)"
 
+  timeseries_phcint_total:
+    description: Time series for global total ocean heat content anomaly.
+    themes:
+      - phys
+    realms:
+      - ocean
+    variables:
+      phcint_total:
+        mip: Omon
+        derive: true
+        preprocessor: create_ohc_anomaly_time_series
+        title: Global Ocean Heat Content Anomaly (relative to 1995-2014)
+        additional_datasets: *datasets_phcint_total
+        supplementary_variables: *supplementary_variables
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          timeseries:
+            <<: *timeseries_plot
+
   timeseries_tos:
     description: Time series for global mean sea surface temperature.
     themes:
@@ -163,7 +233,7 @@ diagnostics:
     variables:
       tos:
         mip: Omon
-        preprocessor: create_global_annual_mean_time_series
+        preprocessor: create_global_annual_mean_time_series_tos
         title: Global Mean Sea Surface Temperature
         additional_datasets: *datasets_tos
         supplementary_variables: *supplementary_variables
