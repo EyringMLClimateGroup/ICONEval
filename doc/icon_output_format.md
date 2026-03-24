@@ -33,6 +33,7 @@ follow the subsequent criteria as closely as possible.
 | Surface Downward Northward Wind Stress              | tauv (Pa)             | vmfl_s (N/m2) \[atm_2d_ml\]            | tauv (N/m2) \[atm_2d_ml\]        | -                                  |
 | Sea Surface Temperature                             | tos (degC)            | t_seasfc (K) \[atm_2d_ml\]             | -                                | Not yet supported for ICON-A       |
 | Surface Temperature                                 | ts (K)                | t_s (K) \[atm_2d_ml\]                  | ts (K) \[atm_2d_ml\]             | -                                  |
+| Total Column Ocean Heat Content                     | -                     | heat_content_total (J m-2) \[oce_def\] | -                                | Not yet supported for ICON-A       |
 
 ## 3D Variables
 
