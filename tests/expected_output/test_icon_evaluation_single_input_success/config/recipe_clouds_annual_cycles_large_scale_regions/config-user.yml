@@ -109,17 +109,17 @@ projects:
       input:
         dirname_template: ''
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-56/test_icon_evaluation_single_in1/input
+        rootpath: /tmp/pytest-of-b309141/pytest-61/test_icon_evaluation_single_in1/input
         type: esmvalcore.io.local.LocalDataSource
       input-outdata:
         dirname_template: outdata
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-56/test_icon_evaluation_single_in1/input
+        rootpath: /tmp/pytest-of-b309141/pytest-61/test_icon_evaluation_single_in1/input
         type: esmvalcore.io.local.LocalDataSource
       input-output:
         dirname_template: output
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-56/test_icon_evaluation_single_in1/input
+        rootpath: /tmp/pytest-of-b309141/pytest-61/test_icon_evaluation_single_in1/input
         type: esmvalcore.io.local.LocalDataSource
   EMAC:
     data:
@@ -137,7 +137,7 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
-        rootpath: /tmp/pytest-of-b309141/pytest-56/test_icon_evaluation_single_in1/input
+        rootpath: /tmp/pytest-of-b309141/pytest-61/test_icon_evaluation_single_in1/input
         type: esmvalcore.io.local.LocalDataSource
 dask:
   use: iconeval
@@ -148,4 +148,4 @@ dask:
         n_workers: 8
         threads_per_worker: 2
         type: distributed.LocalCluster
-output_dir: /tmp/pytest-of-b309141/pytest-56/test_icon_evaluation_single_in1/output/input_20000101_000000UTC/esmvaltool_output
+output_dir: /tmp/pytest-of-b309141/pytest-61/test_icon_evaluation_single_in1/output/input_20000101_000000UTC/esmvaltool_output
