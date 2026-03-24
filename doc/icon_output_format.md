@@ -3,18 +3,7 @@
 # Common ICON Output Format
 
 To ensure that ICONEval works smoothly, the ICON simulation output should
-follow the subsequent criteria as closely as possible. An example ICON-A run
-script that produces output which follows this standard can be found
-[here](../icon_run/exp.example_for_iconeval.run).
-
-To check if your output contains all necessary variables, you can use the
-recipe template
-[`recipe_check_data_availability.yml`](https://github.com/EyringMLClimateGroup/ICONEval/tree/main/iconeval/more_recipe_templates/recipe_check_data_availability.yml),
-e.g.,
-
-```bash
-iconeval path/to/ICON_output --recipe_templates=/path/to/ICONEval/iconeval/more_recipe_templates/recipe_check_data_availability.yml
-```
+follow the subsequent criteria as closely as possible.
 
 ## 2D Variables
 
