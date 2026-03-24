@@ -132,7 +132,7 @@ preprocessors:
       span: full
       keep_input_datasets: false
       ignore_scalar_coords: true
-      exclude: ["{{dataset}}", ICON-XPP]
+      exclude: ["{{dataset}}", EMAC, ICON, ICON-XPP]
 
 
 diagnostics:
