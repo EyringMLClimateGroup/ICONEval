@@ -1,9 +1,8 @@
 # ESMValTool
+#DASK --type=dask_jobqueue.SLURMCluster
+#ESMVALTOOL --max_parallel_tasks=1
 #SRUN --cpus-per-task=64
-#TAGS atmosphere
-#TAGS basics
-#TAGS precipitation
-#TAGS zonal-means
+#TAGS _custom_tag_
 ---
 documentation:
   title: Basic Model Evaluation (Zonal Means).
@@ -50,26 +49,14 @@ variable_vs_lat_plot:
   pyplot_kwargs:
     title: '{title} (*)'
   plot_kwargs:
-    EMAC:
+    EMAC: &id001
       label: '{dataset} ({exp})'
       linewidth: 1.25
       zorder: 2.5
       color: blue
-    EMAC_input:
-      label: '{dataset} ({exp})'
-      linewidth: 1.25
-      zorder: 2.5
-      color: blue
-    EMAC_EMAC:
-      label: '{dataset} ({exp})'
-      linewidth: 1.25
-      zorder: 2.5
-      color: blue
-    EMAC_EMAC_input:
-      label: '{dataset} ({exp})'
-      linewidth: 1.25
-      zorder: 2.5
-      color: blue
+    EMAC_input: *id001
+    EMAC_EMAC: *id001
+    EMAC_EMAC_input: *id001
     default:
       color: lightgray
       label: null
@@ -188,26 +175,14 @@ diagnostics:
             pyplot_kwargs:
               title: '{title} (*)'
             plot_kwargs:
-              EMAC:
+              EMAC: &id002
                 label: '{dataset} ({exp})'
                 linewidth: 1.25
                 zorder: 2.5
                 color: blue
-              EMAC_input:
-                label: '{dataset} ({exp})'
-                linewidth: 1.25
-                zorder: 2.5
-                color: blue
-              EMAC_EMAC:
-                label: '{dataset} ({exp})'
-                linewidth: 1.25
-                zorder: 2.5
-                color: blue
-              EMAC_EMAC_input:
-                label: '{dataset} ({exp})'
-                linewidth: 1.25
-                zorder: 2.5
-                color: blue
+              EMAC_input: *id002
+              EMAC_EMAC: *id002
+              EMAC_EMAC_input: *id002
               default:
                 color: lightgray
                 label: null
