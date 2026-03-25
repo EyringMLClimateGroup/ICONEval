@@ -109,32 +109,32 @@ projects:
       input_1:
         dirname_template: ''
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_1
+        rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_1-outdata:
         dirname_template: outdata
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_1
+        rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_1-output:
         dirname_template: output
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_1
+        rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_2:
         dirname_template: ''
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_2
+        rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
       input_2-outdata:
         dirname_template: outdata
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_2
+        rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
       input_2-output:
         dirname_template: output
         filename_template: '{exp}_{var_type}*.nc'
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_2
+        rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
   EMAC:
     data:
@@ -152,7 +152,7 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_1
+        rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_2:
         dirname_template: '{channel}'
@@ -168,7 +168,7 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
-        rootpath: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/input_2
+        rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
 dask:
   use: iconeval
@@ -179,4 +179,4 @@ dask:
         n_workers: 17
         threads_per_worker: 2
         type: distributed.LocalCluster
-output_dir: /tmp/pytest-of-b309141/pytest-93/test_icon_evaluation_multi_inp0/output/my_html_name_20260312_111604UTC/esmvaltool_output
+output_dir: ((tmp_path))/output/my_html_name_20000101_000000UTC/esmvaltool_output

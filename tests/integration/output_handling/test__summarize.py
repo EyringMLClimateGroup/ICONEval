@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 def test_summarize(
     description: str | None,
     expected_output_name: str,
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
@@ -43,13 +44,15 @@ def test_summarize(
     for subdir in subdirs:
         shutil.rmtree(esmvaltool_output / subdir)
     assert_output(
-        [],
+        tmp_path,
         esmvaltool_output,
         expected_output_dir / expected_output_name,
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
 
 def test_summarize_empty_logs(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
@@ -68,13 +71,15 @@ def test_summarize_empty_logs(
     for subdir in subdirs:
         shutil.rmtree(esmvaltool_output / subdir)
     assert_output(
-        [],
+        tmp_path,
         esmvaltool_output,
         expected_output_dir / "test_summarize_empty_logs",
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
 
 def test_summarize_no_debug_log(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
@@ -97,13 +102,15 @@ def test_summarize_no_debug_log(
     for subdir in subdirs:
         shutil.rmtree(esmvaltool_output / subdir)
     assert_output(
-        [],
+        tmp_path,
         esmvaltool_output,
         expected_output_dir / "test_summarize_no_debug_log",
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
 
 def test_summarize_debug_log_single_line(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
@@ -126,7 +133,8 @@ def test_summarize_debug_log_single_line(
     for subdir in subdirs:
         shutil.rmtree(esmvaltool_output / subdir)
     assert_output(
-        [],
+        tmp_path,
         esmvaltool_output,
         expected_output_dir / "test_summarize_debug_log_single_line",
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )

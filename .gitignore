@@ -122,3 +122,6 @@ dmypy.json
 
 # Editor files
 *.swp
+
+# Temporary expected output directories
+expected_output_tmp_*/

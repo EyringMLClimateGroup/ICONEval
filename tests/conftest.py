@@ -28,6 +28,18 @@ pytest.register_assert_rewrite("tests.integration")
 logger = logger.opt(colors=True)
 
 
+def pytest_addoption(parser: pytest.Parser) -> None:
+    """Add pytest options."""
+    parser.addoption("--generate_expected_output")
+
+
+def pytest_collection_modifyitems(items: list[pytest.Function]) -> None:
+    """Automatically add markers to tests based on fixture usage."""
+    for item in items:
+        if "expected_output_dir" in getattr(item, "fixturenames", ()):
+            item.add_marker("uses_expected_output")
+
+
 @pytest.fixture
 def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixture]:
     """Overwrite default caplog feature so it works with loguru."""
