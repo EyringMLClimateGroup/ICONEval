@@ -50,6 +50,7 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
 @pytest.mark.parametrize("tags", [[], None])
 def test_icon_evaluation_single_input_success(
     tags: list[str] | None,
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     caplog: pytest.LogCaptureFixture,
     tmp_path: Path,
@@ -74,10 +75,11 @@ def test_icon_evaluation_single_input_success(
     # Check output
     expected_output = expected_output_dir / "test_icon_evaluation_single_input_success"
     assert_output(
-        [input_dir],
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls
@@ -150,6 +152,7 @@ def test_icon_evaluation_single_input_success(
 
 
 def test_icon_evaluation_multi_input_success(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
@@ -195,10 +198,11 @@ def test_icon_evaluation_multi_input_success(
     # Check output
     expected_output = expected_output_dir / "test_icon_evaluation_multi_input_success"
     assert_output(
-        input_dirs,
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls
@@ -296,6 +300,7 @@ def test_icon_evaluation_multi_input_success(
 
 
 def test_icon_evaluation_single_input_background(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
@@ -328,10 +333,11 @@ def test_icon_evaluation_single_input_background(
         expected_output_dir / "test_icon_evaluation_single_input_background"
     )
     assert_output(
-        [input_dir],
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["esmvaltool_output", "slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls
@@ -395,6 +401,7 @@ def test_icon_evaluation_single_input_background(
 
 
 def test_icon_evaluation_single_input_fail(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
@@ -424,10 +431,11 @@ def test_icon_evaluation_single_input_fail(
     # Check output
     expected_output = expected_output_dir / "test_icon_evaluation_single_input_fail"
     assert_output(
-        [input_dir],
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls
@@ -524,6 +532,7 @@ def test_icon_evaluation_single_input_fail(
 
 
 def test_icon_evaluation_single_input_run_longer(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     recipe_template_dir: Path,
     caplog: pytest.LogCaptureFixture,
@@ -570,10 +579,11 @@ def test_icon_evaluation_single_input_run_longer(
         expected_output_dir / "test_icon_evaluation_single_input_run_longer"
     )
     assert_output(
-        [input_dir],
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls
@@ -647,6 +657,7 @@ def test_icon_evaluation_single_input_run_longer(
 
 
 def test_icon_evaluation_single_input_custom_recipe_options(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
@@ -680,10 +691,11 @@ def test_icon_evaluation_single_input_custom_recipe_options(
         expected_output_dir / "test_icon_evaluation_single_input_custom_recipe_options"
     )
     assert_output(
-        [input_dir],
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls
@@ -755,6 +767,7 @@ def test_icon_evaluation_single_input_custom_recipe_options(
 
 
 def test_icon_evaluation_single_input_custom_recipe_options_ignore(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     caplog: pytest.LogCaptureFixture,
@@ -792,10 +805,11 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
         / "test_icon_evaluation_single_input_custom_recipe_options_ignore"
     )
     assert_output(
-        [input_dir],
+        tmp_path,
         actual_output,
         expected_output,
         empty_dirs=["slurm"],
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
     # Check mock calls

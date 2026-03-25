@@ -1,20 +1,44 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+import shutil
+from pathlib import Path
 
-import pytest
 import yaml
 
-if TYPE_CHECKING:
-    from pathlib import Path
+TMP_PATH_PLACEHOLDER = "((tmp_path))"
 
 
 def assert_output(
-    input_dirs: list[Path],
+    tmp_path: Path,
     actual_output: Path,
     expected_output: Path,
     empty_dirs: list[str] | None = None,
+    generate_expected_output: str | None = None,
 ) -> None:
+    # If desired, write expected output instead of checking it
+    if generate_expected_output is not None:
+        target_dir = Path(generate_expected_output).resolve() / expected_output.name
+        try:
+            shutil.copytree(actual_output, target_dir)
+        except FileExistsError:
+            return
+
+        # Delete empty directories (those cannot be checkout out on git)
+        subdirs = (d for d in target_dir.iterdir() if d.is_dir())
+        for subdir in subdirs:
+            if not list(subdir.iterdir()):
+                subdir.rmdir()
+
+        # Replace temporary directory with placeholder
+        for _root, _, _files in target_dir.walk():
+            for _file in _files:
+                file_path = _root / _file
+                content = file_path.read_text(encoding="utf-8")
+                content = content.replace(str(tmp_path), TMP_PATH_PLACEHOLDER)
+                file_path.write_text(content, encoding="utf-8")
+
+        return
+
     # Empty directories cannot be checked out on git, so we need to account for
     # this here
     if empty_dirs is None:
@@ -38,126 +62,15 @@ def assert_output(
             expected_file = _root / _file
             assert actual_file.is_file()
 
-            # Recipes, debug.html, and swiftenv are expected to be identical
-            if expected_file.name.startswith("recipe_"):
-                with actual_file.open(encoding="utf-8") as file:
-                    actual_content = yaml.safe_load(file)
-                with expected_file.open(encoding="utf-8") as file:
-                    expected_content = yaml.safe_load(file)
-                assert actual_content == expected_content
-            elif expected_file.name in ("debug.html", "swiftenv"):
-                actual_content = actual_file.read_text(encoding="utf-8")
-                expected_content = expected_file.read_text(encoding="utf-8")
-                assert actual_content == expected_content
+            # Replace placeholders
+            actual_content = actual_file.read_text(encoding="utf-8")
+            actual_content = actual_content.replace(str(tmp_path), TMP_PATH_PLACEHOLDER)
+            expected_content = expected_file.read_text(encoding="utf-8")
 
-            # index.html files are identical apart from paths
-            elif expected_file.name.startswith("index"):
-                actual_content = actual_file.read_text(encoding="utf-8")
-                expected_content = expected_file.read_text(encoding="utf-8")
-                for idx, input_dir in enumerate(input_dirs):
-                    expected_content = expected_content.replace(
-                        f"{{{{iconeval_input_path:{idx}}}}}",
-                        str(input_dir),
-                    )
-                assert actual_content == expected_content
+            # Compare YAML files by actually parsing them
+            if expected_file.suffix in (".yml", ".yaml"):
+                actual_content = yaml.safe_load(actual_content)
+                expected_content = yaml.safe_load(expected_content)
 
-            # Config files are different (different paths), so we need to be
-            # more careful here
-            elif expected_file.name == "config-user.yml":
-                with actual_file.open(encoding="utf-8") as file:
-                    actual_content = yaml.safe_load(file)
-                with expected_file.open(encoding="utf-8") as file:
-                    expected_content = yaml.safe_load(file)
-                assert actual_content.keys() == expected_content.keys()
-                identical_keys = ["auxiliary_data_dir", "dask", "max_parallel_tasks"]
-                for key in identical_keys:
-                    assert actual_content[key] == expected_content[key]
-                assert actual_content["output_dir"] == str(
-                    actual_output / "esmvaltool_output",
-                )
-
-                # Projects
-                assert (
-                    actual_content["projects"].keys()
-                    == expected_content["projects"].keys()
-                )
-                identical_projects = [
-                    "CMIP6",
-                    "CMIP5",
-                    "CMIP3",
-                    "CORDEX",
-                    "obs4MIPs",
-                    "ana4MIPs",
-                    "native6",
-                    "OBS6",
-                    "OBS",
-                ]
-                for project in identical_projects:
-                    assert (
-                        actual_content["projects"][project]
-                        == expected_content["projects"][project]
-                    )
-
-                # ICON
-                expected_icon_config: dict[str, dict[str, str]] = {}
-                for input_dir in input_dirs:
-                    icon_config = {
-                        "filename_template": "{exp}_{var_type}*.nc",
-                        "rootpath": str(input_dir),
-                        "type": "esmvalcore.io.local.LocalDataSource",
-                    }
-                    exp = input_dir.stem
-                    expected_icon_config[exp] = {
-                        **icon_config,
-                        "dirname_template": "",
-                    }
-                    expected_icon_config[f"{exp}-outdata"] = {
-                        **icon_config,
-                        "dirname_template": "outdata",
-                    }
-                    expected_icon_config[f"{exp}-output"] = {
-                        **icon_config,
-                        "dirname_template": "output",
-                    }
-                assert actual_content["projects"]["ICON"] == {
-                    "data": expected_icon_config,
-                }
-
-                # EMAC
-                expected_emac_config: dict[str, dict[str, Any]] = {}
-                for input_dir in input_dirs:
-                    exp = input_dir.stem
-                    expected_emac_config[exp] = {
-                        "dirname_template": "{channel}",
-                        "filename_template": "{exp}*{channel}{postproc_flag}.nc",
-                        "ignore_warnings": [
-                            {
-                                "message": "Ignored formula of unrecognised type: .*",
-                                "module": "iris",
-                            },
-                            {
-                                "message": "Ignoring formula terms variable .* "
-                                "referenced by data variable .* via "
-                                "variable .*",
-                                "module": "iris",
-                            },
-                            {
-                                "message": "Missing CF-netCDF formula term variable "
-                                ".*, referenced by netCDF variable .*",
-                                "module": "iris",
-                            },
-                            {
-                                "message": "NetCDF variable .* contains unknown "
-                                "cell method .*",
-                                "module": "iris",
-                            },
-                        ],
-                        "rootpath": str(input_dir),
-                        "type": "esmvalcore.io.local.LocalDataSource",
-                    }
-                assert actual_content["projects"]["EMAC"] == {
-                    "data": expected_emac_config,
-                }
-
-            else:
-                pytest.fail(f"Unknown file type in output ({_file})")
+            # Compare files
+            assert actual_content == expected_content
