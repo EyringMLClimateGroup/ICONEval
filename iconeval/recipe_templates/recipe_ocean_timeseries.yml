@@ -37,7 +37,7 @@ datasets_amoc: &datasets_amoc  # fix list of models (otherwise very few are foun
   - {<<: *defaults_cmip6, dataset: UKESM1-0-LL, ensemble: r1i1p1f2}
   - {project: OBS6, dataset: RAPID, type: exp, version: 2024.1a, tier: 3, timerange: 20040101/20241231, force_derivation: false}  # 20040101/20241231
 
-datasets_phcint_total: &datasets_phcint_total  # fix list of models to avoid CMOR check error
+datasets_phcint: &datasets_phcint  # fix list of models to avoid CMOR check error
   - {<<: *defaults_cmip6, dataset: ACCESS-CM2}
   - {<<: *defaults_cmip6, dataset: ACCESS-ESM1-5}
   - {<<: *defaults_cmip6, dataset: CAMS-CSM1-0}
@@ -154,11 +154,73 @@ preprocessors:
     area_statistics:
       operator: mean
 
-  create_ohc_anomaly_time_series:
+  create_ohc_total_anomaly_time_series:
     custom_order: true
     regrid:
       target_grid: 2x2
       scheme: linear  # some models do not work with ESMFAreaWeighted
+    axis_statistics:
+      axis: Z
+      operator: sum
+      weights: false
+    area_statistics:
+      operator: sum
+    annual_statistics:
+      operator: mean
+    anomalies:
+      period: full
+      reference:
+        start_year: 1995
+        start_month: 1
+        start_day: 1
+        end_year: 2014
+        end_month: 12
+        end_day: 31
+    convert_units:
+      units: ZJ
+
+  create_ohc_300m_anomaly_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    extract_volume:
+      z_min: 0.0
+      z_max: 300.0
+      interval_bounds: left_closed
+    axis_statistics:
+      axis: Z
+      operator: sum
+      weights: false
+    area_statistics:
+      operator: sum
+    annual_statistics:
+      operator: mean
+    anomalies:
+      period: full
+      reference:
+        start_year: 1995
+        start_month: 1
+        start_day: 1
+        end_year: 2014
+        end_month: 12
+        end_day: 31
+    convert_units:
+      units: ZJ
+
+  create_ohc_2000m_anomaly_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    extract_volume:
+      z_min: 0.0
+      z_max: 2000.0
+      interval_bounds: left_closed
+    axis_statistics:
+      axis: Z
+      operator: sum
+      weights: false
     area_statistics:
       operator: sum
     annual_statistics:
@@ -249,20 +311,37 @@ diagnostics:
               ylim: [-3, 3]
               ylabel: "Oceanic Nino Index [{units}]"
 
-  timeseries_phcint_total:
-    description: Time series for global total ocean heat content anomaly.
+  timeseries_phcint:
+    description: Time series for global ocean heat content anomaly.
     themes:
       - phys
     realms:
       - ocean
     variables:
       phcint_total:
+        short_name: phcint
         mip: Omon
         derive: true
-        preprocessor: create_ohc_anomaly_time_series
-        title: Global Ocean Heat Content Anomaly (relative to 1995-2014)
-        additional_datasets: *datasets_phcint_total
+        force_derivation: true
+        preprocessor: create_ohc_total_anomaly_time_series
+        title: Global Ocean Heat Content Anomaly (full depth)
         supplementary_variables: *supplementary_variables
+      phcint_300m:
+        short_name: phcint
+        mip: Omon
+        derive: true
+        force_derivation: true
+        preprocessor: create_ohc_300m_anomaly_time_series
+        title: Global Ocean Heat Content Anomaly (0-300m)
+        supplementary_variables: *supplementary_variables
+      phcint_2000m:
+        short_name: phcint
+        mip: Omon
+        derive: true
+        force_derivation: true
+        preprocessor: create_ohc_2000m_anomaly_time_series
+        title: Global Ocean Heat Content Anomaly (0-2000m)
+    additional_datasets: *datasets_phcint
     scripts:
       plot:
         <<: *plot_script
