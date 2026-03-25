@@ -33,26 +33,27 @@ follow the subsequent criteria as closely as possible.
 | Surface Downward Northward Wind Stress              | tauv (Pa)             | vmfl_s (N/m2) \[atm_2d_ml\]            | tauv (N/m2) \[atm_2d_ml\]        | -                                  |
 | Sea Surface Temperature                             | tos (degC)            | t_seasfc (K) \[atm_2d_ml\]             | -                                | Not yet supported for ICON-A       |
 | Surface Temperature                                 | ts (K)                | t_s (K) \[atm_2d_ml\]                  | ts (K) \[atm_2d_ml\]             | -                                  |
-| Total Column Ocean Heat Content                     | -                     | heat_content_total (J m-2) \[oce_def\] | -                                | Not yet supported for ICON-A       |
 
 ## 3D Variables
 
 3D variables should have the dimensions (*time*, *height*/*depth*, *latitude*, *longitude*).
 
-| Description                      | CMIP variable | ICON-XPP variable  | ICON-A variable | Comments                                     |
-| -------------------------------- | ------------- | ------------------ | --------------- | -------------------------------------------- |
-| Cloud Cover                      | cl (%)        | clc (%)            | cl (%)          | -                                            |
-| Cloud Ice Mass Fraction          | cli (kg/kg)   | tot_qi_dia (kg/kg) | cli (kg/kg)     | -                                            |
-| Cloud Liquid Water Mass Fraction | clw (kg/kg)   | tot_qc_dia (kg/kg) | clw (kg/kg)     | -                                            |
-| Specific Humidity                | hus (1)       | qv (kg/kg)         | hus (1)         | -                                            |
-| Pressure at Model Full-Levels    | pfull (Pa)    | pres (Pa)          | pfull (Pa)      | -                                            |
-| Pressure on Model Half-Levels    | phalf (Pa)    | -                  | phalf (Pa)      | -                                            |
-| Sea Water Salinity               | so (0.001)    | so (0.001)         | -               | Not yet supported for ICON-A                 |
-| Air Temperature                  | ta (K)        | temp (K)           | ta (K)          | -                                            |
-| Eastward Wind                    | ua (m/s)      | u (m/s)            | ua (m/s)        | -                                            |
-| Northward Wind                   | va (m/s)      | v (m/s)            | va (m/s)        | -                                            |
-| Vertical velocity omega (=dp/dt) | wap (Pa/s)    | omega (Pa/s)       | wap (Pa/s)      | -                                            |
-| Geopotential Height              | zg (m)        | geopot (m2/s2)     | zg (m)          | ICON-XPP: zg needs to be derived from geopot |
+| Description                                      | CMIP variable   | ICON-XPP variable                                                         | ICON-A variable | Comments                                     |
+| ------------------------------------------------ | --------------- | ------------------------------------------------------------------------- | --------------- | -------------------------------------------- |
+| Cloud Cover                                      | cl (%)          | clc (%)                                                                   | cl (%)          | -                                            |
+| Cloud Ice Mass Fraction                          | cli (kg/kg)     | tot_qi_dia (kg/kg)                                                        | cli (kg/kg)     | -                                            |
+| Cloud Liquid Water Mass Fraction                 | clw (kg/kg)     | tot_qc_dia (kg/kg)                                                        | clw (kg/kg)     | -                                            |
+| Specific Humidity                                | hus (1)         | qv (kg/kg)                                                                | hus (1)         | -                                            |
+| Ocean Meridional Overturning Mass Streamfunction | msftmz (kg s-1) | atlantic_moc \[oce_moc\], pacific_moc \[oce_moc\], global_moc \[oce_moc\] | -               | Not yet supported for ICON-A                 |
+| Pressure at Model Full-Levels                    | pfull (Pa)      | pres (Pa)                                                                 | pfull (Pa)      | -                                            |
+| Pressure on Model Half-Levels                    | phalf (Pa)      | -                                                                         | phalf (Pa)      | -                                            |
+| Sea Water Salinity                               | so (0.001)      | so (0.001)                                                                | -               | Not yet supported for ICON-A                 |
+| Air Temperature                                  | ta (K)          | temp (K)                                                                  | ta (K)          | -                                            |
+| Sea Water Potential Temperature                  | thetao (degC)   | to (degC) \[oce_def\]                                                     | -               | Not yet supported for ICON-A                 |
+| Eastward Wind                                    | ua (m/s)        | u (m/s)                                                                   | ua (m/s)        | -                                            |
+| Northward Wind                                   | va (m/s)        | v (m/s)                                                                   | va (m/s)        | -                                            |
+| Vertical velocity omega (=dp/dt)                 | wap (Pa/s)      | omega (Pa/s)                                                              | wap (Pa/s)      | -                                            |
+| Geopotential Height                              | zg (m)          | geopot (m2/s2)                                                            | zg (m)          | ICON-XPP: zg needs to be derived from geopot |
 
 ## Output Frequency
 
