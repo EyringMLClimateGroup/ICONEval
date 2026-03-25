@@ -330,7 +330,7 @@ class IconEvalIOHandler:
 
         # Resolve globs and Remove duplicates
         recipe_template_list = self._resolve_globs(recipe_template_list)
-        recipe_template_list = sorted(set(recipe_template_list))
+        recipe_template_list = list(set(recipe_template_list))
 
         # Check if recipe templates exist
         for recipe_template_path in recipe_template_list:
@@ -371,16 +371,16 @@ class IconEvalIOHandler:
 
             recipe_templates = list(unique_recipe_templates)
 
-        for recipe_template in recipe_templates:
-            logger.debug(f"  - {recipe_template.path}")
-
+        # Check if recipes remained; if yes, sort and log them
         if not recipe_templates:
             if tags is not None:
                 msg = f"No recipe templates for tags {tags} given"
             else:
                 msg = "No recipe templates given"
             raise ValueError(msg)
-
+        recipe_templates = sorted(recipe_templates)
+        for recipe_template in recipe_templates:
+            logger.debug(f"  - {recipe_template.path}")
         logger.debug("")
 
         return recipe_templates

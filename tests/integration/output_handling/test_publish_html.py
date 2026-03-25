@@ -179,6 +179,7 @@ def test_publish_esmvaltool_html_files_to_large(
 
 
 def test_publish_esmvaltool_html_force(
+    pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
@@ -253,9 +254,10 @@ def test_publish_esmvaltool_html_force(
     for subdir in subdirs:
         shutil.rmtree(esmvaltool_output / subdir)
     assert_output(
-        [],
+        tmp_path,
         esmvaltool_output,
         expected_output_dir / "test_publish_esmvaltool_html_force",
+        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
 
 

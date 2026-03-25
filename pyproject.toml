@@ -57,6 +57,9 @@ ignore-words-list = "emac,oce,pres"
 
 [tool.pytest.ini_options]
 addopts = ["-ra", "--strict-config", "--strict-markers"]
+markers = [
+    "uses_expected_output: Test uses pre-calculated expected output",
+]
 minversion = "6.0"
 xfail_strict = true
 

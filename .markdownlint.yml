@@ -1,0 +1,8 @@
+MD013: false  # Line length
+MD033: false  # No inline HTML
+MD041: false  # First line in a file should be top level heading
+MD049:        # Emphasis style
+  style: asterisk
+MD050:        # Strong style
+  style: asterisk
+MD059: false  # Link text should be descriptive
