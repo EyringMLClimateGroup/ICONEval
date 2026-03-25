@@ -320,7 +320,7 @@ diagnostics:
     variables:
       phcint_total:
         short_name: phcint
-        mip: Omon
+        mip: Oyr
         derive: true
         force_derivation: true
         preprocessor: create_ohc_total_anomaly_time_series
@@ -328,7 +328,7 @@ diagnostics:
         supplementary_variables: *supplementary_variables
       phcint_300m:
         short_name: phcint
-        mip: Omon
+        mip: Oyr
         derive: true
         force_derivation: true
         preprocessor: create_ohc_300m_anomaly_time_series
@@ -336,7 +336,7 @@ diagnostics:
         supplementary_variables: *supplementary_variables
       phcint_2000m:
         short_name: phcint
-        mip: Omon
+        mip: Oyr
         derive: true
         force_derivation: true
         preprocessor: create_ohc_2000m_anomaly_time_series
