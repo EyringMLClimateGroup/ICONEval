@@ -38,21 +38,21 @@ datasets_amoc: &datasets_amoc  # fix list of models (otherwise very few are foun
   - {project: OBS6, dataset: RAPID, type: exp, version: 2024.1a, tier: 3, timerange: 20040101/20241231, force_derivation: false}  # 20040101/20241231
 
 datasets_phcint: &datasets_phcint  # fix list of models to avoid CMOR check error
-  - {<<: *defaults_cmip6, dataset: ACCESS-CM2}
-  - {<<: *defaults_cmip6, dataset: ACCESS-ESM1-5}
-  - {<<: *defaults_cmip6, dataset: CAMS-CSM1-0}
-  - {<<: *defaults_cmip6, dataset: CanESM5}
-  - {<<: *defaults_cmip6, dataset: EC-Earth3}
-  - {<<: *defaults_cmip6, dataset: HadGEM3-GC31-LL, ensemble: r1i1p1f3}
-  - {<<: *defaults_cmip6, dataset: ICON-ESM-LR}
-  - {<<: *defaults_cmip6, dataset: IPSL-CM6A-LR}
-  - {<<: *defaults_cmip6, dataset: MPI-ESM-1-2-HAM}
-  - {<<: *defaults_cmip6, dataset: MPI-ESM1-2-HR}
-  - {<<: *defaults_cmip6, dataset: MPI-ESM1-2-LR}
-  - {<<: *defaults_cmip6, dataset: MRI-ESM2-0}
-  - {<<: *defaults_cmip6, dataset: UKESM1-0-LL, ensemble: r1i1p1f2}
-  - {project: OBS6, dataset: EN4, type: reanaly, version: 4.2.2, tier: 2, timerange: 19790101/20251231}  # 19000101/20251231
-  - {project: OBS6, dataset: IAP, type: reanaly, version: v4.2, tier: 2, timerange: 19790101/20241231}  # 19400101/20241231
+  - {<<: *defaults_cmip6, mip: Omon, dataset: ACCESS-CM2}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: ACCESS-ESM1-5}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: CAMS-CSM1-0}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: CanESM5}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: EC-Earth3}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: HadGEM3-GC31-LL, ensemble: r1i1p1f3}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: ICON-ESM-LR}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: IPSL-CM6A-LR}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: MPI-ESM-1-2-HAM}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: MPI-ESM1-2-HR}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: MPI-ESM1-2-LR}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: MRI-ESM2-0}
+  - {<<: *defaults_cmip6, mip: Omon, dataset: UKESM1-0-LL, ensemble: r1i1p1f2}
+  - {project: OBS6, dataset: EN4, type: reanaly, version: 4.2.2, tier: 2, mip: Omon, timerange: 19790101/20251231}  # 19000101/20251231
+  - {project: OBS6, dataset: IAP, type: reanaly, version: v4.2, tier: 2, mip: Omon, timerange: 19790101/20241231}  # 19400101/20241231
 
 datasets_tos: &datasets_tos
   - {project: OBS6, dataset: ESACCI-SST, type: sat, version: 3.0-L4-analysis, tier: 2, timerange: 19800101/20211231}  # 19800101/20211231
