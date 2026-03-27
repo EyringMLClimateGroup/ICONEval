@@ -190,7 +190,7 @@ def test_icon_evaluation_multi_input_success(
         esmvaltool_options={"--auxiliary_data_dir": "/path/to/a"},
         srun_options={"--cpus-per-task": 17},
         dask_options={"--n_workers": 17},
-        tags=["maps", "subdaily", "!annual-cycles", "portrait-plots", "!ocean"],
+        tags=["map", "subdaily", "!annual-cycle", "portrait-plot", "!ocean"],
         timerange="19990101/20000101",
         ugrid=False,
     )
@@ -796,7 +796,7 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
         ignore_recipe_esmvaltool_options=True,
         ignore_recipe_srun_options=True,
         ignore_recipe_dask_options=True,
-        tags="!maps",
+        tags="!map",
     )
 
     # Check output

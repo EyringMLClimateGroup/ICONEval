@@ -3,7 +3,7 @@
 #DASK --n_workers=4
 #TAGS atmosphere
 #TAGS precipitation
-#TAGS diurnal-cycles
+#TAGS diurnal-cycle
 #TAGS subdaily
 ---
 documentation:

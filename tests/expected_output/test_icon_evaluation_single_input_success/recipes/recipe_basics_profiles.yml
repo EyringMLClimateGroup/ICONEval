@@ -3,7 +3,7 @@
 #DASK --n_workers=4
 #TAGS atmosphere
 #TAGS basics
-#TAGS profiles
+#TAGS profile
 ---
 documentation:
   title: Basic Model Evaluation (Profiles).

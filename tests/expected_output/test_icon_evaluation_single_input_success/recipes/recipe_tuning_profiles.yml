@@ -3,7 +3,7 @@
 #DASK --n_workers=4
 #TAGS atmosphere
 #TAGS tuning
-#TAGS profiles
+#TAGS profile
 ---
 documentation:
   title: Model Evaluation with Focus on Tuning (Profiles).
