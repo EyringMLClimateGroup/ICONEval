@@ -53,7 +53,7 @@ diurnal_cycle_line_plot:
     borderaxespad: 0.0
   pyplot_kwargs:
     title: '{title}'
-    ylabel: '{short_name}'
+    ylabel: '{short_name} [{units}]'
   plot_kwargs:
     ICON:
       label: '{dataset} ({exp})'
@@ -356,7 +356,7 @@ diagnostics:
               borderaxespad: 0.0
             pyplot_kwargs:
               title: '{title}'
-              ylabel: '{short_name}'
+              ylabel: '{short_name} [{units}]'
             plot_kwargs:
               ICON:
                 label: '{dataset} ({exp})'
