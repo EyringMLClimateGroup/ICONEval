@@ -2,7 +2,7 @@
 #TAGS atmosphere
 #TAGS basics
 #TAGS precipitation
-#TAGS zonal-means
+#TAGS zonal-mean
 ---
 documentation:
   title: Basic Model Evaluation (Zonal Means).
