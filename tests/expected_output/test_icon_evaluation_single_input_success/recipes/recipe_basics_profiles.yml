@@ -3,6 +3,7 @@
 #DASK --n_workers=4
 #TAGS atmosphere
 #TAGS basics
+#TAGS temperature
 #TAGS profile
 ---
 documentation:
