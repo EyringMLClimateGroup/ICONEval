@@ -27,7 +27,7 @@ logger = logger.opt(colors=True)
 
 
 class Session:
-    """Class that manages IO dirs and files for ICON output evaluation."""
+    """Manage ICONEval session."""
 
     PROJECT_ROOT_DIR: ClassVar[Path] = Path(str(files("iconeval"))).resolve()
 
