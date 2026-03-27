@@ -1,4 +1,4 @@
-"""Module that manages file templates."""
+"""Manage file templates."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 # Note: Templates need to be hashable; thus, we use a frozen dataclass here
 @dataclass(frozen=True, order=True)
 class Template:
-    """Base class for templates."""
+    """Manage template."""
 
     path: Path
     check_placeholders: bool = field(default=True, kw_only=True)
@@ -35,7 +35,7 @@ class Template:
     TEMPLATE_TYPE: ClassVar[str] = "template"
 
     def __post_init__(self) -> None:
-        """Initialize class."""
+        """Initialize class instance."""
         # See https://docs.python.org/3/library/dataclasses.html#frozen-instances
         object.__setattr__(
             self,
@@ -130,7 +130,7 @@ class Template:
 
 @dataclass(frozen=True, order=True)
 class RecipeTemplate(Template):
-    """Represents a recipe template."""
+    """Manage recipe template."""
 
     dask_options: dict[str, OptionValueType] = field(
         init=False,
@@ -158,7 +158,7 @@ class RecipeTemplate(Template):
     TAGS_MARKER: ClassVar[str] = "#TAGS"
 
     def __post_init__(self) -> None:
-        """Initialize class."""
+        """Initialize class instance."""
         super().__post_init__()
         object.__setattr__(
             self,
@@ -388,7 +388,7 @@ class RecipeTemplate(Template):
 
 @dataclass(frozen=True, order=True)
 class ESMValToolConfigTemplate(Template):
-    """Represents an ESMValTool configuration template."""
+    """Manage ESMValTool configuration template."""
 
     REQUIRED_PLACEHOLDERS = ()
     TEMPLATE_TYPE = "ESMValTool configuration template"

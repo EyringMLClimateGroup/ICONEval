@@ -1,4 +1,4 @@
-"""Module that manages ESMValTool configuration."""
+"""Manage ESMValTool configurations."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class ESMValToolConfig:
-    """Represents an ESMValTool configuration file."""
+    """Manage ESMValTool configuration."""
 
     path: Path = field(kw_only=True)
     template: ESMValToolConfigTemplate = field(repr=False, kw_only=True)

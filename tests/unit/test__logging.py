@@ -7,7 +7,7 @@ from unittest.mock import call
 import pytest
 
 import iconeval._logging
-from iconeval._io_handler import IconEvalIOHandler
+from iconeval._session import Session
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -34,17 +34,17 @@ def output_dir(tmp_path: Path) -> Path:
 
 
 def test___repr__(input_dirs: list[Path], output_dir: Path) -> None:
-    io_handler = IconEvalIOHandler(input_dirs, output_dir, "my_run_name")
+    session = Session(input_dirs, output_dir, "my_run_name")
     expected_output_dir = output_dir / "my_run_name_20000101_000000UTC"
-    assert repr(io_handler) == (
-        f"IconEvalIOHandler(input_dirs={input_dirs!r}, output_dir="
-        f"{expected_output_dir!r}, run_name='my_run_name')"
+    assert repr(session) == (
+        f"Session(input_dirs={input_dirs!r}, output_dir="
+        f"{expected_output_dir!r}, name='my_run_name')"
     )
 
 
 def test_input_dirs(input_dirs: list[Path], output_dir: Path) -> None:
-    io_handler = IconEvalIOHandler(input_dirs, output_dir, "my_run_name")
-    assert io_handler.input_dirs == input_dirs
+    session = Session(input_dirs, output_dir, "my_run_name")
+    assert session.input_dirs == input_dirs
 
 
 def test_no_output_dir(
@@ -52,13 +52,13 @@ def test_no_output_dir(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(iconeval._io_handler.Path, "cwd", lambda: tmp_path)
-    io_handler = IconEvalIOHandler(input_dirs, None, None)
+    monkeypatch.setattr(iconeval._session.Path, "cwd", lambda: tmp_path)
+    session = Session(input_dirs, None, None)
     assert (
-        io_handler.output_dir
+        session.output_dir
         == tmp_path / "output_iconeval" / "input_1_input_2_20000101_000000UTC"
     )
-    assert io_handler.run_name == "input_1_input_2"
+    assert session.name == "input_1_input_2"
 
 
 def test_configure_logging(tmp_path: Path, mocker: pytest_mock.MockerFixture) -> None:
