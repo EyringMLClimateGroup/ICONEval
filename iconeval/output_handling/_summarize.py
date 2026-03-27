@@ -25,17 +25,17 @@ from iconeval._templates import RecipeTemplate
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from iconeval._io_handler import IconEvalIOHandler
+    from iconeval._session import Session
     from iconeval._typing import RealmType
 
 
 logger = logger.opt(colors=True)
 
 
-def get_html_description(io_handler: IconEvalIOHandler, date: datetime) -> str:
+def get_html_description(session: Session, date: datetime) -> str:
     """Create description of simulation(s) for HTML."""
     # Simulation-specific information
-    simulations_info = io_handler.simulations_info
+    simulations_info = session.simulations_info
     sim_str = ""
     for index, sim_info in enumerate(simulations_info):
         namelist_files_html = "".join(

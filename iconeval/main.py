@@ -15,8 +15,8 @@ from iconeval._dependencies import (
     verify_esmvaltool_installation,
     verify_slurm_installation,
 )
-from iconeval._io_handler import IconEvalIOHandler
 from iconeval._logging import configure_logging
+from iconeval._session import Session
 from iconeval.output_handling._summarize import get_html_description, summarize
 from iconeval.output_handling.publish_html import publish_esmvaltool_html
 
@@ -259,11 +259,11 @@ def icon_evaluation(
 
     # Basic setup of IO directories and files
     TIMES["start_setup"] = datetime.now(UTC)
-    io_handler = IconEvalIOHandler(input_dirs, output_dir, html_name)
+    session = Session(input_dirs, output_dir, html_name)
     TIMES["end_setup"] = datetime.now(UTC)
 
     # Setup jobs (i.e., recipes and configuration)
-    jobs = io_handler.get_jobs(
+    jobs = session.get_jobs(
         recipe_template_paths=recipe_templates,
         always_use_default_recipe_templates=always_use_default_recipe_templates,
         account=account,
@@ -293,15 +293,15 @@ def icon_evaluation(
         logger.info(
             f"Time for running ICONEval was {TIMES['end'] - TIMES['start']}",
         )
-        return io_handler.output_dir
+        return session.output_dir
 
     # Create summary HTML and publish it if desired
     TIMES["start_html"] = datetime.now(UTC)
     logger.info("HTML output:")
     logger.info("------------")
-    _create_summary_html(io_handler)
+    _create_summary_html(session)
     if publish_html:
-        _publish_html(io_handler, html_name)
+        _publish_html(session, html_name)
     TIMES["end_html"] = datetime.now(UTC)
     logger.debug(
         f"Time for creating HTML output was {TIMES['end_html'] - TIMES['start_html']}",
@@ -315,29 +315,29 @@ def icon_evaluation(
         f"Time for running ICONEval was {TIMES['end'] - TIMES['start']}",
     )
 
-    return io_handler.output_dir
+    return session.output_dir
 
 
-def _create_summary_html(io_handler: IconEvalIOHandler) -> None:
+def _create_summary_html(session: Session) -> None:
     """Create summary HTML."""
-    description = get_html_description(io_handler, TIMES["start"])
-    summarize(io_handler.output_dir_esmvaltool, description=description)
+    description = get_html_description(session, TIMES["start"])
+    summarize(session.output_dir_esmvaltool, description=description)
 
 
 def _publish_html(
-    io_handler: IconEvalIOHandler,
+    session: Session,
     html_name: str | None,
 ) -> None:
     """Publish HTML."""
     if html_name is None:
-        html_name = io_handler.output_dir.name
+        html_name = session.output_dir.name
     container_name = "iconeval"
     logger.info(
         f"Publishing results in swift container '{container_name}' under "
         f"directory '{html_name}'",
     )
     publish_esmvaltool_html(
-        io_handler.output_dir_esmvaltool,
+        session.output_dir_esmvaltool,
         container_name=container_name,
         dir_name=html_name,
         setup_logging=False,

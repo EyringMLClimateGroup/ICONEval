@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 logger = logger.opt(colors=True)
 
 
-class IconEvalIOHandler:
+class Session:
     """Class that manages IO dirs and files for ICON output evaluation."""
 
     PROJECT_ROOT_DIR: ClassVar[Path] = Path(str(files("iconeval"))).resolve()
@@ -44,17 +44,17 @@ class IconEvalIOHandler:
         self,
         input_dirs: Iterable[str | Path],
         parent_output_dir: str | Path | None,
-        run_name: str | None,
+        name: str | None,
     ) -> None:
         """Initialize class."""
         self._simulations_info = [
             SimulationInfo.from_path(p) for p in self._get_input_dirs(input_dirs)
         ]
-        if run_name is None:
-            run_name = "_".join([s.exp for s in self.simulations_info])
-        self._run_name = run_name
+        if name is None:
+            name = "_".join([s.exp for s in self.simulations_info])
+        self._name = name
 
-        logger.info(f"Evaluation name: <magenta>{self.run_name}</magenta>")
+        logger.info(f"Evaluation name: <magenta>{self.name}</magenta>")
         logger.info("")
         logger.info("Input directories:")
         logger.info("------------------")
@@ -75,8 +75,8 @@ class IconEvalIOHandler:
     def __repr__(self) -> str:
         """Return string representation of class instance."""
         return (
-            f"IconEvalIOHandler(input_dirs={self.input_dirs!r}, "
-            f"output_dir={self.output_dir!r}, run_name={self.run_name!r})"
+            f"Session(input_dirs={self.input_dirs!r}, "
+            f"output_dir={self.output_dir!r}, name={self.name!r})"
         )
 
     @property
@@ -118,9 +118,9 @@ class IconEvalIOHandler:
         return output_dir
 
     @property
-    def run_name(self) -> str:
-        """Evaluation run name."""
-        return self._run_name
+    def name(self) -> str:
+        """Session name."""
+        return self._name
 
     @property
     def simulations_info(self) -> list[SimulationInfo]:
@@ -292,7 +292,7 @@ class IconEvalIOHandler:
         now = datetime.now(UTC).strftime("%Y%m%d_%H%M%SUTC")
         if parent_output_dir is None:
             parent_output_dir = Path.cwd() / self.DEFAULT_OUTPUT_DIR_NAME
-        output_dir = Path(parent_output_dir) / f"{self.run_name}_{now}"
+        output_dir = Path(parent_output_dir) / f"{self.name}_{now}"
         output_dir = output_dir.expanduser().resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
         return output_dir

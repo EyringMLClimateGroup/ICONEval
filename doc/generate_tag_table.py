@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING
 
 from py_markdown_table.markdown_table import markdown_table
 
-from iconeval._io_handler import IconEvalIOHandler
+from iconeval._session import Session
 from iconeval._templates import map_tags_to_recipes
 
 if TYPE_CHECKING:
@@ -43,7 +43,7 @@ def _get_link(recipe_template: RecipeTemplate) -> str:
 
 def main() -> None:
     """Generate tag table from given recipe templates."""
-    all_recipe_templates = IconEvalIOHandler.DEFAULT_RECIPE_TEMPLATE_DIR.rglob("*.yml")
+    all_recipe_templates = Session.DEFAULT_RECIPE_TEMPLATE_DIR.rglob("*.yml")
     tag_map: dict[str, list[str]] = {
         tag: [_get_link(r) for r in recipe_templates]
         for tag, recipe_templates in map_tags_to_recipes(all_recipe_templates).items()
