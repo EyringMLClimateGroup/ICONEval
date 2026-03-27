@@ -1,4 +1,4 @@
-"""Module that manages logging."""
+"""Manage logging."""
 
 from __future__ import annotations
 
