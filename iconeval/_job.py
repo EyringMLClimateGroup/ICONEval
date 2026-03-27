@@ -36,7 +36,7 @@ class Job:
         additional_srun_options: dict | None,
         output_dir_slurm: Path,
     ) -> None:
-        """Initialize class."""
+        """Initialize class instance."""
         if additional_esmvaltool_options is None:
             additional_esmvaltool_options = {}
         if additional_srun_options is None:

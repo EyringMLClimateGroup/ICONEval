@@ -46,7 +46,7 @@ class Session:
         parent_output_dir: str | Path | None,
         name: str | None,
     ) -> None:
-        """Initialize class."""
+        """Initialize class instance."""
         self._simulations_info = [
             SimulationInfo.from_path(p) for p in self._get_input_dirs(input_dirs)
         ]
