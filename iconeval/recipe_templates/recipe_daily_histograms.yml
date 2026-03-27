@@ -1,0 +1,95 @@
+# ESMValTool
+#DASK --memory_limit=7760MB
+#DASK --n_workers=4
+#TAGS atmosphere
+#TAGS precipitation
+#TAGS temperature
+#TAGS histogram
+#TAGS daily
+---
+documentation:
+  title: Model Evaluation of Daily Data (Histograms).
+  description: Histograms of daily data.
+  authors:
+    - schlund_manuel
+
+
+# YAML anchors for later use
+
+datasets_pr: &datasets_pr
+  - {project: OBS6, dataset: ERA5, type: reanaly, version: "1", tier: 3, timerange: "{{timerange}}"}  # 19860101/20181231
+
+datasets_tas: &datasets_tas
+  - {project: OBS6, dataset: ERA5, type: reanaly, version: "1", tier: 3, timerange: "{{timerange}}"}  # 19800101/20181231
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  histogram_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    convert_units:
+      units: mm hour-1
+    histogram:
+      bins: 150
+      bin_range: [0.0, 15.0]
+      normalization: integral
+
+  histogram_tas:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    histogram:
+      bins: 300
+      bin_range: [180.0, 330.0]
+      normalization: integral
+
+
+
+diagnostics:
+
+  plot_histogram_pr:
+    description: Histograms of daily precipitation.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      pr:
+        mip: day
+        preprocessor: histogram_pr
+        additional_datasets: *datasets_pr
+    scripts:
+      plot:
+        script: plot_histogram.py
+        log_y: true
+        suptitle: Daily Precipitation
+        xlabel: Precipitation [mm hour-1]
+        ylabel: Density
+
+  plot_histogram_tas:
+    description: Histograms of daily 2-m near surface air temperature.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      tas:
+        mip: day
+        preprocessor: histogram_tas
+        additional_datasets: *datasets_tas
+    scripts:
+      plot:
+        script: plot_histogram.py
+        log_y: true
+        suptitle: Daily Near-Surface Air Temperature
+        xlabel: Near-Surface Air Temperature [K]
+        ylabel: Density
