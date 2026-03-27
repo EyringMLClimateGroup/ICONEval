@@ -1,4 +1,4 @@
-"""Module that manages ESMValTool recipes."""
+"""Manage ESMValTool recipes."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class Recipe:
-    """Class representing an ESMValTool recipe."""
+    """Manage ESMValTool recipe."""
 
     path: Path = field(kw_only=True)
     template: RecipeTemplate = field(repr=False, kw_only=True)

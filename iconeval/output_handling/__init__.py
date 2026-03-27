@@ -1,1 +1,1 @@
-"""Output handling of ICONEval."""
+"""Manage output handling of ICONEval."""

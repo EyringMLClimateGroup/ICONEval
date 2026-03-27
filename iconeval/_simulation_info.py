@@ -1,4 +1,4 @@
-"""Module that manages ESMValTool recipes."""
+"""Manages ICONEval simulation information."""
 
 from __future__ import annotations
 
@@ -17,6 +17,8 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class SimulationInfo:
+    """Manage ICON simulation information."""
+
     date: str = field(repr=False, kw_only=True)
     exp: str = field(repr=False, kw_only=True)
     grid_info: str = field(repr=False, kw_only=True)

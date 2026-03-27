@@ -1,4 +1,4 @@
-"""Module that manages jobs."""
+"""Manage ESMValTool jobs."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ logger = logger.opt(colors=True)
 
 
 class Job:
-    """Class representing ESMValTool job (i.e., one single recipe run)."""
+    """Manage ESMValTool job (i.e., one single recipe run)."""
 
     def __init__(
         self,
