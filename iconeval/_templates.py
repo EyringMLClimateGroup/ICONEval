@@ -35,7 +35,7 @@ class Template:
     TEMPLATE_TYPE: ClassVar[str] = "template"
 
     def __post_init__(self) -> None:
-        """Initialize class."""
+        """Initialize class instance."""
         # See https://docs.python.org/3/library/dataclasses.html#frozen-instances
         object.__setattr__(
             self,
@@ -158,7 +158,7 @@ class RecipeTemplate(Template):
     TAGS_MARKER: ClassVar[str] = "#TAGS"
 
     def __post_init__(self) -> None:
-        """Initialize class."""
+        """Initialize class instance."""
         super().__post_init__()
         object.__setattr__(
             self,
