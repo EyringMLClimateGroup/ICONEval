@@ -11,7 +11,7 @@ import pytest
 import requests
 from loguru import logger
 
-import iconeval._io_handler
+import iconeval._session
 import iconeval._simulation_info
 import iconeval.main
 import iconeval.output_handling._summarize
@@ -68,7 +68,7 @@ def fix_locale() -> None:
 def fix_time(mocker: MockerFixture) -> None:
     # datetime.now
     modules = [
-        iconeval._io_handler,
+        iconeval._session,
         iconeval.main,
         iconeval.output_handling._summarize,
         iconeval.output_handling.publish_html,
