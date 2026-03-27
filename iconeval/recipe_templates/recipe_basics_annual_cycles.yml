@@ -2,47 +2,57 @@
 #TAGS atmosphere
 #TAGS basics
 #TAGS precipitation
-#TAGS timeseries
+#TAGS annual-cycles
 ---
 documentation:
-  title: Basic Model Evaluation (Time series).
-  description: Time series of basic physical variables of the climate system.
+  title: Basic Model Evaluation (Annual Cycles).
+  description: >
+    <p>Annual cycles of basic physical variables of the climate system.</p>
+    <p><i>Note</i></p>
+    <p>Time ranges for the different datasets differ:
+    <ul>
+    <li>{{dataset}}: {{timerange}}</li>
+    <li>CMIP6: 19950101/20141231</li>
+    <li>CERES-EBAF: 20030101/20221231</li>
+    <li>ERA5: 20020101/20211231</li>
+    <li>HadCRUT5: 20020101/20211231</li>
+    <li>GPCP-SG: 20030101/20221231</li>
+    <li>ISCCP-FH: 19970101/20161231</li>
+    <li>MERRA2: 20020101/20211231</li>
+    </ul></p>
   authors:
     - schlund_manuel
-    - lauer_axel
-    - hassler_birgit
-    - bonnet_pauline
 
 
 # YAML anchors for later use
 
 datasets_cmip6: &datasets_cmip6
-  - {project: CMIP6, dataset: "*", exp: historical, ensemble: r1i1p1f1, grid: "*", institute: "*", timerange: 19790101/20141231}  # 18500101/20141231
+  - {project: CMIP6, dataset: "*", exp: historical, ensemble: r1i1p1f1, grid: "*", institute: "*", timerange: 19950101/20141231}  # 18500101/20141231
 
 datasets_hfls: &datasets_hfls
-  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 20020101/20211231}  # 19800101/20220731
 
 datasets_hfss: &datasets_hfss
-  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 20020101/20211231}  # 19800101/20220731
 
 datasets_pr: &datasets_pr
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 19790101/20211231}  # 19590101/20211231
-  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, timerange: 19790101/20230430}  # 19790101/20230430
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, timerange: 20020101/20211231}  # 19590101/20211231
+  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, reference_for_monitor_diags: true, timerange: 20030101/20221231}  # 19790101/20230430
 
 datasets_rlut: &datasets_rlut
-  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20000331/20231130}  # 20000331/20231130
-  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19840101/20161231}  # 19840101/20161231
-  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20030101/20221231}  # 20000331/20231130
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19970101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 20020101/20211231}  # 19800101/20220731
 
 datasets_rsut: &datasets_rsut
-  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20000331/20231130}  # 20000331/20231130
-  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19840101/20161231}  # 19840101/20161231
-  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20030101/20221231}  # 20000331/20231130
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19970101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 20020101/20211231}  # 19800101/20220731
 
 datasets_tas: &datasets_tas
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 19790101/20211231}  # 19590101/20211231
-  - {project: OBS, dataset: HadCRUT5, type: ground, version: 5.0.1.0-analysis, tier: 2, timerange: 19790101/20211231}  # 18500101/20211231
-  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 20020101/20211231}  # 19590101/20211231
+  - {project: OBS, dataset: HadCRUT5, type: ground, version: 5.0.1.0-analysis, tier: 2, timerange: 20020101/20211231}  # 18500101/20211231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 20020101/20211231}  # 19800101/20220731
 
 supplementary_variables: &supplementary_variables
   - {short_name: areacella, skip: true}
@@ -59,7 +69,7 @@ plot_script: &plot_script
   plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
   plot_folder: "{plot_dir}"
 
-timeseries_plot: &timeseries_plot
+annual_cycle_plot: &annual_cycle_plot
   gridline_kwargs:
     color: darkgray
     linewidth: 0.5
@@ -111,33 +121,35 @@ datasets: "{{dataset_list}}"
 
 preprocessors:
 
-  create_global_annual_mean_time_series:
+  create_monthly_climatology:
     custom_order: true
     regrid:
-      target_grid: 2x2
       scheme: linear  # some models do not work with ESMFAreaWeighted
+      target_grid: 2x2
     area_statistics:
       operator: mean
-    annual_statistics:
+    climate_statistics:
       operator: mean
+      period: month
 
-  create_global_annual_mean_time_series_pr:
+  create_monthly_climatology_pr:
     custom_order: true
     regrid:
-      target_grid: 2x2
       scheme: linear  # some models do not work with ESMFAreaWeighted
+      target_grid: 2x2
     area_statistics:
       operator: mean
-    annual_statistics:
+    climate_statistics:
       operator: mean
+      period: month
     convert_units:
       units: mm day-1
 
 
 diagnostics:
 
-  timeseries:
-    description: Time series for multiple variables.
+  annual_cycles:
+    description: Annual cycle plots for multiple variables.
     themes:
       - phys
     realms:
@@ -145,42 +157,37 @@ diagnostics:
     variables:
       hfls:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series
+        preprocessor: create_monthly_climatology
         title: Global Mean Surface Upward Latent Heat Flux
         additional_datasets: *datasets_hfls
         supplementary_variables: *supplementary_variables
       hfss:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series
+        preprocessor: create_monthly_climatology
         title: Global Mean Surface Upward Sensible Heat Flux
         additional_datasets: *datasets_hfss
         supplementary_variables: *supplementary_variables
       pr:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series_pr
-        title: Global Mean Precipitation
+        preprocessor: create_monthly_climatology_pr
+        title: Precipitation
         additional_datasets: *datasets_pr
         supplementary_variables: *supplementary_variables
       rlut:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series
-        title: Global Mean TOA Outgoing Longwave Radiation
+        preprocessor: create_monthly_climatology
+        title: TOA Outgoing Longwave Radiation
         additional_datasets: *datasets_rlut
         supplementary_variables: *supplementary_variables
       rsut:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series
+        preprocessor: create_monthly_climatology
         title: Global Mean TOA Outgoing Shortwave Radiation
         additional_datasets: *datasets_rsut
         supplementary_variables: *supplementary_variables
-      rtmt:
-        mip: Amon
-        preprocessor: create_global_annual_mean_time_series
-        title: Global Mean TOA Net Downward Total Radiation
-        supplementary_variables: *supplementary_variables
       tas:
         mip: Amon
-        preprocessor: create_global_annual_mean_time_series
+        preprocessor: create_monthly_climatology
         title: Global Mean Near-Surface Air Temperature
         additional_datasets: *datasets_tas
         supplementary_variables: *supplementary_variables
@@ -189,5 +196,5 @@ diagnostics:
       plot:
         <<: *plot_script
         plots:
-          timeseries:
-            <<: *timeseries_plot
+          annual_cycle:
+            <<: *annual_cycle_plot
