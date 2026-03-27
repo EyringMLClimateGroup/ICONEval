@@ -125,3 +125,6 @@ dmypy.json
 
 # Temporary expected output directories
 expected_output_tmp_*/
+
+# AI
+CLAUDE.md

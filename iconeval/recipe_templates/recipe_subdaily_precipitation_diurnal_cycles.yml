@@ -3,7 +3,7 @@
 #DASK --n_workers=4
 #TAGS atmosphere
 #TAGS precipitation
-#TAGS diurnal-cycles
+#TAGS diurnal-cycle
 #TAGS subdaily
 ---
 documentation:
@@ -45,7 +45,7 @@ diurnal_cycle_line_plot: &diurnal_cycle_line_plot
     borderaxespad: 0.0
   pyplot_kwargs:
     title: "{title}"
-    ylabel: "{short_name}"
+    ylabel: "{short_name} [{units}]"
   plot_kwargs:
     "{{alias_plot_kwargs}}":
       label: "{dataset} ({exp})"

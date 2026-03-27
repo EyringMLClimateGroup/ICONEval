@@ -2,6 +2,7 @@
 #DASK --memory_limit=7760MB
 #DASK --n_workers=4
 #TAGS ocean
+#TAGS temperature
 #TAGS timeseries
 ---
 documentation:

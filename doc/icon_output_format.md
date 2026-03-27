@@ -59,7 +59,8 @@ follow the subsequent criteria as closely as possible.
 
 - Most diagnostics are tailored towards **monthly mean** data, but should in
   principle work with higher frequency output (this might take longer, though).
-- Some diagnostics require sub-daily (preferably **1-hourly**) output.
+- Some diagnostics require daily (tag: `daily`) sub-daily (tag: `subdaily`;
+  preferably **1-hourly**) output.
 - Sub-hourly output is **not** supported at the moment.
 - The output should contain **averaged** quantities, not **instantaneous**
   values.
@@ -82,7 +83,7 @@ If possible, one file should contain one simulated year. Less than that is fine
 
 - If possible, at least 20 years should be simulated. This enables a meaningful
   comparison to reference data like observations.
-- Usually, simulations start in 1979. This might be problematic, since most
+- Usually, simulations start in 1979. This might be problematic because most
   satellite observations are only available for later years. Thus, the starting
   year might change to a later year in the future.
 - Simulations should not start earlier than 1979-01-01 and not end after

@@ -2,6 +2,7 @@
 #TAGS atmosphere
 #TAGS basics
 #TAGS precipitation
+#TAGS temperature
 #TAGS timeseries
 ---
 documentation:
@@ -35,18 +36,18 @@ datasets_hfss:
   tier: 3
   timerange: 19800101/20220731
 datasets_pr:
-- project: OBS
-  dataset: GPCP-SG
-  type: atmos
-  version: 2.3
-  tier: 2
-  timerange: 19790101/20230430
 - project: native6
   dataset: ERA5
   type: reanaly
   version: v1
   tier: 3
   timerange: 19790101/20211231
+- project: OBS
+  dataset: GPCP-SG
+  type: atmos
+  version: 2.3
+  tier: 2
+  timerange: 19790101/20230430
 datasets_rlut:
 - project: OBS
   dataset: CERES-EBAF
@@ -309,18 +310,18 @@ diagnostics:
         preprocessor: create_global_annual_mean_time_series_pr
         title: Global Mean Precipitation
         additional_datasets:
-        - project: OBS
-          dataset: GPCP-SG
-          type: atmos
-          version: 2.3
-          tier: 2
-          timerange: 19790101/20230430
         - project: native6
           dataset: ERA5
           type: reanaly
           version: v1
           tier: 3
           timerange: 19790101/20211231
+        - project: OBS
+          dataset: GPCP-SG
+          type: atmos
+          version: 2.3
+          tier: 2
+          timerange: 19790101/20230430
         supplementary_variables:
         - short_name: areacella
           skip: true

@@ -1,6 +1,7 @@
 # ESMValTool
-#TAGS sanity-consistency-checks
+#TAGS sanity-consistency-check
 #TAGS precipitation
+#TAGS temperature
 #TAGS timeseries
 ---
 documentation:

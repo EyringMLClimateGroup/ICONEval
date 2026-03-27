@@ -2,6 +2,7 @@
 #TAGS atmosphere
 #TAGS basics
 #TAGS precipitation
+#TAGS temperature
 #TAGS timeseries
 ---
 documentation:
@@ -26,8 +27,8 @@ datasets_hfss: &datasets_hfss
   - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
 
 datasets_pr: &datasets_pr
-  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, timerange: 19790101/20230430}  # 19790101/20230430
   - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 19790101/20211231}  # 19590101/20211231
+  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, timerange: 19790101/20230430}  # 19790101/20230430
 
 datasets_rlut: &datasets_rlut
   - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20000331/20231130}  # 20000331/20231130

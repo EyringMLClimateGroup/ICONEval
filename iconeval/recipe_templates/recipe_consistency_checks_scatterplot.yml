@@ -1,6 +1,7 @@
 # ESMValTool
-#TAGS sanity-consistency-checks
-#TAGS scatterplots
+#TAGS sanity-consistency-check
+#TAGS temperature
+#TAGS scatterplot
 ---
 documentation:
   title: Consistency checks (Scatter plots).

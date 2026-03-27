@@ -3,7 +3,7 @@
 #DASK --n_workers=4
 #ESMVALTOOL --max_parallel_tasks=1
 #TAGS atmosphere
-#TAGS portrait-plots
+#TAGS portrait-plot
 ---
 documentation:
   title: Overall Model Evaluation (Portrait plot).

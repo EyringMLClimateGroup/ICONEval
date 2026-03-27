@@ -1,6 +1,7 @@
 # ESMValTool
 #TAGS ocean
-#TAGS maps
+#TAGS temperature
+#TAGS map
 ---
 documentation:
   title: Ocean Evaluation (Maps).

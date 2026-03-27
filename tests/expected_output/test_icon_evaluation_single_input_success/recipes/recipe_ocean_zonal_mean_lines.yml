@@ -1,6 +1,7 @@
 # ESMValTool
 #TAGS ocean
-#TAGS zonal-means
+#TAGS temperature
+#TAGS zonal-mean
 ---
 documentation:
   title: Ocean Evaluation (Zonal Means).

@@ -2,7 +2,7 @@
 #TAGS atmosphere
 #TAGS tuning
 #TAGS precipitation
-#TAGS zonal-means
+#TAGS zonal-mean
 ---
 documentation:
   title: Model Evaluation with Focus on Tuning (Zonal means).
