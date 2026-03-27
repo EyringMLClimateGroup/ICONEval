@@ -58,6 +58,10 @@ preprocessors:
 diagnostics:
   plot_precipitation_histograms_tropics:
     description: Precipitation histogram (Tropics).
+    themes:
+    - phys
+    realms:
+    - atmos
     variables:
       pr:
         mip: 3hr
@@ -74,6 +78,6 @@ diagnostics:
       plot:
         script: plot_histogram.py
         log_y: true
-        suptitle: Simulated Precipitation (Tropics, 30S-30N)
-        xlabel: Precipitation rate (mm hour-1)
+        suptitle: Precipitation (Tropics, 30S-30N)
+        xlabel: Precipitation [mm hour-1]
         ylabel: Density
