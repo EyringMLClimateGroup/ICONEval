@@ -1,6 +1,6 @@
 # ESMValTool
-#TAGS sanity-consistency-checks
-#TAGS scatterplots
+#TAGS sanity-consistency-check
+#TAGS scatterplot
 ---
 documentation:
   title: Consistency checks (Scatter plots).

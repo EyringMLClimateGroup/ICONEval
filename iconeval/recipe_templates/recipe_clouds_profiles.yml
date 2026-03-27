@@ -3,7 +3,7 @@
 #DASK --n_workers=4
 #TAGS atmosphere
 #TAGS clouds
-#TAGS profiles
+#TAGS profile
 ---
 documentation:
   title: Model Evaluation with Focus on Clouds (Profiles).
