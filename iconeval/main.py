@@ -1,4 +1,4 @@
-"""ICON model output evaluation with ESMValTool."""
+"""Evaluate ICON output with ESMValTool."""
 
 from __future__ import annotations
 

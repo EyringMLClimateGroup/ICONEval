@@ -1,4 +1,4 @@
-"""Module that manages IO directories and files for ICON output evaluation."""
+"""Manage ICONEval sessions."""
 
 from __future__ import annotations
 

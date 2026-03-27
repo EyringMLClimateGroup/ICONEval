@@ -1,4 +1,4 @@
-"""Module that manage types used in ICONEval."""
+"""Manage ICONEval types."""
 
 from __future__ import annotations
 

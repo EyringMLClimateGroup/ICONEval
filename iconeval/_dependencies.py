@@ -1,4 +1,4 @@
-"""Module that manage dependencies of ICONEval."""
+"""Manage ICONEval dependencies."""
 
 from __future__ import annotations
 
