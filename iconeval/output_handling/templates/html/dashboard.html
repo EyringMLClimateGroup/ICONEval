@@ -37,7 +37,9 @@
                 </div>
 
                 <!-- Description -->
+                {% if has_description %}
                 {{ description|safe }}
+                {% endif %}
 
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">
@@ -63,12 +65,26 @@
                     <button type="button" class="btn-close" onclick="closeSimModal()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Path:</strong> <span id="simPath"></span></p>
-                    <p><strong>Owner:</strong> <span id="simOwner"></span></p>
-                    <p><strong>Date:</strong> <span id="simDate"></span></p>
-                    <p><strong>Grid:</strong> <span id="simGrid"></span></p>
-                    <p><strong>Namelist Files:</strong></p>
-                    <ul id="simNamelists"></ul>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Path</span>
+                        <span class="sim-detail-value sim-detail-path" id="simPath"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Owner</span>
+                        <span class="sim-detail-value" id="simOwner"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Date</span>
+                        <span class="sim-detail-value" id="simDate"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Grid</span>
+                        <span class="sim-detail-value" id="simGrid"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Namelist Files</span>
+                        <ul class="sim-detail-list" id="simNamelists"></ul>
+                    </div>
                 </div>
             </div>
         </div>

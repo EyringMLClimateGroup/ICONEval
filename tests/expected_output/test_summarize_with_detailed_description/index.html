@@ -375,6 +375,40 @@
                 object-fit: contain;
                 border-radius: 4px;
             }
+            /* Simulation detail modal */
+            .sim-detail-row {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .sim-detail-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .sim-detail-label {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
+            }
+            .sim-detail-value {
+                font-weight: 500;
+                word-break: break-all;
+            }
+            .sim-detail-path {
+                font-family: monospace;
+                font-size: 0.85rem;
+            }
+            .sim-detail-list {
+                margin: 0;
+                padding-left: 1.25rem;
+                font-family: monospace;
+                font-size: 0.85rem;
+            }
             /* Typography */
             h1, h2, h3, h4, h5, h6 {
                 margin-top: 0;
@@ -474,6 +508,7 @@
                 </div>
 
                 <!-- Description -->
+
                 <div class='description-section'>
   <div class='sim-info-header'>
     <div>
@@ -488,6 +523,7 @@
   <div class='sim-info-label'>Simulations</div>
   <div class='sim-chips'><span class='sim-chip' onclick="openSimModal('exp_1', '/path/to/exp_1', 'OWNER 1', '2000-01-01 00:00:00', 'R2B5', '<li>namelist_1</li><li>namelist_2</li>')">exp_1</span><span class='sim-chip' onclick="openSimModal('exp_2', '/path/to/exp_2', 'OWNER 2', '2000-01-01 00:00:00', 'unknown', '')">exp_2</span></div>
 </div>
+
 
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">
@@ -602,12 +638,26 @@
                     <button type="button" class="btn-close" onclick="closeSimModal()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Path:</strong> <span id="simPath"></span></p>
-                    <p><strong>Owner:</strong> <span id="simOwner"></span></p>
-                    <p><strong>Date:</strong> <span id="simDate"></span></p>
-                    <p><strong>Grid:</strong> <span id="simGrid"></span></p>
-                    <p><strong>Namelist Files:</strong></p>
-                    <ul id="simNamelists"></ul>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Path</span>
+                        <span class="sim-detail-value sim-detail-path" id="simPath"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Owner</span>
+                        <span class="sim-detail-value" id="simOwner"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Date</span>
+                        <span class="sim-detail-value" id="simDate"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Grid</span>
+                        <span class="sim-detail-value" id="simGrid"></span>
+                    </div>
+                    <div class="sim-detail-row">
+                        <span class="sim-detail-label">Namelist Files</span>
+                        <ul class="sim-detail-list" id="simNamelists"></ul>
+                    </div>
                 </div>
             </div>
         </div>

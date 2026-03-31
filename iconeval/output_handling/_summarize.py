@@ -406,6 +406,7 @@ def _write_dashboard_html(
         total_recipes=total_recipes,
         sidebar_filters=sidebar_filters,
         description=description,
+        has_description=bool(description),
         cards_html=cards_html_str,
         version=iconeval.__version__,
     )
