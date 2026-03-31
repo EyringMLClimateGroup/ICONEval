@@ -139,7 +139,6 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
                         png_path=png_file,
                         relative_png_path=relative_png,
                         caption=prov_data.get("caption", ""),
-                        authors=prov_data.get("authors", []),
                         plot_types=prov_data.get("plot_types", []),
                         long_names=prov_data.get("long_names", []),
                         ancestors=prov_data.get("ancestors", []),
@@ -162,7 +161,6 @@ def _get_filter_options(diagnostics: list[DiagnosticInfo]) -> FilterOptions:
         options.realms.add(diag.realm)
         options.plot_types.update(diag.plot_types)
         options.variables.update(diag.long_names)
-        options.authors.update(diag.authors)
 
     return options
 
@@ -184,7 +182,6 @@ class DiagnosticInfo:
 
     png_path: Path
     caption: str
-    authors: list[str] = field(default_factory=list)
     plot_types: list[str] = field(default_factory=list)
     long_names: list[str] = field(default_factory=list)
     ancestors: list[str] = field(default_factory=list)
@@ -202,7 +199,6 @@ class FilterOptions:
     realms: set[str] = field(default_factory=set)
     plot_types: set[str] = field(default_factory=set)
     variables: set[str] = field(default_factory=set)
-    authors: set[str] = field(default_factory=set)
 
 
 def get_html_description(session: Session, date: datetime) -> str:
@@ -350,7 +346,6 @@ def _write_dashboard_html(
     realms_json = sorted([r for r in filter_options.realms if r != "other"])
     plot_types_json = sorted(filter_options.plot_types)
     variables_json = sorted(filter_options.variables)
-    authors_json = sorted(filter_options.authors)
 
     # Build card HTML for each diagnostic
     cards_html = []
@@ -365,7 +360,6 @@ def _write_dashboard_html(
         realm = diag.realm or "other"
         plot_type = ",".join(diag.plot_types) if diag.plot_types else "unknown"
         variables = ",".join(diag.long_names) if diag.long_names else "unknown"
-        authors = ",".join(diag.authors) if diag.authors else "unknown"
 
         # Build provenance data for modal
         max_ancestors_shown = 5
@@ -382,13 +376,12 @@ def _write_dashboard_html(
              data-realm="{realm}"
              data-plot-type="{plot_type}"
              data-variables="{variables}"
-             data-authors="{authors}"
              data-caption="{_escape_html(diag.caption)}"
              data-recipe="{diag.recipe_name}">
             <div class="card h-100 shadow-sm">
                 <div class="card-img-wrapper" style="cursor: pointer;"
                      onclick="openModal('{img_src}', '{_escape_html(diag.caption)}',
-                         '{_escape_html(authors)}', '{_escape_html(plot_type)}',
+                         '{_escape_html(plot_type)}',
                          '{_escape_html(variables)}', '{ancestors_html}',
                          '{diag.recipe_url}')">
                     <img src="{img_src}" class="card-img-top"
@@ -405,9 +398,6 @@ def _write_dashboard_html(
                     <p class="card-text small text-muted">
                         <span class="badge bg-secondary">{realm}</span>
                         <span class="badge bg-info text-dark">{plot_type}</span>
-                    </p>
-                    <p class="card-text small">
-                        <i class="bi bi-person"></i> {authors}
                     </p>
                 </div>
             </div>
@@ -442,7 +432,6 @@ def _write_dashboard_html(
         {make_filter_checkboxes(realms_json, "Realm")}
         {make_filter_checkboxes(plot_types_json, "Plot Type")}
         {make_filter_checkboxes(variables_json, "Variables")}
-        {make_filter_checkboxes(authors_json, "Authors")}
     """
 
     # Calculate stats

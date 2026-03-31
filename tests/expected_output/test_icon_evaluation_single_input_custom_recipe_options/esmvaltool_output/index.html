@@ -116,12 +116,14 @@
                 background: #f0f0f0;
                 aspect-ratio: 16/9;
                 cursor: pointer;
+                max-height: 300px;
             }
             .card-img-wrapper img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 transition: transform 0.3s ease;
+                max-height: 300px;
             }
             .card-img-wrapper:hover img {
                 transform: scale(1.05);
@@ -389,7 +391,6 @@
                         <div class="mb-3"><h6>Realm</h6><p class="text-muted small">None</p></div>
         <div class="mb-3"><h6>Plot Type</h6><p class="text-muted small">None</p></div>
         <div class="mb-3"><h6>Variables</h6><p class="text-muted small">None</p></div>
-        <div class="mb-3"><h6>Authors</h6><p class="text-muted small">None</p></div>
 
                 <hr>
                 <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
@@ -472,8 +473,6 @@
                         <div class="col-lg-4">
                             <h6>Caption</h6>
                             <p id="modalCaption"></p>
-                            <h6>Authors</h6>
-                            <p id="modalAuthors"></p>
                             <h6>Plot Type</h6>
                             <p id="modalPlotType"></p>
                             <h6>Variables</h6>
@@ -502,10 +501,9 @@
     </footer>
 
     <script>
-        function openModal(imgSrc, caption, authors, plotType, variables, ancestors, recipeUrl) {
+        function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
-            document.getElementById('modalAuthors').textContent = authors || 'Unknown';
             document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
             document.getElementById('modalVariables').textContent = variables || 'Unknown';
             document.getElementById('modalAncestors').innerHTML = ancestors || '<li>None</li>';
@@ -545,7 +543,6 @@
                 const realm = card.dataset.realm;
                 const plotType = card.dataset.plotType;
                 const variables = card.dataset.variables;
-                const authors = card.dataset.authors;
                 const caption = card.dataset.caption;
                 const recipe = card.dataset.recipe;
 
@@ -553,8 +550,7 @@
                 const matchesSearch = !searchTerm ||
                     caption.toLowerCase().includes(searchTerm) ||
                     recipe.toLowerCase().includes(searchTerm) ||
-                    variables.toLowerCase().includes(searchTerm) ||
-                    authors.toLowerCase().includes(searchTerm);
+                    variables.toLowerCase().includes(searchTerm);
 
                 // Check filters (OR within each category, AND across categories)
                 const realmMatch = !activeFilters.some(f =>
@@ -564,15 +560,13 @@
                 const plotTypeMatch = !activeFilters.some(f =>
                         !['atmosphere', 'ocean', 'land', 'sanity-consistency-checks', 'other'].includes(f)
                     ) || plotType.split(',').some(pt => activeFilters.includes(pt)) ||
-                      variables.split(',').some(v => activeFilters.includes(v)) ||
-                      authors.split(',').some(a => activeFilters.includes(a));
+                      variables.split(',').some(v => activeFilters.includes(v));
 
                 // Simplified filter: show if any selected filter matches
                 const filterMatch = activeFilters.length === 0 ||
                     activeFilters.includes(realm) ||
                     plotType.split(',').some(pt => activeFilters.includes(pt)) ||
-                    variables.split(',').some(v => activeFilters.includes(v)) ||
-                    authors.split(',').some(a => activeFilters.includes(a));
+                    variables.split(',').some(v => activeFilters.includes(v));
 
                 if (matchesSearch && filterMatch) {
                     card.style.display = '';

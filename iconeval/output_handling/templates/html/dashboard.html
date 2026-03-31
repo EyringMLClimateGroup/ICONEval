@@ -70,8 +70,6 @@
                         <div class="col-lg-4">
                             <h6>Caption</h6>
                             <p id="modalCaption"></p>
-                            <h6>Authors</h6>
-                            <p id="modalAuthors"></p>
                             <h6>Plot Type</h6>
                             <p id="modalPlotType"></p>
                             <h6>Variables</h6>
@@ -100,10 +98,9 @@
     </footer>
 
     <script>
-        function openModal(imgSrc, caption, authors, plotType, variables, ancestors, recipeUrl) {
+        function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
-            document.getElementById('modalAuthors').textContent = authors || 'Unknown';
             document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
             document.getElementById('modalVariables').textContent = variables || 'Unknown';
             document.getElementById('modalAncestors').innerHTML = ancestors || '<li>None</li>';
@@ -143,7 +140,6 @@
                 const realm = card.dataset.realm;
                 const plotType = card.dataset.plotType;
                 const variables = card.dataset.variables;
-                const authors = card.dataset.authors;
                 const caption = card.dataset.caption;
                 const recipe = card.dataset.recipe;
 
@@ -151,8 +147,7 @@
                 const matchesSearch = !searchTerm ||
                     caption.toLowerCase().includes(searchTerm) ||
                     recipe.toLowerCase().includes(searchTerm) ||
-                    variables.toLowerCase().includes(searchTerm) ||
-                    authors.toLowerCase().includes(searchTerm);
+                    variables.toLowerCase().includes(searchTerm);
 
                 // Check filters (OR within each category, AND across categories)
                 const realmMatch = !activeFilters.some(f =>
@@ -162,15 +157,13 @@
                 const plotTypeMatch = !activeFilters.some(f =>
                         !['atmosphere', 'ocean', 'land', 'sanity-consistency-checks', 'other'].includes(f)
                     ) || plotType.split(',').some(pt => activeFilters.includes(pt)) ||
-                      variables.split(',').some(v => activeFilters.includes(v)) ||
-                      authors.split(',').some(a => activeFilters.includes(a));
+                      variables.split(',').some(v => activeFilters.includes(v));
 
                 // Simplified filter: show if any selected filter matches
                 const filterMatch = activeFilters.length === 0 ||
                     activeFilters.includes(realm) ||
                     plotType.split(',').some(pt => activeFilters.includes(pt)) ||
-                    variables.split(',').some(v => activeFilters.includes(v)) ||
-                    authors.split(',').some(a => activeFilters.includes(a));
+                    variables.split(',').some(v => activeFilters.includes(v));
 
                 if (matchesSearch && filterMatch) {
                     card.style.display = '';
