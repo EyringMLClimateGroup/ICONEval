@@ -215,6 +215,46 @@
                 padding: 1rem;
                 margin-bottom: 1rem;
             }
+            .sim-info-header {
+                display: flex;
+                gap: 2rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+            }
+            .sim-info-header > div {
+                display: flex;
+                flex-direction: column;
+            }
+            .sim-info-label {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
+            }
+            .sim-info-value {
+                font-weight: 500;
+                color: var(--primary-color);
+            }
+            .sim-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .sim-chip {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                background: var(--primary-color);
+                color: white;
+                border-radius: 50px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s, transform 0.2s;
+            }
+            .sim-chip:hover {
+                background: #1515a5;
+                transform: translateY(-1px);
+            }
             .description-section details {
                 margin-bottom: 0.5rem;
             }

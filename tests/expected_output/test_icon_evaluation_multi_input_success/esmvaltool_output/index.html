@@ -222,6 +222,46 @@
                 padding: 1rem;
                 margin-bottom: 1rem;
             }
+            .sim-info-header {
+                display: flex;
+                gap: 2rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+            }
+            .sim-info-header > div {
+                display: flex;
+                flex-direction: column;
+            }
+            .sim-info-label {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
+            }
+            .sim-info-value {
+                font-weight: 500;
+                color: var(--primary-color);
+            }
+            .sim-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .sim-chip {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                background: var(--primary-color);
+                color: white;
+                border-radius: 50px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s, transform 0.2s;
+            }
+            .sim-chip:hover {
+                background: #1515a5;
+                transform: translateY(-1px);
+            }
             .description-section details {
                 margin-bottom: 0.5rem;
             }
@@ -434,35 +474,19 @@
                 </div>
 
                 <!-- Description -->
-                <div class='description-section p-3 mb-4 bg-white rounded border'>
-  <h5 class='mb-3'>Simulation Information</h5>
-  <div>
-    <p class='mb-1'><strong>Evaluation Date:</strong> 2000-01-01 00:00:00</p>
-    <p class='mb-0'><strong>User:</strong> ICONEval User</p>
+                <div class='description-section'>
+  <div class='sim-info-header'>
+    <div>
+      <span class='sim-info-label'>Evaluated by</span>
+      <span class='sim-info-value'>ICONEval User</span>
+    </div>
+    <div>
+      <span class='sim-info-label'>Evaluation date</span>
+      <span class='sim-info-value'>2000-01-01 00:00</span>
+    </div>
   </div>
-  <hr>
-  <h6 class='mb-2'>Simulations (2)</h6>
-  <details class='mb-2'>
-  <summary class='fw-semibold cursor-pointer'>input_1</summary>
-  <div class='ms-3 mt-2'>
-    <p class='mb-1'><strong>Path:</strong> ((tmp_path))/input_1</p>
-    <p class='mb-1'><strong>Owner:</strong> ICONEval User</p>
-    <p class='mb-1'><strong>Date:</strong> 2000-01-01 00:00:00</p>
-    <p class='mb-1'><strong>Grid:</strong> unknown</p>
-    <p class='mb-1'><strong>Namelist Files:</strong></p>
-    <ul class='mb-0'></ul>
-  </div>
-</details><details class='mb-2'>
-  <summary class='fw-semibold cursor-pointer'>input_2</summary>
-  <div class='ms-3 mt-2'>
-    <p class='mb-1'><strong>Path:</strong> ((tmp_path))/input_2</p>
-    <p class='mb-1'><strong>Owner:</strong> ICONEval User</p>
-    <p class='mb-1'><strong>Date:</strong> 2000-01-01 00:00:00</p>
-    <p class='mb-1'><strong>Grid:</strong> unknown</p>
-    <p class='mb-1'><strong>Namelist Files:</strong></p>
-    <ul class='mb-0'></ul>
-  </div>
-</details>
+  <div class='sim-info-label'>Simulations</div>
+  <div class='sim-chips'><span class='sim-chip' onclick="openSimModal('input_1', '((tmp_path))/input_1', 'ICONEval User', '2000-01-01 00:00:00', 'unknown', '')">input_1</span><span class='sim-chip' onclick="openSimModal('input_2', '((tmp_path))/input_2', 'ICONEval User', '2000-01-01 00:00:00', 'unknown', '')">input_2</span></div>
 </div>
 
                 <!-- Cards Grid -->
@@ -477,6 +501,26 @@
                     <button class="btn btn-primary" onclick="clearFilters()">Clear Filters</button>
                 </div>
             </main>
+        </div>
+    </div>
+
+    <!-- Simulation Info Modal -->
+    <div class="modal-backdrop" id="simModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="simModalTitle">Simulation Details</h5>
+                    <button type="button" class="btn-close" onclick="closeSimModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Path:</strong> <span id="simPath"></span></p>
+                    <p><strong>Owner:</strong> <span id="simOwner"></span></p>
+                    <p><strong>Date:</strong> <span id="simDate"></span></p>
+                    <p><strong>Grid:</strong> <span id="simGrid"></span></p>
+                    <p><strong>Namelist Files:</strong></p>
+                    <ul id="simNamelists"></ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -524,6 +568,29 @@
     </footer>
 
     <script>
+        function openSimModal(exp, path, owner, date, grid, namelists) {
+            document.getElementById('simModalTitle').textContent = exp;
+            document.getElementById('simPath').textContent = path;
+            document.getElementById('simOwner').textContent = owner;
+            document.getElementById('simDate').textContent = date;
+            document.getElementById('simGrid').textContent = grid;
+            document.getElementById('simNamelists').innerHTML = namelists || '<li>None</li>';
+            document.getElementById('simModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSimModal() {
+            document.getElementById('simModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close sim modal on backdrop click
+        document.getElementById('simModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSimModal();
+            }
+        });
+
         function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
@@ -551,6 +618,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
+                closeSimModal();
             }
         });
 

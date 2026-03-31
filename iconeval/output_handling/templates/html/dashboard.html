@@ -54,6 +54,26 @@
         </div>
     </div>
 
+    <!-- Simulation Info Modal -->
+    <div class="modal-backdrop" id="simModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="simModalTitle">Simulation Details</h5>
+                    <button type="button" class="btn-close" onclick="closeSimModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Path:</strong> <span id="simPath"></span></p>
+                    <p><strong>Owner:</strong> <span id="simOwner"></span></p>
+                    <p><strong>Date:</strong> <span id="simDate"></span></p>
+                    <p><strong>Grid:</strong> <span id="simGrid"></span></p>
+                    <p><strong>Namelist Files:</strong></p>
+                    <ul id="simNamelists"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal-backdrop" id="detailModal">
         <div class="modal-dialog">
@@ -98,6 +118,29 @@
     </footer>
 
     <script>
+        function openSimModal(exp, path, owner, date, grid, namelists) {
+            document.getElementById('simModalTitle').textContent = exp;
+            document.getElementById('simPath').textContent = path;
+            document.getElementById('simOwner').textContent = owner;
+            document.getElementById('simDate').textContent = date;
+            document.getElementById('simGrid').textContent = grid;
+            document.getElementById('simNamelists').innerHTML = namelists || '<li>None</li>';
+            document.getElementById('simModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSimModal() {
+            document.getElementById('simModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close sim modal on backdrop click
+        document.getElementById('simModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSimModal();
+            }
+        });
+
         function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
@@ -125,6 +168,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
+                closeSimModal();
             }
         });
 

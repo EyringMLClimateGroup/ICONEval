@@ -198,42 +198,41 @@ class FilterOptions:
 def get_html_description(session: Session, date: datetime) -> str:
     """Create description of simulation(s) for HTML."""
     simulations_info = session.simulations_info
-
-    # Build simulations section using native HTML details element
-    sim_sections = []
-    for sim_info in simulations_info:
-        namelist_items = "".join(
-            f"<li class='text-muted'>{path}</li>" for path in sim_info.namelist_files
-        )
-        sim_sections.append(
-            f"<details class='mb-2'>\n"
-            f"  <summary class='fw-semibold cursor-pointer'>{sim_info.exp}</summary>\n"
-            f"  <div class='ms-3 mt-2'>\n"
-            f"    <p class='mb-1'><strong>Path:</strong> {sim_info.path}</p>\n"
-            f"    <p class='mb-1'><strong>Owner:</strong> {sim_info.owner}</p>\n"
-            f"    <p class='mb-1'><strong>Date:</strong> {sim_info.date}</p>\n"
-            f"    <p class='mb-1'><strong>Grid:</strong> {sim_info.grid_info}</p>\n"
-            f"    <p class='mb-1'><strong>Namelist Files:</strong></p>\n"
-            f"    <ul class='mb-0'>{namelist_items}</ul>\n"
-            f"  </div>\n"
-            f"</details>",
-        )
-
-    simulations_html = "".join(sim_sections)
-
-    # Build metadata section
     current_user = get_user_name()
+
+    # Build simulation chips (clickable cards for each simulation)
+    sim_chips = []
+    for i, sim_info in enumerate(simulations_info):
+        namelist_items = "".join(
+            f"<li>{path}</li>" for path in sim_info.namelist_files
+        )
+        sim_chips.append(
+            f"<span class='sim-chip' onclick=\"openSimModal("
+            f"'{_escape_html(sim_info.exp)}', "
+            f"'{_escape_html(str(sim_info.path))}', "
+            f"'{_escape_html(sim_info.owner)}', "
+            f"'{_escape_html(sim_info.date)}', "
+            f"'{_escape_html(sim_info.grid_info)}', "
+            f"'{namelist_items}')\">"
+            f"{sim_info.exp}</span>"
+        )
+
+    simulations_html = "".join(sim_chips)
+
     return (
-        f"<div class='description-section p-3 mb-4 bg-white rounded border'>\n"
-        f"  <h5 class='mb-3'>Simulation Information</h5>\n"
-        f"  <div>\n"
-        f"    <p class='mb-1'><strong>Evaluation Date:</strong> "
-        f"{date.strftime('%Y-%m-%d %H:%M:%S%z')}</p>\n"
-        f"    <p class='mb-0'><strong>User:</strong> {current_user}</p>\n"
+        f"<div class='description-section'>\n"
+        f"  <div class='sim-info-header'>\n"
+        f"    <div>\n"
+        f"      <span class='sim-info-label'>Evaluated by</span>\n"
+        f"      <span class='sim-info-value'>{current_user}</span>\n"
+        f"    </div>\n"
+        f"    <div>\n"
+        f"      <span class='sim-info-label'>Evaluation date</span>\n"
+        f"      <span class='sim-info-value'>{date.strftime('%Y-%m-%d %H:%M')}</span>\n"
+        f"    </div>\n"
         f"  </div>\n"
-        f"  <hr>\n"
-        f"  <h6 class='mb-2'>Simulations ({len(simulations_info)})</h6>\n"
-        f"  {simulations_html}\n"
+        f"  <div class='sim-info-label'>Simulations</div>\n"
+        f"  <div class='sim-chips'>{simulations_html}</div>\n"
         f"</div>"
     )
 
