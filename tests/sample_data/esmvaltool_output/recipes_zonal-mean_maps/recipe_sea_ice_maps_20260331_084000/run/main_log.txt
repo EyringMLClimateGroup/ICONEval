@@ -1,4 +1,4 @@
-INFO    [2073887] 
+INFO    [2073887]
 ______________________________________________________________________
           _____ ____  __  ____     __    _ _____           _
          | ____/ ___||  \/  \ \   / /_ _| |_   _|__   ___ | |
@@ -515,7 +515,7 @@ frequency = 'mon'
 INFO    [2073887] Maximum memory used (estimate): 2.9 GB
 INFO    [2073887] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
 ERROR   [2073887] Program terminated abnormally, see stack trace below for more information:
-multiprocessing.pool.RemoteTraceback: 
+multiprocessing.pool.RemoteTraceback:
 """
 Traceback (most recent call last):
   File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/multiprocessing/pool.py", line 125, in worker
@@ -618,7 +618,7 @@ Traceback (most recent call last):
     ^^^^^^^^^^^
   File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 885, in _run
     product.apply(step, self.debug)
-    
+
   File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 701, in apply
     self.cubes,
   File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 713, in cubes
@@ -646,7 +646,7 @@ Traceback (most recent call last):
     raise ValueError(msg)
     ^^^^^^^^^^^
 ValueError: Variable 'sic' used to extract 'siconc' is not available in input file
-INFO    [2073887] 
+INFO    [2073887]
 If you have a question or need help, please start a new discussion on https://github.com/ESMValGroup/ESMValTool/discussions
 If you suspect this is a bug, please open an issue on https://github.com/ESMValGroup/ESMValTool/issues
 To make it easier to find out what the problem is, please consider attaching the files run/recipe_*.yml and run/main_log_debug.txt from the output directory.

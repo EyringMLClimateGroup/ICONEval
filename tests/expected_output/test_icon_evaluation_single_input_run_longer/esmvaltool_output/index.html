@@ -206,6 +206,20 @@
                 border-color: var(--primary-color);
                 box-shadow: 0 0 0 2px rgba(28,28,196,0.1);
             }
+            /* Description section */
+            .description-section {
+                background: white;
+            }
+            .description-section details {
+                margin-bottom: 0.5rem;
+            }
+            .description-section summary {
+                cursor: pointer;
+                color: var(--primary-color);
+            }
+            .description-section summary:hover {
+                text-decoration: underline;
+            }
             /* Buttons */
             .btn {
                 display: inline-block;
@@ -408,39 +422,26 @@
                 </div>
 
                 <!-- Description -->
-                <p><b>Simulations:</b></p>
-<div>
-  <span style='cursor: pointer;' onclick="toggleAccordion('accordion-0', 'arrow-0')">
-    <span id='arrow-0' style='display: inline-block; transition: transform 0.2s;'>▶</span> input</span>
-  <div id='accordion-0' style='display: none; margin-left: 20px;'>
-    <br><p>Path: ((tmp_path))/input</p>
-    <p>Created by: ICONEval User</p>
-    <p>Simulation Date: 2000-01-01 00:00:00</p>
-    <p>Grid Info: unknown</p>
-    <p>Namelist Files:</p>
-    <ul></ul>
+                <div class='description-section p-3 mb-4 bg-white rounded border'>
+  <h5 class='mb-3'>Simulation Information</h5>
+  <div>
+    <p class='mb-1'><strong>Evaluation Date:</strong> 2000-01-01 00:00:00</p>
+    <p class='mb-0'><strong>User:</strong> ICONEval User</p>
   </div>
+  <hr>
+  <h6 class='mb-2'>Simulations (1)</h6>
+  <details class='mb-2'>
+  <summary class='fw-semibold cursor-pointer'>input</summary>
+  <div class='ms-3 mt-2'>
+    <p class='mb-1'><strong>Path:</strong> ((tmp_path))/input</p>
+    <p class='mb-1'><strong>Owner:</strong> ICONEval User</p>
+    <p class='mb-1'><strong>Date:</strong> 2000-01-01 00:00:00</p>
+    <p class='mb-1'><strong>Grid:</strong> unknown</p>
+    <p class='mb-1'><strong>Namelist Files:</strong></p>
+    <ul class='mb-0'></ul>
+  </div>
+</details>
 </div>
-<br><div>
-  <p><b>Evaluation Date:</b> 2000-01-01 00:00:00</p>
-  <p><b>ICONEval User:</b> ICONEval User</p>
-  <p><b>ICONEval Contacts:</b></p>
-  <ul><li>Manuel Schlund (manuel.schlund@dlr.de)</li><li>Veronika Eyring (veronika.eyring@dlr.de)</li></ul>
-</div>
-<script>
-  function toggleAccordion(accordionId, arrowId) {
-    var element = document.getElementById(accordionId);
-    var arrow = document.getElementById(arrowId);
-    if (element.style.display === 'none') {
-      element.style.display = 'block';
-      arrow.style.transform = 'rotate(90deg)';
-    } else {
-      element.style.display = 'none';
-      arrow.style.transform = 'rotate(0deg)';
-    }
-  }
-</script>
-
 
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">

@@ -394,7 +394,7 @@
     <!-- Header -->
     <nav class="navbar">
         <a class="navbar-brand" href="#">&#128200; ICONEval Results</a>
-        <span class="navbar-text">1 diagnostics from 1 recipes</span>
+        <span class="navbar-text">3 diagnostics from 2 recipes</span>
     </nav>
 
     <div class="container-fluid">
@@ -403,8 +403,8 @@
             <aside class="sidebar col-md-3 col-lg-2">
                 <h5 class="mb-3">&#9881; Filters</h5>
                         <div class="mb-3"><h6>Realm</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="atmosphere" id="filter-realm-atmosphere" checked><label class="form-check-label" for="filter-realm-atmosphere">atmosphere</label></div></div>
-        <div class="mb-3"><h6>Plot Type</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot type-line" ><label class="form-check-label" for="filter-plot type-line">line</label></div></div>
-        <div class="mb-3"><h6>Variables</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Precipitation" id="filter-variables-Precipitation" ><label class="form-check-label" for="filter-variables-Precipitation">Precipitation</label></div></div>
+        <div class="mb-3"><h6>Plot Type</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot type-line" ><label class="form-check-label" for="filter-plot type-line">line</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="map" id="filter-plot type-map" ><label class="form-check-label" for="filter-plot type-map">map</label></div></div>
+        <div class="mb-3"><h6>Variables</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Near-Surface Air Temperature" id="filter-variables-Near-Surface Air Temperature" ><label class="form-check-label" for="filter-variables-Near-Surface Air Temperature">Near-Surface Air Temperature</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Precipitation" id="filter-variables-Precipitation" ><label class="form-check-label" for="filter-variables-Precipitation">Precipitation</label></div></div>
 
                 <hr>
                 <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
@@ -422,11 +422,100 @@
                 </div>
 
                 <!-- Description -->
-                this is a nice summary of the output
+                <div class='description-section p-3 mb-4 bg-white rounded border'>
+  <h5 class='mb-3'>Simulation Information</h5>
+  <div>
+    <p class='mb-1'><strong>Evaluation Date:</strong> 2001-01-01 00:00:00</p>
+    <p class='mb-0'><strong>User:</strong> ICONEval User</p>
+  </div>
+  <hr>
+  <h6 class='mb-2'>Simulations (2)</h6>
+  <details class='mb-2'>
+  <summary class='fw-semibold cursor-pointer'>exp_1</summary>
+  <div class='ms-3 mt-2'>
+    <p class='mb-1'><strong>Path:</strong> /path/to/exp_1</p>
+    <p class='mb-1'><strong>Owner:</strong> OWNER 1</p>
+    <p class='mb-1'><strong>Date:</strong> 2000-01-01 00:00:00</p>
+    <p class='mb-1'><strong>Grid:</strong> R2B5</p>
+    <p class='mb-1'><strong>Namelist Files:</strong></p>
+    <ul class='mb-0'><li class='text-muted'>namelist_1</li><li class='text-muted'>namelist_2</li></ul>
+  </div>
+</details><details class='mb-2'>
+  <summary class='fw-semibold cursor-pointer'>exp_2</summary>
+  <div class='ms-3 mt-2'>
+    <p class='mb-1'><strong>Path:</strong> /path/to/exp_2</p>
+    <p class='mb-1'><strong>Owner:</strong> OWNER 2</p>
+    <p class='mb-1'><strong>Date:</strong> 2000-01-01 00:00:00</p>
+    <p class='mb-1'><strong>Grid:</strong> unknown</p>
+    <p class='mb-1'><strong>Namelist Files:</strong></p>
+    <ul class='mb-0'></ul>
+  </div>
+</details>
+</div>
 
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">
                             <div class="diagnostic-card col"
+             data-realm="atmosphere"
+             data-plot-type="map"
+             data-variables="Near-Surface Air Temperature"
+             data-caption="Map plot of Near-Surface Air Temperature of dataset ICON."
+             data-recipe="basics_maps">
+            <div class="card h-100 shadow-sm">
+                <div class="card-img-wrapper" style="cursor: pointer;"
+                     onclick="openModal('recipe_basics_maps_20260331_084002/plots/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon.png', 'Map plot of Near-Surface Air Temperature of dataset ICON.',
+                         'map',
+                         'Near-Surface Air Temperature', '<li>ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_tas_19790101-19810101.nc</li><li>native6_ERA5_reanaly_v1_Amon_tas_19790101-19810101.nc</li>',
+                         'recipe_basics_maps_20260331_084002/index.html')">
+                    <img src="recipe_basics_maps_20260331_084002/plots/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon.png" class="card-img-top"
+                         alt="Map plot of Near-Surface Air Temperature of dataset ICON.">
+                    <div class="card-img-overlay">
+                        <i class="bi bi-arrows-fullscreen text-white fs-4"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        Map plot of Near-Surface Air Temperature of dataset ICON.
+
+                    </h6>
+                    <p class="card-text small text-muted">
+                        <span class="badge bg-secondary">atmosphere</span>
+                        <span class="badge bg-info text-dark">map</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="diagnostic-card col"
+             data-realm="atmosphere"
+             data-plot-type="map"
+             data-variables="Precipitation"
+             data-caption="Map plot of Precipitation of dataset ICON."
+             data-recipe="basics_maps">
+            <div class="card h-100 shadow-sm">
+                <div class="card-img-wrapper" style="cursor: pointer;"
+                     onclick="openModal('recipe_basics_maps_20260331_084002/plots/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon.png', 'Map plot of Precipitation of dataset ICON.',
+                         'map',
+                         'Precipitation', '<li>ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc</li><li>OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc</li>',
+                         'recipe_basics_maps_20260331_084002/index.html')">
+                    <img src="recipe_basics_maps_20260331_084002/plots/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon.png" class="card-img-top"
+                         alt="Map plot of Precipitation of dataset ICON.">
+                    <div class="card-img-overlay">
+                        <i class="bi bi-arrows-fullscreen text-white fs-4"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        Map plot of Precipitation of dataset ICON.
+
+                    </h6>
+                    <p class="card-text small text-muted">
+                        <span class="badge bg-secondary">atmosphere</span>
+                        <span class="badge bg-info text-dark">map</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="diagnostic-card col"
              data-realm="atmosphere"
              data-plot-type="line"
              data-variables="Precipitation"
@@ -434,11 +523,11 @@
              data-recipe="basics_zonal_mean_lines">
             <div class="card h-100 shadow-sm">
                 <div class="card-img-wrapper" style="cursor: pointer;"
-                     onclick="openModal('recipe_basics_zonal_mean_lines_20260318_093429/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png', 'Precipitation vs. latitude for various datasets.',
+                     onclick="openModal('recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png', 'Precipitation vs. latitude for various datasets.',
                          'line',
-                         'Precipitation', '<li>OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc</li><li>native6_ERA5_reanaly_v1_Amon_pr_19790101-19990101.nc</li><li>ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc</li>',
-                         'recipe_basics_zonal_mean_lines_20260318_093429/index.html')">
-                    <img src="recipe_basics_zonal_mean_lines_20260318_093429/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png" class="card-img-top"
+                         'Precipitation', '<li>ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc</li><li>OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc</li><li>native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc</li>',
+                         'recipe_basics_zonal_mean_lines_20260331_084001/index.html')">
+                    <img src="recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png" class="card-img-top"
                          alt="Precipitation vs. latitude for various datasets.">
                     <div class="card-img-overlay">
                         <i class="bi bi-arrows-fullscreen text-white fs-4"></i>

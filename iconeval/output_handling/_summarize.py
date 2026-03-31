@@ -39,7 +39,7 @@ def _read_diagnostic_provenance(diagnostic_dir: Path) -> dict:
     try:
         with provenance_file.open() as f:
             # Use unsafe loader to handle YAML anchors/aliases
-            data = yaml.unsafe_load(f)  # nosec
+            data = yaml.safe_load(f)
     except yaml.YAMLError:
         logger.warning(f"Could not parse {provenance_file}")
         return {}
@@ -53,12 +53,6 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
     PNGs are in plots/<diagnostic>/plot/*.png
     Provenance is in run/<diagnostic>/plot/diagnostic_provenance.yml
 
-    Args:
-        output_dir: The ESMValTool output directory
-
-    Returns
-    -------
-        List of DiagnosticInfo objects for all diagnostics with PNG files
     """
     diagnostics = []
 
@@ -203,68 +197,44 @@ class FilterOptions:
 
 def get_html_description(session: Session, date: datetime) -> str:
     """Create description of simulation(s) for HTML."""
-    # Simulation-specific information
     simulations_info = session.simulations_info
-    sim_str = ""
-    for index, sim_info in enumerate(simulations_info):
-        namelist_files_html = "".join(
-            f"<li>{path}</li>" for path in sim_info.namelist_files
-        )
 
-        sim_str += (
-            f"<div>\n"
-            f"  <span style='cursor: pointer;' "
-            f"onclick=\"toggleAccordion('accordion-{index}',"
-            f" 'arrow-{index}')\">\n"
-            f"    <span id='arrow-{index}' style='display: inline-block; "
-            f"transition: transform 0.2s;'>▶</span> "
-            f"{sim_info.exp}</span>\n"
-            f"  <div id='accordion-{index}' style='display: none; "
-            f"margin-left: 20px;'>\n"
-            f"    <br><p>Path: {sim_info.path}</p>\n"
-            f"    <p>Created by: {sim_info.owner}</p>\n"
-            f"    <p>Simulation Date: {sim_info.date}</p>\n"
-            f"    <p>Grid Info: {sim_info.grid_info}</p>\n"
-            f"    <p>Namelist Files:</p>\n"
-            f"    <ul>{namelist_files_html}</ul>\n"
+    # Build simulations section using native HTML details element
+    sim_sections = []
+    for sim_info in simulations_info:
+        namelist_items = "".join(
+            f"<li class='text-muted'>{path}</li>" for path in sim_info.namelist_files
+        )
+        sim_sections.append(
+            f"<details class='mb-2'>\n"
+            f"  <summary class='fw-semibold cursor-pointer'>{sim_info.exp}</summary>\n"
+            f"  <div class='ms-3 mt-2'>\n"
+            f"    <p class='mb-1'><strong>Path:</strong> {sim_info.path}</p>\n"
+            f"    <p class='mb-1'><strong>Owner:</strong> {sim_info.owner}</p>\n"
+            f"    <p class='mb-1'><strong>Date:</strong> {sim_info.date}</p>\n"
+            f"    <p class='mb-1'><strong>Grid:</strong> {sim_info.grid_info}</p>\n"
+            f"    <p class='mb-1'><strong>Namelist Files:</strong></p>\n"
+            f"    <ul class='mb-0'>{namelist_items}</ul>\n"
             f"  </div>\n"
-            f"</div>\n"
+            f"</details>",
         )
 
-    # General information
+    simulations_html = "".join(sim_sections)
+
+    # Build metadata section
     current_user = get_user_name()
-    contacts = "".join(
-        [
-            f"<li>{person}</li>"
-            for person in [
-                "Manuel Schlund (manuel.schlund@dlr.de)",
-                "Veronika Eyring (veronika.eyring@dlr.de)",
-            ]
-        ],
-    )
     return (
-        f"<p><b>Simulations:</b></p>\n"
-        f"{sim_str}"
-        f"<br><div>\n"
-        f"  <p><b>Evaluation Date:</b> "
+        f"<div class='description-section p-3 mb-4 bg-white rounded border'>\n"
+        f"  <h5 class='mb-3'>Simulation Information</h5>\n"
+        f"  <div>\n"
+        f"    <p class='mb-1'><strong>Evaluation Date:</strong> "
         f"{date.strftime('%Y-%m-%d %H:%M:%S%z')}</p>\n"
-        f"  <p><b>ICONEval User:</b> {current_user}</p>\n"
-        f"  <p><b>ICONEval Contacts:</b></p>\n"
-        f"  <ul>{contacts}</ul>\n"
-        f"</div>\n"
-        f"<script>\n"
-        f"  function toggleAccordion(accordionId, arrowId) {{\n"
-        f"    var element = document.getElementById(accordionId);\n"
-        f"    var arrow = document.getElementById(arrowId);\n"
-        f"    if (element.style.display === 'none') {{\n"
-        f"      element.style.display = 'block';\n"
-        f"      arrow.style.transform = 'rotate(90deg)';\n"
-        f"    }} else {{\n"
-        f"      element.style.display = 'none';\n"
-        f"      arrow.style.transform = 'rotate(0deg)';\n"
-        f"    }}\n"
-        f"  }}\n"
-        f"</script>\n"
+        f"    <p class='mb-0'><strong>User:</strong> {current_user}</p>\n"
+        f"  </div>\n"
+        f"  <hr>\n"
+        f"  <h6 class='mb-2'>Simulations ({len(simulations_info)})</h6>\n"
+        f"  {simulations_html}\n"
+        f"</div>"
     )
 
 
@@ -330,15 +300,7 @@ def _write_dashboard_html(
     *,
     embed_images: bool = False,
 ) -> None:
-    """Write the new dashboard-style index.html.
-
-    Args:
-        output_dir: The ESMValTool output directory
-        diagnostics: List of DiagnosticInfo objects
-        filter_options: Filter options extracted from diagnostics
-        description: Optional description to include in the HTML
-        embed_images: If True, embed images as base64
-    """
+    """Write dashboard-style index.html."""
     if description is None:
         description = ""
 
