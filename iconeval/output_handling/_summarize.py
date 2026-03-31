@@ -202,10 +202,8 @@ def get_html_description(session: Session, date: datetime) -> str:
 
     # Build simulation chips (clickable cards for each simulation)
     sim_chips = []
-    for i, sim_info in enumerate(simulations_info):
-        namelist_items = "".join(
-            f"<li>{path}</li>" for path in sim_info.namelist_files
-        )
+    for sim_info in simulations_info:
+        namelist_items = "".join(f"<li>{path}</li>" for path in sim_info.namelist_files)
         sim_chips.append(
             f"<span class='sim-chip' onclick=\"openSimModal("
             f"'{_escape_html(sim_info.exp)}', "
@@ -214,26 +212,24 @@ def get_html_description(session: Session, date: datetime) -> str:
             f"'{_escape_html(sim_info.date)}', "
             f"'{_escape_html(sim_info.grid_info)}', "
             f"'{namelist_items}')\">"
-            f"{sim_info.exp}</span>"
+            f"{sim_info.exp}</span>",
         )
 
     simulations_html = "".join(sim_chips)
 
     return (
-        f"<div class='description-section'>\n"
-        f"  <div class='sim-info-header'>\n"
-        f"    <div>\n"
-        f"      <span class='sim-info-label'>Evaluated by</span>\n"
-        f"      <span class='sim-info-value'>{current_user}</span>\n"
-        f"    </div>\n"
-        f"    <div>\n"
-        f"      <span class='sim-info-label'>Evaluation date</span>\n"
-        f"      <span class='sim-info-value'>{date.strftime('%Y-%m-%d %H:%M')}</span>\n"
-        f"    </div>\n"
+        f"<div class='sim-info-header'>\n"
+        f"  <div>\n"
+        f"    <span class='sim-info-label'>Evaluated by</span>\n"
+        f"    <span class='sim-info-value'>{current_user}</span>\n"
         f"  </div>\n"
-        f"  <div class='sim-info-label'>Simulations</div>\n"
-        f"  <div class='sim-chips'>{simulations_html}</div>\n"
-        f"</div>"
+        f"  <div>\n"
+        f"    <span class='sim-info-label'>Evaluation date</span>\n"
+        f"    <span class='sim-info-value'>{date.strftime('%Y-%m-%d %H:%M')}</span>\n"
+        f"  </div>\n"
+        f"</div>\n"
+        f"<div class='sim-info-label'>Simulations</div>\n"
+        f"<div class='sim-chips'>{simulations_html}</div>\n"
     )
 
 
