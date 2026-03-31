@@ -233,6 +233,7 @@
             .badge.bg-primary { background: #7ca5e0 !important; color: #1a1a4e; }
             .badge.bg-success { background: #7bc5a0 !important; color: #1a3d2e; }
             .badge.bg-warning { background: #f5d78e !important; color: #3d3a1a; }
+            .badge.bg-info { background: #7ee0c8 !important; color: #1a4d40; }
             .badge.clickable {
                 cursor: pointer;
                 transition: transform 0.2s, box-shadow 0.2s;

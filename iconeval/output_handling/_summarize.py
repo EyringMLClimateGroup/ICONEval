@@ -317,10 +317,25 @@ def _write_dashboard_html(
         else:
             img_src = str(diag.relative_png_path) if diag.relative_png_path else ""
 
-        # Build data attributes for filtering
+        # Build data attributes for filtering (comma-separated for filtering logic)
         realm = diag.realm or "other"
         plot_type = ",".join(diag.plot_types) if diag.plot_types else "unknown"
         variables = ",".join(diag.long_names) if diag.long_names else "unknown"
+
+        # Build individual badges for plot types and variables
+        plot_type_badges = "".join(
+            f"<span class=\"badge bg-success clickable\"\n"
+            f"      onclick=\"toggleFilterBadge('plot_type', '{pt}')\">{pt}\n"
+            f"</span>"
+            for pt in diag.plot_types
+        ) if diag.plot_types else "<span class=\"badge bg-success\">unknown</span>"
+
+        variable_badges = "".join(
+            f"<span class=\"badge bg-info clickable\"\n"
+            f"      onclick=\"toggleFilterBadge('variables', '{v}')\">{v}\n"
+            f"</span>"
+            for v in diag.long_names
+        ) if diag.long_names else "<span class=\"badge bg-info\">unknown</span>"
 
         # Build provenance data for modal
         max_input_datasets_shown = 5
@@ -362,9 +377,8 @@ def _write_dashboard_html(
                         <span class="badge bg-primary clickable"
                               onclick="toggleFilterBadge('realm', '{realm}')">{realm}
                         </span>
-                        <span class="badge bg-success clickable"
-                              onclick="toggleFilterBadge('plot_type', '{plot_type}')">{plot_type}
-                        </span>
+                        {plot_type_badges}
+                        {variable_badges}
                         <span class="badge bg-warning text-dark clickable"
                               onclick="toggleFilterBadge('recipe', '{diag.recipe_name}')">{diag.recipe_name}
                         </span>

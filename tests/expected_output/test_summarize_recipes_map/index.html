@@ -240,6 +240,7 @@
             .badge.bg-primary { background: #7ca5e0 !important; color: #1a1a4e; }
             .badge.bg-success { background: #7bc5a0 !important; color: #1a3d2e; }
             .badge.bg-warning { background: #f5d78e !important; color: #3d3a1a; }
+            .badge.bg-info { background: #7ee0c8 !important; color: #1a4d40; }
             .badge.clickable {
                 cursor: pointer;
                 transition: transform 0.2s, box-shadow 0.2s;
@@ -660,7 +661,7 @@
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Plot Type</span>
-                                <span class="detail-value" id="modalPlotType"></span>
+                                <ul class="detail-list-plain" id="modalPlotType"></ul>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Variables</span>
@@ -727,7 +728,8 @@
         function openModal(imgSrc, caption, plotType, variables, input_datasets, recipeUrl, recipeName) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
-            document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
+            document.getElementById('modalPlotType').innerHTML = plotType ?
+                plotType.split(',').map(pt => `<li>${pt}</li>`).join('') : '<li>None</li>';
             document.getElementById('modalVariables').innerHTML = variables ?
                 variables.split(',').map(v => `<li>${v}</li>`).join('') : '<li>None</li>';
             document.getElementById('modalRecipe').textContent = recipeName || 'Unknown';
@@ -823,12 +825,10 @@
         function toggleFilterBadge(filterType, value) {
             if (!value || value === 'unknown') return;
 
-            // Skip if value contains comma (complex plot_type) - not clickable
-            if (filterType === 'plot_type' && value.includes(',')) return;
-
             // Find the checkbox for this filter type and value
             const filterName = filterType === 'realm' ? 'Realm' :
                                filterType === 'plot_type' ? 'Plot Type' :
+                               filterType === 'variables' ? 'Variables' :
                                filterType === 'recipe' ? 'Recipe' : filterType;
             const checkboxId = `filter-${filterName.toLowerCase()}-${value}`;
             const checkbox = document.getElementById(checkboxId);
