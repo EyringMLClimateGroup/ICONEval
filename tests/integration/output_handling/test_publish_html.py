@@ -12,7 +12,7 @@ from swiftclient.service import ClientException, SwiftError
 
 import iconeval.output_handling.publish_html
 from iconeval.output_handling.publish_html import main, publish_esmvaltool_html
-from tests.integration import assert_output
+from tests.integration import assert_output, copy_to_tmp_path
 
 if TYPE_CHECKING:
     from unittest.mock import Mock
@@ -33,10 +33,12 @@ def test_publish_esmvaltool_html_multiple_recipes(
     mocked_requests: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    tmp_path: Path,
 ) -> None:
-    esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-
-    url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
     assert (
         url == "url/to/swift_storage/my_folder/iconeval/recipes_zonal-means/index.html"
@@ -65,7 +67,7 @@ def test_publish_esmvaltool_html_multiple_recipes(
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (str(f), str(Path("recipes_zonal-means") / f.relative_to(esmvaltool_output)))
-        for f in esmvaltool_output.rglob("*")
+        for f in expected_dir_contents
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
 
@@ -75,15 +77,18 @@ def test_publish_esmvaltool_html_single_recipe(
     mocked_requests: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    tmp_path: Path,
 ) -> None:
-    esmvaltool_output = (
+    sample_dir = (
         sample_data_path
         / "esmvaltool_output"
         / "recipes_zonal-means"
         / "recipe_basics_zonal_mean_lines_20260318_093429"
     )
 
-    url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
     assert (
         url == "url/to/swift_storage/my_folder/iconeval/"
@@ -119,7 +124,7 @@ def test_publish_esmvaltool_html_single_recipe(
                 / f.relative_to(esmvaltool_output),
             ),
         )
-        for f in esmvaltool_output.rglob("*")
+        for f in expected_dir_contents
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
 
@@ -133,19 +138,22 @@ def test_publish_esmvaltool_html_files_to_large(
     mocked_swift_service: Mock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(
-        iconeval.output_handling.publish_html,
-        "MAX_FILE_SIZE_FOR_UPLOAD",
-        -1,
-    )
-    esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-
     # Avoid overwriting existing tokens
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
     monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
 
-    url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+    # Make all files to large
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "MAX_FILE_SIZE_FOR_UPLOAD",
+        -1,
+    )
+
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
 
     assert url == "my-x-storage-url/iconeval/recipes_zonal-means/index.html"
 
@@ -188,32 +196,28 @@ def test_publish_esmvaltool_html_force(
     mocked_swift_service: Mock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    # Copy sample output to temporary directory so files can be created
-    src_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-    esmvaltool_output = tmp_path / "recipes_zonal-means"
-    esmvaltool_output.mkdir(parents=True, exist_ok=True)
-    subdirs = [
-        "recipe_basics_zonal_mean_lines_20260318_093429",
-        "recipe_ocean_zonal_mean_lines_20260318_093429",
-    ]
-    for subdir in subdirs:
-        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        # Do not overwrite existing swiftenv sample file, copy existing token to
+        # make sure it is overwritten by force_new_token=True
+        swift_token = esmvaltool_output / "swiftenv"
+        shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
+        monkeypatch.setattr(
+            iconeval.output_handling.publish_html,
+            "SWIFTENV",
+            swift_token,
+        )
 
-    # Do not overwrite existing swiftenv sample file, copy existing token to
-    # make sure it is overwritten by force_new_token=True
-    swift_token = esmvaltool_output / "swiftenv"
-    shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
-
-    url = publish_esmvaltool_html(
-        esmvaltool_output,
-        container_name="my_container",
-        dir_name="my_dir",
-        log_level="debug",
-        log_file=None,
-        summary_description="this is a nice summary of the output",
-        force_new_token=True,
-    )
+        url = publish_esmvaltool_html(
+            esmvaltool_output,
+            container_name="my_container",
+            dir_name="my_dir",
+            log_level="debug",
+            log_file=None,
+            summary_description="this is a nice summary of the output",
+            force_new_token=True,
+        )
+        expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
     assert url == "my-x-storage-url/my_container/my_dir/index.html"
 
@@ -245,14 +249,12 @@ def test_publish_esmvaltool_html_force(
     assert upload_call.kwargs["container"] == "my_container"
     objects_to_upload = [
         (str(f), str(Path("my_dir") / f.relative_to(esmvaltool_output)))
-        for f in esmvaltool_output.rglob("*")
+        for f in expected_dir_contents
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
 
     # Check output; for this, we remove the previously created subdirectories
     assert oct(swift_token.stat().st_mode)[-3:] == "600"
-    for subdir in subdirs:
-        shutil.rmtree(esmvaltool_output / subdir)
     assert_output(
         tmp_path,
         esmvaltool_output,
@@ -261,7 +263,10 @@ def test_publish_esmvaltool_html_force(
     )
 
 
-def test_publish_esmvaltool_html_no_dir_fail(sample_data_path: Path) -> None:
+def test_publish_esmvaltool_html_no_dir_fail(
+    sample_data_path: Path,
+    tmp_path: Path,
+) -> None:
     esmvaltool_output = sample_data_path / "esmvaltool_output" / "non_existing_dir"
     msg = r"is not a directory"
     with pytest.raises(NotADirectoryError, match=re.escape(msg)):
@@ -274,8 +279,6 @@ def test_publish_esmvaltool_invalid_token_fail(
     mocked_requests: Mock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-
     # Force creating new token by using expired token. Copy expired token to
     # temporary location to avoid overwriting existing files.
     swift_token = tmp_path / "swift" / "swiftenv"
@@ -286,9 +289,11 @@ def test_publish_esmvaltool_invalid_token_fail(
     # Raise error when token is created
     mocked_requests.get.return_value.headers["x-auth-token"] = None
 
-    msg = r"Failed to create new swift token"
-    with pytest.raises(ValueError, match=re.escape(msg)):
-        publish_esmvaltool_html(esmvaltool_output, log_file=None)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        msg = r"Failed to create new swift token"
+        with pytest.raises(ValueError, match=re.escape(msg)):
+            publish_esmvaltool_html(esmvaltool_output, log_file=None)
 
 
 def test_publish_esmvaltool_invalid_request_fail(
@@ -299,8 +304,6 @@ def test_publish_esmvaltool_invalid_request_fail(
     mocked_swift_head_account: Mock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-
     # Do not overwrite existing swiftenv sample file
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
@@ -315,12 +318,14 @@ def test_publish_esmvaltool_invalid_request_fail(
         requests.RequestException("failed request")
     )
 
-    msg = r"Failed to create new swift token: failed request"
-    with pytest.raises(requests.RequestException, match=re.escape(msg)):
-        publish_esmvaltool_html(
-            esmvaltool_output,
-            log_file=None,
-        )
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        msg = r"Failed to create new swift token: failed request"
+        with pytest.raises(requests.RequestException, match=re.escape(msg)):
+            publish_esmvaltool_html(
+                esmvaltool_output,
+                log_file=None,
+            )
 
     # Check logging output
     assert "is corrupted" in caplog.text
@@ -329,15 +334,16 @@ def test_publish_esmvaltool_invalid_request_fail(
 def test_publish_esmvaltool_upload_fail(
     sample_data_path: Path,
     mocked_swift_service: Mock,
+    tmp_path: Path,
 ) -> None:
-    esmvaltool_output = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-
     mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
     mocked_service_instance.upload.return_value = [{"success": False, "error": 42}]
 
-    msg = r"Upload of {'success': False, 'error': 42} failed: 42"
-    with pytest.raises(SwiftError, match=re.escape(msg)):
-        publish_esmvaltool_html(
-            esmvaltool_output,
-            log_file=None,
-        )
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        msg = r"Upload of {'success': False, 'error': 42} failed: 42"
+        with pytest.raises(SwiftError, match=re.escape(msg)):
+            publish_esmvaltool_html(
+                esmvaltool_output,
+                log_file=None,
+            )
