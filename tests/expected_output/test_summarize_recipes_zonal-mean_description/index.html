@@ -91,6 +91,7 @@
                 border-right: 1px solid var(--border-color);
                 width: 240px;
                 min-width: 240px;
+                flex: 0 0 240px;
                 padding: 1.5rem 1rem;
                 flex-shrink: 0;
                 margin: 0.75rem;
@@ -100,11 +101,12 @@
                 height: fit-content;
                 max-height: calc(100vh - 4rem);
                 overflow-y: auto;
-                transition: width 0.3s ease, min-width 0.3s ease;
+                transition: width 0.3s ease, min-width 0.3s ease, flex 0.3s ease;
             }
             .sidebar.collapsed {
                 width: 70px;
                 min-width: 70px;
+                flex: 0 0 70px;
                 padding: 0.75rem 0.25rem;
             }
             .sidebar.collapsed .search-wrapper {
