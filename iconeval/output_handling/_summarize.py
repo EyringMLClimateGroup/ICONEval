@@ -379,9 +379,7 @@ def _write_dashboard_html(
             )
         items_html = []
         for item in items:
-            checked = (
-                "checked" if name == "Realm" and item in ("atmosphere", "all") else ""
-            )
+            checked = ""
             items_html.append(
                 f'<div class="form-check">'
                 f'<input class="form-check-input filter-checkbox" type="checkbox" '

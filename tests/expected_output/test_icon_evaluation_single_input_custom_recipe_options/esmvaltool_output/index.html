@@ -807,7 +807,7 @@
         function clearFilters() {
             document.getElementById('searchInput').value = '';
             document.querySelectorAll('.filter-checkbox').forEach(cb => {
-                cb.checked = cb.value === 'atmosphere' || cb.value === 'all';
+                cb.checked = false;
             });
             filterDiagnostics();
         }

@@ -564,7 +564,7 @@
                            id="searchInput" onkeyup="filterDiagnostics()">
                 </div>
                 <div id="filterContent">
-                            <div class="mb-3"><h6>Realm</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="atmosphere" id="filter-realm-atmosphere" checked><label class="form-check-label" for="filter-realm-atmosphere">atmosphere</label></div></div>
+                            <div class="mb-3"><h6>Realm</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="atmosphere" id="filter-realm-atmosphere" ><label class="form-check-label" for="filter-realm-atmosphere">atmosphere</label></div></div>
         <div class="mb-3"><h6>Plot Type</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot type-line" ><label class="form-check-label" for="filter-plot type-line">line</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="map" id="filter-plot type-map" ><label class="form-check-label" for="filter-plot type-map">map</label></div></div>
         <div class="mb-3"><h6>Variables</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Near-Surface Air Temperature" id="filter-variables-Near-Surface Air Temperature" ><label class="form-check-label" for="filter-variables-Near-Surface Air Temperature">Near-Surface Air Temperature</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Precipitation" id="filter-variables-Precipitation" ><label class="form-check-label" for="filter-variables-Precipitation">Precipitation</label></div></div>
         <div class="mb-3"><h6>Recipe</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="basics_maps" id="filter-recipe-basics_maps" ><label class="form-check-label" for="filter-recipe-basics_maps">basics_maps</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="basics_zonal_mean_lines" id="filter-recipe-basics_zonal_mean_lines" ><label class="form-check-label" for="filter-recipe-basics_zonal_mean_lines">basics_zonal_mean_lines</label></div></div>
@@ -890,7 +890,7 @@
         function clearFilters() {
             document.getElementById('searchInput').value = '';
             document.querySelectorAll('.filter-checkbox').forEach(cb => {
-                cb.checked = cb.value === 'atmosphere' || cb.value === 'all';
+                cb.checked = false;
             });
             filterDiagnostics();
         }
