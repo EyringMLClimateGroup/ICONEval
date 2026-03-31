@@ -137,7 +137,7 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
                         caption=prov_data.get("caption", ""),
                         plot_types=prov_data.get("plot_types", []),
                         long_names=prov_data.get("long_names", []),
-                        ancestors=prov_data.get("ancestors", []),
+                        input_datasets=prov_data.get("ancestors", []),
                         recipe_name=recipe_name,
                         realm=realm,
                         recipe_date=recipe_date,
@@ -182,7 +182,7 @@ class DiagnosticInfo:
     caption: str
     plot_types: list[str] = field(default_factory=list)
     long_names: list[str] = field(default_factory=list)
-    ancestors: list[str] = field(default_factory=list)
+    input_datasets: list[str] = field(default_factory=list)
     recipe_name: str = ""
     realm: str = ""
     recipe_date: datetime = field(default_factory=datetime.now)
@@ -316,13 +316,13 @@ def _write_dashboard_html(
         variables = ",".join(diag.long_names) if diag.long_names else "unknown"
 
         # Build provenance data for modal
-        max_ancestors_shown = 5
-        ancestors_html = "".join(
-            f"<li>{Path(a).name}</li>" for a in diag.ancestors[:max_ancestors_shown]
+        max_input_datasets_shown = 5
+        input_datasets_html = "".join(
+            f"<li>{Path(a).name}</li>" for a in diag.input_datasets[:max_input_datasets_shown]
         )
-        if len(diag.ancestors) > max_ancestors_shown:
-            ancestors_html += (
-                f"<li>... and {len(diag.ancestors) - max_ancestors_shown} more</li>"
+        if len(diag.input_datasets) > max_input_datasets_shown:
+            input_datasets_html += (
+                f"<li>... and {len(diag.input_datasets) - max_input_datasets_shown} more</li>"
             )
 
         card = f"""\
@@ -336,7 +336,7 @@ def _write_dashboard_html(
                 <div class="card-img-wrapper" style="cursor: pointer;"
                      onclick="openModal('{img_src}', '{_escape_html(diag.caption)}',
                          '{_escape_html(plot_type)}',
-                         '{_escape_html(variables)}', '{ancestors_html}',
+                         '{_escape_html(variables)}', '{input_datasets_html}',
                          '{diag.recipe_url}', '{diag.recipe_name}')">
                     <img src="{img_src}" class="card-img-top"
                          alt="{_escape_html(diag.caption)}">

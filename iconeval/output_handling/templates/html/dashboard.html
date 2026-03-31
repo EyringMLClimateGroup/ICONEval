@@ -134,7 +134,7 @@
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Input Datasets</span>
-                                <ul class="detail-list" id="modalAncestors"></ul>
+                                <ul class="detail-list" id="modalInputDatasets"></ul>
                             </div>
                             <div class="detail-row">
                                 <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
@@ -186,13 +186,13 @@
             }
         });
 
-        function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl, recipeName) {
+        function openModal(imgSrc, caption, plotType, variables, input_datasets, recipeUrl, recipeName) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
             document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
             document.getElementById('modalVariables').textContent = variables || 'Unknown';
             document.getElementById('modalRecipe').textContent = recipeName || 'Unknown';
-            document.getElementById('modalAncestors').innerHTML = ancestors || '<li>None</li>';
+            document.getElementById('modalInputDatasets').innerHTML = input_datasets || '<li>None</li>';
             document.getElementById('modalRecipeLink').href = recipeUrl || '#';
             document.getElementById('detailModal').classList.add('show');
             document.body.style.overflow = 'hidden';
