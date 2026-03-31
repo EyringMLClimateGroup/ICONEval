@@ -469,7 +469,7 @@
             .mb-4 { margin-bottom: 1.5rem !important; }
             .mt-3 { margin-top: 1rem !important; }
             .mt-5 { margin-top: 3rem !important; }
-            .py-3 { padding-top: 1rem; padding-bottom: 1rem; }
+            .py-3 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
             .py-5 { padding-top: 3rem; padding-bottom: 3rem; }
             .text-muted { color: #6c757d; }
             .text-white { color: white; }
@@ -509,12 +509,14 @@
             footer {
                 background: white;
                 border-top: 1px solid var(--border-color);
-                padding: 0.75rem 1.5rem;
+                padding: 0.25rem 1.0rem;
                 flex-shrink: 0;
                 margin-top: auto;
                 position: sticky;
                 bottom: 0;
-                font-size: 0.85rem;
+                font-size: 0.7rem;
+                justify-content: space-between;
+                display: flex;
             }
             footer .row {
                 margin: 0;

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import base64
-from collections.abc import Iterable
 import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -15,12 +14,13 @@ from loguru import logger
 
 import iconeval
 from iconeval import get_user_name
-from iconeval._simulation_info import SimulationInfo
 from iconeval._templates import RecipeTemplate
 from iconeval.output_handling._templates_html import render_template
 
 if TYPE_CHECKING:
-    from iconeval._session import Session
+    from collections.abc import Iterable
+
+    from iconeval._simulation_info import SimulationInfo
 
 # Maximum length of diagnostic caption displayed in card
 CAPTION_MAX_LENGTH = 100

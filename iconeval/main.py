@@ -322,7 +322,9 @@ def _create_summary_html(session: Session) -> None:
     """Create summary HTML."""
     description = get_simulations_info_html(session.simulations_info)
     summarize(
-        session.output_dir_esmvaltool, date=TIMES["start"], description=description
+        session.output_dir_esmvaltool,
+        date=TIMES["start"],
+        description=description,
     )
 
 

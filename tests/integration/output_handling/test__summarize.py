@@ -1,18 +1,12 @@
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 
-from iconeval._session import Session
 from iconeval._simulation_info import SimulationInfo
 from iconeval.output_handling._summarize import get_simulations_info_html, summarize
 from tests.integration import assert_output, copy_to_tmp_path
-
-if TYPE_CHECKING:
-    from pytest_mock import MockerFixture
 
 
 @pytest.fixture
