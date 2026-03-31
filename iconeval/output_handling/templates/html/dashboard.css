@@ -74,6 +74,7 @@
             .main-content {
                 flex: 1;
                 padding: 1.5rem;
+                margin: 0.25rem;
                 overflow-x: hidden;
             }
             /* Grid system */
