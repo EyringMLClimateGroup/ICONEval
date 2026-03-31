@@ -469,6 +469,11 @@
                 font-family: monospace;
                 font-size: 0.85rem;
             }
+            .detail-list-plain {
+                margin: 0;
+                padding-left: 1.25rem;
+                font-size: 0.85rem;
+            }
             /* Typography */
             h1, h2, h3, h4, h5, h6 {
                 margin-top: 0;
@@ -766,7 +771,7 @@
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Variables</span>
-                                <span class="detail-value" id="modalVariables"></span>
+                                <ul class="detail-list-plain" id="modalVariables"></ul>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Recipe</span>
@@ -830,7 +835,8 @@
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
             document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
-            document.getElementById('modalVariables').textContent = variables || 'Unknown';
+            document.getElementById('modalVariables').innerHTML = variables ?
+                variables.split(',').map(v => `<li>${v}</li>`).join('') : '<li>None</li>';
             document.getElementById('modalRecipe').textContent = recipeName || 'Unknown';
             document.getElementById('modalInputDatasets').innerHTML = input_datasets || '<li>None</li>';
             document.getElementById('modalRecipeLink').href = recipeUrl || '#';
