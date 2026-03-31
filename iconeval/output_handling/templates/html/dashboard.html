@@ -13,7 +13,7 @@
     <nav class="navbar">
         <div class="navbar-brand-section">
             <div class="navbar-brand-row">
-                <a class="navbar-brand" href="#">&#128200; ICONEval Results</a>
+                <a class="navbar-brand" href="#">📈 ICONEval Results</a>
             </div>
             <span class="navbar-meta">
                 {{ evaluation_date }} | User: {{ evaluation_user }}
@@ -34,7 +34,7 @@
             <!-- Sidebar -->
             <aside class="sidebar col-md-3 col-lg-2" id="sidebar">
                 <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="toggleFiltersBtn" onclick="toggleFilters()">
-                    &#9668; Filters
+                    ◀ Filters
                 </button>
                 <!-- Search -->
                 <div class="mb-4 search-wrapper">
@@ -46,7 +46,7 @@
                     {{ sidebar_filters|safe }}
                     <hr>
                     <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
-                        &#10005; Clear Filters
+                        ✕ Clear Filters
                     </button>
                 </div>
             </aside>
@@ -60,7 +60,7 @@
 
                 <!-- No Results -->
                 <div id="noResults" class="text-center py-5" style="display: none;">
-                    <p class="fs-1 text-muted">&#128269;</p>
+                    <p class="fs-1 text-muted">🔍</p>
                     <p class="mt-3 text-muted">No diagnostics match your filters.</p>
                     <button class="btn btn-primary" onclick="clearFilters()">Clear Filters</button>
                 </div>
@@ -138,7 +138,7 @@
                             </div>
                             <div class="detail-row">
                                 <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
-                                    View in ESMValTool
+                                    ↗ View ESMValTool Output
                                 </a>
                             </div>
                         </div>
@@ -289,11 +289,11 @@
             if (sidebar.classList.contains('collapsed')) {
                 sidebar.classList.remove('collapsed');
                 content.style.display = '';
-                btn.innerHTML = '&#9668; Filters';
+                btn.innerHTML = '◀ Filters';
             } else {
                 sidebar.classList.add('collapsed');
                 content.style.display = 'none';
-                btn.innerHTML = '&#9654; Filters';
+                btn.innerHTML = '▶ Filters';
             }
         }
     </script>
