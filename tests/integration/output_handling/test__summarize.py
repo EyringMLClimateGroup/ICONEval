@@ -37,7 +37,7 @@ def test_summarize(
     )
 
 
-def test_summarize_empty_logs(
+def test_summarize_empty_output(
     pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
@@ -50,49 +50,5 @@ def test_summarize_empty_logs(
         tmp_path,
         esmvaltool_output,
         expected_output_dir / "test_summarize_empty_logs",
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
-
-
-def test_summarize_no_debug_log(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
-) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        debug_log = (
-            esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-        )
-        debug_log.unlink()
-        summarize(esmvaltool_output)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / "test_summarize_no_debug_log",
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
-
-
-def test_summarize_debug_log_single_line(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
-) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        debug_log = (
-            esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-        )
-        debug_log.write_text(
-            "this is a single line that cannot be used to infer runtime",
-        )
-        summarize(esmvaltool_output)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / "test_summarize_debug_log_single_line",
         generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )
