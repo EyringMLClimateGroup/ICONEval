@@ -57,6 +57,12 @@
                 height: fit-content;
                 max-height: calc(100vh - 4rem);
                 overflow-y: auto;
+                transition: width 0.3s ease, min-width 0.3s ease;
+            }
+            .sidebar.collapsed {
+                width: 70px;
+                min-width: 70px;
+                padding: 0.75rem 0.25rem;
             }
             .sidebar h6 {
                 font-size: 0.75rem;
