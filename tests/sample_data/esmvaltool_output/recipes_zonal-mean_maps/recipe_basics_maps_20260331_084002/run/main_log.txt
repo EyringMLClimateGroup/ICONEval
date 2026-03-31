@@ -1,0 +1,126 @@
+INFO    [256545] 
+______________________________________________________________________
+          _____ ____  __  ____     __    _ _____           _
+         | ____/ ___||  \/  \ \   / /_ _| |_   _|__   ___ | |
+         |  _| \___ \| |\/| |\ \ / / _` | | | |/ _ \ / _ \| |
+         | |___ ___) | |  | | \ V / (_| | | | | (_) | (_) | |
+         |_____|____/|_|  |_|  \_/ \__,_|_| |_|\___/ \___/|_|
+______________________________________________________________________
+
+Earth System Model Evaluation Tool
+
+A community tool for the evaluation of Earth system models.
+
+https://esmvaltool.org
+
+The Earth System Model Evaluation Tool (ESMValTool) is a community
+diagnostics and performance metrics tool for the evaluation of Earth
+System Models (ESMs) that allows for routine comparison of single or
+multiple models, either against predecessor versions or against
+observations.
+
+Tutorial: https://tutorial.esmvaltool.org
+Documentation: https://docs.esmvaltool.org
+Contact: esmvaltool-dev@listserv.dfn.de
+
+If you find this software useful for your research, please cite it using
+https://doi.org/10.5281/zenodo.3387139 for ESMValCore or
+https://doi.org/10.5281/zenodo.3401363 for ESMValTool or
+any of the reference papers listed at https://esmvaltool.org/references/.
+
+Have fun!
+
+INFO    [256545] Package versions
+INFO    [256545] ----------------
+INFO    [256545] ESMValCore: 2.15.0.dev5+g3208f5f3a
+INFO    [256545] ESMValTool: 2.14.0.dev82+gd48ea2ab7
+INFO    [256545] ----------------
+INFO    [256545] Reading configuration files from:
+/home/b/b309141/repos/ESMValCore/esmvalcore/config/configurations/defaults (defaults)
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/config/recipe_basics_maps (ESMVALTOOL_CONFIG_DIR environment variable)
+INFO    [256545] Writing program log files to:
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/main_log.txt
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/main_log_debug.txt
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/cmor_log.txt
+INFO    [256545] Starting the Earth System Model Evaluation Tool at time: 2026-03-31 08:40:03 UTC
+INFO    [256545] ----------------------------------------------------------------------
+INFO    [256545] RECIPE   = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/recipes/recipe_basics_maps.yml
+INFO    [256545] RUNDIR     = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run
+INFO    [256545] WORKDIR    = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work
+INFO    [256545] PREPROCDIR = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc
+INFO    [256545] PLOTDIR    = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots
+INFO    [256545] ----------------------------------------------------------------------
+INFO    [256545] Running tasks using at most 4 processes
+INFO    [256545] If your system hangs during execution, it may not have enough memory for keeping this number of tasks in memory.
+INFO    [256545] If you experience memory problems, try reducing 'max_parallel_tasks' in your configuration.
+INFO    [256545] Creating tasks from recipe
+INFO    [256545] Creating tasks for diagnostic maps_tas
+INFO    [256545] Creating diagnostic task maps_tas/plot
+INFO    [256545] Creating preprocessor task maps_tas/tas
+INFO    [256545] Creating preprocessor 'create_map' task for variable 'tas'
+INFO    [256545] Found input files for Dataset: tas, Amon, ICON, ICON, ag_atm_amip_r2b5_auto_tuned_baseline_20yrs, mon
+INFO    [256545] Found input files for Dataset: tas, Amon, native6, ERA5, mon, v1
+INFO    [256545] PreprocessingTask maps_tas/tas created.
+INFO    [256545] Creating tasks for diagnostic maps_pr
+INFO    [256545] Creating diagnostic task maps_pr/plot
+INFO    [256545] Creating preprocessor task maps_pr/pr
+INFO    [256545] Creating preprocessor 'create_map_pr' task for variable 'pr'
+INFO    [256545] Found input files for Dataset: pr, Amon, ICON, ICON, ag_atm_amip_r2b5_auto_tuned_baseline_20yrs, mon
+INFO    [256545] Found input files for Dataset: pr, Amon, OBS, GPCP-SG, mon, 2.3
+INFO    [256545] PreprocessingTask maps_pr/pr created.
+INFO    [256545] These tasks will be executed: maps_pr/pr, maps_tas/plot, maps_pr/plot, maps_tas/tas
+INFO    [256545] Wrote recipe with version numbers and wildcards to:
+file:///work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/recipe_basics_maps_filled.yml
+INFO    [256545] Using Dask distributed scheduler (address: tcp://127.0.0.1:37571, dashboard link: http://127.0.0.1:8787/status)
+INFO    [256545] Running 4 tasks using 4 processes
+INFO    [256658] Starting task maps_tas/tas in process [256658]
+INFO    [256660] Starting task maps_pr/pr in process [256660]
+INFO    [256545] Progress: 2 tasks running, 2 tasks waiting for ancestors, 0/4 done
+INFO    [256660] Computing and saving data for preprocessing task maps_pr/pr
+INFO    [256660] maps_pr/pr                    [########################################] | 100% Completed | 1.01 s
+INFO    [256660] Successfully completed task maps_pr/pr (priority 3) in 0:00:08.201429
+INFO    [256545] Progress: 1 tasks running, 2 tasks waiting for ancestors, 1/4 done
+INFO    [256662] Starting task maps_pr/plot in process [256662]
+INFO    [256662] Running command ['/home/b/b309141/micromamba/envs/esm/bin/python3.13', '/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/multi_datasets.py', '/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_pr/plot/settings.yml']
+INFO    [256662] Writing output to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_pr/plot
+INFO    [256662] Writing plots to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_pr/plot
+INFO    [256662] Writing log to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_pr/plot/log.txt
+INFO    [256662] To re-run this diagnostic script, run:
+cd /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_pr/plot; MPLBACKEND="Agg" /home/b/b309141/micromamba/envs/esm/bin/python3.13 /home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/multi_datasets.py /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_pr/plot/settings.yml
+INFO    [256545] Progress: 2 tasks running, 1 tasks waiting for ancestors, 1/4 done
+INFO    [256662] Maximum memory used (estimate): 0.4 GB
+INFO    [256662] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+INFO    [256662] Successfully completed task maps_pr/plot (priority 2) in 0:00:09.670935
+INFO    [256545] Progress: 1 tasks running, 1 tasks waiting for ancestors, 2/4 done
+INFO    [256658] Computing and saving data for preprocessing task maps_tas/tas
+INFO    [256658] maps_tas/tas                  [########################################] | 100% Completed | 1.06 s
+INFO    [256658] Successfully completed task maps_tas/tas (priority 1) in 0:00:26.281171
+INFO    [256545] Progress: 0 tasks running, 1 tasks waiting for ancestors, 3/4 done
+INFO    [256664] Starting task maps_tas/plot in process [256664]
+INFO    [256664] Running command ['/home/b/b309141/micromamba/envs/esm/bin/python3.13', '/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/multi_datasets.py', '/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_tas/plot/settings.yml']
+INFO    [256664] Writing output to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_tas/plot
+INFO    [256664] Writing plots to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_tas/plot
+INFO    [256664] Writing log to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_tas/plot/log.txt
+INFO    [256664] To re-run this diagnostic script, run:
+cd /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_tas/plot; MPLBACKEND="Agg" /home/b/b309141/micromamba/envs/esm/bin/python3.13 /home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/multi_datasets.py /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_tas/plot/settings.yml
+INFO    [256545] Progress: 1 tasks running, 0 tasks waiting for ancestors, 3/4 done
+INFO    [256664] Maximum memory used (estimate): 0.4 GB
+INFO    [256664] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+INFO    [256664] Successfully completed task maps_tas/plot (priority 0) in 0:00:07.588441
+INFO    [256545] Progress: 0 tasks running, 0 tasks waiting for ancestors, 4/4 done
+INFO    [256545] Successfully completed all tasks.
+INFO    [256545] Wrote recipe with version numbers and wildcards to:
+file:///work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/recipe_basics_maps_filled.yml
+INFO    [256545] Wrote recipe output to:
+file:///work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/index.html
+INFO    [256545] It looks like you are connected to a remote machine via SSH. To show the output html file, you can try the following command on your local machine:
+server=136.172.124.7 && port=31415 && ssh -t -L ${port}:localhost:${port} b309141@${server} /home/b/b309141/micromamba/envs/esm/bin/python3.13 -m http.server ${port} -d /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002
+Then visit http://localhost:31415 in your browser
+INFO    [256545] If the port 31415 is already in use, you can replace it with any other free one (e.g., 12789). If you are connected through a jump host, replace the server IP address 136.172.124.7 with your SSH server name
+INFO    [256545] Ending the Earth System Model Evaluation Tool at time: 2026-03-31 08:40:43 UTC
+INFO    [256545] Time for running the recipe was: 0:00:39.934698
+INFO    [256545] Maximum memory used (estimate): 6.1 GB
+INFO    [256545] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+INFO    [256545] Removing `preproc` directory containing preprocessed data
+INFO    [256545] If this data is further needed, then set `remove_preproc_dir` to `false` in your configuration
+INFO    [256545] Run was successful

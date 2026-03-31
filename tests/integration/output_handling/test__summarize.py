@@ -12,43 +12,37 @@ if TYPE_CHECKING:
 
 
 @pytest.mark.parametrize(
-    ("description", "expected_output_name"),
+    ("description", "sample_name", "expected_output_name"),
     [
-        (None, "test_summarize_without_description"),
-        ("very short description", "test_summarize_with_description"),
+        (
+            None,
+            "recipes_zonal-mean",
+            "test_summarize_recipes_zonal-mean_no_description",
+        ),
+        (
+            "description",
+            "recipes_zonal-mean",
+            "test_summarize_recipes_zonal-mean_description",
+        ),
+        (None, "recipes_map", "test_summarize_recipes_map"),
+        (None, "recipes_zonal-mean_maps", "test_summarize_recipes_zonal-mean_maps"),
     ],
 )
 def test_summarize(
     description: str | None,
+    sample_name: str,
     expected_output_name: str,
     pytestconfig: pytest.Config,
     expected_output_dir: Path,
     sample_data_path: Path,
     tmp_path: Path,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / sample_name
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         summarize(esmvaltool_output, description=description)
     assert_output(
         tmp_path,
         esmvaltool_output,
         expected_output_dir / expected_output_name,
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
-
-
-def test_summarize_empty_output(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
-) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        summarize(esmvaltool_output)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / "test_summarize_empty_logs",
         generate_expected_output=pytestconfig.getoption("generate_expected_output"),
     )

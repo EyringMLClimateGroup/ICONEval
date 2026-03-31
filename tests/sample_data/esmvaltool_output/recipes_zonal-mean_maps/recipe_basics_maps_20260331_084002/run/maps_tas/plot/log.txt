@@ -1,0 +1,140 @@
+INFO:esmvaltool.diag_scripts.shared._base:Starting diagnostic script plot with configuration:
+auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
+facet_used_for_labels: alias
+group_variables_by: variable_group
+input_data:
+  ? /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_tas_19790101-19810101.nc
+  : alias: ICON
+    dataset: ICON
+    diagnostic: maps_tas
+    end_year: 1981
+    exp: ag_atm_amip_r2b5_auto_tuned_baseline_20yrs
+    filename: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_tas_19790101-19810101.nc
+    frequency: mon
+    long_name: Near-Surface Air Temperature
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_map
+    project: ICON
+    recipe_dataset_index: 0
+    short_name: tas
+    standard_name: air_temperature
+    start_year: 1979
+    timerange: 19790101/19810101
+    title: Near-Surface Air Temperature
+    units: K
+    var_type: atm_2d_ml
+    variable_group: tas
+  ? /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19810101.nc
+  : alias: ERA5
+    automatic_regrid: true
+    dataset: ERA5
+    diagnostic: maps_tas
+    end_year: 1981
+    family: E5
+    filename: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19810101.nc
+    frequency: mon
+    grib_id: '167'
+    level: sf
+    long_name: Near-Surface Air Temperature
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_map
+    project: native6
+    recipe_dataset_index: 1
+    reference_for_monitor_diags: true
+    short_name: tas
+    standard_name: air_temperature
+    start_year: 1979
+    tier: 3
+    timerange: 19790101/19810101
+    title: Near-Surface Air Temperature
+    tres: 1M
+    type: reanaly
+    typeid: '00'
+    units: K
+    variable_group: tas
+    version: v1
+input_files:
+- /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/metadata.yml
+log_level: info
+output_file_type: png
+plot_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_tas/plot
+plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+plot_folder: '{plot_dir}'
+plots:
+  map:
+    common_cbar: true
+    fontsize: 8
+    gridline_kwargs:
+      alpha: 0.3
+      color: darkgray
+      linewidth: 0.5
+    plot_kwargs:
+      default:
+        cmap: plasma
+        levels: 12
+    pyplot_kwargs:
+      suptitle: '{title} (19790101/19810101)'
+realms:
+- atmos
+recipe: recipe_basics_maps.yml
+run_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_tas/plot
+scheduler_address: tcp://127.0.0.1:37571
+script: plot
+themes:
+- phys
+version: 2.15.0.dev5+g3208f5f3a
+work_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_tas/plot
+
+INFO:esmvaltool.diag_scripts.shared._base:Creating /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_tas/plot
+INFO:esmvaltool.diag_scripts.shared._base:Creating /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_tas/plot
+INFO:multi_datasets:Using facet 'variable_group' to group variables
+INFO:multi_datasets:Using facet 'alias' to create labels
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_tas_19790101-19810101.nc
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19810101.nc
+INFO:multi_datasets:Plotting map
+INFO:multi_datasets:Processing variable tas
+INFO:multi_datasets:Using reference dataset ERA5
+INFO:multi_datasets:Creating map plots using function 'contourf'
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:377: UserWarning: Rasterization of '<cartopy.mpl.gridliner.Gridliner object at 0x7fffad411a90>' will be ignored
+  artist.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffad412cf0>' will be ignored
+  collection.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffad42d6d0>' will be ignored
+  collection.set_rasterized(True)
+
+INFO:multi_datasets:Creating map plots using function 'contourf'
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:377: UserWarning: Rasterization of '<cartopy.mpl.gridliner.Gridliner object at 0x7fffad42e350>' will be ignored
+  artist.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac946d50>' will be ignored
+  collection.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac946c10>' will be ignored
+  collection.set_rasterized(True)
+
+INFO:multi_datasets:Creating map plots using function 'contourf'
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:377: UserWarning: Rasterization of '<cartopy.mpl.gridliner.Gridliner object at 0x7fffac9b1bd0>' will be ignored
+  artist.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac9b1f90>' will be ignored
+  collection.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac9b1e50>' will be ignored
+  collection.set_rasterized(True)
+
+INFO:multi_datasets:Area-weighted mean of tas for ICON = 287.588974K
+INFO:multi_datasets:Area-weighted mean of tas for ERA5 = 287.164466K
+INFO:multi_datasets:Area-weighted bias of tas for ICON vs. ERA5 = 0.424508K
+INFO:multi_datasets:Area-weighted RMSE of tas for ICON vs. ERA5 = 1.105750K
+INFO:multi_datasets:Area-weighted R2 of tas for ICON vs. ERA5 = 0.994194
+INFO:multi_datasets:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon.png
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon_top_left.nc
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon_top_right.nc
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon_bottom.nc
+INFO:esmvaltool.diag_scripts.shared._base:End of diagnostic script run.

@@ -1,0 +1,103 @@
+INFO    [869295] 
+______________________________________________________________________
+          _____ ____  __  ____     __    _ _____           _
+         | ____/ ___||  \/  \ \   / /_ _| |_   _|__   ___ | |
+         |  _| \___ \| |\/| |\ \ / / _` | | | |/ _ \ / _ \| |
+         | |___ ___) | |  | | \ V / (_| | | | | (_) | (_) | |
+         |_____|____/|_|  |_|  \_/ \__,_|_| |_|\___/ \___/|_|
+______________________________________________________________________
+
+Earth System Model Evaluation Tool
+
+A community tool for the evaluation of Earth system models.
+
+https://esmvaltool.org
+
+The Earth System Model Evaluation Tool (ESMValTool) is a community
+diagnostics and performance metrics tool for the evaluation of Earth
+System Models (ESMs) that allows for routine comparison of single or
+multiple models, either against predecessor versions or against
+observations.
+
+Tutorial: https://tutorial.esmvaltool.org
+Documentation: https://docs.esmvaltool.org
+Contact: esmvaltool-dev@listserv.dfn.de
+
+If you find this software useful for your research, please cite it using
+https://doi.org/10.5281/zenodo.3387139 for ESMValCore or
+https://doi.org/10.5281/zenodo.3401363 for ESMValTool or
+any of the reference papers listed at https://esmvaltool.org/references/.
+
+Have fun!
+
+INFO    [869295] Package versions
+INFO    [869295] ----------------
+INFO    [869295] ESMValCore: 2.15.0.dev5+g3208f5f3a
+INFO    [869295] ESMValTool: 2.14.0.dev82+gd48ea2ab7
+INFO    [869295] ----------------
+INFO    [869295] Reading configuration files from:
+/home/b/b309141/repos/ESMValCore/esmvalcore/config/configurations/defaults (defaults)
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/config/recipe_basics_zonal_mean_lines (ESMVALTOOL_CONFIG_DIR environment variable)
+INFO    [869295] Writing program log files to:
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/main_log.txt
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/main_log_debug.txt
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/cmor_log.txt
+INFO    [869295] Starting the Earth System Model Evaluation Tool at time: 2026-03-31 08:40:02 UTC
+INFO    [869295] ----------------------------------------------------------------------
+INFO    [869295] RECIPE   = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/recipes/recipe_basics_zonal_mean_lines.yml
+INFO    [869295] RUNDIR     = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run
+INFO    [869295] WORKDIR    = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/work
+INFO    [869295] PREPROCDIR = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc
+INFO    [869295] PLOTDIR    = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots
+INFO    [869295] ----------------------------------------------------------------------
+INFO    [869295] Running tasks using at most 4 processes
+INFO    [869295] If your system hangs during execution, it may not have enough memory for keeping this number of tasks in memory.
+INFO    [869295] If you experience memory problems, try reducing 'max_parallel_tasks' in your configuration.
+INFO    [869295] Creating tasks from recipe
+INFO    [869295] Creating tasks for diagnostic zonal_means_pr
+INFO    [869295] Creating diagnostic task zonal_means_pr/plot
+INFO    [869295] Creating preprocessor task zonal_means_pr/pr
+INFO    [869295] Creating preprocessor 'create_zonal_mean_pr' task for variable 'pr'
+INFO    [869295] Found input files for Dataset: pr, Amon, ICON, ICON, ag_atm_amip_r2b5_auto_tuned_baseline_20yrs, mon
+INFO    [869295] Found input files for Dataset: pr, Amon, native6, ERA5, mon, v1
+INFO    [869295] Found input files for Dataset: pr, Amon, OBS, GPCP-SG, mon, 2.3
+INFO    [869295] PreprocessingTask zonal_means_pr/pr created.
+INFO    [869295] These tasks will be executed: zonal_means_pr/plot, zonal_means_pr/pr
+INFO    [869295] Wrote recipe with version numbers and wildcards to:
+file:///work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/recipe_basics_zonal_mean_lines_filled.yml
+INFO    [869295] Using Dask distributed scheduler (address: tcp://127.0.0.1:41501, dashboard link: http://127.0.0.1:35923/status)
+INFO    [869295] Running 2 tasks using 2 processes
+INFO    [869409] Starting task zonal_means_pr/pr in process [869409]
+INFO    [869295] Progress: 1 tasks running, 1 tasks waiting for ancestors, 0/2 done
+INFO    [869409] Computing and saving data for preprocessing task zonal_means_pr/pr
+INFO    [869409] zonal_means_pr/pr             [########################################] | 100% Completed | 1.07 s
+INFO    [869409] Successfully completed task zonal_means_pr/pr (priority 1) in 0:00:26.463321
+INFO    [869295] Progress: 0 tasks running, 1 tasks waiting for ancestors, 1/2 done
+INFO    [869411] Starting task zonal_means_pr/plot in process [869411]
+INFO    [869411] Running command ['/home/b/b309141/micromamba/envs/esm/bin/python3.13', '/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/multi_datasets.py', '/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/zonal_means_pr/plot/settings.yml']
+INFO    [869411] Writing output to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/work/zonal_means_pr/plot
+INFO    [869411] Writing plots to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot
+INFO    [869411] Writing log to /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/zonal_means_pr/plot/log.txt
+INFO    [869411] To re-run this diagnostic script, run:
+cd /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/zonal_means_pr/plot; MPLBACKEND="Agg" /home/b/b309141/micromamba/envs/esm/bin/python3.13 /home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/multi_datasets.py /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/zonal_means_pr/plot/settings.yml
+INFO    [869295] Progress: 1 tasks running, 0 tasks waiting for ancestors, 1/2 done
+INFO    [869411] Maximum memory used (estimate): 0.4 GB
+INFO    [869411] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+INFO    [869411] Successfully completed task zonal_means_pr/plot (priority 0) in 0:00:07.587273
+INFO    [869295] Progress: 0 tasks running, 0 tasks waiting for ancestors, 2/2 done
+INFO    [869295] Successfully completed all tasks.
+INFO    [869295] Wrote recipe with version numbers and wildcards to:
+file:///work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/recipe_basics_zonal_mean_lines_filled.yml
+INFO    [869295] Wrote recipe output to:
+file:///work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/index.html
+INFO    [869295] It looks like you are connected to a remote machine via SSH. To show the output html file, you can try the following command on your local machine:
+server=136.172.124.7 && port=31415 && ssh -t -L ${port}:localhost:${port} b309141@${server} /home/b/b309141/micromamba/envs/esm/bin/python3.13 -m http.server ${port} -d /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001
+Then visit http://localhost:31415 in your browser
+INFO    [869295] If the port 31415 is already in use, you can replace it with any other free one (e.g., 12789). If you are connected through a jump host, replace the server IP address 136.172.124.7 with your SSH server name
+INFO    [869295] Ending the Earth System Model Evaluation Tool at time: 2026-03-31 08:40:42 UTC
+INFO    [869295] Time for running the recipe was: 0:00:40.313445
+INFO    [869295] Maximum memory used (estimate): 5.2 GB
+INFO    [869295] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+INFO    [869295] Removing `preproc` directory containing preprocessed data
+INFO    [869295] If this data is further needed, then set `remove_preproc_dir` to `false` in your configuration
+INFO    [869295] Run was successful
