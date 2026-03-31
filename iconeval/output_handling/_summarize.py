@@ -359,8 +359,9 @@ def _write_dashboard_html(
                         {"..." if len(diag.caption) > CAPTION_MAX_LENGTH else ""}
                     </h6>
                     <p class="card-text small text-muted">
-                        <span class="badge bg-secondary">{realm}</span>
-                        <span class="badge bg-info text-dark">{plot_type}</span>
+                        <span class="badge bg-primary">{realm}</span>
+                        <span class="badge bg-success">{plot_type}</span>
+                        <span class="badge bg-warning text-dark">{diag.recipe_name}</span>
                     </p>
                 </div>
             </div>
