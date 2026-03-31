@@ -36,18 +36,17 @@
                 <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="toggleFiltersBtn" onclick="toggleFilters()">
                     ◀ Filters
                 </button>
+                <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="clearFiltersBtn" onclick="clearFilters()">
+                    ✕ Clear Filters
+                </button>
                 <!-- Search -->
-                <div class="mb-4 search-wrapper">
+                <div class="mb-4 search-wrapper" id="searchWrapper">
                     <input type="text" class="form-control search-box"
                            placeholder="Search diagnostics..."
                            id="searchInput" onkeyup="filterDiagnostics()">
                 </div>
                 <div id="filterContent">
                     {{ sidebar_filters|safe }}
-                    <hr>
-                    <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
-                        ✕ Clear Filters
-                    </button>
                 </div>
             </aside>
 
@@ -285,14 +284,20 @@
             const sidebar = document.getElementById('sidebar');
             const content = document.getElementById('filterContent');
             const btn = document.getElementById('toggleFiltersBtn');
+            const clearBtn = document.getElementById('clearFiltersBtn');
+            const searchWrapper = document.getElementById('searchWrapper');
 
             if (sidebar.classList.contains('collapsed')) {
                 sidebar.classList.remove('collapsed');
                 content.style.display = '';
+                clearBtn.style.display = '';
+                searchWrapper.style.display = '';
                 btn.innerHTML = '◀ Filters';
             } else {
                 sidebar.classList.add('collapsed');
                 content.style.display = 'none';
+                clearBtn.style.display = 'none';
+                searchWrapper.style.display = 'none';
                 btn.innerHTML = '▶ Filters';
             }
         }
