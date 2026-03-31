@@ -218,6 +218,8 @@ def get_html_description(session: Session, date: datetime) -> str:
     simulations_html = "".join(sim_chips)
 
     return (
+        f"<div class='sim-info-label'>Simulations</div>\n"
+        f"<div class='sim-chips'>{simulations_html}</div>\n"
         f"<div class='sim-info-header'>\n"
         f"  <div>\n"
         f"    <span class='sim-info-label'>Evaluated by</span>\n"
@@ -228,8 +230,6 @@ def get_html_description(session: Session, date: datetime) -> str:
         f"    <span class='sim-info-value'>{date.strftime('%Y-%m-%d %H:%M')}</span>\n"
         f"  </div>\n"
         f"</div>\n"
-        f"<div class='sim-info-label'>Simulations</div>\n"
-        f"<div class='sim-chips'>{simulations_html}</div>\n"
     )
 
 

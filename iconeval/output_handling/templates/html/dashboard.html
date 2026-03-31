@@ -22,6 +22,12 @@
                 <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="toggleFiltersBtn" onclick="toggleFilters()">
                     &#9668; Filters
                 </button>
+                <!-- Search -->
+                <div class="mb-4 search-wrapper">
+                    <input type="text" class="form-control search-box"
+                           placeholder="Search diagnostics..."
+                           id="searchInput" onkeyup="filterDiagnostics()">
+                </div>
                 <div id="filterContent">
                     {{ sidebar_filters|safe }}
                     <hr>
@@ -39,13 +45,6 @@
                     {{ description|safe }}
                 </div>
                 {% endif %}
-
-                <!-- Search -->
-                <div class="mb-4">
-                    <input type="text" class="form-control search-box"
-                           placeholder="Search diagnostics..."
-                           id="searchInput" onkeyup="filterDiagnostics()">
-                </div>
 
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">

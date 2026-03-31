@@ -71,6 +71,13 @@
                 min-width: 70px;
                 padding: 0.75rem 0.25rem;
             }
+            .sidebar.collapsed .search-wrapper {
+                display: none;
+            }
+            .search-wrapper {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
             .sidebar h6 {
                 font-size: 0.75rem;
                 color: var(--secondary-color);
@@ -245,7 +252,6 @@
             .sim-info-header {
                 display: flex;
                 gap: 2rem;
-                margin-bottom: 1rem;
                 flex-wrap: wrap;
             }
             .sim-info-header > div {
@@ -267,6 +273,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 0.5rem;
+                margin-bottom: 1rem;
             }
             .sim-chip {
                 display: inline-block;
@@ -514,6 +521,12 @@
                 <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="toggleFiltersBtn" onclick="toggleFilters()">
                     &#9668; Filters
                 </button>
+                <!-- Search -->
+                <div class="mb-4 search-wrapper">
+                    <input type="text" class="form-control search-box"
+                           placeholder="Search diagnostics..."
+                           id="searchInput" onkeyup="filterDiagnostics()">
+                </div>
                 <div id="filterContent">
                             <div class="mb-3"><h6>Realm</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="atmosphere" id="filter-realm-atmosphere" checked><label class="form-check-label" for="filter-realm-atmosphere">atmosphere</label></div></div>
         <div class="mb-3"><h6>Plot Type</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot type-line" ><label class="form-check-label" for="filter-plot type-line">line</label></div></div>
@@ -534,13 +547,6 @@
                     description
                 </div>
 
-
-                <!-- Search -->
-                <div class="mb-4">
-                    <input type="text" class="form-control search-box"
-                           placeholder="Search diagnostics..."
-                           id="searchInput" onkeyup="filterDiagnostics()">
-                </div>
 
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">
