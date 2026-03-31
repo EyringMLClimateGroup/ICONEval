@@ -360,15 +360,18 @@ def _write_dashboard_html(
                     </h6>
                     <p class="card-text small text-muted">
                         <span class="badge bg-primary clickable"
-                              onclick="toggleFilterBadge('realm', '{realm}')">{realm}</span>
+                              onclick="toggleFilterBadge('realm', '{realm}')">{realm}
+                        </span>
                         <span class="badge bg-success clickable"
-                              onclick="toggleFilterBadge('plot_type', '{plot_type}')">{plot_type}</span>
+                              onclick="toggleFilterBadge('plot_type', '{plot_type}')">{plot_type}
+                        </span>
                         <span class="badge bg-warning text-dark clickable"
-                              onclick="toggleFilterBadge('recipe', '{diag.recipe_name}')">{diag.recipe_name}</span>
+                              onclick="toggleFilterBadge('recipe', '{diag.recipe_name}')">{diag.recipe_name}
+                        </span>
                     </p>
                 </div>
             </div>
-        </div>"""
+        </div>"""  # noqa: E501
         cards_html.append(card)
 
     cards_html_str = "\n".join(cards_html)
