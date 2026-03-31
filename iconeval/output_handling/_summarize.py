@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import base64
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -135,9 +135,9 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
                         png_path=png_file,
                         relative_png_path=relative_png,
                         caption=prov_data.get("caption", ""),
-                        plot_types=prov_data.get("plot_types", []),
-                        long_names=prov_data.get("long_names", []),
-                        input_datasets=prov_data.get("ancestors", []),
+                        plot_types=tuple(prov_data.get("plot_types", [])),
+                        long_names=tuple(prov_data.get("long_names", [])),
+                        input_datasets=tuple(prov_data.get("ancestors", [])),
                         recipe_name=recipe_name,
                         realm=realm,
                         recipe_date=recipe_date,
@@ -151,16 +151,23 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
 
 def _get_filter_options(diagnostics: list[DiagnosticInfo]) -> FilterOptions:
     """Extract unique filter values from diagnostics."""
-    options = FilterOptions()
+    realms: set[str] = set()
+    plot_types: set[str] = set()
+    variables: set[str] = set()
+    recipe_names: set[str] = set()
 
     for diag in diagnostics:
-        options.realms.add(diag.realm)
-        options.plot_types.update(diag.plot_types)
-        options.variables.update(diag.long_names)
-        if diag.recipe_name:
-            options.recipe_names.add(diag.recipe_name)
+        realms.add(diag.realm)
+        plot_types.update(diag.plot_types)
+        variables.update(diag.long_names)
+        recipe_names.add(diag.recipe_name)
 
-    return options
+    return FilterOptions(
+        realms=frozenset(realms),
+        plot_types=frozenset(plot_types),
+        variables=frozenset(variables),
+        recipe_names=frozenset(recipe_names),
+    )
 
 
 def _embed_image_as_base64(png_path: Path) -> str:
@@ -174,30 +181,30 @@ def _embed_image_as_base64(png_path: Path) -> str:
         return f"data:image/png;base64,{data}"
 
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class DiagnosticInfo:
     """Container for diagnostic provenance data."""
 
     png_path: Path
     caption: str
-    plot_types: list[str] = field(default_factory=list)
-    long_names: list[str] = field(default_factory=list)
-    input_datasets: list[str] = field(default_factory=list)
-    recipe_name: str = ""
-    realm: str = ""
-    recipe_date: datetime = field(default_factory=datetime.now)
-    relative_png_path: Path | None = None
-    recipe_url: str = ""
+    plot_types: tuple[str, ...]
+    long_names: tuple[str, ...]
+    input_datasets: tuple[str, ...]
+    recipe_name: str
+    realm: str
+    recipe_date: datetime
+    relative_png_path: Path | None
+    recipe_url: str
 
 
-@dataclass
+@dataclass(frozen=True, kw_only=True)
 class FilterOptions:
     """Container for filter options."""
 
-    realms: set[str] = field(default_factory=set)
-    plot_types: set[str] = field(default_factory=set)
-    variables: set[str] = field(default_factory=set)
-    recipe_names: set[str] = field(default_factory=set)
+    realms: frozenset[str]
+    plot_types: frozenset[str]
+    variables: frozenset[str]
+    recipe_names: frozenset[str]
 
 
 def get_simulations_info_html(simulations_info: Iterable[SimulationInfo]) -> str:
@@ -318,11 +325,13 @@ def _write_dashboard_html(
         # Build provenance data for modal
         max_input_datasets_shown = 5
         input_datasets_html = "".join(
-            f"<li>{Path(a).name}</li>" for a in diag.input_datasets[:max_input_datasets_shown]
+            f"<li>{Path(a).name}</li>"
+            for a in diag.input_datasets[:max_input_datasets_shown]
         )
         if len(diag.input_datasets) > max_input_datasets_shown:
             input_datasets_html += (
-                f"<li>... and {len(diag.input_datasets) - max_input_datasets_shown} more</li>"
+                f"<li>... and {len(diag.input_datasets) - max_input_datasets_shown} "
+                f"more</li>"
             )
 
         card = f"""\
