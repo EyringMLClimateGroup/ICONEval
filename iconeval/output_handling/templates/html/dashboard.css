@@ -70,6 +70,10 @@
             .navbar-text {
                 color: white;
                 opacity: 0.9;
+                cursor: pointer;
+            }
+            .navbar-text:hover {
+                text-decoration: underline;
             }
             .navbar-meta {
                 font-size: 0.7rem;
@@ -234,6 +238,7 @@
             }
             .badge.bg-primary { background: #7ca5e0 !important; color: #1a1a4e; }
             .badge.bg-success { background: #7bc5a0 !important; color: #1a3d2e; }
+            .badge.bg-danger { background: #e07a7a !important; color: #4e1a1a; }
             .badge.bg-warning { background: #f5d78e !important; color: #3d3a1a; }
             .badge.bg-info { background: #7ee0c8 !important; color: #1a4d40; }
             .badge.clickable {
@@ -469,6 +474,13 @@
                 margin: 0;
                 padding-left: 1.25rem;
                 font-size: 0.85rem;
+            }
+            .detail-list-plain li.clickable {
+                cursor: pointer;
+            }
+            .detail-list-plain li.clickable:hover {
+                color: var(--primary-color);
+                text-decoration: underline;
             }
             /* Typography */
             h1, h2, h3, h4, h5, h6 {

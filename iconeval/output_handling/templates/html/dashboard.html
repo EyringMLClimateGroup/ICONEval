@@ -25,7 +25,7 @@
         </div>
         {% endif %}
         <div class="navbar-info">
-            <span class="navbar-text">{{ total_diagnostics }} diagnostics from {{ total_recipes }} recipes</span>
+            <span class="navbar-text clickable" onclick="openRecipesModal()">Recipes Overview</span>
         </div>
     </nav>
 
@@ -95,6 +95,23 @@
                     <div class="detail-row">
                         <span class="detail-label">Namelist Files</span>
                         <ul class="detail-list" id="simNamelists"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes Overview Modal -->
+    <div class="modal-backdrop" id="recipesModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recipes Overview: {{ total_diagnostics }} diagnostic(s) from {{ total_recipes }} recipe(s)</h5>
+                    <button type="button" class="btn-close" onclick="closeRecipesModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="recipesContent">
+                        {{ recipes_html|safe }}
                     </div>
                 </div>
             </div>
@@ -178,6 +195,23 @@
             document.body.style.overflow = '';
         }
 
+        function openRecipesModal() {
+            document.getElementById('recipesModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRecipesModal() {
+            document.getElementById('recipesModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close recipes modal on backdrop click
+        document.getElementById('recipesModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRecipesModal();
+            }
+        });
+
         // Close sim modal on backdrop click
         document.getElementById('simModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -216,6 +250,7 @@
             if (e.key === 'Escape') {
                 closeModal();
                 closeSimModal();
+                closeRecipesModal();
             }
         });
 

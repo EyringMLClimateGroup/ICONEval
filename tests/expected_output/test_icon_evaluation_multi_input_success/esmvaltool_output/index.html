@@ -77,6 +77,10 @@
             .navbar-text {
                 color: white;
                 opacity: 0.9;
+                cursor: pointer;
+            }
+            .navbar-text:hover {
+                text-decoration: underline;
             }
             .navbar-meta {
                 font-size: 0.7rem;
@@ -241,6 +245,7 @@
             }
             .badge.bg-primary { background: #7ca5e0 !important; color: #1a1a4e; }
             .badge.bg-success { background: #7bc5a0 !important; color: #1a3d2e; }
+            .badge.bg-danger { background: #e07a7a !important; color: #4e1a1a; }
             .badge.bg-warning { background: #f5d78e !important; color: #3d3a1a; }
             .badge.bg-info { background: #7ee0c8 !important; color: #1a4d40; }
             .badge.clickable {
@@ -477,6 +482,13 @@
                 padding-left: 1.25rem;
                 font-size: 0.85rem;
             }
+            .detail-list-plain li.clickable {
+                cursor: pointer;
+            }
+            .detail-list-plain li.clickable:hover {
+                color: var(--primary-color);
+                text-decoration: underline;
+            }
             /* Typography */
             h1, h2, h3, h4, h5, h6 {
                 margin-top: 0;
@@ -569,7 +581,7 @@
         </div>
 
         <div class="navbar-info">
-            <span class="navbar-text">0 diagnostics from 0 recipes</span>
+            <span class="navbar-text clickable" onclick="openRecipesModal()">0 diagnostic(s) from 0 recipe(s)</span>
         </div>
     </nav>
 
@@ -643,6 +655,23 @@
                     <div class="detail-row">
                         <span class="detail-label">Namelist Files</span>
                         <ul class="detail-list" id="simNamelists"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes Overview Modal -->
+    <div class="modal-backdrop" id="recipesModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recipes Overview</h5>
+                    <button type="button" class="btn-close" onclick="closeRecipesModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="recipesContent">
+
                     </div>
                 </div>
             </div>
@@ -726,6 +755,23 @@
             document.body.style.overflow = '';
         }
 
+        function openRecipesModal() {
+            document.getElementById('recipesModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRecipesModal() {
+            document.getElementById('recipesModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close recipes modal on backdrop click
+        document.getElementById('recipesModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRecipesModal();
+            }
+        });
+
         // Close sim modal on backdrop click
         document.getElementById('simModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -764,6 +810,7 @@
             if (e.key === 'Escape') {
                 closeModal();
                 closeSimModal();
+                closeRecipesModal();
             }
         });
 
