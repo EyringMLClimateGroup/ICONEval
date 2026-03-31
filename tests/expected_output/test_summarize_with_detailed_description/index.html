@@ -59,6 +59,13 @@
                 margin: 0.75rem;
                 border-radius: 8px;
             }
+            .sidebar h6 {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.5rem;
+            }
             .main-content {
                 flex: 1;
                 padding: 1.5rem;
@@ -375,35 +382,35 @@
                 object-fit: contain;
                 border-radius: 4px;
             }
-            /* Simulation detail modal */
-            .sim-detail-row {
+            /* Detail modal */
+            .detail-row {
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 1rem;
                 padding-bottom: 1rem;
                 border-bottom: 1px solid var(--border-color);
             }
-            .sim-detail-row:last-child {
+            .detail-row:last-child {
                 border-bottom: none;
                 margin-bottom: 0;
                 padding-bottom: 0;
             }
-            .sim-detail-label {
+            .detail-label {
                 font-size: 0.75rem;
                 color: var(--secondary-color);
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 margin-bottom: 0.25rem;
             }
-            .sim-detail-value {
+            .detail-value {
                 font-weight: 500;
                 word-break: break-all;
             }
-            .sim-detail-path {
+            .detail-path {
                 font-family: monospace;
                 font-size: 0.85rem;
             }
-            .sim-detail-list {
+            .detail-list {
                 margin: 0;
                 padding-left: 1.25rem;
                 font-family: monospace;
@@ -639,25 +646,25 @@
                     <button type="button" class="btn-close" onclick="closeSimModal()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="sim-detail-row">
-                        <span class="sim-detail-label">Path</span>
-                        <span class="sim-detail-value sim-detail-path" id="simPath"></span>
+                    <div class="detail-row">
+                        <span class="detail-label">Path</span>
+                        <span class="detail-value detail-path" id="simPath"></span>
                     </div>
-                    <div class="sim-detail-row">
-                        <span class="sim-detail-label">Owner</span>
-                        <span class="sim-detail-value" id="simOwner"></span>
+                    <div class="detail-row">
+                        <span class="detail-label">Owner</span>
+                        <span class="detail-value" id="simOwner"></span>
                     </div>
-                    <div class="sim-detail-row">
-                        <span class="sim-detail-label">Date</span>
-                        <span class="sim-detail-value" id="simDate"></span>
+                    <div class="detail-row">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value" id="simDate"></span>
                     </div>
-                    <div class="sim-detail-row">
-                        <span class="sim-detail-label">Grid</span>
-                        <span class="sim-detail-value" id="simGrid"></span>
+                    <div class="detail-row">
+                        <span class="detail-label">Grid</span>
+                        <span class="detail-value" id="simGrid"></span>
                     </div>
-                    <div class="sim-detail-row">
-                        <span class="sim-detail-label">Namelist Files</span>
-                        <ul class="sim-detail-list" id="simNamelists"></ul>
+                    <div class="detail-row">
+                        <span class="detail-label">Namelist Files</span>
+                        <ul class="detail-list" id="simNamelists"></ul>
                     </div>
                 </div>
             </div>
@@ -678,17 +685,27 @@
                             <img id="modalImage" class="modal-img" src="" alt="">
                         </div>
                         <div class="col-lg-4">
-                            <h6>Caption</h6>
-                            <p id="modalCaption"></p>
-                            <h6>Plot Type</h6>
-                            <p id="modalPlotType"></p>
-                            <h6>Variables</h6>
-                            <p id="modalVariables"></p>
-                            <h6>Input Datasets</h6>
-                            <ul id="modalAncestors"></ul>
-                            <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
-                                <i class="bi bi-box-arrow-up-right"></i> View in ESMValTool
-                            </a>
+                            <div class="detail-row">
+                                <span class="detail-label">Caption</span>
+                                <span class="detail-value" id="modalCaption"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Plot Type</span>
+                                <span class="detail-value" id="modalPlotType"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Variables</span>
+                                <span class="detail-value" id="modalVariables"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Input Datasets</span>
+                                <ul class="detail-list" id="modalAncestors"></ul>
+                            </div>
+                            <div class="detail-row">
+                                <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
+                                    View in ESMValTool
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

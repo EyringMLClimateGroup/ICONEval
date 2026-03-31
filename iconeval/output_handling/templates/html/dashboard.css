@@ -52,6 +52,13 @@
                 margin: 0.75rem;
                 border-radius: 8px;
             }
+            .sidebar h6 {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.5rem;
+            }
             .main-content {
                 flex: 1;
                 padding: 1.5rem;
@@ -368,35 +375,35 @@
                 object-fit: contain;
                 border-radius: 4px;
             }
-            /* Simulation detail modal */
-            .sim-detail-row {
+            /* Detail modal */
+            .detail-row {
                 display: flex;
                 flex-direction: column;
                 margin-bottom: 1rem;
                 padding-bottom: 1rem;
                 border-bottom: 1px solid var(--border-color);
             }
-            .sim-detail-row:last-child {
+            .detail-row:last-child {
                 border-bottom: none;
                 margin-bottom: 0;
                 padding-bottom: 0;
             }
-            .sim-detail-label {
+            .detail-label {
                 font-size: 0.75rem;
                 color: var(--secondary-color);
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 margin-bottom: 0.25rem;
             }
-            .sim-detail-value {
+            .detail-value {
                 font-weight: 500;
                 word-break: break-all;
             }
-            .sim-detail-path {
+            .detail-path {
                 font-family: monospace;
                 font-size: 0.85rem;
             }
-            .sim-detail-list {
+            .detail-list {
                 margin: 0;
                 padding-left: 1.25rem;
                 font-family: monospace;
