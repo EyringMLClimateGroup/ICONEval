@@ -157,6 +157,8 @@ def _get_filter_options(diagnostics: list[DiagnosticInfo]) -> FilterOptions:
         options.realms.add(diag.realm)
         options.plot_types.update(diag.plot_types)
         options.variables.update(diag.long_names)
+        if diag.recipe_name:
+            options.recipe_names.add(diag.recipe_name)
 
     return options
 
@@ -195,6 +197,7 @@ class FilterOptions:
     realms: set[str] = field(default_factory=set)
     plot_types: set[str] = field(default_factory=set)
     variables: set[str] = field(default_factory=set)
+    recipe_names: set[str] = field(default_factory=set)
 
 
 def get_simulations_info_html(simulations_info: Iterable[SimulationInfo]) -> str:
@@ -296,6 +299,7 @@ def _write_dashboard_html(
     realms_json = sorted([r for r in filter_options.realms if r != "other"])
     plot_types_json = sorted(filter_options.plot_types)
     variables_json = sorted(filter_options.variables)
+    recipe_names_json = sorted(filter_options.recipe_names)
 
     # Build card HTML for each diagnostic
     cards_html = []
@@ -333,7 +337,7 @@ def _write_dashboard_html(
                      onclick="openModal('{img_src}', '{_escape_html(diag.caption)}',
                          '{_escape_html(plot_type)}',
                          '{_escape_html(variables)}', '{ancestors_html}',
-                         '{diag.recipe_url}')">
+                         '{diag.recipe_url}', '{diag.recipe_name}')">
                     <img src="{img_src}" class="card-img-top"
                          alt="{_escape_html(diag.caption)}">
                     <div class="card-img-overlay">
@@ -382,6 +386,7 @@ def _write_dashboard_html(
         {make_filter_checkboxes(realms_json, "Realm")}
         {make_filter_checkboxes(plot_types_json, "Plot Type")}
         {make_filter_checkboxes(variables_json, "Variables")}
+        {make_filter_checkboxes(recipe_names_json, "Recipe")}
     """
 
     # Format date for display

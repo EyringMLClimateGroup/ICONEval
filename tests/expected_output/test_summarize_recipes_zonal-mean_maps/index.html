@@ -567,6 +567,7 @@
                             <div class="mb-3"><h6>Realm</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="atmosphere" id="filter-realm-atmosphere" checked><label class="form-check-label" for="filter-realm-atmosphere">atmosphere</label></div></div>
         <div class="mb-3"><h6>Plot Type</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot type-line" ><label class="form-check-label" for="filter-plot type-line">line</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="map" id="filter-plot type-map" ><label class="form-check-label" for="filter-plot type-map">map</label></div></div>
         <div class="mb-3"><h6>Variables</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Near-Surface Air Temperature" id="filter-variables-Near-Surface Air Temperature" ><label class="form-check-label" for="filter-variables-Near-Surface Air Temperature">Near-Surface Air Temperature</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Precipitation" id="filter-variables-Precipitation" ><label class="form-check-label" for="filter-variables-Precipitation">Precipitation</label></div></div>
+        <div class="mb-3"><h6>Recipe</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="basics_maps" id="filter-recipe-basics_maps" ><label class="form-check-label" for="filter-recipe-basics_maps">basics_maps</label></div><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="basics_zonal_mean_lines" id="filter-recipe-basics_zonal_mean_lines" ><label class="form-check-label" for="filter-recipe-basics_zonal_mean_lines">basics_zonal_mean_lines</label></div></div>
 
                     <hr>
                     <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
@@ -590,7 +591,7 @@
                      onclick="openModal('recipe_basics_maps_20260331_084002/plots/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon.png', 'Map plot of Precipitation of dataset ICON.',
                          'map',
                          'Precipitation', '<li>ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc</li><li>OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc</li>',
-                         'recipe_basics_maps_20260331_084002/index.html')">
+                         'recipe_basics_maps_20260331_084002/index.html', 'basics_maps')">
                     <img src="recipe_basics_maps_20260331_084002/plots/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon.png" class="card-img-top"
                          alt="Map plot of Precipitation of dataset ICON.">
                     <div class="card-img-overlay">
@@ -620,7 +621,7 @@
                      onclick="openModal('recipe_basics_maps_20260331_084002/plots/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon.png', 'Map plot of Near-Surface Air Temperature of dataset ICON.',
                          'map',
                          'Near-Surface Air Temperature', '<li>ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_tas_19790101-19810101.nc</li><li>native6_ERA5_reanaly_v1_Amon_tas_19790101-19810101.nc</li>',
-                         'recipe_basics_maps_20260331_084002/index.html')">
+                         'recipe_basics_maps_20260331_084002/index.html', 'basics_maps')">
                     <img src="recipe_basics_maps_20260331_084002/plots/maps_tas/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_tas_ICON_Amon.png" class="card-img-top"
                          alt="Map plot of Near-Surface Air Temperature of dataset ICON.">
                     <div class="card-img-overlay">
@@ -650,7 +651,7 @@
                      onclick="openModal('recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png', 'Precipitation vs. latitude for various datasets.',
                          'line',
                          'Precipitation', '<li>ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc</li><li>OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc</li><li>native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc</li>',
-                         'recipe_basics_zonal_mean_lines_20260331_084001/index.html')">
+                         'recipe_basics_zonal_mean_lines_20260331_084001/index.html', 'basics_zonal_mean_lines')">
                     <img src="recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png" class="card-img-top"
                          alt="Precipitation vs. latitude for various datasets.">
                     <div class="card-img-overlay">
@@ -742,6 +743,10 @@
                                 <span class="detail-value" id="modalVariables"></span>
                             </div>
                             <div class="detail-row">
+                                <span class="detail-label">Recipe</span>
+                                <span class="detail-value" id="modalRecipe"></span>
+                            </div>
+                            <div class="detail-row">
                                 <span class="detail-label">Input Datasets</span>
                                 <ul class="detail-list" id="modalAncestors"></ul>
                             </div>
@@ -761,7 +766,7 @@
     <footer class="py-3 bg-white border-top">
         <div class="row">
             <div class="col-md-6">
-                <span class="text-muted mb-0">Generated by ICONEval 0.10.0</span>
+                <span class="text-muted mb-0">Generated by <a href=https://github.com/EyringMLClimateGroup/ICONEval>ICONEval 0.10.0</a></span>
             </div>
         </div>
         <div class="row">
@@ -795,11 +800,12 @@
             }
         });
 
-        function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl) {
+        function openModal(imgSrc, caption, plotType, variables, ancestors, recipeUrl, recipeName) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
             document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
             document.getElementById('modalVariables').textContent = variables || 'Unknown';
+            document.getElementById('modalRecipe').textContent = recipeName || 'Unknown';
             document.getElementById('modalAncestors').innerHTML = ancestors || '<li>None</li>';
             document.getElementById('modalRecipeLink').href = recipeUrl || '#';
             document.getElementById('detailModal').classList.add('show');
@@ -861,7 +867,8 @@
                 const filterMatch = activeFilters.length === 0 ||
                     activeFilters.includes(realm) ||
                     plotType.split(',').some(pt => activeFilters.includes(pt)) ||
-                    variables.split(',').some(v => activeFilters.includes(v));
+                    variables.split(',').some(v => activeFilters.includes(v)) ||
+                    activeFilters.includes(recipe);
 
                 if (matchesSearch && filterMatch) {
                     card.style.display = '';
