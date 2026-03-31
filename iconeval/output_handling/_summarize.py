@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import base64
+from collections.abc import Iterable
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -14,6 +15,7 @@ from loguru import logger
 
 import iconeval
 from iconeval import get_user_name
+from iconeval._simulation_info import SimulationInfo
 from iconeval._templates import RecipeTemplate
 from iconeval.output_handling._templates_html import render_template
 
@@ -195,12 +197,8 @@ class FilterOptions:
     variables: set[str] = field(default_factory=set)
 
 
-def get_html_description(session: Session, date: datetime) -> str:
-    """Create description of simulation(s) for HTML."""
-    simulations_info = session.simulations_info
-    current_user = get_user_name()
-
-    # Build simulation chips (clickable cards for each simulation)
+def get_simulations_info_html(simulations_info: Iterable[SimulationInfo]) -> str:
+    """Create nice HTML output of simulation(s)."""
     sim_chips = []
     for sim_info in simulations_info:
         namelist_items = "".join(f"<li>{path}</li>" for path in sim_info.namelist_files)
@@ -218,43 +216,36 @@ def get_html_description(session: Session, date: datetime) -> str:
     simulations_html = "".join(sim_chips)
 
     return (
-        f"<div class='sim-info-label'>Simulations</div>\n"
+        f"<div class='sim-info-label'>Simulations:</div>\n"
         f"<div class='sim-chips'>{simulations_html}</div>\n"
-        f"<div class='sim-info-header'>\n"
-        f"  <div>\n"
-        f"    <span class='sim-info-label'>Evaluated by</span>\n"
-        f"    <span class='sim-info-value'>{current_user}</span>\n"
-        f"  </div>\n"
-        f"  <div>\n"
-        f"    <span class='sim-info-label'>Evaluation date</span>\n"
-        f"    <span class='sim-info-value'>{date.strftime('%Y-%m-%d %H:%M')}</span>\n"
-        f"  </div>\n"
-        f"</div>\n"
     )
 
 
 def summarize(
     esmvaltool_output_dir: Path,
+    date: datetime | None = None,
+    user: str | None = None,
     description: str | None = None,
     *,
     embed_images: bool = False,
 ) -> None:
-    """Create summary HTML.
+    """Create summary HTML."""
+    if date is None:
+        date = datetime.now(UTC)
+    if user is None:
+        user = get_user_name()
 
-    Args:
-        esmvaltool_output_dir: Path to the ESMValTool output directory
-        description: Optional description to include in the HTML
-        embed_images: If True, embed images as base64 for standalone HTML
-    """
     # Extract all diagnostics with provenance
     diagnostics = _extract_all_diagnostics(esmvaltool_output_dir)
     filter_options = _get_filter_options(diagnostics)
 
     # Write the new dashboard HTML
     _write_dashboard_html(
-        esmvaltool_output_dir,
-        diagnostics,
-        filter_options,
+        output_dir=esmvaltool_output_dir,
+        diagnostics=diagnostics,
+        filter_options=filter_options,
+        date=date,
+        user=user,
         description=description,
         embed_images=embed_images,
     )
@@ -288,11 +279,13 @@ def _get_recipe_name(recipe_dir: Path) -> str:
 
 
 def _write_dashboard_html(
+    *,
     output_dir: Path,
     diagnostics: list[DiagnosticInfo],
     filter_options: FilterOptions,
+    date: datetime,
+    user: str,
     description: str | None = None,
-    *,
     embed_images: bool = False,
 ) -> None:
     """Write dashboard-style index.html."""
@@ -391,6 +384,9 @@ def _write_dashboard_html(
         {make_filter_checkboxes(variables_json, "Variables")}
     """
 
+    # Format date for display
+    formatted_date = date.strftime("%Y-%m-%d %H:%M")
+
     # Calculate stats
     total_diagnostics = len(diagnostics)
     total_recipes = len({d.recipe_name for d in diagnostics})
@@ -402,9 +398,10 @@ def _write_dashboard_html(
         total_recipes=total_recipes,
         sidebar_filters=sidebar_filters,
         description=description,
-        has_description=bool(description),
         cards_html=cards_html_str,
         version=iconeval.__version__,
+        evaluation_date=formatted_date,
+        evaluation_user=user,
     )
 
     # Strip trailing whitespace from each line and ensure single newline at end

@@ -11,8 +11,22 @@
 <body>
     <!-- Header -->
     <nav class="navbar">
-        <a class="navbar-brand" href="#">&#128200; ICONEval Results</a>
-        <span class="navbar-text">{{ total_diagnostics }} diagnostics from {{ total_recipes }} recipes</span>
+        <div class="navbar-brand-section">
+            <div class="navbar-brand-row">
+                <a class="navbar-brand" href="#">&#128200; ICONEval Results</a>
+            </div>
+            <span class="navbar-meta">
+                {{ evaluation_date }} | User: {{ evaluation_user }}
+            </span>
+        </div>
+        {% if description %}
+        <div class="navbar-info">
+            <span class="navbar-description">{{ description|safe }}</span>
+        </div>
+        {% endif %}
+        <div class="navbar-info">
+            <span class="navbar-text">{{ total_diagnostics }} diagnostics from {{ total_recipes }} recipes</span>
+        </div>
     </nav>
 
     <div class="container-fluid">
@@ -39,13 +53,6 @@
 
             <!-- Main Content -->
             <main class="main-content col-md-9 col-lg-10">
-                <!-- Description -->
-                {% if has_description %}
-                <div class='description-section'>
-                    {{ description|safe }}
-                </div>
-                {% endif %}
-
                 <!-- Cards Grid -->
                 <div class="row g-4" id="diagnosticsGrid">
                     {{ cards_html|safe }}

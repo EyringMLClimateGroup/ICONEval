@@ -8,7 +8,7 @@ import pytest
 
 from iconeval._session import Session
 from iconeval._simulation_info import SimulationInfo
-from iconeval.output_handling._summarize import get_html_description, summarize
+from iconeval.output_handling._summarize import get_simulations_info_html, summarize
 from tests.integration import assert_output, copy_to_tmp_path
 
 if TYPE_CHECKING:
@@ -81,10 +81,8 @@ def test_summarize_with_detailed_description(
     sample_data_path: Path,
     simulations_info: list[SimulationInfo],
     tmp_path: Path,
-    mocker: MockerFixture,
 ) -> None:
-    mocked_session = mocker.Mock(spec_set=Session, simulations_info=simulations_info)
-    description = get_html_description(mocked_session, datetime(2001, 1, 1))
+    description = get_simulations_info_html(simulations_info)
     sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean_maps"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         summarize(esmvaltool_output, description=description)
