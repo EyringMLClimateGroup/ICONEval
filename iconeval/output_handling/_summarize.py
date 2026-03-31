@@ -319,13 +319,13 @@ def _write_dashboard_html(
 
         # Build data attributes for filtering (comma-separated for filtering logic)
         realm = diag.realm or "other"
-        plot_type = ",".join(diag.plot_types) if diag.plot_types else "unknown"
+        plot_types = ",".join(diag.plot_types) if diag.plot_types else "unknown"
         variables = ",".join(diag.long_names) if diag.long_names else "unknown"
 
         # Build individual badges for plot types and variables
         plot_type_badges = "".join(
             f"<span class=\"badge bg-success clickable\"\n"
-            f"      onclick=\"toggleFilterBadge('plot_type', '{pt}')\">{pt}\n"
+            f"      onclick=\"toggleFilterBadge('plot_types', '{pt}')\">{pt}\n"
             f"</span>"
             for pt in diag.plot_types
         ) if diag.plot_types else "<span class=\"badge bg-success\">unknown</span>"
@@ -352,14 +352,14 @@ def _write_dashboard_html(
         card = f"""\
         <div class="diagnostic-card col"
              data-realm="{realm}"
-             data-plot-type="{plot_type}"
+             data-plot-type="{plot_types}"
              data-variables="{variables}"
              data-caption="{_escape_html(diag.caption)}"
              data-recipe="{diag.recipe_name}">
             <div class="card h-100 shadow-sm">
                 <div class="card-img-wrapper" style="cursor: pointer;"
                      onclick="openModal('{img_src}', '{_escape_html(diag.caption)}',
-                         '{_escape_html(plot_type)}',
+                         '{_escape_html(plot_types)}',
                          '{_escape_html(variables)}', '{input_datasets_html}',
                          '{diag.recipe_url}', '{diag.recipe_name}')">
                     <img src="{img_src}" class="card-img-top"
@@ -412,7 +412,7 @@ def _write_dashboard_html(
 
     sidebar_filters = f"""\
         {make_filter_checkboxes(realms_json, "Realm")}
-        {make_filter_checkboxes(plot_types_json, "Plot Type")}
+        {make_filter_checkboxes(plot_types_json, "Plot Types")}
         {make_filter_checkboxes(variables_json, "Variables")}
         {make_filter_checkboxes(recipe_names_json, "Recipe")}
     """

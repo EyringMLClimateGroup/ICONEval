@@ -583,7 +583,7 @@
                 </div>
                 <div id="filterContent">
                             <div class="mb-3"><h6>Realm</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="atmosphere" id="filter-realm-atmosphere" ><label class="form-check-label" for="filter-realm-atmosphere">atmosphere</label></div></div>
-        <div class="mb-3"><h6>Plot Type</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot type-line" ><label class="form-check-label" for="filter-plot type-line">line</label></div></div>
+        <div class="mb-3"><h6>Plot Types</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="line" id="filter-plot types-line" ><label class="form-check-label" for="filter-plot types-line">line</label></div></div>
         <div class="mb-3"><h6>Variables</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="Precipitation" id="filter-variables-Precipitation" ><label class="form-check-label" for="filter-variables-Precipitation">Precipitation</label></div></div>
         <div class="mb-3"><h6>Recipe</h6><div class="form-check"><input class="form-check-input filter-checkbox" type="checkbox" value="basics_zonal_mean_lines" id="filter-recipe-basics_zonal_mean_lines" ><label class="form-check-label" for="filter-recipe-basics_zonal_mean_lines">basics_zonal_mean_lines</label></div></div>
 
@@ -622,7 +622,7 @@
                               onclick="toggleFilterBadge('realm', 'atmosphere')">atmosphere
                         </span>
                         <span class="badge bg-success clickable"
-      onclick="toggleFilterBadge('plot_type', 'line')">line
+      onclick="toggleFilterBadge('plot_types', 'line')">line
 </span>
                         <span class="badge bg-info clickable"
       onclick="toggleFilterBadge('variables', 'Precipitation')">Precipitation
@@ -699,8 +699,8 @@
                                 <span class="detail-value" id="modalCaption"></span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label">Plot Type</span>
-                                <ul class="detail-list-plain" id="modalPlotType"></ul>
+                                <span class="detail-label">Plot Types</span>
+                                <ul class="detail-list-plain" id="modalPlotTypes"></ul>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Variables</span>
@@ -767,7 +767,7 @@
         function openModal(imgSrc, caption, plotType, variables, input_datasets, recipeUrl, recipeName) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
-            document.getElementById('modalPlotType').innerHTML = plotType ?
+            document.getElementById('modalPlotTypes').innerHTML = plotType ?
                 plotType.split(',').map(pt => `<li>${pt}</li>`).join('') : '<li>None</li>';
             document.getElementById('modalVariables').innerHTML = variables ?
                 variables.split(',').map(v => `<li>${v}</li>`).join('') : '<li>None</li>';
@@ -866,7 +866,7 @@
 
             // Find the checkbox for this filter type and value
             const filterName = filterType === 'realm' ? 'Realm' :
-                               filterType === 'plot_type' ? 'Plot Type' :
+                               filterType === 'plot_types' ? 'Plot Types' :
                                filterType === 'variables' ? 'Variables' :
                                filterType === 'recipe' ? 'Recipe' : filterType;
             const checkboxId = `filter-${filterName.toLowerCase()}-${value}`;
