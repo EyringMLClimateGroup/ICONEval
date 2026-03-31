@@ -1,36 +1,118 @@
-    <!doctype html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>ICONEval Results Dashboard</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-        <style>
-            :root {
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ICONEval Results Dashboard</title>
+    <style>
+        :root {
                 --primary-color: #1C1CC4;
                 --secondary-color: #6c757d;
                 --bg-light: #f8f9fa;
+                --border-color: #dee2e6;
+            }
+            * {
+                box-sizing: border-box;
             }
             body {
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 background-color: var(--bg-light);
+                margin: 0;
+                padding: 0;
+            }
+            /* Layout */
+            .navbar {
+                background: var(--primary-color);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .navbar-brand {
+                color: white;
+                font-weight: 600;
+                font-size: 1.25rem;
+                text-decoration: none;
+            }
+            .navbar-text {
+                color: white;
+                opacity: 0.9;
+            }
+            .container-fluid {
+                display: flex;
+                min-height: calc(100vh - 56px);
             }
             .sidebar {
                 background: white;
-                border-right: 1px solid #dee2e6;
-                min-height: calc(100vh - 56px);
+                border-right: 1px solid var(--border-color);
+                width: 240px;
+                min-width: 240px;
                 padding: 1.5rem 1rem;
+                flex-shrink: 0;
             }
             .main-content {
+                flex: 1;
                 padding: 1.5rem;
+                overflow-x: hidden;
+            }
+            /* Grid system */
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                margin: -0.75rem;
+            }
+            .row > * {
+                padding: 0.75rem;
+            }
+            .col-md-3 { width: 25%; }
+            .col-md-9 { width: 75%; }
+            .col-lg-2 { width: 16.666%; }
+            .col-lg-3 { width: 25%; }
+            .col-lg-4 { width: 33.333%; }
+            .col-lg-8 { width: 66.666%; }
+            .col-lg-10 { width: 83.333%; }
+            .col-xl-4 { width: 33.333%; }
+            .col-1 { width: 8.333%; }
+            .col-2 { width: 16.666%; }
+            .col-3 { width: 25%; }
+            .col-4 { width: 33.333%; }
+            .col-6 { width: 50%; }
+            .col-12 { width: 100%; }
+            .g-4 { gap: 1rem; }
+            @media (max-width: 991px) {
+                .col-lg-2 { width: 100%; }
+                .col-lg-3 { width: 100%; }
+                .col-lg-4 { width: 100%; }
+                .col-lg-8 { width: 100%; }
+                .col-lg-10 { width: 100%; }
+                .container-fluid { flex-direction: column; }
+                .sidebar { width: 100%; min-width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+            }
+            @media (max-width: 767px) {
+                .col-md-3 { width: 100%; }
+                .col-md-9 { width: 100%; }
+            }
+            @media (max-width: 575px) {
+                .col-1, .col-2, .col-3, .col-4, .col-6, .col-12 { width: 100%; }
+            }
+            /* Cards */
+            .card {
+                background: white;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                height: 100%;
+                display: flex;
+                flex-direction: column;
             }
             .card-img-wrapper {
                 position: relative;
                 overflow: hidden;
                 background: #f0f0f0;
                 aspect-ratio: 16/9;
+                cursor: pointer;
             }
             .card-img-wrapper img {
                 width: 100%;
@@ -41,16 +123,51 @@
             .card-img-wrapper:hover img {
                 transform: scale(1.05);
             }
-            .card-img-wrapper .card-img-overlay {
-                opacity: 0;
+            .card-img-overlay {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
                 background: rgba(0,0,0,0.4);
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                opacity: 0;
                 transition: opacity 0.3s ease;
+                color: white;
+                font-size: 2rem;
             }
             .card-img-wrapper:hover .card-img-overlay {
                 opacity: 1;
+            }
+            .card-body {
+                padding: 1rem;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .card-title {
+                margin: 0 0 0.5rem;
+                font-size: 0.95rem;
+                font-weight: 500;
+                line-height: 1.4;
+            }
+            .card-text {
+                margin: 0;
+                font-size: 0.85rem;
+                color: #6c757d;
+            }
+            .badge {
+                display: inline-block;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 4px;
+                background: #e9ecef;
+                color: #495057;
+                margin-right: 0.25rem;
+                margin-bottom: 0.25rem;
+            }
+            .badge-realm {
+                background: var(--primary-color);
+                color: white;
             }
             .diagnostic-card {
                 animation: fadeIn 0.3s ease;
@@ -59,73 +176,235 @@
                 from { opacity: 0; transform: translateY(10px); }
                 to { opacity: 1; transform: translateY(0); }
             }
+            /* Search */
             .search-box {
                 border-radius: 50px;
                 padding: 0.75rem 1.5rem;
-                border: 2px solid #dee2e6;
+                border: 2px solid var(--border-color);
                 transition: border-color 0.2s;
+                width: 100%;
+                font-size: 1rem;
             }
             .search-box:focus {
+                outline: none;
                 border-color: var(--primary-color);
-                box-shadow: none;
             }
-            .filter-checkbox:checked {
+            /* Form controls */
+            .form-control {
+                border: 1px solid var(--border-color);
+                border-radius: 4px;
+                padding: 0.5rem 0.75rem;
+                font-size: 1rem;
+            }
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(28,28,196,0.1);
+            }
+            /* Buttons */
+            .btn {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                cursor: pointer;
+                border: 1px solid transparent;
+                font-size: 0.875rem;
+                transition: all 0.2s;
+            }
+            .btn-primary {
+                background: var(--primary-color);
+                color: white;
+            }
+            .btn-primary:hover {
+                background: #1515a5;
+            }
+            .btn-outline-secondary {
+                background: transparent;
+                border-color: var(--secondary-color);
+                color: var(--secondary-color);
+            }
+            .btn-outline-secondary:hover {
+                background: var(--secondary-color);
+                color: white;
+            }
+            .btn-sm {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8125rem;
+            }
+            .btn-close {
+                background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+                border: 0;
+                border-radius: 0.25rem;
+                opacity: 0.5;
+                width: 1.5rem;
+                height: 1.5rem;
+                padding: 0.25rem;
+                cursor: pointer;
+            }
+            .btn-close:hover {
+                opacity: 1;
+            }
+            .w-100 { width: 100%; }
+            /* Checkbox styling */
+            .form-check {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.5rem;
+            }
+            .form-check-input {
+                margin-right: 0.5rem;
+                width: 1rem;
+                height: 1rem;
+                cursor: pointer;
+            }
+            .form-check-input:checked {
                 background-color: var(--primary-color);
                 border-color: var(--primary-color);
             }
-            .stats-card {
-                background: linear-gradient(135deg, var(--primary-color), #3d3dd6);
-                color: white;
-                border-radius: 12px;
-                padding: 1.25rem;
+            /* Modal */
+            .modal-backdrop {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+            .modal-backdrop.show {
+                display: flex;
+            }
+            .modal-dialog {
+                background: white;
+                border-radius: 8px;
+                max-width: 90vw;
+                max-height: 90vh;
+                overflow: auto;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            }
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .modal-title {
+                margin: 0;
+                font-size: 1.25rem;
+                font-weight: 500;
+            }
+            .modal-body {
+                padding: 1.5rem;
             }
             .modal-img {
                 max-width: 100%;
-                max-height: 70vh;
+                max-height: 60vh;
                 object-fit: contain;
+                border-radius: 4px;
             }
-        </style>
-    </head>
-    <body>
-        <!-- Header -->
-        <nav class="navbar navbar-expand-lg" style="background-color: var(--primary-color);">
-            <div class="container-fluid">
-                <a class="navbar-brand text-white fw-bold" href="#">
-                    <i class="bi bi-graph-up"></i> ICONEval Results
-                </a>
-                <span class="navbar-text text-white">
-                    0 diagnostics from 0 recipes
-                </span>
-            </div>
-        </nav>
+            /* Typography */
+            h1, h2, h3, h4, h5, h6 {
+                margin-top: 0;
+            }
+            h5, h6 {
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+            }
+            h5 { font-size: 1rem; }
+            h6 { font-size: 0.875rem; }
+            p { margin: 0 0 1rem; }
+            .mb-0 { margin-bottom: 0 !important; }
+            .mb-3 { margin-bottom: 1rem !important; }
+            .mb-4 { margin-bottom: 1.5rem !important; }
+            .mt-3 { margin-top: 1rem !important; }
+            .mt-5 { margin-top: 3rem !important; }
+            .py-3 { padding-top: 1rem; padding-bottom: 1rem; }
+            .py-5 { padding-top: 3rem; padding-bottom: 3rem; }
+            .text-muted { color: #6c757d; }
+            .text-white { color: white; }
+            .text-center { text-align: center; }
+            .text-md-end { text-align: right; }
+            @media (min-width: 768px) {
+                .text-md-end { text-align: right; }
+            }
+            @media (max-width: 767px) {
+                .text-md-end { text-align: left; }
+            }
+            /* Utilities */
+            .fs-1 { font-size: 2.5rem; }
+            .fw-bold { font-weight: 700; }
+            hr {
+                border: none;
+                border-top: 1px solid var(--border-color);
+                margin: 1.5rem 0;
+            }
+            ul {
+                margin: 0;
+                padding-left: 1.25rem;
+            }
+            li { margin-bottom: 0.25rem; }
+            a {
+                color: var(--primary-color);
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            /* Empty state */
+            .empty-state {
+                text-align: center;
+                padding: 3rem;
+            }
+            /* Footer */
+            footer {
+                background: white;
+                border-top: 1px solid var(--border-color);
+                padding: 1rem 1.5rem;
+                margin-top: 2rem;
+            }
+            footer .row {
+                margin: 0;
+            }
+            footer .col-md-6 {
+                padding: 0;
+            }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">&#128200; ICONEval Results</a>
+        <span class="navbar-text">0 diagnostics from 0 recipes</span>
+    </nav>
 
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3 col-lg-2 sidebar">
-                    <h5 class="mb-3"><i class="bi bi-funnel"></i> Filters</h5>
-                            <div class="mb-3"><h6>Realm</h6><p class="text-muted small">None</p></div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="sidebar col-md-3 col-lg-2">
+                <h5 class="mb-3">&#9881; Filters</h5>
+                        <div class="mb-3"><h6>Realm</h6><p class="text-muted small">None</p></div>
         <div class="mb-3"><h6>Plot Type</h6><p class="text-muted small">None</p></div>
         <div class="mb-3"><h6>Variables</h6><p class="text-muted small">None</p></div>
         <div class="mb-3"><h6>Authors</h6><p class="text-muted small">None</p></div>
+    
+                <hr>
+                <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
+                    &#10005; Clear Filters
+                </button>
+            </aside>
 
-                    <hr>
-                    <button class="btn btn-outline-secondary btn-sm w-100" onclick="clearFilters()">
-                        <i class="bi bi-x-circle"></i> Clear Filters
-                    </button>
+            <!-- Main Content -->
+            <main class="main-content col-md-9 col-lg-10">
+                <!-- Search -->
+                <div class="mb-4">
+                    <input type="text" class="form-control search-box"
+                           placeholder="Search diagnostics..."
+                           id="searchInput" onkeyup="filterDiagnostics()">
                 </div>
 
-                <!-- Main Content -->
-                <div class="col-md-9 col-lg-10 main-content">
-                    <!-- Search -->
-                    <div class="mb-4">
-                        <input type="text" class="form-control search-box"
-                               placeholder="Search diagnostics..."
-                               id="searchInput" onkeyup="filterDiagnostics()">
-                    </div>
-
-                    <!-- Description -->
-                    <p><b>Simulations:</b></p>
+                <!-- Description -->
+                <p><b>Simulations:</b></p>
 <div>
   <span style='cursor: pointer;' onclick="toggleAccordion('accordion-0', 'arrow-0')">
     <span id='arrow-0' style='display: inline-block; transition: transform 0.2s;'>▶</span> input</span>
@@ -159,153 +438,166 @@
 </script>
 
 
-                    <!-- Cards Grid -->
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="diagnosticsGrid">
-
-                    </div>
-
-                    <!-- No Results -->
-                    <div id="noResults" class="text-center py-5" style="display: none;">
-                        <i class="bi bi-search fs-1 text-muted"></i>
-                        <p class="mt-3 text-muted">No diagnostics match your filters.</p>
-                        <button class="btn btn-primary" onclick="clearFilters()">Clear Filters</button>
-                    </div>
+                <!-- Cards Grid -->
+                <div class="row g-4" id="diagnosticsGrid">
+                    
                 </div>
-            </div>
-        </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Diagnostic Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <img id="modalImage" class="modal-img rounded" src="" alt="">
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Caption</h6>
-                                <p id="modalCaption"></p>
-                                <h6>Authors</h6>
-                                <p id="modalAuthors"></p>
-                                <h6>Plot Type</h6>
-                                <p id="modalPlotType"></p>
-                                <h6>Variables</h6>
-                                <p id="modalVariables"></p>
-                                <h6>Input Datasets</h6>
-                                <ul id="modalAncestors" class="small"></ul>
-                                <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
-                                    <i class="bi bi-box-arrow-up-right"></i> View in ESMValTool
-                                </a>
-                            </div>
+                <!-- No Results -->
+                <div id="noResults" class="text-center py-5" style="display: none;">
+                    <p class="fs-1 text-muted">&#128269;</p>
+                    <p class="mt-3 text-muted">No diagnostics match your filters.</p>
+                    <button class="btn btn-primary" onclick="clearFilters()">Clear Filters</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-backdrop" id="detailModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Diagnostic Details</h5>
+                    <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <img id="modalImage" class="modal-img" src="" alt="">
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Caption</h6>
+                            <p id="modalCaption"></p>
+                            <h6>Authors</h6>
+                            <p id="modalAuthors"></p>
+                            <h6>Plot Type</h6>
+                            <p id="modalPlotType"></p>
+                            <h6>Variables</h6>
+                            <p id="modalVariables"></p>
+                            <h6>Input Datasets</h6>
+                            <ul id="modalAncestors"></ul>
+                            <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="bi bi-box-arrow-up-right"></i> View in ESMValTool
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Footer -->
-        <footer class="mt-5 py-3 bg-white border-top">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="text-muted mb-0">Generated by ICONEval</p>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <a href="debug.html" class="text-muted">Debug Info</a>
-                    </div>
+    <!-- Footer -->
+    <footer class="mt-5 py-3 bg-white border-top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">Generated by ICONEval</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="debug.html" class="text-muted">Debug Info</a>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            let modal;
+    <script>
+        function openModal(imgSrc, caption, authors, plotType, variables, ancestors, recipeUrl) {
+            document.getElementById('modalImage').src = imgSrc;
+            document.getElementById('modalCaption').textContent = caption;
+            document.getElementById('modalAuthors').textContent = authors || 'Unknown';
+            document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
+            document.getElementById('modalVariables').textContent = variables || 'Unknown';
+            document.getElementById('modalAncestors').innerHTML = ancestors || '<li>None</li>';
+            document.getElementById('modalRecipeLink').href = recipeUrl || '#';
+            document.getElementById('detailModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
 
-            document.addEventListener('DOMContentLoaded', function() {
-                modal = new bootstrap.Modal(document.getElementById('detailModal'));
-            });
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
 
-            function openModal(imgSrc, caption, authors, plotType, variables, ancestors, recipeUrl) {
-                document.getElementById('modalImage').src = imgSrc;
-                document.getElementById('modalCaption').textContent = caption;
-                document.getElementById('modalAuthors').textContent = authors || 'Unknown';
-                document.getElementById('modalPlotType').textContent = plotType || 'Unknown';
-                document.getElementById('modalVariables').textContent = variables || 'Unknown';
-                document.getElementById('modalAncestors').innerHTML = ancestors || '<li>None</li>';
-                document.getElementById('modalRecipeLink').href = recipeUrl || '#';
-                modal.show();
+        // Close modal on backdrop click
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
             }
+        });
 
-            function filterDiagnostics() {
-                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-                const cards = document.querySelectorAll('.diagnostic-card');
-                const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
-                const activeFilters = Array.from(checkboxes).map(cb => cb.value);
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
 
-                let visibleCount = 0;
+        function filterDiagnostics() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.diagnostic-card');
+            const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+            const activeFilters = Array.from(checkboxes).map(cb => cb.value);
 
-                cards.forEach(card => {
-                    const realm = card.dataset.realm;
-                    const plotType = card.dataset.plotType;
-                    const variables = card.dataset.variables;
-                    const authors = card.dataset.authors;
-                    const caption = card.dataset.caption;
-                    const recipe = card.dataset.recipe;
+            let visibleCount = 0;
 
-                    // Check search term
-                    const matchesSearch = !searchTerm ||
-                        caption.toLowerCase().includes(searchTerm) ||
-                        recipe.toLowerCase().includes(searchTerm) ||
-                        variables.toLowerCase().includes(searchTerm) ||
-                        authors.toLowerCase().includes(searchTerm);
+            cards.forEach(card => {
+                const realm = card.dataset.realm;
+                const plotType = card.dataset.plotType;
+                const variables = card.dataset.variables;
+                const authors = card.dataset.authors;
+                const caption = card.dataset.caption;
+                const recipe = card.dataset.recipe;
 
-                    // Check filters (OR within each category, AND across categories)
-                    const realmMatch = !activeFilters.some(f =>
+                // Check search term
+                const matchesSearch = !searchTerm ||
+                    caption.toLowerCase().includes(searchTerm) ||
+                    recipe.toLowerCase().includes(searchTerm) ||
+                    variables.toLowerCase().includes(searchTerm) ||
+                    authors.toLowerCase().includes(searchTerm);
+
+                // Check filters (OR within each category, AND across categories)
+                const realmMatch = !activeFilters.some(f =>
                         ['atmosphere', 'ocean', 'land', 'sanity-consistency-checks', 'other'].includes(f)
                     ) || activeFilters.includes(realm);
 
-                    const plotTypeMatch = !activeFilters.some(f =>
+                const plotTypeMatch = !activeFilters.some(f =>
                         !['atmosphere', 'ocean', 'land', 'sanity-consistency-checks', 'other'].includes(f)
                     ) || plotType.split(',').some(pt => activeFilters.includes(pt)) ||
                       variables.split(',').some(v => activeFilters.includes(v)) ||
                       authors.split(',').some(a => activeFilters.includes(a));
 
-                    // Simplified filter: show if any selected filter matches
-                    const filterMatch = activeFilters.length === 0 ||
-                        activeFilters.includes(realm) ||
-                        plotType.split(',').some(pt => activeFilters.includes(pt)) ||
-                        variables.split(',').some(v => activeFilters.includes(v)) ||
-                        authors.split(',').some(a => activeFilters.includes(a));
+                // Simplified filter: show if any selected filter matches
+                const filterMatch = activeFilters.length === 0 ||
+                    activeFilters.includes(realm) ||
+                    plotType.split(',').some(pt => activeFilters.includes(pt)) ||
+                    variables.split(',').some(v => activeFilters.includes(v)) ||
+                    authors.split(',').some(a => activeFilters.includes(a));
 
-                    if (matchesSearch && filterMatch) {
-                        card.style.display = '';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                document.getElementById('noResults').style.display =
-                    visibleCount === 0 ? 'block' : 'none';
-            }
-
-            // Filter checkbox listeners
-            document.querySelectorAll('.filter-checkbox').forEach(cb => {
-                cb.addEventListener('change', filterDiagnostics);
+                if (matchesSearch && filterMatch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
             });
 
-            function clearFilters() {
-                document.getElementById('searchInput').value = '';
-                document.querySelectorAll('.filter-checkbox').forEach(cb => {
-                    cb.checked = cb.value === 'atmosphere' || cb.value === 'all';
-                });
-                filterDiagnostics();
-            }
-        </script>
-    </body>
-    </html>
+            document.getElementById('noResults').style.display =
+                visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // Filter checkbox listeners
+        document.querySelectorAll('.filter-checkbox').forEach(cb => {
+            cb.addEventListener('change', filterDiagnostics);
+        });
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-checkbox').forEach(cb => {
+                cb.checked = cb.value === 'atmosphere' || cb.value === 'all';
+            });
+            filterDiagnostics();
+        }
+    </script>
+</body>
+</html>

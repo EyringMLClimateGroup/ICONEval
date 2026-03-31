@@ -277,7 +277,7 @@ def test_icon_evaluation_multi_input_success(
     assert mocked_service_instance.upload.call_count == 1
     upload_call = mocked_service_instance.upload.mock_calls[0]
     assert upload_call.args == ()
-    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert len(upload_call.kwargs) == 2
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (
@@ -509,7 +509,7 @@ def test_icon_evaluation_single_input_fail(
     assert mocked_service_instance.upload.call_count == 1
     upload_call = mocked_service_instance.upload.mock_calls[0]
     assert upload_call.args == ()
-    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert len(upload_call.kwargs) == 2
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (
