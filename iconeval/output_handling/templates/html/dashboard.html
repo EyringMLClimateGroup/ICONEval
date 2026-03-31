@@ -280,6 +280,25 @@
             filterDiagnostics();
         }
 
+        function toggleFilterBadge(filterType, value) {
+            if (!value || value === 'unknown') return;
+
+            // Skip if value contains comma (complex plot_type) - not clickable
+            if (filterType === 'plot_type' && value.includes(',')) return;
+
+            // Find the checkbox for this filter type and value
+            const filterName = filterType === 'realm' ? 'Realm' :
+                               filterType === 'plot_type' ? 'Plot Type' :
+                               filterType === 'recipe' ? 'Recipe' : filterType;
+            const checkboxId = `filter-${filterName.toLowerCase()}-${value}`;
+            const checkbox = document.getElementById(checkboxId);
+
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                filterDiagnostics();
+            }
+        }
+
         function toggleFilters() {
             const sidebar = document.getElementById('sidebar');
             const content = document.getElementById('filterContent');

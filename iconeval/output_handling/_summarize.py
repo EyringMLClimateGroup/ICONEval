@@ -359,9 +359,12 @@ def _write_dashboard_html(
                         {"..." if len(diag.caption) > CAPTION_MAX_LENGTH else ""}
                     </h6>
                     <p class="card-text small text-muted">
-                        <span class="badge bg-primary">{realm}</span>
-                        <span class="badge bg-success">{plot_type}</span>
-                        <span class="badge bg-warning text-dark">{diag.recipe_name}</span>
+                        <span class="badge bg-primary clickable"
+                              onclick="toggleFilterBadge('realm', '{realm}')">{realm}</span>
+                        <span class="badge bg-success clickable"
+                              onclick="toggleFilterBadge('plot_type', '{plot_type}')">{plot_type}</span>
+                        <span class="badge bg-warning text-dark clickable"
+                              onclick="toggleFilterBadge('recipe', '{diag.recipe_name}')">{diag.recipe_name}</span>
                     </p>
                 </div>
             </div>

@@ -240,6 +240,14 @@
             .badge.bg-primary { background: #7ca5e0 !important; color: #1a1a4e; }
             .badge.bg-success { background: #7bc5a0 !important; color: #1a3d2e; }
             .badge.bg-warning { background: #f5d78e !important; color: #3d3a1a; }
+            .badge.clickable {
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .badge.clickable:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            }
             .badge-realm {
                 background: var(--primary-color);
                 color: white;
@@ -604,9 +612,12 @@
 
                     </h6>
                     <p class="card-text small text-muted">
-                        <span class="badge bg-primary">atmosphere</span>
-                        <span class="badge bg-success">line</span>
-                        <span class="badge bg-warning text-dark">basics_zonal_mean_lines</span>
+                        <span class="badge bg-primary clickable"
+                              onclick="toggleFilterBadge('realm', 'atmosphere')">atmosphere</span>
+                        <span class="badge bg-success clickable"
+                              onclick="toggleFilterBadge('plot_type', 'line')">line</span>
+                        <span class="badge bg-warning text-dark clickable"
+                              onclick="toggleFilterBadge('recipe', 'basics_zonal_mean_lines')">basics_zonal_mean_lines</span>
                     </p>
                 </div>
             </div>
@@ -834,6 +845,25 @@
                 cb.checked = false;
             });
             filterDiagnostics();
+        }
+
+        function toggleFilterBadge(filterType, value) {
+            if (!value || value === 'unknown') return;
+
+            // Skip if value contains comma (complex plot_type) - not clickable
+            if (filterType === 'plot_type' && value.includes(',')) return;
+
+            // Find the checkbox for this filter type and value
+            const filterName = filterType === 'realm' ? 'Realm' :
+                               filterType === 'plot_type' ? 'Plot Type' :
+                               filterType === 'recipe' ? 'Recipe' : filterType;
+            const checkboxId = `filter-${filterName.toLowerCase()}-${value}`;
+            const checkbox = document.getElementById(checkboxId);
+
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                filterDiagnostics();
+            }
         }
 
         function toggleFilters() {
