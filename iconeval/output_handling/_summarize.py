@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 import yaml
 from loguru import logger
 
+import iconeval
 from iconeval import get_user_name
 from iconeval._templates import RecipeTemplate
 from iconeval.output_handling._templates_html import render_template
@@ -456,6 +457,7 @@ def _write_dashboard_html(
         sidebar_filters=sidebar_filters,
         description=description,
         cards_html=cards_html_str,
+        version=iconeval.__version__,
     )
 
     # Strip trailing whitespace from each line and ensure single newline at end
