@@ -60,7 +60,7 @@ class _PackageTemplateLoader:
         return source, str(template_file), lambda: True
 
 
-def render_template(template_name: str, **context: str) -> str:
+def render_template(template_name: str, **context: object) -> str:
     """Render a Jinja2 template with the given context.
 
     Args:
