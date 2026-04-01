@@ -1,69 +1,95 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with
+code in this repository.
 
 ## Project Overview
 
-ICONEval facilitates evaluation of [ICON model](https://www.icon-model.org/) output with [ESMValTool](https://docs.esmvaltool.org/) by automatically running predefined ESMValTool recipes on ICON simulation data. It is designed for DKRZ's Levante HPC system.
+ICONEval evaluates [ICON model](https://www.icon-model.org/) output with
+[ESMValTool](https://docs.esmvaltool.org/) by automatically running ESMValTool
+recipes. It is designed for DKRZ's Levante HPC system but can run anywhere
+Slurm is available.
 
 ## Common Commands
 
 ```bash
-# Run evaluation on ICON output
-iconeval path/to/ICON_output
+# Run all tests
+pytest
 
-# Run with specific options
-iconeval path/to/ICON_output --timerange='20070101/20080101' --frequency=mon --publish_html=True
-
-# Filter recipes by tags
-iconeval path/to/ICON_output --tags='["atmosphere", "!subdaily"]'
-
-# Run a single test
-pytest tests/unit/test__io_handler.py::test_function_name -v
+# Run a single test file
+pytest tests/unit/test_session.py
 
 # Run tests in parallel
 pytest -n auto
 
-# Run with coverage
-pytest --cov=iconeval --cov-report=term-missing
+# Run pre-commit hooks
+pre-commit run --all
+
+# Run ICONEval
+iconeval path/to/ICON_output
+
+# Show ICONEval help
+iconeval -- --help
 ```
 
-## Code Architecture
+## Architecture
 
-### Entry Point
-- `iconeval/main.py`: CLI entry point using `fire` library. The `icon_evaluation()` function is the main logic.
+ICONEval works by filling ESMValTool recipe templates with ICON simulation metadata, then submitting jobs to run them via Slurm.
 
-### Core Modules
-- `_io_handler.py`: Manages input/output directories, creates jobs from recipe templates
-- `_job.py`: Represents a single ESMValTool recipe run as a Slurm job via `srun`
-- `_templates.py`: Handles YAML recipe templates and ESMValTool config templates with placeholder substitution
-- `_simulation_info.py`: Extracts metadata (experiment name, grid info, owner) from ICON output directories
-- `_config.py`, `_recipe.py`: Dataclasses representing ESMValTool configuration and recipes
+### Core Flow (main.py → _session.py → _job.py)
 
-### Output Handling
-- `output_handling/_summarize.py`: Creates summary HTML from ESMValTool output
-- `output_handling/publish_html.py`: Publishes results to DKRZ Swift storage
+1. **`main.py`** - CLI entry point using `fire`. Validates dependencies (ESMValTool, Slurm), creates a `Session`, generates `Job` objects, and executes them.
 
-### Template System
-Recipe templates are YAML files in the package's `recipe_templates/` directory. They use special comment markers:
-- `#TAGS` - Recipe categorization
-- `#ESMVALTOOL --option=value` - ESMValTool options
-- `#SRUN --option=value` - Slurm srun options
-- `#DASK --option=value` - Dask cluster options
+2. **`_session.py`** - Manages an evaluation session. Discovers ICON simulation output from input directories, creates output directory structure (`output_iconeval/<name>_<timestamp>/`), and creates `Job` objects from recipe templates.
 
-Placeholders like `{{dataset_list}}`, `{{timerange}}`, `{{alias_plot_kwargs}}` are replaced at runtime.
+3. **`_job.py`** - Represents a single Slurm job. Generates the recipe YAML and ESMValTool config, then submits via `sbatch` or `srun`.
 
-### Testing
-- `tests/unit/` - Unit tests
-- `tests/integration/` - Integration tests
-- `tests/conftest.py` - Shared pytest fixtures
-- Some tests use pre-calculated expected output (marked with `@pytest.mark.uses_expected_output`)
-- Use `python /home/b/b309141/ICONEval/tests/generate_expected_output.py` to create expected output and look at the output of this script on how to copy the created output to the `expected_output` directory.
+### Template System (`_templates.py`)
 
-## Development Notes
+Templates use Jinja2-like `{{placeholder}}` syntax. Two template types:
 
-- Python 3.12+ required
-- Uses `ruff` for linting (configured in pyproject.toml)
-- Uses `pre-commit` (see `.pre-commit-config.yaml`)
-- 100% test coverage is maintained
-- Templates are loaded via `importlib.resources.files("iconeval")`
+- **Recipe templates** (`recipe_templates/*.yml`) - ESMValTool recipes with special markers:
+  - `#TAGS` - Recipe categorization
+  - `#ESMVALTOOL` - ESMValTool options
+  - `#SRUN` - Slurm/srun options
+  - `#DASK` - Dask cluster options
+
+- **ESMValTool config template** (`esmvaltool_config_template.yml`) - Base config with `{{placeholder}}` for data source paths
+
+### Simulation Discovery (`_simulation_info.py`)
+
+Parses ICON output directory structure to extract:
+
+- Experiment name (from directory name)
+- File facets (variable type, frequency, grid) from filename patterns like `exp_atm_2d_ml_YYYYMMDD.nc`
+
+### HTML Output (`output_handling/`)
+
+- `_summarize.py` - Creates summary HTML from ESMValTool output
+- `publish_html.py` - Publishes results to DKRZ Swift storage
+- `_html_templates/` - HTML template rendering
+
+## Key Files
+
+- `iconeval/main.py:46` - Main `icon_evaluation` function
+- `iconeval/_session.py:29` - `Session` class
+- `iconeval/_job.py:18` - `Job` class
+- `iconeval/_templates.py:131` - `RecipeTemplate` class
+- `iconeval/_simulation_info.py:10` - `SimulationInfo` class
+- `iconeval/esmvaltool_config_template.yml` - ESMValTool config base
+- `iconeval/recipe_templates/` - Default recipe templates (28 recipes)
+
+## Testing
+
+- Tests use `pytest` with fixtures in `tests/conftest.py`.
+- Some tests use pre-calculated expected output (`@pytest.mark.uses_expected_output`).
+- To re-calculate expected output, run `python /home/b/b309141/ICONEval/tests/generate_expected_output.py`
+  and follow further instruction from the output of that command.
+
+## Configuration
+
+- `pyproject.toml` - Project config, dependencies, pytest/ruff settings
+- `.pre-commit-config.yaml` - Pre-commit hooks (ruff, mypy, yamllint, codespell)
+- `environment.yml` - Conda environment for development
+
+When updating dependencies, always update `pyproject.toml` and `environment.yml`
