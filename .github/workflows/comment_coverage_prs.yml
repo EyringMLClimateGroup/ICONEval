@@ -1,5 +1,5 @@
 ---
-name: Comment Coverage in PRs
+name: Comment coverage in PRs
 
 permissions:
   contents: read
