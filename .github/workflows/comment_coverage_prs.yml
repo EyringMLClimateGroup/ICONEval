@@ -1,0 +1,47 @@
+---
+name: Comment Coverage in PRs
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+# Required shell entrypoint to have properly configured bash shell
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+  comment_coverage_in_prs:
+    runs-on: ubuntu-latest
+    name: Comment coverage in PRs
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Conda environment
+        uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3.3.0
+        with:
+          activate-environment: iconeval
+          environment-file: environment.yml
+          python-version: ${{ matrix.python-version }}
+          miniforge-version: latest
+          use-mamba: true
+      - name: Install ICONEval
+        run: pip install --no-deps -e .[develop]
+      - name: Run tests
+        run: |
+          pytest -n 2 --junitxml=pytest.xml --cov-report=xml:coverage.xml --cov-report=term-missing:skip-covered --cov=iconeval tests/
+      - name: Comment coverage
+        uses: MishaKav/pytest-coverage-comment@287292879eaaff04116f36d3eb1a670f6e5df1a4 # v1.7.1
+        with:
+          coverage-path-prefix: iconeval/
+          junitxml-path: ./pytest.xml
+          pytest-xml-coverage-path: ./coverage.xml
+          report-only-changed-files: true
