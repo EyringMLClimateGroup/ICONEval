@@ -297,7 +297,7 @@
             }
             .sim-info-label {
                 font-size: 0.75rem;
-                color: var(--secondary-color);
+                color: rgba(255, 255, 255, 0.7);
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 margin-bottom: 0.25rem;
