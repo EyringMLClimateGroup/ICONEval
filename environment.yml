@@ -6,6 +6,7 @@ channels:
 
 dependencies:
   - fire
+  - jinja2
   - loguru
   - prov
   - python>=3.12

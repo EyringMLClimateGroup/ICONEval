@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from importlib.resources import files
+from importlib import resources
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
@@ -29,7 +29,7 @@ logger = logger.opt(colors=True)
 class Session:
     """Manage ICONEval session."""
 
-    PROJECT_ROOT_DIR: ClassVar[Path] = Path(str(files("iconeval"))).resolve()
+    PROJECT_ROOT_DIR: ClassVar[Path] = Path(str(resources.files("iconeval"))).resolve()
 
     CFG_TEMPLATE: ClassVar[Path] = PROJECT_ROOT_DIR / "esmvaltool_config_template.yml"
     DEFAULT_RECIPE_TEMPLATE_DIR: ClassVar[Path] = PROJECT_ROOT_DIR / "recipe_templates"

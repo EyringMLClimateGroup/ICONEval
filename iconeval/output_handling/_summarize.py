@@ -15,7 +15,7 @@ from loguru import logger
 import iconeval
 from iconeval import get_user_name
 from iconeval._templates import RecipeTemplate
-from iconeval.output_handling._templates_html import render_template
+from iconeval.output_handling._html_templates import render_template
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -29,27 +29,57 @@ CAPTION_MAX_LENGTH = 100
 logger = logger.opt(colors=True)
 
 
-def _read_diagnostic_provenance(diagnostic_dir: Path) -> dict:
-    """Read diagnostic_provenance.yml and return as dict.
+def summarize(
+    esmvaltool_output_dir: Path,
+    date: datetime | None = None,
+    user: str | None = None,
+    description: str | None = None,
+    *,
+    embed_images: bool = False,
+) -> None:
+    """Create summary HTML."""
+    if date is None:
+        date = datetime.now(UTC)
+    if user is None:
+        user = get_user_name()
 
-    Handles both standard YAML and YAML with anchors/aliases.
-    """
-    provenance_file = diagnostic_dir / "diagnostic_provenance.yml"
-    if not provenance_file.exists():
-        return {}
+    # Extract all diagnostics with provenance
+    diagnostics = _extract_all_diagnostics(esmvaltool_output_dir)
+    filter_options = _get_filter_options(diagnostics)
 
-    try:
-        with provenance_file.open() as f:
-            # Use unsafe loader to handle YAML anchors/aliases
-            data = yaml.safe_load(f)
-    except yaml.YAMLError:
-        logger.warning(f"Could not parse {provenance_file}")
-        return {}
-    else:
-        return data or {}
+    # Extract all recipes (including failed ones)
+    recipes = _extract_all_recipes(esmvaltool_output_dir)
+
+    # Write the new dashboard HTML
+    _write_dashboard_html(
+        output_dir=esmvaltool_output_dir,
+        diagnostics=diagnostics,
+        filter_options=filter_options,
+        recipes=recipes,
+        date=date,
+        user=user,
+        description=description,
+        embed_images=embed_images,
+    )
+
+    logger.info(
+        f"Successfully created summary HTML "
+        f"<cyan>{esmvaltool_output_dir / 'index.html'}</cyan>",
+    )
 
 
-def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
+def _escape_html(text: str) -> str:
+    """Escape HTML special characters."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#39;")
+    )
+
+
+def _extract_all_diagnostics(output_dir: Path) -> list[_DiagnosticInfo]:
     """Extract all diagnostics with their provenance data (including failed recipes).
 
     PNGs are in plots/<diagnostic>/plot/*.png
@@ -128,7 +158,7 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
                     continue
 
                 diagnostics.append(
-                    DiagnosticInfo(
+                    _DiagnosticInfo(
                         png_path=png_file,
                         relative_png_path=relative_png,
                         caption=prov_data.get("caption", ""),
@@ -146,9 +176,9 @@ def _extract_all_diagnostics(output_dir: Path) -> list[DiagnosticInfo]:
     return diagnostics
 
 
-def _extract_all_recipes(output_dir: Path) -> list[RecipeInfo]:
+def _extract_all_recipes(output_dir: Path) -> list[_RecipeInfo]:
     """Extract all recipes (including failed ones) with their diagnostics."""
-    recipes: dict[str, RecipeInfo] = {}
+    recipes: dict[str, _RecipeInfo] = {}
 
     for recipe_dir in sorted(Path(output_dir).glob("recipe_*")):
         # Check if recipe was successful
@@ -164,7 +194,7 @@ def _extract_all_recipes(output_dir: Path) -> list[RecipeInfo]:
         recipe_url = f"{recipe_dir.relative_to(output_dir)}/index.html"
 
         # Extract diagnostics for this recipe (including failed recipes)
-        recipe_diags: list[DiagnosticInfo] = []
+        recipe_diags: list[_DiagnosticInfo] = []
 
         # Get recipe tags for realm
         recipe_file = recipe_dir / "run" / f"recipe_{recipe_name}.yml"
@@ -216,7 +246,7 @@ def _extract_all_recipes(output_dir: Path) -> list[RecipeInfo]:
                     continue
 
                 recipe_diags.append(
-                    DiagnosticInfo(
+                    _DiagnosticInfo(
                         png_path=png_file,
                         relative_png_path=relative_png,
                         caption=prov_data.get("caption", ""),
@@ -231,7 +261,7 @@ def _extract_all_recipes(output_dir: Path) -> list[RecipeInfo]:
                 )
 
         # Store or update recipe info
-        recipes[recipe_name] = RecipeInfo(
+        recipes[recipe_name] = _RecipeInfo(
             name=recipe_name,
             success=success,
             recipe_url=recipe_url,
@@ -242,7 +272,7 @@ def _extract_all_recipes(output_dir: Path) -> list[RecipeInfo]:
     return list(recipes.values())
 
 
-def _get_filter_options(diagnostics: list[DiagnosticInfo]) -> FilterOptions:
+def _get_filter_options(diagnostics: list[_DiagnosticInfo]) -> _FilterOptions:
     """Extract unique filter values from diagnostics."""
     realms: set[str] = set()
     plot_types: set[str] = set()
@@ -255,7 +285,7 @@ def _get_filter_options(diagnostics: list[DiagnosticInfo]) -> FilterOptions:
         variables.update(diag.long_names)
         recipe_names.add(diag.recipe_name)
 
-    return FilterOptions(
+    return _FilterOptions(
         realms=frozenset(realms),
         plot_types=frozenset(plot_types),
         variables=frozenset(variables),
@@ -275,7 +305,7 @@ def _embed_image_as_base64(png_path: Path) -> str:
 
 
 @dataclass(frozen=True, kw_only=True)
-class DiagnosticInfo:
+class _DiagnosticInfo:
     """Container for diagnostic provenance data."""
 
     png_path: Path
@@ -291,17 +321,17 @@ class DiagnosticInfo:
 
 
 @dataclass(frozen=True, kw_only=True, order=True)
-class RecipeInfo:
+class _RecipeInfo:
     """Container for recipe information including diagnostics."""
 
     name: str
     success: bool = field(compare=False)
     recipe_url: str = field(compare=False)
-    diagnostics: tuple[DiagnosticInfo, ...] = field(compare=False)
+    diagnostics: tuple[_DiagnosticInfo, ...] = field(compare=False)
 
 
 @dataclass(frozen=True, kw_only=True)
-class FilterOptions:
+class _FilterOptions:
     """Container for filter options."""
 
     realms: frozenset[str]
@@ -334,45 +364,6 @@ def get_simulations_info_html(simulations_info: Iterable[SimulationInfo]) -> str
     )
 
 
-def summarize(
-    esmvaltool_output_dir: Path,
-    date: datetime | None = None,
-    user: str | None = None,
-    description: str | None = None,
-    *,
-    embed_images: bool = False,
-) -> None:
-    """Create summary HTML."""
-    if date is None:
-        date = datetime.now(UTC)
-    if user is None:
-        user = get_user_name()
-
-    # Extract all diagnostics with provenance
-    diagnostics = _extract_all_diagnostics(esmvaltool_output_dir)
-    filter_options = _get_filter_options(diagnostics)
-
-    # Extract all recipes (including failed ones)
-    recipes = _extract_all_recipes(esmvaltool_output_dir)
-
-    # Write the new dashboard HTML
-    _write_dashboard_html(
-        output_dir=esmvaltool_output_dir,
-        diagnostics=diagnostics,
-        filter_options=filter_options,
-        recipes=recipes,
-        date=date,
-        user=user,
-        description=description,
-        embed_images=embed_images,
-    )
-
-    logger.info(
-        f"Successfully created summary HTML "
-        f"<cyan>{esmvaltool_output_dir / 'index.html'}</cyan>",
-    )
-
-
 def _get_recipe_date(recipe_dir: Path) -> datetime:
     """Extract recipe date from output dir."""
     date_pattern = r"(?P<datetime>[0-9]{8}_[0-9]{6})-?[0-9]*$"
@@ -395,12 +386,32 @@ def _get_recipe_name(recipe_dir: Path) -> str:
     return recipe_str
 
 
+def _read_diagnostic_provenance(diagnostic_dir: Path) -> dict:
+    """Read diagnostic_provenance.yml and return as dict.
+
+    Handles both standard YAML and YAML with anchors/aliases.
+    """
+    provenance_file = diagnostic_dir / "diagnostic_provenance.yml"
+    if not provenance_file.exists():
+        return {}
+
+    try:
+        with provenance_file.open() as f:
+            # Use unsafe loader to handle YAML anchors/aliases
+            data = yaml.safe_load(f)
+    except yaml.YAMLError:
+        logger.warning(f"Could not parse {provenance_file}")
+        return {}
+    else:
+        return data or {}
+
+
 def _write_dashboard_html(
     *,
     output_dir: Path,
-    diagnostics: list[DiagnosticInfo],
-    filter_options: FilterOptions,
-    recipes: list[RecipeInfo],
+    diagnostics: list[_DiagnosticInfo],
+    filter_options: _FilterOptions,
+    recipes: list[_RecipeInfo],
     date: datetime,
     user: str,
     description: str | None = None,
@@ -534,7 +545,7 @@ def _write_dashboard_html(
     """
 
     # Build recipes HTML for the modal
-    def make_recipe_item(recipe: RecipeInfo) -> str:
+    def make_recipe_item(recipe: _RecipeInfo) -> str:
         """Build HTML for a single recipe in the modal."""
         status_class = "bg-success" if recipe.success else "bg-danger"
         status_text = "Success" if recipe.success else "Failed"
@@ -621,14 +632,3 @@ def _write_dashboard_html(
     index_file = output_dir / "index.html"
     index_file.write_text(html, newline="\n")
     logger.debug(f"Wrote dashboard to file://{index_file.resolve()}")
-
-
-def _escape_html(text: str) -> str:
-    """Escape HTML special characters."""
-    return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-        .replace("'", "&#39;")
-    )
