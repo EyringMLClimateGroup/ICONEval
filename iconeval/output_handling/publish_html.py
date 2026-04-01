@@ -273,7 +273,7 @@ def _valid_swift_token_available() -> bool:
     (token, url, expire_dt) = _read_swiftenv()
 
     # Check expiration
-    now = datetime.now()
+    now = datetime.now(expire_dt.tzinfo)
     if now > expire_dt:
         logger.info(f"Swift token ({_SWIFTENV}) expired on {expire_dt}")
         return False

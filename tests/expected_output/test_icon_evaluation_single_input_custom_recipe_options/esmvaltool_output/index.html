@@ -195,7 +195,7 @@
             .card-img-wrapper img {
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
+                object-fit: cover;
                 transition: transform 0.3s ease;
                 max-height: 300px;
                 background: #f0f0f0;
@@ -666,7 +666,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Recipes Overview: 0 diagnostic(s) from 0 recipe(s)</h5>
+                    <h5 class="modal-title">0 diagnostic(s) from 0 recipe(s)</h5>
                     <button type="button" class="btn-close" onclick="closeRecipesModal()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -711,11 +711,6 @@
                             <div class="detail-row">
                                 <span class="detail-label">Input Datasets</span>
                                 <ul class="detail-list" id="modalInputDatasets"></ul>
-                            </div>
-                            <div class="detail-row">
-                                <a id="modalRecipeLink" href="#" class="btn btn-outline-primary btn-sm" target="_blank">
-                                    ↗ESMValTool Output
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -779,7 +774,7 @@
             }
         });
 
-        function openModal(imgSrc, caption, plotType, variables, input_datasets, recipeUrl, recipeName) {
+        function openModal(imgSrc, caption, plotType, variables, input_datasets, recipeName) {
             document.getElementById('modalImage').src = imgSrc;
             document.getElementById('modalCaption').textContent = caption;
             document.getElementById('modalPlotTypes').innerHTML = plotType ?
@@ -788,7 +783,6 @@
                 variables.split(',').map(v => `<li>${v}</li>`).join('') : '<li>None</li>';
             document.getElementById('modalRecipe').textContent = recipeName || 'Unknown';
             document.getElementById('modalInputDatasets').innerHTML = input_datasets || '<li>None</li>';
-            document.getElementById('modalRecipeLink').href = recipeUrl || '#';
             document.getElementById('detailModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }

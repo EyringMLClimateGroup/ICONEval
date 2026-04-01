@@ -19,9 +19,9 @@ plots:
 recipe: recipe_basics_maps.yml
 version: 2.15.0.dev5+g3208f5f3a
 script: plot
-run_dir: /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/run/maps_tas/plot
-plot_dir: /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/plots/maps_tas/plot
-work_dir: /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot
+run_dir: ((tmp_path))/recipe_basics_maps_20260319_084611/run/maps_tas/plot
+plot_dir: ((tmp_path))/recipe_basics_maps_20260319_084611/plots/maps_tas/plot
+work_dir: ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot
 output_file_type: png
 log_level: info
 auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
@@ -31,4 +31,4 @@ realms:
 - atmos
 scheduler_address: tcp://127.0.0.1:45983
 input_files:
-- /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/metadata.yml
+- ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/metadata.yml

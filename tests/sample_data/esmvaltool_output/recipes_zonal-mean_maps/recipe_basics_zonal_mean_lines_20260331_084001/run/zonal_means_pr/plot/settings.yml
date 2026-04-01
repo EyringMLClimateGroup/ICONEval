@@ -82,9 +82,9 @@ plots:
 recipe: recipe_basics_zonal_mean_lines.yml
 version: 2.15.0.dev5+g3208f5f3a
 script: plot
-run_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/run/zonal_means_pr/plot
-plot_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot
-work_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/work/zonal_means_pr/plot
+run_dir: ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/run/zonal_means_pr/plot
+plot_dir: ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot
+work_dir: ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/work/zonal_means_pr/plot
 output_file_type: png
 log_level: info
 auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
@@ -94,4 +94,4 @@ realms:
 - atmos
 scheduler_address: tcp://127.0.0.1:41501
 input_files:
-- /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/metadata.yml
+- ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/metadata.yml

@@ -1,7 +1,7 @@
-? /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/plots/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon.png
+? ((tmp_path))/recipe_basics_maps_20260319_084611/plots/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon.png
 : ancestors:
-  - /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
-  - /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
   authors:
   - schlund_manuel
   caption: Map plot of Near-Surface Air Temperature of dataset ICON.
@@ -9,10 +9,10 @@
   - Near-Surface Air Temperature
   plot_types:
   - map
-? /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_bottom.nc
+? ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_bottom.nc
 : ancestors:
-  - /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
-  - /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
   authors:
   - schlund_manuel
   caption: Map plot of Near-Surface Air Temperature of dataset ICON - ERA5.
@@ -20,9 +20,9 @@
   - Near-Surface Air Temperature
   plot_types:
   - map
-? /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_left.nc
+? ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_left.nc
 : ancestors:
-  - /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
   authors:
   - schlund_manuel
   caption: Map plot of Near-Surface Air Temperature of dataset ICON.
@@ -30,9 +30,9 @@
   - Near-Surface Air Temperature
   plot_types:
   - map
-? /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_right.nc
+? ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_right.nc
 : ancestors:
-  - /work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
   authors:
   - schlund_manuel
   caption: Map plot of Near-Surface Air Temperature of dataset ERA5.

@@ -1,9 +1,9 @@
-? /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png
+? ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png
 : &id001
   ancestors:
-  - /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc
-  - /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc
-  - /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc
+  - ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc
+  - ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc
+  - ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc
   authors:
   - sarauer_ellen
   - schlund_manuel
@@ -12,5 +12,5 @@
   - Precipitation
   plot_types:
   - line
-? /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/work/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.nc
+? ((tmp_path))/recipe_basics_zonal_mean_lines_20260331_084001/work/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.nc
 : *id001

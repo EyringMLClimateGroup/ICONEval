@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from loguru import logger
@@ -22,322 +22,8 @@ if TYPE_CHECKING:
 
     from iconeval._simulation_info import SimulationInfo
 
-# Maximum length of diagnostic caption displayed in card
-CAPTION_MAX_LENGTH = 100
-
 
 logger = logger.opt(colors=True)
-
-
-def summarize(
-    esmvaltool_output_dir: Path,
-    date: datetime | None = None,
-    user: str | None = None,
-    description: str | None = None,
-    *,
-    embed_images: bool = False,
-) -> None:
-    """Create summary HTML."""
-    if date is None:
-        date = datetime.now(UTC)
-    if user is None:
-        user = get_user_name()
-
-    # Extract all diagnostics with provenance
-    diagnostics = _extract_all_diagnostics(esmvaltool_output_dir)
-    filter_options = _get_filter_options(diagnostics)
-
-    # Extract all recipes (including failed ones)
-    recipes = _extract_all_recipes(esmvaltool_output_dir)
-
-    # Write the new dashboard HTML
-    _write_dashboard_html(
-        output_dir=esmvaltool_output_dir,
-        diagnostics=diagnostics,
-        filter_options=filter_options,
-        recipes=recipes,
-        date=date,
-        user=user,
-        description=description,
-        embed_images=embed_images,
-    )
-
-    logger.info(
-        f"Successfully created summary HTML "
-        f"<cyan>{esmvaltool_output_dir / 'index.html'}</cyan>",
-    )
-
-
-def _escape_html(text: str) -> str:
-    """Escape HTML special characters."""
-    return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-        .replace("'", "&#39;")
-    )
-
-
-def _extract_all_diagnostics(output_dir: Path) -> list[_DiagnosticInfo]:
-    """Extract all diagnostics with their provenance data (including failed recipes).
-
-    PNGs are in plots/<diagnostic>/plot/*.png
-    Provenance is in run/<diagnostic>/plot/diagnostic_provenance.yml
-
-    """
-    diagnostics = []
-
-    for recipe_dir in sorted(Path(output_dir).glob("recipe_*")):
-        # Check if recipe was successful
-        log = recipe_dir / "run" / "main_log.txt"
-        if not log.exists():
-            continue
-
-        recipe_name = _get_recipe_name(recipe_dir)
-        recipe_date = _get_recipe_date(recipe_dir)
-
-        # Get recipe tags for realm
-        recipe_file = recipe_dir / "run" / f"recipe_{recipe_name}.yml"
-        tags: set[str] = set()
-        if recipe_file.exists():
-            try:
-                template = RecipeTemplate(
-                    recipe_file,
-                    check_placeholders=False,
-                )
-                tags = set(template.tags)
-            except Exception:  # noqa: BLE001
-                logger.debug("Could not load recipe template")
-
-        # Determine realm from tags
-        realm = "other"
-        for tag in tags:
-            if tag in ("atmosphere", "ocean", "land", "sanity-consistency-checks"):
-                realm = tag
-                break
-
-        # Get recipe URL
-        recipe_url = f"{recipe_dir.relative_to(output_dir)}/index.html"
-
-        # Find all diagnostic directories with provenance in run/<diag>/plot
-        for prov_dir in (recipe_dir / "run").glob("*/plot"):
-            diag_name = prov_dir.parent.name
-            provenance = _read_diagnostic_provenance(prov_dir)
-            if not provenance:
-                continue
-
-            # Look for PNGs in plots/<diag_name>/plot/
-            png_dir = recipe_dir / "plots" / diag_name / "plot"
-            if not png_dir.exists():
-                continue
-
-            # Find all PNGs in this diagnostic's plot directory
-            for png_file in sorted(png_dir.glob("*.png")):
-                # Try to find matching provenance entry
-                prov_data = None
-                for key, value in provenance.items():
-                    # Check if the PNG filename appears in the provenance key
-                    if png_file.name in key:
-                        prov_data = value
-                        break
-
-                # If no specific match, use first entry if only one
-                if prov_data is None and len(provenance) == 1:
-                    prov_data = next(iter(provenance.values()))
-
-                if prov_data is None:
-                    # Skip PNGs without provenance
-                    continue
-
-                # Extract relative path for HTML
-                try:
-                    relative_png = png_file.relative_to(output_dir)
-                except ValueError:
-                    # PNG is outside output_dir, skip
-                    continue
-
-                diagnostics.append(
-                    _DiagnosticInfo(
-                        png_path=png_file,
-                        relative_png_path=relative_png,
-                        caption=prov_data.get("caption", ""),
-                        plot_types=tuple(prov_data.get("plot_types", [])),
-                        long_names=tuple(prov_data.get("long_names", [])),
-                        input_datasets=tuple(prov_data.get("ancestors", [])),
-                        recipe_name=recipe_name,
-                        realm=realm,
-                        recipe_date=recipe_date,
-                        recipe_url=recipe_url,
-                    ),
-                )
-
-    logger.debug(f"Found {len(diagnostics)} diagnostics with provenance")
-    return diagnostics
-
-
-def _extract_all_recipes(output_dir: Path) -> list[_RecipeInfo]:
-    """Extract all recipes (including failed ones) with their diagnostics."""
-    recipes: dict[str, _RecipeInfo] = {}
-
-    for recipe_dir in sorted(Path(output_dir).glob("recipe_*")):
-        # Check if recipe was successful
-        log = recipe_dir / "run" / "main_log.txt"
-        success = False
-        if log.exists():
-            success = "Run was successful\n" in log.read_text()
-
-        recipe_name = _get_recipe_name(recipe_dir)
-        recipe_date = _get_recipe_date(recipe_dir)
-
-        # Get recipe URL
-        recipe_url = f"{recipe_dir.relative_to(output_dir)}/index.html"
-
-        # Extract diagnostics for this recipe (including failed recipes)
-        recipe_diags: list[_DiagnosticInfo] = []
-
-        # Get recipe tags for realm
-        recipe_file = recipe_dir / "run" / f"recipe_{recipe_name}.yml"
-        tags: set[str] = set()
-        if recipe_file.exists():
-            try:
-                template = RecipeTemplate(
-                    recipe_file,
-                    check_placeholders=False,
-                )
-                tags = set(template.tags)
-            except Exception:  # noqa: BLE001
-                logger.debug("Could not load recipe template")
-
-        # Determine realm from tags
-        realm = "other"
-        for tag in tags:
-            if tag in ("atmosphere", "ocean", "land", "sanity-consistency-checks"):
-                realm = tag
-                break
-
-        # Find all diagnostic directories with provenance
-        for prov_dir in (recipe_dir / "run").glob("*/plot"):
-            diag_name = prov_dir.parent.name
-            provenance = _read_diagnostic_provenance(prov_dir)
-            if not provenance:
-                continue
-
-            png_dir = recipe_dir / "plots" / diag_name / "plot"
-            if not png_dir.exists():
-                continue
-
-            for png_file in sorted(png_dir.glob("*.png")):
-                prov_data = None
-                for key, value in provenance.items():
-                    if png_file.name in key:
-                        prov_data = value
-                        break
-
-                if prov_data is None and len(provenance) == 1:
-                    prov_data = next(iter(provenance.values()))
-
-                if prov_data is None:
-                    continue
-
-                try:
-                    relative_png = png_file.relative_to(output_dir)
-                except ValueError:
-                    continue
-
-                recipe_diags.append(
-                    _DiagnosticInfo(
-                        png_path=png_file,
-                        relative_png_path=relative_png,
-                        caption=prov_data.get("caption", ""),
-                        plot_types=tuple(prov_data.get("plot_types", [])),
-                        long_names=tuple(prov_data.get("long_names", [])),
-                        input_datasets=tuple(prov_data.get("ancestors", [])),
-                        recipe_name=recipe_name,
-                        realm=realm,
-                        recipe_date=recipe_date,
-                        recipe_url=recipe_url,
-                    ),
-                )
-
-        # Store or update recipe info
-        recipes[recipe_name] = _RecipeInfo(
-            name=recipe_name,
-            success=success,
-            recipe_url=recipe_url,
-            diagnostics=tuple(recipe_diags),
-        )
-
-    logger.debug(f"Found {len(recipes)} recipes (including failed)")
-    return list(recipes.values())
-
-
-def _get_filter_options(diagnostics: list[_DiagnosticInfo]) -> _FilterOptions:
-    """Extract unique filter values from diagnostics."""
-    realms: set[str] = set()
-    plot_types: set[str] = set()
-    variables: set[str] = set()
-    recipe_names: set[str] = set()
-
-    for diag in diagnostics:
-        realms.add(diag.realm)
-        plot_types.update(diag.plot_types)
-        variables.update(diag.long_names)
-        recipe_names.add(diag.recipe_name)
-
-    return _FilterOptions(
-        realms=frozenset(realms),
-        plot_types=frozenset(plot_types),
-        variables=frozenset(variables),
-        recipe_names=frozenset(recipe_names),
-    )
-
-
-def _embed_image_as_base64(png_path: Path) -> str:
-    """Embed PNG image as base64 data URL."""
-    try:
-        with png_path.open("rb") as f:
-            data = base64.b64encode(f.read()).decode("utf-8")
-    except Exception:  # noqa: BLE001
-        return ""
-    else:
-        return f"data:image/png;base64,{data}"
-
-
-@dataclass(frozen=True, kw_only=True)
-class _DiagnosticInfo:
-    """Container for diagnostic provenance data."""
-
-    png_path: Path
-    caption: str
-    plot_types: tuple[str, ...]
-    long_names: tuple[str, ...]
-    input_datasets: tuple[str, ...]
-    recipe_name: str
-    realm: str
-    recipe_date: datetime
-    relative_png_path: Path | None
-    recipe_url: str
-
-
-@dataclass(frozen=True, kw_only=True, order=True)
-class _RecipeInfo:
-    """Container for recipe information including diagnostics."""
-
-    name: str
-    success: bool = field(compare=False)
-    recipe_url: str = field(compare=False)
-    diagnostics: tuple[_DiagnosticInfo, ...] = field(compare=False)
-
-
-@dataclass(frozen=True, kw_only=True)
-class _FilterOptions:
-    """Container for filter options."""
-
-    realms: frozenset[str]
-    plot_types: frozenset[str]
-    variables: frozenset[str]
-    recipe_names: frozenset[str]
 
 
 def get_simulations_info_html(simulations_info: Iterable[SimulationInfo]) -> str:
@@ -364,6 +50,245 @@ def get_simulations_info_html(simulations_info: Iterable[SimulationInfo]) -> str
     )
 
 
+def summarize(
+    esmvaltool_output_dir: Path,
+    date: datetime | None = None,
+    user: str | None = None,
+    description: str | None = None,
+    *,
+    embed_images: bool = False,
+) -> None:
+    """Create summary HTML."""
+    if date is None:
+        date = datetime.now(UTC)
+    if user is None:
+        user = get_user_name()
+
+    diagnostics = _extract_all_diagnostics(esmvaltool_output_dir)
+    filter_options = _get_filter_options(diagnostics)
+    recipes = _extract_all_recipes(esmvaltool_output_dir)
+
+    _write_dashboard_html(
+        output_dir=esmvaltool_output_dir,
+        diagnostics=diagnostics,
+        filter_options=filter_options,
+        recipes=recipes,
+        date=date,
+        user=user,
+        description=description,
+        embed_images=embed_images,
+    )
+
+    logger.info(
+        f"Successfully created summary HTML "
+        f"<cyan>{esmvaltool_output_dir / 'index.html'}</cyan>",
+    )
+
+
+@dataclass(frozen=True, kw_only=True, order=True)
+class _DiagnosticInfo:
+    """Container for diagnostic provenance data."""
+
+    img_path: Path
+    relative_img_path: Path = field(repr=False, compare=False)
+    caption: str = field(repr=False, compare=False)
+    plot_types: tuple[str, ...] = field(repr=False, compare=False)
+    long_names: tuple[str, ...] = field(repr=False, compare=False)
+    input_datasets: tuple[str, ...] = field(repr=False, compare=False)
+    recipe_name: str = field(repr=False, compare=False)
+    realm: str = field(repr=False, compare=False)
+
+    @classmethod
+    def from_recipe_dir(
+        cls,
+        recipe_dir: Path,
+        output_dir: Path,
+    ) -> list[_DiagnosticInfo]:
+        """Load all diagnostics from recipe directory."""
+        recipe_name = _get_recipe_name(recipe_dir)
+
+        # Determine realm from recipe tags
+        realm = "other"
+        recipe_file = recipe_dir / "run" / f"recipe_{recipe_name}.yml"
+        if recipe_file.exists():
+            try:
+                template = RecipeTemplate(recipe_file, check_placeholders=False)
+            except Exception:  # noqa: BLE001
+                logger.debug(f"Could not load recipe template {recipe_file}")
+            else:
+                for tag in template.tags:
+                    realm_tags = (
+                        "atmosphere",
+                        "ocean",
+                        "land",
+                        "sanity-consistency-checks",
+                    )
+                    if tag in realm_tags:
+                        realm = tag
+                        break
+
+        # Get all diagnostics from provenance output
+        diagnostics: list[_DiagnosticInfo] = []
+        for prov_file in (recipe_dir / "run").rglob("diagnostic_provenance.yml"):
+            provenance_record = _read_diagnostic_provenance(prov_file)
+            for img_str, img_provenance in provenance_record.items():
+                img_path = Path(img_str)
+                if img_path.suffix != ".png":  # only PNGs are supported for now
+                    continue
+                if not img_path.exists():
+                    logger.warning(
+                        f"Figure included in provenance file {prov_file} does not "
+                        f"exist",
+                    )
+                    continue
+                try:
+                    relative_img_path = img_path.relative_to(output_dir)
+                except ValueError:
+                    logger.warning(
+                        f"Figure is outside of output directory {output_dir}",
+                    )
+                    continue
+
+                diagnostics.append(
+                    cls(
+                        img_path=img_path,
+                        relative_img_path=relative_img_path,
+                        caption=img_provenance.get("caption", ""),
+                        plot_types=tuple(img_provenance.get("plot_types", [])),
+                        long_names=tuple(img_provenance.get("long_names", [])),
+                        input_datasets=tuple(img_provenance.get("ancestors", [])),
+                        recipe_name=recipe_name,
+                        realm=realm,
+                    ),
+                )
+        logger.debug(
+            f"Found {len(diagnostics)} diagnostics included in provenance "
+            f"files of recipe {recipe_name}",
+        )
+
+        return sorted(diagnostics)
+
+
+@dataclass(frozen=True, kw_only=True, order=True)
+class _RecipeInfo:
+    """Container for recipe information including diagnostics."""
+
+    name: str
+    date: datetime = field(compare=False)
+    success: bool = field(compare=False)
+    diagnostics: tuple[_DiagnosticInfo, ...] = field(repr=False, compare=False)
+
+
+@dataclass(frozen=True, kw_only=True)
+class _FilterOptions:
+    """Container for filter options."""
+
+    realms: frozenset[str]
+    plot_types: frozenset[str]
+    variables: frozenset[str]
+    recipe_names: frozenset[str]
+
+
+def _crop_text(text: str, max_text_length: int = 100) -> str:
+    """Crop text."""
+    return text[:max_text_length] + "..." if len(text) > max_text_length else text
+
+
+def _embed_image_as_base64(img_path: Path) -> str:
+    """Embed PNG image as base64 data URL."""
+    img_type = img_path.suffix[1:]
+    try:
+        with img_path.open("rb") as f:
+            data = base64.b64encode(f.read()).decode("utf-8")
+    except Exception:  # noqa: BLE001
+        return ""
+    else:
+        return f"data:image/{img_type};base64,{data}"
+
+
+def _escape_html(text: str) -> str:
+    """Escape HTML special characters."""
+    return (
+        text.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#39;")
+    )
+
+
+def _extract_all_diagnostics(output_dir: Path) -> list[_DiagnosticInfo]:
+    """Extract all diagnostics with their provenance data."""
+    diagnostics: list[_DiagnosticInfo] = []
+    for recipe_dir in Path(output_dir).glob("recipe_*"):
+        diagnostics.extend(_DiagnosticInfo.from_recipe_dir(recipe_dir, output_dir))
+    return sorted(diagnostics)
+
+
+def _extract_all_recipes(output_dir: Path) -> list[_RecipeInfo]:
+    """Extract all recipes with their diagnostics."""
+    recipes: list[_RecipeInfo] = []
+
+    for recipe_dir in Path(output_dir).glob("recipe_*"):
+        log = recipe_dir / "run" / "main_log.txt"
+        if log.exists() and "Run was successful\n" in log.read_text():
+            success = True
+        else:
+            success = False
+        recipe_name = _get_recipe_name(recipe_dir)
+        recipe_date = _get_recipe_date(recipe_dir)
+        diagnostics = _DiagnosticInfo.from_recipe_dir(recipe_dir, output_dir)
+
+        recipes.append(
+            _RecipeInfo(
+                name=recipe_name,
+                date=recipe_date,
+                success=success,
+                diagnostics=tuple(diagnostics),
+            ),
+        )
+    logger.debug(f"Found {len(recipes)} recipes")
+
+    return sorted(recipes)
+
+
+def _get_filter_options(diagnostics: list[_DiagnosticInfo]) -> _FilterOptions:
+    """Extract unique filter values from diagnostics."""
+    realms: set[str] = set()
+    plot_types: set[str] = set()
+    variables: set[str] = set()
+    recipe_names: set[str] = set()
+
+    for diag in diagnostics:
+        realms.add(diag.realm)
+        plot_types.update(diag.plot_types)
+        variables.update(diag.long_names)
+        recipe_names.add(diag.recipe_name)
+
+    return _FilterOptions(
+        realms=frozenset(realms),
+        plot_types=frozenset(plot_types),
+        variables=frozenset(variables),
+        recipe_names=frozenset(recipe_names),
+    )
+
+
+def _get_open_modal_str(
+    img_src: str,
+    caption: str,
+    plot_types: str,
+    variables: str,
+    input_datasets: str,
+    recipe_name: str,
+) -> str:
+    """Return string used for opening modals."""
+    return (
+        f"openModal('{img_src}', '{_escape_html(caption)}', "
+        f"'{_escape_html(plot_types)}', '{_escape_html(variables)}', "
+        f"'{input_datasets}', '{recipe_name}')"
+    )
+
+
 def _get_recipe_date(recipe_dir: Path) -> datetime:
     """Extract recipe date from output dir."""
     date_pattern = r"(?P<datetime>[0-9]{8}_[0-9]{6})-?[0-9]*$"
@@ -371,7 +296,7 @@ def _get_recipe_date(recipe_dir: Path) -> datetime:
     if regex is not None:
         date_str = regex.group("datetime")
         return datetime.strptime(date_str, "%Y%m%d_%H%M%S")
-    return datetime.now()
+    return datetime.now(UTC)
 
 
 def _get_recipe_name(recipe_dir: Path) -> str:
@@ -386,24 +311,16 @@ def _get_recipe_name(recipe_dir: Path) -> str:
     return recipe_str
 
 
-def _read_diagnostic_provenance(diagnostic_dir: Path) -> dict:
-    """Read diagnostic_provenance.yml and return as dict.
-
-    Handles both standard YAML and YAML with anchors/aliases.
-    """
-    provenance_file = diagnostic_dir / "diagnostic_provenance.yml"
-    if not provenance_file.exists():
-        return {}
-
+def _read_diagnostic_provenance(provenance_file: Path) -> dict[str, Any]:
+    """Read diagnostic_provenance.yml file."""
     try:
         with provenance_file.open() as f:
-            # Use unsafe loader to handle YAML anchors/aliases
-            data = yaml.safe_load(f)
+            provenance_record = yaml.safe_load(f)
     except yaml.YAMLError:
         logger.warning(f"Could not parse {provenance_file}")
         return {}
     else:
-        return data or {}
+        return provenance_record or {}
 
 
 def _write_dashboard_html(
@@ -431,10 +348,10 @@ def _write_dashboard_html(
     cards_html = []
     for diag in diagnostics:
         # Get image source (base64 or relative path)
-        if embed_images and diag.png_path.exists():
-            img_src = _embed_image_as_base64(diag.png_path)
+        if embed_images and diag.img_path.exists():
+            img_src = _embed_image_as_base64(diag.img_path)
         else:
-            img_src = str(diag.relative_png_path) if diag.relative_png_path else ""
+            img_src = str(diag.relative_img_path) if diag.relative_img_path else ""
 
         # Build data attributes for filtering (comma-separated for filtering logic)
         realm = diag.realm or "other"
@@ -485,10 +402,7 @@ def _write_dashboard_html(
              data-recipe="{diag.recipe_name}">
             <div class="card h-100 shadow-sm">
                 <div class="card-img-wrapper" style="cursor: pointer;"
-                     onclick="openModal('{img_src}', '{_escape_html(diag.caption)}',
-                         '{_escape_html(plot_types)}',
-                         '{_escape_html(variables)}', '{input_datasets_html}',
-                         '{diag.recipe_url}', '{diag.recipe_name}')">
+                     onclick="{_get_open_modal_str(img_src, diag.caption, plot_types, variables, input_datasets_html, diag.recipe_name)}">
                     <img src="{img_src}" class="card-img-top"
                          alt="{_escape_html(diag.caption)}">
                     <div class="card-img-overlay">
@@ -497,8 +411,7 @@ def _write_dashboard_html(
                 </div>
                 <div class="card-body">
                     <h6 class="card-title">
-                        {_escape_html(diag.caption[:CAPTION_MAX_LENGTH])}
-                        {"..." if len(diag.caption) > CAPTION_MAX_LENGTH else ""}
+                        {_escape_html(_crop_text(diag.caption))}
                     </h6>
                     <p class="card-text small text-muted">
                         <span class="badge bg-primary clickable"
@@ -552,44 +465,31 @@ def _write_dashboard_html(
         diag_count = len(recipe.diagnostics)
 
         # Build diagnostics list for this recipe (clickable to open modal)
-        max_caption_length = 60
         diag_items = ""
-        if recipe.success and recipe.diagnostics:
-            for diag in recipe.diagnostics:
-                diag_caption = (
-                    diag.caption[:max_caption_length] + "..."
-                    if len(diag.caption) > max_caption_length
-                    else diag.caption
-                )
-                img_src = str(diag.relative_png_path) if diag.relative_png_path else ""
-                plot_types = ",".join(diag.plot_types) if diag.plot_types else ""
-                variables = ",".join(diag.long_names) if diag.long_names else ""
-                input_datasets = "".join(
-                    f"<li>{Path(a).name}</li>" for a in diag.input_datasets
-                )
-                diag_items += (
-                    f"<li class='clickable' "
-                    f'onclick="closeRecipesModal(); openModal('
-                    f"'{img_src}', "
-                    f"'{_escape_html(diag.caption)}', "
-                    f"'{plot_types}', "
-                    f"'{variables}', "
-                    f"'{input_datasets}', "
-                    f"'{diag.recipe_url}', "
-                    f"'{diag.recipe_name}'"
-                    f')">{_escape_html(diag_caption)}</li>'
-                )
-        elif not recipe.success:
-            diag_items = "<li class='text-muted'>No diagnostics (recipe failed)</li>"
-
-        # Only show link for successful recipes
-        recipe_link = (
-            f'<a href="{recipe.recipe_url}"\n'
-            f'   class="btn btn-outline-primary btn-sm mt-2"\n'
-            f'   target="_blank">↗ESMValTool Output</a>'
-            if recipe.success
-            else ""
-        )
+        for diag in recipe.diagnostics:
+            img_src = str(diag.relative_img_path) if diag.relative_img_path else ""
+            plot_types = ",".join(diag.plot_types) if diag.plot_types else ""
+            variables = ",".join(diag.long_names) if diag.long_names else ""
+            input_datasets = "".join(
+                f"<li>{Path(a).name}</li>" for a in diag.input_datasets
+            )
+            diag_items += (
+                f"<li class='clickable' "
+                f'onclick="closeRecipesModal(); '
+                f"{
+                    _get_open_modal_str(
+                        img_src,
+                        diag.caption,
+                        plot_types,
+                        variables,
+                        input_datasets,
+                        diag.recipe_name,
+                    )
+                }"
+                f'">{_escape_html(_crop_text(diag.caption, 60))}</li>'
+            )
+        if diag_items:
+            diag_items = f'<ul class="detail-list-plain mt-2">{diag_items}</ul>'
 
         return f"""\
             <div class="recipe-item mb-3">
@@ -598,8 +498,7 @@ def _write_dashboard_html(
                     <span class="badge {status_class}">{status_text}</span>
                 </div>
                 <div class="small text-muted">{diag_count} diagnostic(s)</div>
-                <ul class="detail-list-plain mt-2">{diag_items}</ul>
-                {recipe_link}
+                {diag_items}
             </div>"""
 
     recipes_html = "".join(make_recipe_item(r) for r in sorted(recipes))
