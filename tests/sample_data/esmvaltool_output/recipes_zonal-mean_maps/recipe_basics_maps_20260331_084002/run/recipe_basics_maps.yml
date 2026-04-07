@@ -1,0 +1,199 @@
+# ESMValTool
+#TAGS atmosphere
+#TAGS basics
+#TAGS precipitation
+#TAGS temperature
+#TAGS map
+---
+documentation:
+  title: Basic Model Evaluation (Maps).
+  description: Map plots of basic physical variables of the climate system.
+  authors:
+  - schlund_manuel
+  - lauer_axel
+  - hassler_birgit
+  - bonnet_pauline
+datasets_tas:
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  reference_for_monitor_diags: true
+  alias: ERA5
+  timerange: 19790101/19810101
+datasets_pr:
+- project: OBS
+  dataset: GPCP-SG
+  type: atmos
+  version: 2.3
+  tier: 2
+  reference_for_monitor_diags: true
+  alias: GPCP-SG
+  timerange: 19790101/19810101
+plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  group_variables_by: variable_group
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+map_plot:
+  common_cbar: true
+  fontsize: 8
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  pyplot_kwargs:
+    suptitle: '{title} (19790101/19810101)'
+  plot_kwargs:
+    default:
+      cmap: plasma
+      levels: 12
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: ag_atm_amip_r2b5_auto_tuned_baseline_20yrs
+  project: ICON
+  timerange: 19790101/19810101
+preprocessors:
+  create_map:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    climate_statistics:
+      operator: mean
+      period: full
+  create_map_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: mm day-1
+diagnostics:
+  maps_tas:
+    description: Map plots of near-surface air temperature.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      tas:
+        mip: Amon
+        preprocessor: create_map
+        title: Near-Surface Air Temperature
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          reference_for_monitor_diags: true
+          alias: ERA5
+          timerange: 19790101/19810101
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          map:
+            common_cbar: true
+            fontsize: 8
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            pyplot_kwargs:
+              suptitle: '{title} (19790101/19810101)'
+            plot_kwargs:
+              default:
+                cmap: plasma
+                levels: 12
+  maps_pr:
+    description: Map plots of precipitation.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      pr:
+        mip: Amon
+        preprocessor: create_map_pr
+        title: Precipitation
+        additional_datasets:
+        - project: OBS
+          dataset: GPCP-SG
+          type: atmos
+          version: 2.3
+          tier: 2
+          reference_for_monitor_diags: true
+          alias: GPCP-SG
+          timerange: 19790101/19810101
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          map:
+            common_cbar: true
+            fontsize: 8
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            pyplot_kwargs:
+              suptitle: '{title} (19790101/19810101)'
+            plot_kwargs:
+              default:
+                cmap: Greens
+                levels:
+                - 0.0
+                - 1.0
+                - 2.0
+                - 3.0
+                - 4.0
+                - 5.0
+                - 6.0
+                - 7.0
+                - 8.0
+                - 9.0
+                - 10.0
+                extend: max
+            plot_kwargs_bias:
+              cmap: BrBG
+              levels:
+              - -3.0
+              - -2.5
+              - -2.0
+              - -1.5
+              - -1.0
+              - -0.5
+              - 0.0
+              - 0.5
+              - 1.0
+              - 1.5
+              - 2.0
+              - 2.5
+              - 3.0
+              extend: both

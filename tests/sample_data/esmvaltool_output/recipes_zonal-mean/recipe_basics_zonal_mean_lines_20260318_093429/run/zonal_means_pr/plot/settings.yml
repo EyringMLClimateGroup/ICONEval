@@ -1,0 +1,97 @@
+facet_used_for_labels: alias
+figure_kwargs:
+  figsize:
+  - 7
+  - 5
+group_variables_by: variable_group
+plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+plot_folder: '{plot_dir}'
+plots:
+  variable_vs_lat:
+    gridline_kwargs:
+      color: darkgray
+      linewidth: 0.5
+      alpha: 0.3
+    legend_kwargs:
+      loc: upper center
+      bbox_to_anchor:
+      - 0.5
+      - -0.4
+      borderaxespad: 0.0
+    pyplot_kwargs:
+      title: '{title} (19790101/19990101)'
+    plot_kwargs:
+      ICON:
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+        color: C0
+      ICON_historical-202510p1:
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+        color: C0
+      ICON_ICON-XPP:
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+        color: C0
+      ICON_ICON-XPP_historical-202510p1:
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+        color: C0
+      default:
+        color: lightgray
+        label: null
+        linewidth: 0.75
+        zorder: 1.0
+      CMIP6:
+        label: '{project}'
+      CMIP6_CESM2:
+        label: '{project}'
+      OBS:
+        color: black
+        label: '{dataset}'
+        linewidth: 1.0
+        zorder: 2.4
+      OBS6:
+        color: black
+        label: '{dataset}'
+        linewidth: 1.0
+        zorder: 2.4
+        linestyle: dashdot
+      native6:
+        color: black
+        label: '{dataset}'
+        linewidth: 1.0
+        zorder: 2.4
+        linestyle: dotted
+      native6_ERA5:
+        color: black
+        label: '{dataset}'
+        linewidth: 1.0
+        zorder: 2.4
+        linestyle: dotted
+      ERA5:
+        color: black
+        label: '{dataset}'
+        linewidth: 1.0
+        zorder: 2.4
+        linestyle: dotted
+recipe: recipe_basics_zonal_mean_lines.yml
+version: 2.15.0.dev5+g3208f5f3a
+script: plot
+run_dir: ((tmp_path))/recipe_basics_zonal_mean_lines_20260318_093429/run/zonal_means_pr/plot
+plot_dir: ((tmp_path))/recipe_basics_zonal_mean_lines_20260318_093429/plots/zonal_means_pr/plot
+work_dir: ((tmp_path))/recipe_basics_zonal_mean_lines_20260318_093429/work/zonal_means_pr/plot
+output_file_type: png
+log_level: info
+auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
+themes:
+- phys
+realms:
+- atmos
+scheduler_address: tcp://127.0.0.1:34033
+input_files:
+- ((tmp_path))/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/metadata.yml

@@ -1,0 +1,163 @@
+INFO:esmvaltool.diag_scripts.shared._base:Starting diagnostic script plot with configuration:
+auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
+facet_used_for_labels: alias
+group_variables_by: variable_group
+input_data:
+  ? /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc
+  : alias: ICON
+    dataset: ICON
+    diagnostic: maps_pr
+    end_year: 1981
+    exp: ag_atm_amip_r2b5_auto_tuned_baseline_20yrs
+    filename: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc
+    frequency: mon
+    long_name: Precipitation
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_map_pr
+    project: ICON
+    recipe_dataset_index: 0
+    short_name: pr
+    standard_name: lwe_precipitation_rate
+    start_year: 1979
+    timerange: 19790101/19810101
+    title: Precipitation
+    units: mm day-1
+    var_type: atm_2d_ml
+    variable_group: pr
+  ? /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc
+  : alias: GPCP-SG
+    dataset: GPCP-SG
+    diagnostic: maps_pr
+    end_year: 1981
+    filename: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc
+    frequency: mon
+    long_name: Precipitation
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_map_pr
+    project: OBS
+    recipe_dataset_index: 1
+    reference_for_monitor_diags: true
+    short_name: pr
+    standard_name: lwe_precipitation_rate
+    start_year: 1979
+    tier: 2
+    timerange: 19790101/19810101
+    title: Precipitation
+    type: atmos
+    units: mm day-1
+    variable_group: pr
+    version: '2.3'
+input_files:
+- /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/metadata.yml
+log_level: info
+output_file_type: png
+plot_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_pr/plot
+plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+plot_folder: '{plot_dir}'
+plots:
+  map:
+    common_cbar: true
+    fontsize: 8
+    gridline_kwargs:
+      alpha: 0.3
+      color: darkgray
+      linewidth: 0.5
+    plot_kwargs:
+      default:
+        cmap: Greens
+        extend: max
+        levels:
+        - 0.0
+        - 1.0
+        - 2.0
+        - 3.0
+        - 4.0
+        - 5.0
+        - 6.0
+        - 7.0
+        - 8.0
+        - 9.0
+        - 10.0
+    plot_kwargs_bias:
+      cmap: BrBG
+      extend: both
+      levels:
+      - -3.0
+      - -2.5
+      - -2.0
+      - -1.5
+      - -1.0
+      - -0.5
+      - 0.0
+      - 0.5
+      - 1.0
+      - 1.5
+      - 2.0
+      - 2.5
+      - 3.0
+    pyplot_kwargs:
+      suptitle: '{title} (19790101/19810101)'
+realms:
+- atmos
+recipe: recipe_basics_maps.yml
+run_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/run/maps_pr/plot
+scheduler_address: tcp://127.0.0.1:37571
+script: plot
+themes:
+- phys
+version: 2.15.0.dev5+g3208f5f3a
+work_dir: /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_pr/plot
+
+INFO:esmvaltool.diag_scripts.shared._base:Creating /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_pr/plot
+INFO:esmvaltool.diag_scripts.shared._base:Creating /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_pr/plot
+INFO:multi_datasets:Using facet 'variable_group' to group variables
+INFO:multi_datasets:Using facet 'alias' to create labels
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc
+INFO:multi_datasets:Plotting map
+INFO:multi_datasets:Processing variable pr
+INFO:multi_datasets:Using reference dataset GPCP-SG
+INFO:multi_datasets:Creating map plots using function 'contourf'
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:377: UserWarning: Rasterization of '<cartopy.mpl.gridliner.Gridliner object at 0x7fffad40da90>' will be ignored
+  artist.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffad40ecf0>' will be ignored
+  collection.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffad4296d0>' will be ignored
+  collection.set_rasterized(True)
+
+INFO:multi_datasets:Creating map plots using function 'contourf'
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:377: UserWarning: Rasterization of '<cartopy.mpl.gridliner.Gridliner object at 0x7fffad42a350>' will be ignored
+  artist.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac946c10>' will be ignored
+  collection.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac946ad0>' will be ignored
+  collection.set_rasterized(True)
+
+INFO:multi_datasets:Creating map plots using function 'contourf'
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:377: UserWarning: Rasterization of '<cartopy.mpl.gridliner.Gridliner object at 0x7fffac9c2210>' will be ignored
+  artist.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac9c1e50>' will be ignored
+  collection.set_rasterized(True)
+
+WARNING:py.warnings:/home/b/b309141/repos/ESMValTool/esmvaltool/diag_scripts/monitor/monitor_base.py:379: UserWarning: Rasterization of '<cartopy.mpl.contour.GeoContourSet object at 0x7fffac9c1d10>' will be ignored
+  collection.set_rasterized(True)
+
+INFO:multi_datasets:Area-weighted mean of pr for ICON = 2.740407mm day-1
+INFO:multi_datasets:Area-weighted mean of pr for GPCP-SG = 2.659109mm day-1
+INFO:multi_datasets:Area-weighted bias of pr for ICON vs. GPCP-SG = 0.081298mm day-1
+INFO:multi_datasets:Area-weighted RMSE of pr for ICON vs. GPCP-SG = 1.164245mm day-1
+INFO:multi_datasets:Area-weighted R2 of pr for ICON vs. GPCP-SG = 0.682278
+INFO:multi_datasets:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/plots/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon.png
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon_top_left.nc
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon_top_right.nc
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_maps_20260331_084002/work/maps_pr/plot/map_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_pr_ICON_Amon_bottom.nc
+INFO:esmvaltool.diag_scripts.shared._base:End of diagnostic script run.

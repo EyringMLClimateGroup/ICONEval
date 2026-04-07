@@ -3,7 +3,7 @@ from __future__ import annotations
 import builtins
 import locale
 from datetime import datetime
-from importlib.resources import files
+from importlib import resources
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -56,7 +56,7 @@ def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixtu
 
 @pytest.fixture
 def expected_output_dir() -> Path:
-    return Path(str(files("tests"))).resolve() / "expected_output"
+    return Path(str(resources.files("tests"))).resolve() / "expected_output"
 
 
 @pytest.fixture(autouse=True)
@@ -165,7 +165,7 @@ def mocked_swift_service(mocker: MockerFixture) -> Mock:
 
 @pytest.fixture
 def recipe_template_dir() -> Path:
-    return Path(str(files("iconeval"))).resolve() / "recipe_templates"
+    return Path(str(resources.files("iconeval"))).resolve() / "recipe_templates"
 
 
 @pytest.fixture(autouse=True)
@@ -176,7 +176,7 @@ def remove_default_logger_handlers() -> None:
 
 @pytest.fixture
 def sample_data_path() -> Path:
-    return Path(str(files("tests"))).resolve() / "sample_data"
+    return Path(str(resources.files("tests"))).resolve() / "sample_data"
 
 
 @pytest.fixture(autouse=True)
@@ -186,11 +186,11 @@ def use_custom_swiftenv(
 ) -> None:
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
-        "SWIFT_BASE",
+        "_SWIFT_BASE",
         "url/to/swift_storage/",
     )
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
-        "SWIFTENV",
+        "_SWIFTENV",
         sample_data_path / "swift" / "swiftenv",
     )

@@ -12,15 +12,15 @@ if TYPE_CHECKING:
     from iconeval._templates import ESMValToolConfigTemplate
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ESMValToolConfig:
     """Manage ESMValTool configuration."""
 
-    path: Path = field(kw_only=True)
-    template: ESMValToolConfigTemplate = field(repr=False, kw_only=True)
-    simulations_info: list[SimulationInfo] = field(repr=False, kw_only=True)
-    output_dir: Path = field(repr=False, kw_only=True)
-    dask_config: dict[str, Any] = field(repr=False, kw_only=True)
+    path: Path
+    template: ESMValToolConfigTemplate = field(repr=False)
+    simulations_info: list[SimulationInfo] = field(repr=False)
+    output_dir: Path = field(repr=False)
+    dask_config: dict[str, Any] = field(repr=False)
 
     @property
     def dir(self) -> Path:

@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ICONEval Results Dashboard</title>
+    <style>
+        :root {
+                --primary-color: #1C1CC4;
+                --secondary-color: #6c757d;
+                --bg-light: #f8f9fa;
+                --border-color: #dee2e6;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                background-color: var(--bg-light);
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+            /* Layout */
+            .navbar {
+                background: var(--primary-color);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .navbar-brand-section {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.1rem;
+                flex-wrap: wrap;
+            }
+            .navbar-brand-row {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            .navbar-description {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                margin: 0;
+                padding: 0;
+            }
+            .navbar-description .sim-info-label,
+            .navbar-description .sim-chips {
+                margin: 0;
+            }
+            .navbar-info {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            .navbar-brand {
+                color: white;
+                font-weight: 600;
+                font-size: 1.25rem;
+                text-decoration: none;
+            }
+            .navbar-text {
+                color: white;
+                opacity: 0.9;
+                cursor: pointer;
+            }
+            .navbar-text:hover {
+                text-decoration: underline;
+            }
+            .navbar-meta {
+                font-size: 0.7rem;
+                color: rgba(255, 255, 255, 0.7);
+            }
+            .container-fluid {
+                display: flex;
+                flex: 1;
+            }
+            .sidebar {
+                background: white;
+                border-right: 1px solid var(--border-color);
+                width: 240px;
+                min-width: 240px;
+                flex: 0 0 240px;
+                padding: 1.5rem 1rem;
+                flex-shrink: 0;
+                margin: 0.75rem;
+                border-radius: 8px;
+                position: sticky;
+                top: 3.5rem;
+                height: fit-content;
+                max-height: calc(100vh - 4rem);
+                overflow-y: auto;
+                transition: width 0.3s ease, min-width 0.3s ease, flex 0.3s ease;
+            }
+            .sidebar.collapsed {
+                width: 70px;
+                min-width: 70px;
+                flex: 0 0 70px;
+                padding: 0.75rem 0.25rem;
+            }
+            .sidebar.collapsed .search-wrapper {
+                display: none;
+            }
+            .search-wrapper {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+            .sidebar h6 {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.5rem;
+            }
+            .main-content {
+                flex: 1;
+                padding: 1.5rem;
+                margin: 0.25rem;
+                overflow-x: hidden;
+            }
+            /* Grid system */
+            .row {
+                display: flex;
+                flex-wrap: wrap;
+                margin: -0.75rem;
+            }
+            .row > * {
+                padding: 0.75rem;
+            }
+            .col-md-3 { width: 25%; }
+            .col-md-9 { width: 75%; }
+            .col-lg-2 { width: 16.666%; }
+            .col-lg-3 { width: 25%; }
+            .col-lg-4 { width: 33.333%; }
+            .col-lg-8 { width: 66.666%; }
+            .col-lg-10 { width: 83.333%; }
+            .col-xl-4 { width: 33.333%; }
+            .col-1 { width: 8.333%; }
+            .col-2 { width: 16.666%; }
+            .col-3 { width: 25%; }
+            .col-4 { width: 33.333%; }
+            .col-6 { width: 50%; }
+            .col-12 { width: 100%; }
+            .g-4 { gap: 1rem; }
+            @media (max-width: 991px) {
+                .col-lg-2 { width: 100%; }
+                .col-lg-3 { width: 100%; }
+                .col-lg-4 { width: 100%; }
+                .col-lg-8 { width: 100%; }
+                .col-lg-10 { width: 100%; }
+                .container-fluid { flex-direction: column; }
+                .sidebar { width: 100%; min-width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+            }
+            @media (max-width: 767px) {
+                .col-md-3 { width: 100%; }
+                .col-md-9 { width: 100%; }
+            }
+            @media (max-width: 575px) {
+                .col-1, .col-2, .col-3, .col-4, .col-6, .col-12 { width: 100%; }
+            }
+            /* Cards */
+            .card {
+                background: white;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            .card-img-wrapper {
+                position: relative;
+                overflow: hidden;
+                background: #f0f0f0;
+                aspect-ratio: 16/9;
+                cursor: pointer;
+                max-height: 300px;
+            }
+            .card-img-wrapper img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                transition: transform 0.3s ease;
+                max-height: 300px;
+                background: #f0f0f0;
+            }
+            .card-img-wrapper:hover img {
+                transform: scale(1.05);
+            }
+            .card-img-overlay {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                color: white;
+                font-size: 2rem;
+            }
+            .card-img-wrapper:hover .card-img-overlay {
+                opacity: 1;
+            }
+            .card-body {
+                padding: 1rem;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .card-title {
+                margin: 0 0 0.5rem;
+                font-size: 0.95rem;
+                font-weight: 500;
+                line-height: 1.4;
+            }
+            .card-text {
+                margin: 0.25rem 0;
+                font-size: 0.85rem;
+                color: #6c757d;
+            }
+            .badge {
+                display: inline-block;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 4px;
+                margin-right: 0.25rem;
+                margin-bottom: 0.25rem;
+            }
+            .badge.bg-primary { background: #7ca5e0 !important; color: #1a1a4e; }
+            .badge.bg-success { background: #7bc5a0 !important; color: #1a3d2e; }
+            .badge.bg-danger { background: #e07a7a !important; color: #4e1a1a; }
+            .badge.bg-warning { background: #f5d78e !important; color: #3d3a1a; }
+            .badge.bg-info { background: #7ee0c8 !important; color: #1a4d40; }
+            .badge.clickable {
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .badge.clickable:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            }
+            .badge-realm {
+                background: var(--primary-color);
+                color: white;
+            }
+            .diagnostic-card {
+                animation: fadeIn 0.3s ease;
+                padding: 0.5rem;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            /* Search */
+            .search-box {
+                border-radius: 50px;
+                padding: 0.75rem 1.5rem;
+                border: 2px solid var(--border-color);
+                transition: border-color 0.2s;
+                width: 100%;
+                font-size: 1rem;
+            }
+            .search-box:focus {
+                outline: none;
+                border-color: var(--primary-color);
+            }
+            /* Form controls */
+            .form-control {
+                border: 1px solid var(--border-color);
+                border-radius: 4px;
+                padding: 0.5rem 0.75rem;
+                font-size: 1rem;
+            }
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(28,28,196,0.1);
+            }
+            /* Description section */
+            .description-section {
+                background: white;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            .sim-info-label {
+                font-size: 0.75rem;
+                color: rgba(255, 255, 255, 0.7);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
+            }
+            .sim-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            .sim-chip {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+                border-radius: 50px;
+                font-weight: 500;
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition: background-color 0.2s, transform 0.2s;
+            }
+            .sim-chip:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: translateY(-1px);
+            }
+            .description-section details {
+                margin-bottom: 0.5rem;
+            }
+            .description-section summary {
+                cursor: pointer;
+                color: var(--primary-color);
+            }
+            .description-section summary:hover {
+                text-decoration: underline;
+            }
+            /* Buttons */
+            .btn {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                cursor: pointer;
+                border: 1px solid transparent;
+                font-size: 0.875rem;
+                transition: all 0.2s;
+            }
+            .btn-primary {
+                background: var(--primary-color);
+                color: white;
+            }
+            .btn-primary:hover {
+                background: #1515a5;
+            }
+            .btn-outline-secondary {
+                background: transparent;
+                border-color: var(--secondary-color);
+                color: var(--secondary-color);
+            }
+            .btn-outline-secondary:hover {
+                background: var(--secondary-color);
+                color: white;
+            }
+            .btn-sm {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8125rem;
+            }
+            .btn-close {
+                background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+                border: 0;
+                border-radius: 0.25rem;
+                opacity: 0.5;
+                width: 1.5rem;
+                height: 1.5rem;
+                padding: 0.25rem;
+                cursor: pointer;
+            }
+            .btn-close:hover {
+                opacity: 1;
+            }
+            .w-100 { width: 100%; }
+            /* Checkbox styling */
+            .form-check {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.5rem;
+            }
+            .form-check-input {
+                margin-right: 0.5rem;
+                width: 1rem;
+                height: 1rem;
+                cursor: pointer;
+            }
+            .form-check-input:checked {
+                background-color: var(--primary-color);
+                border-color: var(--primary-color);
+            }
+            /* Modal */
+            .modal-backdrop {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1000;
+                display: none;
+                align-items: center;
+                justify-content: center;
+            }
+            .modal-backdrop.show {
+                display: flex;
+            }
+            .modal-dialog {
+                background: white;
+                border-radius: 8px;
+                max-width: 90vw;
+                max-height: 90vh;
+                overflow: auto;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            }
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .modal-title {
+                margin: 0;
+                font-size: 1.25rem;
+                font-weight: 500;
+            }
+            .modal-body {
+                padding: 1.5rem;
+            }
+            .modal-img {
+                max-width: 100%;
+                max-height: 60vh;
+                object-fit: contain;
+                border-radius: 4px;
+            }
+            /* Detail modal */
+            .detail-row {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .detail-row:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+            .detail-label {
+                font-size: 0.75rem;
+                color: var(--secondary-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
+            }
+            .detail-value {
+                font-weight: 500;
+                word-break: break-all;
+            }
+            .detail-path {
+                font-family: monospace;
+                font-size: 0.85rem;
+            }
+            .detail-list {
+                margin: 0;
+                padding-left: 1.25rem;
+                font-family: monospace;
+                font-size: 0.85rem;
+            }
+            .detail-list-plain {
+                margin: 0;
+                padding-left: 1.25rem;
+                font-size: 0.85rem;
+            }
+            .detail-list-plain li.clickable {
+                cursor: pointer;
+            }
+            .detail-list-plain li.clickable:hover {
+                color: var(--primary-color);
+                text-decoration: underline;
+            }
+            /* Typography */
+            h1, h2, h3, h4, h5, h6 {
+                margin-top: 0;
+            }
+            h5, h6 {
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+            }
+            h5 { font-size: 1rem; }
+            h6 { font-size: 0.875rem; }
+            p { margin: 0 0 1rem; }
+            .mb-0 { margin-bottom: 0 !important; }
+            .mb-3 { margin-bottom: 1rem !important; }
+            .mb-4 { margin-bottom: 1.5rem !important; }
+            .mt-3 { margin-top: 1rem !important; }
+            .mt-5 { margin-top: 3rem !important; }
+            .py-3 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+            .py-5 { padding-top: 3rem; padding-bottom: 3rem; }
+            .text-muted { color: #6c757d; }
+            .text-white { color: white; }
+            .text-center { text-align: center; }
+            .text-md-end { text-align: right; }
+            @media (min-width: 768px) {
+                .text-md-end { text-align: right; }
+            }
+            @media (max-width: 767px) {
+                .text-md-end { text-align: left; }
+            }
+            /* Utilities */
+            .fs-1 { font-size: 2.5rem; }
+            .fw-bold { font-weight: 700; }
+            hr {
+                border: none;
+                border-top: 1px solid var(--border-color);
+                margin: 1.5rem 0;
+            }
+            ul {
+                margin: 0;
+                padding-left: 1.25rem;
+            }
+            li { margin-bottom: 0.25rem; }
+            a {
+                color: var(--primary-color);
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            /* Empty state */
+            .empty-state {
+                text-align: center;
+                padding: 3rem;
+            }
+            /* Footer */
+            footer {
+                background: white;
+                border-top: 1px solid var(--border-color);
+                padding: 0.25rem 1.0rem;
+                flex-shrink: 0;
+                margin-top: auto;
+                position: sticky;
+                bottom: 0;
+                font-size: 0.7rem;
+                justify-content: space-between;
+                display: flex;
+            }
+            footer .row {
+                margin: 0;
+            }
+            footer .col-md-6 {
+                padding: 0;
+            }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar">
+        <div class="navbar-brand-section">
+            <div class="navbar-brand-row">
+                <a class="navbar-brand" href="#">📈 ICONEval Results</a>
+            </div>
+            <span class="navbar-meta">
+                2000-01-01 00:00 | User: ICONEval User
+            </span>
+        </div>
+
+        <div class="navbar-info">
+            <span class="navbar-text clickable" onclick="openRecipesModal()">Recipes Overview</span>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="sidebar col-md-3 col-lg-2" id="sidebar">
+                <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="toggleFiltersBtn" onclick="toggleFilters()">
+                    ◀ Filters
+                </button>
+                <button class="btn btn-outline-secondary btn-sm w-100 mb-2" id="clearFiltersBtn" onclick="clearFilters()">
+                    ✕ Clear Filters
+                </button>
+                <!-- Search -->
+                <div class="mb-4 search-wrapper" id="searchWrapper">
+                    <input type="text" class="form-control search-box"
+                           placeholder="Search diagnostics..."
+                           id="searchInput" onkeyup="filterDiagnostics()">
+                </div>
+                <div id="filterContent">
+                            <div class="mb-3"><h6>Realm</h6><p class="text-muted small">None</p></div>
+        <div class="mb-3"><h6>Plot Types</h6><p class="text-muted small">None</p></div>
+        <div class="mb-3"><h6>Variables</h6><p class="text-muted small">None</p></div>
+        <div class="mb-3"><h6>Recipe</h6><p class="text-muted small">None</p></div>
+
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content col-md-9 col-lg-10">
+                <!-- Cards Grid -->
+                <div class="row g-4" id="diagnosticsGrid">
+
+                </div>
+
+                <!-- No Results -->
+                <div id="noResults" class="text-center py-5" style="display: none;">
+                    <p class="fs-1 text-muted">🔍</p>
+                    <p class="mt-3 text-muted">No diagnostics match your filters.</p>
+                    <button class="btn btn-primary" onclick="clearFilters()">Clear Filters</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Simulation Info Modal -->
+    <div class="modal-backdrop" id="simModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="simModalTitle">Simulation Details</h5>
+                    <button type="button" class="btn-close" onclick="closeSimModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-row">
+                        <span class="detail-label">Path</span>
+                        <span class="detail-value detail-path" id="simPath"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Owner</span>
+                        <span class="detail-value" id="simOwner"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value" id="simDate"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Grid</span>
+                        <span class="detail-value" id="simGrid"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Namelist Files</span>
+                        <ul class="detail-list" id="simNamelists"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes Overview Modal -->
+    <div class="modal-backdrop" id="recipesModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">0 diagnostic(s) from 0 recipe(s)</h5>
+                    <button type="button" class="btn-close" onclick="closeRecipesModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="recipesContent">
+                                    <div class="recipe-item mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>basics_maps</strong>
+                    <span class="badge bg-success">Success</span>
+                </div>
+                <div class="small text-muted">0 diagnostic(s)</div>
+
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-backdrop" id="detailModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Diagnostic Details</h5>
+                    <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <img id="modalImage" class="modal-img" src="" alt="">
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="detail-row">
+                                <span class="detail-label">Caption</span>
+                                <span class="detail-value" id="modalCaption"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Plot Types</span>
+                                <ul class="detail-list-plain" id="modalPlotTypes"></ul>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Variables</span>
+                                <ul class="detail-list-plain" id="modalVariables"></ul>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Recipe</span>
+                                <span class="detail-value" id="modalRecipe"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Input Datasets</span>
+                                <ul class="detail-list" id="modalInputDatasets"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-3 bg-white border-top">
+        <div class="row">
+            <div class="col-md-6">
+                <span class="text-muted mb-0">Generated by <a href=https://github.com/EyringMLClimateGroup/ICONEval/releases/tag/v0.10.0 target="_blank">↗ICONEval 0.10.0</a></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <span class="text-muted mb-0">Main contacts: Manuel Schlund (manuel.schlund@dlr.de), Veronika Eyring (veronika.eyring@dlr.de)</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openSimModal(exp, path, owner, date, grid, namelists) {
+            document.getElementById('simModalTitle').textContent = exp;
+            document.getElementById('simPath').textContent = path;
+            document.getElementById('simOwner').textContent = owner;
+            document.getElementById('simDate').textContent = date;
+            document.getElementById('simGrid').textContent = grid;
+            document.getElementById('simNamelists').innerHTML = namelists || '<li>None</li>';
+            document.getElementById('simModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSimModal() {
+            document.getElementById('simModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function openRecipesModal() {
+            document.getElementById('recipesModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRecipesModal() {
+            document.getElementById('recipesModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close recipes modal on backdrop click
+        document.getElementById('recipesModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRecipesModal();
+            }
+        });
+
+        // Close sim modal on backdrop click
+        document.getElementById('simModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSimModal();
+            }
+        });
+
+        function openModal(imgSrc, caption, plotType, variables, input_datasets, recipeName) {
+            document.getElementById('modalImage').src = imgSrc;
+            document.getElementById('modalCaption').textContent = caption;
+            document.getElementById('modalPlotTypes').innerHTML = plotType ?
+                plotType.split(',').map(pt => `<li>${pt}</li>`).join('') : '<li>None</li>';
+            document.getElementById('modalVariables').innerHTML = variables ?
+                variables.split(',').map(v => `<li>${v}</li>`).join('') : '<li>None</li>';
+            document.getElementById('modalRecipe').textContent = recipeName || 'Unknown';
+            document.getElementById('modalInputDatasets').innerHTML = input_datasets || '<li>None</li>';
+            document.getElementById('detailModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeSimModal();
+                closeRecipesModal();
+            }
+        });
+
+        function filterDiagnostics() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.diagnostic-card');
+            const checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+            const activeFilters = Array.from(checkboxes).map(cb => cb.value);
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const realm = card.dataset.realm;
+                const plotType = card.dataset.plotType;
+                const variables = card.dataset.variables;
+                const caption = card.dataset.caption;
+                const recipe = card.dataset.recipe;
+
+                // Check search term
+                const matchesSearch = !searchTerm ||
+                    caption.toLowerCase().includes(searchTerm) ||
+                    recipe.toLowerCase().includes(searchTerm) ||
+                    variables.toLowerCase().includes(searchTerm);
+
+                // Check filters (OR within each category, AND across categories)
+                const realmMatch = !activeFilters.some(f =>
+                        ['atmosphere', 'ocean', 'land', 'sanity-consistency-checks', 'other'].includes(f)
+                    ) || activeFilters.includes(realm);
+
+                const plotTypeMatch = !activeFilters.some(f =>
+                        !['atmosphere', 'ocean', 'land', 'sanity-consistency-checks', 'other'].includes(f)
+                    ) || plotType.split(',').some(pt => activeFilters.includes(pt)) ||
+                      variables.split(',').some(v => activeFilters.includes(v));
+
+                // Simplified filter: show if any selected filter matches
+                const filterMatch = activeFilters.length === 0 ||
+                    activeFilters.includes(realm) ||
+                    plotType.split(',').some(pt => activeFilters.includes(pt)) ||
+                    variables.split(',').some(v => activeFilters.includes(v)) ||
+                    activeFilters.includes(recipe);
+
+                if (matchesSearch && filterMatch) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('noResults').style.display =
+                visibleCount === 0 ? 'block' : 'none';
+        }
+
+        // Filter checkbox listeners
+        document.querySelectorAll('.filter-checkbox').forEach(cb => {
+            cb.addEventListener('change', filterDiagnostics);
+        });
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            filterDiagnostics();
+        }
+
+        function toggleFilterBadge(filterType, value) {
+            if (!value || value === 'unknown') return;
+
+            // Find the checkbox for this filter type and value
+            const filterName = filterType === 'realm' ? 'Realm' :
+                               filterType === 'plot_types' ? 'Plot Types' :
+                               filterType === 'variables' ? 'Variables' :
+                               filterType === 'recipe' ? 'Recipe' : filterType;
+            const checkboxId = `filter-${filterName.toLowerCase()}-${value}`;
+            const checkbox = document.getElementById(checkboxId);
+
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                filterDiagnostics();
+            }
+        }
+
+        function toggleFilters() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('filterContent');
+            const btn = document.getElementById('toggleFiltersBtn');
+            const clearBtn = document.getElementById('clearFiltersBtn');
+            const searchWrapper = document.getElementById('searchWrapper');
+
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                content.style.display = '';
+                clearBtn.style.display = '';
+                searchWrapper.style.display = '';
+                btn.innerHTML = '◀ Filters';
+            } else {
+                sidebar.classList.add('collapsed');
+                content.style.display = 'none';
+                clearBtn.style.display = 'none';
+                searchWrapper.style.display = 'none';
+                btn.innerHTML = '▶ Filters';
+            }
+        }
+    </script>
+</body>
+</html>

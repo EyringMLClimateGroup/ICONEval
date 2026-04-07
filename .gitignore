@@ -127,4 +127,4 @@ dmypy.json
 expected_output_tmp_*/
 
 # AI
-CLAUDE.md
+.claude/

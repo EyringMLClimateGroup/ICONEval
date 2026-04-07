@@ -1,0 +1,42 @@
+? ((tmp_path))/recipe_basics_maps_20260319_084611/plots/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon.png
+: ancestors:
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
+  authors:
+  - schlund_manuel
+  caption: Map plot of Near-Surface Air Temperature of dataset ICON.
+  long_names:
+  - Near-Surface Air Temperature
+  plot_types:
+  - map
+? ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_bottom.nc
+: ancestors:
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
+  authors:
+  - schlund_manuel
+  caption: Map plot of Near-Surface Air Temperature of dataset ICON - ERA5.
+  long_names:
+  - Near-Surface Air Temperature
+  plot_types:
+  - map
+? ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_left.nc
+: ancestors:
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_tas_19790101-19990101.nc
+  authors:
+  - schlund_manuel
+  caption: Map plot of Near-Surface Air Temperature of dataset ICON.
+  long_names:
+  - Near-Surface Air Temperature
+  plot_types:
+  - map
+? ((tmp_path))/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_right.nc
+: ancestors:
+  - ((tmp_path))/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc
+  authors:
+  - schlund_manuel
+  caption: Map plot of Near-Surface Air Temperature of dataset ERA5.
+  long_names:
+  - Near-Surface Air Temperature
+  plot_types:
+  - map

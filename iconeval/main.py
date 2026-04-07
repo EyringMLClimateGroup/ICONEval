@@ -17,7 +17,7 @@ from iconeval._dependencies import (
 )
 from iconeval._logging import configure_logging
 from iconeval._session import Session
-from iconeval.output_handling._summarize import get_html_description, summarize
+from iconeval.output_handling._summarize import get_simulations_info_html, summarize
 from iconeval.output_handling.publish_html import publish_esmvaltool_html
 
 if TYPE_CHECKING:
@@ -320,8 +320,12 @@ def icon_evaluation(
 
 def _create_summary_html(session: Session) -> None:
     """Create summary HTML."""
-    description = get_html_description(session, TIMES["start"])
-    summarize(session.output_dir_esmvaltool, description=description)
+    description = get_simulations_info_html(session.simulations_info)
+    summarize(
+        session.output_dir_esmvaltool,
+        date=TIMES["start"],
+        description=description,
+    )
 
 
 def _publish_html(

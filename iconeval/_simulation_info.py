@@ -15,17 +15,17 @@ if TYPE_CHECKING:
     from iconeval._typing import FacetType
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SimulationInfo:
     """Manage ICON simulation information."""
 
-    date: str = field(repr=False, kw_only=True)
-    exp: str = field(repr=False, kw_only=True)
-    grid_info: str = field(repr=False, kw_only=True)
-    guessed_facets: dict[str, FacetType] = field(repr=False, kw_only=True)
-    namelist_files: list[Path] = field(repr=False, kw_only=True)
-    owner: str = field(repr=False, kw_only=True)
-    path: Path = field(kw_only=True)
+    date: str = field(repr=False)
+    exp: str = field(repr=False)
+    grid_info: str = field(repr=False)
+    guessed_facets: dict[str, FacetType] = field(repr=False)
+    namelist_files: list[Path] = field(repr=False)
+    owner: str = field(repr=False)
+    path: Path
 
     @classmethod
     def from_path(cls, path: Path) -> SimulationInfo:
