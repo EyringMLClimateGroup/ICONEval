@@ -1,0 +1,93 @@
+# ESMValTool
+#TAGS landafs
+---
+documentation:
+  title: Basic Evaluation of Land Variables.
+  description: >
+    Show plots of several land variables that can be used for 
+    the evaluations of coupled simulations containing
+    land components ("sanity checks").
+  authors:
+    - hassler_birgit
+    - gier_bettina
+    - bock_lisa
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  full_climatology: &pp_full_climatology
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    mask_landsea:
+      mask_out: sea
+    climate_statistics:
+      period: full
+
+  full_climatology_lai:
+    <<: *pp_full_climatology
+    mask_inside_range:
+      minimum: -1.e-6
+      maximum: 1.e-6
+
+
+diagnostics:
+
+  # Climatologies - maps (full climatology)
+
+  plot_maps_with_references_lai:
+    description: Plot climatology maps including reference datasets for lai.
+    variables:
+      lai:
+        mip: Lmon
+        var_type: jsb_2d
+        preprocessor: full_climatology_lai
+        additional_datasets:
+          - {project: OBS, dataset: LAI3g, type: reanaly, version: 1-regridded, tier: 3, reference_for_monitor_diags: true}
+    scripts:
+      plot: &plot_multi_dataset_default
+        plot_folder: '{plot_dir}'
+        plot_filename: '{plot_type}_{real_name}_{dataset}_{mip}'
+        script: monitor/multi_datasets.py
+        plots:
+          map:
+            common_cbar: true
+
+  plot_maps_with_references_ts:
+    description: Plot climatology maps including reference datasets for ts.
+    variables:
+      ts:
+        mip: Amon
+        var_type: atm_2d_ml
+        preprocessor: full_climatology
+        additional_datasets:
+          - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true}
+    scripts:
+      plot:
+        <<: *plot_multi_dataset_default
+        script: monitor/multi_datasets.py
+        plots:
+          map:
+            common_cbar: true
+
+  plot_maps_with_references_evspsbl:
+    description: Plot climatology maps including reference datasets for evspsbl.
+    variables:
+      evspsbl:
+        mip: Amon
+        var_type: atm_2d_ml
+        preprocessor: full_climatology
+        additional_datasets:
+          - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true}
+    scripts:
+      plot:
+        <<: *plot_multi_dataset_default
+        script: monitor/multi_datasets.py
+        plots:
+          map:
+            common_cbar: true

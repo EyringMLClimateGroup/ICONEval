@@ -1,0 +1,158 @@
+# ESMValTool
+#TAGS landafs
+---
+documentation:
+  title: Basic Evaluation of Land - Timeseries and Seasonal Cycles.
+  description: >
+    Show lineplots of several land variables that can be used for 
+    the evaluations of coupled simulations containing
+    land components.
+  authors:
+    - gier_bettina
+    - hassler_birgit
+
+
+datasets: "{{dataset_list}}"
+
+datasets_cmip6: &datasets_cmip6
+ # - {project: CMIP6, dataset: "*", exp: historical, ensemble: r1i1p1f1, grid: "*", institute: "*", timerange: 18500101/20141231}
+  - {project: CMIP6, dataset: UKESM1-0-LL, exp: historical, grid: gn, ensemble: r1i1p1f2}
+ # - {project: ICON, dataset: ICON-XPP, exp: js_mb_atm_amip_1979-1999_R2B5_updated, supplementary_variables:  [{short_name: areacella, skip: true}], ensemble: r1i1p1f1}  # Max' example run (atm-land-only)
+
+datasets_gpp: &datasets_gpp
+  #- {dataset: GLASS, project: OBS6, type: reanaly, version: V40, tier: 2}
+  - {dataset: MTE, project: OBS, type: reanaly, version: May12, tier: 3, timerange: 19820101/20111231} #, start_date: 1981, end_date: 2018}
+
+datasets_lai: &datasets_lai
+  - {dataset: LAI3g, project: OBS, type: reanaly, version: 1-regridded, tier: 3, timerange: 19810701/20181231} #, start_date: }
+#  - {dataset: GLASS, project: OBS6, type: reanaly, version: V40, tier: 2}
+
+
+supplementary_variables: &supplementary_variables
+  - {short_name: areacella, skip: true}
+  - {short_name: areacello, skip: true}
+  - {short_name: sftlf, skip: true}
+  - {short_name: sftof, skip: true}
+
+annual_cycle_plot: &annual_cycle_plot
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor: [0.5, -0.4]
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: "{title}"
+  plot_kwargs:
+    "{{alias_plot_kwargs}}":  # These will be used for ICON
+      label: "{dataset} ({exp})"
+      linewidth: 1.25
+      zorder: 2.5
+    default:  # These will be used for CMIP6 models
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: "{project}"  # just to have one label for the gray lines
+    CMIP6_CESM2:
+      label: "{project}"  # just to have one label for the gray lines
+    OBS: &obs_format
+      color: black
+      label: "{dataset}"
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6: &obs6_format
+      <<: *obs_format
+      linestyle: dashdot
+    OBS_LAI3g:
+      <<: *obs_format
+      linestyle: dashed
+    OBS_MTE:
+      <<: *obs_format
+      linestyle: dotted
+
+preprocessors:
+  regrid:
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+
+  annual_cycle:
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: month  
+
+  #timeseries:
+
+
+diagnostics:
+
+  timeseries:
+    description: "Plot time series"
+    variables:
+      gpp:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: regrid
+        #timerange: 198201/19850101
+        additional_datasets: *datasets_gpp
+        supplementary_variables: *supplementary_variables
+      lai:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: regrid
+        #timerange: 198201/19850101
+        additional_datasets: *datasets_lai
+        supplementary_variables: *supplementary_variables
+    additional_datasets: *datasets_cmip6
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+        plot_folder: "{plot_dir}"
+        plots:
+          timeseries: {annual_mean_kwargs: false}
+
+  seasonal_cycles:
+    description: "Plot seasonal cycles"
+    variables:
+      gpp:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: annual_cycle
+        #timerange: 198201/19850101
+        title: Gross Primary Production (GPP)
+        additional_datasets: *datasets_gpp
+        supplementary_variables: *supplementary_variables
+      lai:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: annual_cycle
+        #timerange: 198201/19850101
+        title: Leaf Area Index (LAI)
+        additional_datasets: *datasets_lai
+        supplementary_variables: *supplementary_variables
+    additional_datasets: *datasets_cmip6
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+        plot_folder: "{plot_dir}"
+        plots:
+          annual_cycle: *annual_cycle_plot
