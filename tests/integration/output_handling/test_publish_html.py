@@ -35,13 +35,13 @@ def test_publish_esmvaltool_html_multiple_recipes(
     mocked_swift_service: Mock,
     tmp_path: Path,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
         expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
     assert (
-        url == "url/to/swift_storage/my_folder/iconeval/recipes_zonal-means/index.html"
+        url == "url/to/swift_storage/my_folder/iconeval/recipes_zonal-mean/index.html"
     )
 
     mocked_requests.get.assert_not_called()
@@ -63,10 +63,10 @@ def test_publish_esmvaltool_html_multiple_recipes(
     assert mocked_service_instance.upload.call_count == 1
     upload_call = mocked_service_instance.upload.mock_calls[0]
     assert upload_call.args == ()
-    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert len(upload_call.kwargs) == 2
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
-        (str(f), str(Path("recipes_zonal-means") / f.relative_to(esmvaltool_output)))
+        (str(f), str(Path("recipes_zonal-mean") / f.relative_to(esmvaltool_output)))
         for f in expected_dir_contents
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
@@ -82,7 +82,7 @@ def test_publish_esmvaltool_html_single_recipe(
     sample_dir = (
         sample_data_path
         / "esmvaltool_output"
-        / "recipes_zonal-means"
+        / "recipes_zonal-mean"
         / "recipe_basics_zonal_mean_lines_20260318_093429"
     )
 
@@ -114,7 +114,7 @@ def test_publish_esmvaltool_html_single_recipe(
     assert mocked_service_instance.upload.call_count == 1
     upload_call = mocked_service_instance.upload.mock_calls[0]
     assert upload_call.args == ()
-    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert len(upload_call.kwargs) == 2
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (
@@ -141,21 +141,21 @@ def test_publish_esmvaltool_html_files_to_large(
     # Avoid overwriting existing tokens
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+    monkeypatch.setattr(iconeval.output_handling.publish_html, "_SWIFTENV", swift_token)
 
     # Make all files to large
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
-        "MAX_FILE_SIZE_FOR_UPLOAD",
+        "_MAX_FILE_SIZE_FOR_UPLOAD",
         -1,
     )
 
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean"
 
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
 
-    assert url == "my-x-storage-url/iconeval/recipes_zonal-means/index.html"
+    assert url == "my-x-storage-url/iconeval/recipes_zonal-mean/index.html"
 
     mocked_requests.get.assert_called_once_with(
         "url/to/swift_storage/auth/v1.0",
@@ -196,7 +196,7 @@ def test_publish_esmvaltool_html_force(
     mocked_swift_service: Mock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         # Do not overwrite existing swiftenv sample file, copy existing token to
         # make sure it is overwritten by force_new_token=True
@@ -204,7 +204,7 @@ def test_publish_esmvaltool_html_force(
         shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
         monkeypatch.setattr(
             iconeval.output_handling.publish_html,
-            "SWIFTENV",
+            "_SWIFTENV",
             swift_token,
         )
 
@@ -245,7 +245,7 @@ def test_publish_esmvaltool_html_force(
     assert mocked_service_instance.upload.call_count == 1
     upload_call = mocked_service_instance.upload.mock_calls[0]
     assert upload_call.args == ()
-    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
+    assert len(upload_call.kwargs) == 2
     assert upload_call.kwargs["container"] == "my_container"
     objects_to_upload = [
         (str(f), str(Path("my_dir") / f.relative_to(esmvaltool_output)))
@@ -284,12 +284,12 @@ def test_publish_esmvaltool_invalid_token_fail(
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(sample_data_path / "swift" / "expired_swiftenv", swift_token)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+    monkeypatch.setattr(iconeval.output_handling.publish_html, "_SWIFTENV", swift_token)
 
     # Raise error when token is created
     mocked_requests.get.return_value.headers["x-auth-token"] = None
 
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         msg = r"Failed to create new swift token"
         with pytest.raises(ValueError, match=re.escape(msg)):
@@ -308,7 +308,7 @@ def test_publish_esmvaltool_invalid_request_fail(
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+    monkeypatch.setattr(iconeval.output_handling.publish_html, "_SWIFTENV", swift_token)
 
     # Raise error when checking token to force creation of new token
     mocked_swift_head_account.side_effect = ClientException("corrupted token")
@@ -318,7 +318,7 @@ def test_publish_esmvaltool_invalid_request_fail(
         requests.RequestException("failed request")
     )
 
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         msg = r"Failed to create new swift token: failed request"
         with pytest.raises(requests.RequestException, match=re.escape(msg)):
@@ -339,7 +339,7 @@ def test_publish_esmvaltool_upload_fail(
     mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
     mocked_service_instance.upload.return_value = [{"success": False, "error": 42}]
 
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-mean"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         msg = r"Upload of {'success': False, 'error': 42} failed: 42"
         with pytest.raises(SwiftError, match=re.escape(msg)):

@@ -1,0 +1,63 @@
+facet_used_for_labels: alias
+group_variables_by: variable_group
+plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+plot_folder: '{plot_dir}'
+plots:
+  map:
+    common_cbar: true
+    fontsize: 8
+    gridline_kwargs:
+      color: darkgray
+      linewidth: 0.5
+      alpha: 0.3
+    pyplot_kwargs:
+      suptitle: '{title} (19790101/19810101)'
+    plot_kwargs:
+      default:
+        cmap: Greens
+        levels:
+        - 0.0
+        - 1.0
+        - 2.0
+        - 3.0
+        - 4.0
+        - 5.0
+        - 6.0
+        - 7.0
+        - 8.0
+        - 9.0
+        - 10.0
+        extend: max
+    plot_kwargs_bias:
+      cmap: BrBG
+      levels:
+      - -3.0
+      - -2.5
+      - -2.0
+      - -1.5
+      - -1.0
+      - -0.5
+      - 0.0
+      - 0.5
+      - 1.0
+      - 1.5
+      - 2.0
+      - 2.5
+      - 3.0
+      extend: both
+recipe: recipe_basics_maps.yml
+version: 2.15.0.dev5+g3208f5f3a
+script: plot
+run_dir: ((tmp_path))/recipe_basics_maps_20260331_084002/run/maps_pr/plot
+plot_dir: ((tmp_path))/recipe_basics_maps_20260331_084002/plots/maps_pr/plot
+work_dir: ((tmp_path))/recipe_basics_maps_20260331_084002/work/maps_pr/plot
+output_file_type: png
+log_level: info
+auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
+themes:
+- phys
+realms:
+- atmos
+scheduler_address: tcp://127.0.0.1:37571
+input_files:
+- ((tmp_path))/recipe_basics_maps_20260331_084002/preproc/maps_pr/pr/metadata.yml

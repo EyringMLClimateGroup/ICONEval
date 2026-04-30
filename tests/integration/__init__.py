@@ -89,6 +89,17 @@ def copy_to_tmp_path(tmp_path: Path, dir_to_copy: Path) -> Generator[Path]:
     tmp_dir = tmp_path / dir_to_copy.name
     shutil.copytree(dir_to_copy, tmp_dir)
 
+    # Update temporary paths in files
+    for _root, _, _files in tmp_dir.walk():
+        for _file in _files:
+            file_path = _root / _file
+            try:
+                content = file_path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+            content = content.replace(TMP_PATH_PLACEHOLDER, str(tmp_dir))
+            file_path.write_text(content, encoding="utf-8")
+
     yield tmp_dir
 
     for obj in original_contents:

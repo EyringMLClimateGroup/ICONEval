@@ -1,0 +1,70 @@
+INFO    [1164015]
+______________________________________________________________________
+          _____ ____  __  ____     __    _ _____           _
+         | ____/ ___||  \/  \ \   / /_ _| |_   _|__   ___ | |
+         |  _| \___ \| |\/| |\ \ / / _` | | | |/ _ \ / _ \| |
+         | |___ ___) | |  | | \ V / (_| | | | | (_) | (_) | |
+         |_____|____/|_|  |_|  \_/ \__,_|_| |_|\___/ \___/|_|
+______________________________________________________________________
+
+Earth System Model Evaluation Tool
+
+A community tool for the evaluation of Earth system models.
+
+https://esmvaltool.org
+
+The Earth System Model Evaluation Tool (ESMValTool) is a community
+diagnostics and performance metrics tool for the evaluation of Earth
+System Models (ESMs) that allows for routine comparison of single or
+multiple models, either against predecessor versions or against
+observations.
+
+Tutorial: https://tutorial.esmvaltool.org
+Documentation: https://docs.esmvaltool.org
+Contact: esmvaltool-dev@listserv.dfn.de
+
+If you find this software useful for your research, please cite it using
+https://doi.org/10.5281/zenodo.3387139 for ESMValCore or
+https://doi.org/10.5281/zenodo.3401363 for ESMValTool or
+any of the reference papers listed at https://esmvaltool.org/references/.
+
+Have fun!
+
+INFO    [1164015] Package versions
+INFO    [1164015] ----------------
+INFO    [1164015] ESMValCore: 2.15.0.dev5+g3208f5f3a
+INFO    [1164015] ESMValTool: 2.14.0.dev82+gd48ea2ab7
+INFO    [1164015] ----------------
+INFO    [1164015] Reading configuration files from:
+/home/b/b309141/repos/ESMValCore/esmvalcore/config/configurations/defaults (defaults)
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/config/recipe_ocean_zonal_mean_lines (ESMVALTOOL_CONFIG_DIR environment variable)
+INFO    [1164015] Writing program log files to:
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/run/main_log.txt
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/run/main_log_debug.txt
+/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/run/cmor_log.txt
+INFO    [1164015] Starting the Earth System Model Evaluation Tool at time: 2026-03-31 08:40:01 UTC
+INFO    [1164015] ----------------------------------------------------------------------
+INFO    [1164015] RECIPE   = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/recipes/recipe_ocean_zonal_mean_lines.yml
+INFO    [1164015] RUNDIR     = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/run
+INFO    [1164015] WORKDIR    = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/work
+INFO    [1164015] PREPROCDIR = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/preproc
+INFO    [1164015] PLOTDIR    = /work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260331_084000/plots
+INFO    [1164015] ----------------------------------------------------------------------
+INFO    [1164015] Running tasks using at most 4 processes
+INFO    [1164015] If your system hangs during execution, it may not have enough memory for keeping this number of tasks in memory.
+INFO    [1164015] If you experience memory problems, try reducing 'max_parallel_tasks' in your configuration.
+INFO    [1164015] Creating tasks from recipe
+INFO    [1164015] Creating tasks for diagnostic zonal_means_tos
+INFO    [1164015] Creating diagnostic task zonal_means_tos/plot
+INFO    [1164015] Creating preprocessor task zonal_means_tos/tos
+INFO    [1164015] Creating preprocessor 'create_zonal_mean' task for variable 'tos'
+INFO    [1164015] Creating tasks for diagnostic zonal_means_sos
+INFO    [1164015] Creating diagnostic task zonal_means_sos/plot
+INFO    [1164015] Creating preprocessor task zonal_means_sos/so
+INFO    [1164015] Creating preprocessor 'create_zonal_mean_sos' task for variable 'so'
+ERROR   [1164015] Could not create all tasks
+ERROR   [1164015] Dataset key 'var_type' must be specified for {'mip': 'Omon', 'preprocessor': 'create_zonal_mean', 'title': 'Sea Surface Temperature', 'dataset': 'ICON', 'exp': 'ag_atm_amip_r2b5_auto_tuned_baseline_20yrs', 'project': 'ICON', 'timerange': '19790101/19810101', 'short_name': 'tos', 'variable_group': 'tos', 'diagnostic': 'zonal_means_tos', 'recipe_dataset_index': 0, 'alias': 'ICON', 'original_short_name': 'tos', 'standard_name': 'sea_surface_temperature', 'long_name': 'Sea Surface Temperature', 'units': 'degC', 'modeling_realm': ['ocean'], 'frequency': 'mon'}, check your recipe entry and/or extra facet file(s)
+ERROR   [1164015] Dataset key 'var_type' must be specified for {'mip': 'Omon', 'preprocessor': 'create_zonal_mean_sos', 'title': 'Sea Surface Salinity', 'dataset': 'ICON', 'exp': 'ag_atm_amip_r2b5_auto_tuned_baseline_20yrs', 'project': 'ICON', 'timerange': '19790101/19810101', 'short_name': 'so', 'variable_group': 'so', 'diagnostic': 'zonal_means_sos', 'recipe_dataset_index': 0, 'alias': 'ICON', 'original_short_name': 'so', 'standard_name': 'sea_water_salinity', 'long_name': 'Sea Water Salinity', 'units': '0.001', 'modeling_realm': ['ocean'], 'frequency': 'mon'}, check your recipe entry and/or extra facet file(s)
+INFO    [1164015] Maximum memory used (estimate): 0.4 GB
+INFO    [1164015] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+ERROR   [1164015] Could not create all tasks

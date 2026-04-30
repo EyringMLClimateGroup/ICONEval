@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<prov:document xmlns:task="https://www.esmvaltool.org/task" xmlns:recipe="https://www.esmvaltool.org/recipe" xmlns:file="https://www.esmvaltool.org/file" xmlns:software="https://www.esmvaltool.org/software" xmlns:author="https://www.esmvaltool.org/author" xmlns:preprocessor="https://www.esmvaltool.org/preprocessor" xmlns:project="https://www.esmvaltool.org/project" xmlns:attribute="https://www.esmvaltool.org/attribute" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <prov:entity prov:id="file:/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19800101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 1.8.3rc (http://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Arthur Grundner (b309170) on l40347 (Linux 4.18.0-513.24.1.el8_9.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/mpim/0019/icon_grid_0019_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/home/b/b309170/bd1179_work/icon-ml_models/icon-a-ml/bin/icon at 20241120 184042</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>19</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>https://gitlab.dkrz.de/icon-ml/icon_developments/icon-a-ml.git@10a65f19e528372b94ca99c99c0b5dc573523136</attribute:source>
+    <attribute:source_file>/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19800101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>e941b1d0-ab58-11e8-ba4f-bdd1e82b9e6d</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:agent prov:id="author:Lauer, Axel">
+    <attribute:email>axel.lauer@dlr.de</attribute:email>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0002-9270-1044</attribute:orcid>
+  </prov:agent>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1981_monthly.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19790101T000000Z.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:activity prov:id="task:zonal_means_pr/pr"/>
+  <prov:entity prov:id="file:/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19790101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 1.8.3rc (http://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Arthur Grundner (b309170) on l40347 (Linux 4.18.0-513.24.1.el8_9.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/mpim/0019/icon_grid_0019_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/home/b/b309170/bd1179_work/icon-ml_models/icon-a-ml/bin/icon at 20241120 184042</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>19</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>https://gitlab.dkrz.de/icon-ml/icon_developments/icon-a-ml.git@10a65f19e528372b94ca99c99c0b5dc573523136</attribute:source>
+    <attribute:source_file>/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19790101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>e941b1d0-ab58-11e8-ba4f-bdd1e82b9e6d</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png">
+    <attribute:caption>Precipitation vs. latitude for various datasets.</attribute:caption>
+    <attribute:facet_used_for_labels>alias</attribute:facet_used_for_labels>
+    <attribute:figure_kwargs>{'figsize': [7, 5]}</attribute:figure_kwargs>
+    <attribute:group_variables_by>variable_group</attribute:group_variables_by>
+    <attribute:long_names>['Precipitation']</attribute:long_names>
+    <attribute:plot_filename>{plot_type}_{exp}_{real_name}_{dataset}_{mip}</attribute:plot_filename>
+    <attribute:plot_folder>{plot_dir}</attribute:plot_folder>
+    <attribute:plot_types>('line plot',)</attribute:plot_types>
+    <attribute:plots>{'variable_vs_lat': {'gridline_kwargs': {'color': 'darkgray', 'linewidth': 0.5, 'alpha': 0.3}, 'legend_kwargs': {'loc': 'upper center', 'bbox_to_anchor': [0.5, -0.4], 'borderaxespad': 0.0}, 'pyplot_kwargs': {'title': '{title} (19790101/19810101)'}, 'plot_kwargs': {'ICON': {'label': '{dataset} ({exp})', 'linewidth': 1.25, 'zorder': 2.5, 'color': 'C0'}, 'ICON_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs': {'label': '{dataset} ({exp})', 'linewidth': 1.25, 'zorder': 2.5, 'color': 'C0'}, 'ICON_ICON': {'label': '{dataset} ({exp})', 'linewidth': 1.25, 'zorder': 2.5, 'color': 'C0'}, 'ICON_ICON_ag_atm_amip_r2b5_auto_tuned_baseline_20yrs': {'label': '{dataset} ({exp})', 'linewidth': 1.25, 'zorder': 2.5, 'color': 'C0'}, 'default': {'color': 'lightgray', 'label': None, 'linewidth': 0.75, 'zorder': 1.0}, 'CMIP6': {'label': '{project}'}, 'CMIP6_CESM2': {'label': '{project}'}, 'OBS': {'color': 'black', 'label': '{dataset}', 'linewidth': 1.0, 'zorder': 2.4}, 'OBS6': {'color': 'black', 'label': '{dataset}', 'linewidth': 1.0, 'zorder': 2.4, 'linestyle': 'dashdot'}, 'native6': {'color': 'black', 'label': '{dataset}', 'linewidth': 1.0, 'zorder': 2.4, 'linestyle': 'dotted'}, 'native6_ERA5': {'color': 'black', 'label': '{dataset}', 'linewidth': 1.0, 'zorder': 2.4, 'linestyle': 'dotted'}, 'ERA5': {'color': 'black', 'label': '{dataset}', 'linewidth': 1.0, 'zorder': 2.4, 'linestyle': 'dotted'}}}}</attribute:plots>
+    <attribute:realms>('atmosphere',)</attribute:realms>
+    <attribute:scheduler_address>tcp://127.0.0.1:41501</attribute:scheduler_address>
+    <attribute:script>plot</attribute:script>
+    <attribute:script_file>monitor/multi_datasets.py</attribute:script_file>
+    <attribute:themes>('physics',)</attribute:themes>
+  </prov:entity>
+  <prov:activity prov:id="task:zonal_means_pr/plot"/>
+  <prov:wasStartedBy>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+    <prov:trigger prov:ref="recipe:recipe_basics_zonal_mean_lines.yml"/>
+    <prov:starter prov:ref="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  </prov:wasStartedBy>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc">
+    <attribute:alias>ICON</attribute:alias>
+    <attribute:dataset>ICON</attribute:dataset>
+    <attribute:diagnostic>zonal_means_pr</attribute:diagnostic>
+    <attribute:end_year>1981</attribute:end_year>
+    <attribute:exp>ag_atm_amip_r2b5_auto_tuned_baseline_20yrs</attribute:exp>
+    <attribute:filename>/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc</attribute:filename>
+    <attribute:frequency>mon</attribute:frequency>
+    <attribute:long_name>Precipitation</attribute:long_name>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>['atmos']</attribute:modeling_realm>
+    <attribute:original_short_name>pr</attribute:original_short_name>
+    <attribute:preprocessor>create_zonal_mean_pr</attribute:preprocessor>
+    <attribute:project>ICON</attribute:project>
+    <attribute:recipe_dataset_index>0</attribute:recipe_dataset_index>
+    <attribute:short_name>pr</attribute:short_name>
+    <attribute:standard_name>precipitation_flux</attribute:standard_name>
+    <attribute:start_year>1979</attribute:start_year>
+    <attribute:timerange>19790101/19810101</attribute:timerange>
+    <attribute:title>Precipitation</attribute:title>
+    <attribute:units>kg m-2 s-1</attribute:units>
+    <attribute:var_type>atm_2d_ml</attribute:var_type>
+    <attribute:variable_group>pr</attribute:variable_group>
+    <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
+    <preprocessor:convert_units>{'units': 'mm day-1'}</preprocessor:convert_units>
+    <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
+    <preprocessor:remove_supplementary_variables>{}</preprocessor:remove_supplementary_variables>
+    <preprocessor:save>{'compress': False, 'compute': False, 'filename': PosixPath('/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc')}</preprocessor:save>
+    <preprocessor:zonal_statistics>{'operator': 'mean'}</preprocessor:zonal_statistics>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19800101T000000Z.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png"/>
+    <prov:agent prov:ref="author:Sarauer, Ellen"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1980_monthly.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19810101T000000Z.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1979_monthly.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:agent prov:id="author:Schlund, Manuel">
+    <attribute:email>manuel.schlund@dlr.de</attribute:email>
+    <attribute:github>schlunma</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0001-5251-0158</attribute:orcid>
+  </prov:agent>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_zonal_mean_lines.yml"/>
+    <prov:agent prov:ref="author:Lauer, Axel"/>
+  </prov:wasAttributedTo>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png"/>
+    <prov:agent prov:ref="author:Schlund, Manuel"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/OBS/Tier2/GPCP-SG/OBS_GPCP-SG_atmos_2.3_Amon_pr_197901-202512.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1981_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-05-18 17:11:26 UTC by era5cli 1.0.0: reanalysis-era5-single-levels-monthly-means {'variable': 'total_precipitation', 'year': 1981, 'product_type': 'monthly_averaged_reanalysis', 'month': ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'], 'time': ['00:00'], 'format': 'netcdf'}
+2020-05-18 17:11:12 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data8/adaptor.mars.internal-1589821865.5097106-16837-1-813ddd24-a67a-457b-91ec-fbd77711743c.nc /cache/tmp/813ddd24-a67a-457b-91ec-fbd77711743c-adaptor.mars.internal-1589821865.5130239-16837-1-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1981_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_zonal_mean_lines.yml"/>
+    <prov:agent prov:ref="author:Schlund, Manuel"/>
+  </prov:wasAttributedTo>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1979_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-05-18 17:10:34 UTC by era5cli 1.0.0: reanalysis-era5-single-levels-monthly-means {'variable': 'total_precipitation', 'year': 1979, 'product_type': 'monthly_averaged_reanalysis', 'month': ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'], 'time': ['00:00'], 'format': 'netcdf'}
+2020-05-18 17:10:24 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data7/adaptor.mars.internal-1589821816.5871305-22528-26-11989ea9-7ccf-4ddc-b543-120e8a65c0ab.nc /cache/tmp/11989ea9-7ccf-4ddc-b543-120e8a65c0ab-adaptor.mars.internal-1589821816.5876765-22528-3-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1979_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc">
+    <attribute:alias>OBS</attribute:alias>
+    <attribute:dataset>GPCP-SG</attribute:dataset>
+    <attribute:diagnostic>zonal_means_pr</attribute:diagnostic>
+    <attribute:end_year>1981</attribute:end_year>
+    <attribute:filename>/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc</attribute:filename>
+    <attribute:frequency>mon</attribute:frequency>
+    <attribute:long_name>Precipitation</attribute:long_name>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>['atmos']</attribute:modeling_realm>
+    <attribute:original_short_name>pr</attribute:original_short_name>
+    <attribute:preprocessor>create_zonal_mean_pr</attribute:preprocessor>
+    <attribute:project>OBS</attribute:project>
+    <attribute:recipe_dataset_index>2</attribute:recipe_dataset_index>
+    <attribute:reference_for_monitor_diags>True</attribute:reference_for_monitor_diags>
+    <attribute:short_name>pr</attribute:short_name>
+    <attribute:standard_name>precipitation_flux</attribute:standard_name>
+    <attribute:start_year>1979</attribute:start_year>
+    <attribute:tier>2</attribute:tier>
+    <attribute:timerange>19790101/19810101</attribute:timerange>
+    <attribute:title>Precipitation</attribute:title>
+    <attribute:type>atmos</attribute:type>
+    <attribute:units>kg m-2 s-1</attribute:units>
+    <attribute:variable_group>pr</attribute:variable_group>
+    <attribute:version>2.3</attribute:version>
+    <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
+    <preprocessor:convert_units>{'units': 'mm day-1'}</preprocessor:convert_units>
+    <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
+    <preprocessor:remove_supplementary_variables>{}</preprocessor:remove_supplementary_variables>
+    <preprocessor:save>{'compress': False, 'compute': False, 'filename': PosixPath('/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc')}</preprocessor:save>
+    <preprocessor:zonal_statistics>{'operator': 'mean'}</preprocessor:zonal_statistics>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc">
+    <attribute:alias>native6</attribute:alias>
+    <attribute:automatic_regrid>True</attribute:automatic_regrid>
+    <attribute:dataset>ERA5</attribute:dataset>
+    <attribute:diagnostic>zonal_means_pr</attribute:diagnostic>
+    <attribute:end_year>1981</attribute:end_year>
+    <attribute:family>E5</attribute:family>
+    <attribute:filename>/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc</attribute:filename>
+    <attribute:frequency>mon</attribute:frequency>
+    <attribute:long_name>Precipitation</attribute:long_name>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>['atmos']</attribute:modeling_realm>
+    <attribute:original_short_name>pr</attribute:original_short_name>
+    <attribute:preprocessor>create_zonal_mean_pr</attribute:preprocessor>
+    <attribute:project>native6</attribute:project>
+    <attribute:recipe_dataset_index>1</attribute:recipe_dataset_index>
+    <attribute:reference_for_monitor_diags>True</attribute:reference_for_monitor_diags>
+    <attribute:short_name>pr</attribute:short_name>
+    <attribute:standard_name>precipitation_flux</attribute:standard_name>
+    <attribute:start_year>1979</attribute:start_year>
+    <attribute:tier>3</attribute:tier>
+    <attribute:timerange>19790101/19810101</attribute:timerange>
+    <attribute:title>Precipitation</attribute:title>
+    <attribute:tres>1M</attribute:tres>
+    <attribute:type>reanaly</attribute:type>
+    <attribute:typeid>00</attribute:typeid>
+    <attribute:units>kg m-2 s-1</attribute:units>
+    <attribute:variable_group>pr</attribute:variable_group>
+    <attribute:version>v1</attribute:version>
+    <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
+    <preprocessor:convert_units>{'units': 'mm day-1'}</preprocessor:convert_units>
+    <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
+    <preprocessor:remove_supplementary_variables>{}</preprocessor:remove_supplementary_variables>
+    <preprocessor:save>{'compress': False, 'compute': False, 'filename': PosixPath('/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc')}</preprocessor:save>
+    <preprocessor:zonal_statistics>{'operator': 'mean'}</preprocessor:zonal_statistics>
+  </prov:entity>
+  <prov:entity prov:id="recipe:recipe_basics_zonal_mean_lines.yml">
+    <attribute:description>Zonal mean line plots of basic physical variables of the climate system.</attribute:description>
+    <attribute:references>[]</attribute:references>
+  </prov:entity>
+  <prov:agent prov:id="author:Sarauer, Ellen">
+    <attribute:github>ellensarauer</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+  </prov:agent>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1980_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-05-18 17:10:59 UTC by era5cli 1.0.0: reanalysis-era5-single-levels-monthly-means {'variable': 'total_precipitation', 'year': 1980, 'product_type': 'monthly_averaged_reanalysis', 'month': ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'], 'time': ['00:00'], 'format': 'netcdf'}
+2020-05-18 17:10:48 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data3/adaptor.mars.internal-1589821839.6346538-4497-31-e455f98e-1de7-43f5-a761-e66e676c0c29.nc /cache/tmp/e455f98e-1de7-43f5-a761-e66e676c0c29-adaptor.mars.internal-1589821839.6352246-4497-6-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/pr/era5_total_precipitation_1980_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19810101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 1.8.3rc (http://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Arthur Grundner (b309170) on l40347 (Linux 4.18.0-513.24.1.el8_9.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/mpim/0019/icon_grid_0019_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/home/b/b309170/bd1179_work/icon-ml_models/icon-a-ml/bin/icon at 20241120 184042</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>19</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>https://gitlab.dkrz.de/icon-ml/icon_developments/icon-a-ml.git@10a65f19e528372b94ca99c99c0b5dc573523136</attribute:source>
+    <attribute:source_file>/work/bd1179/b309170/icon-ml_models/icon-a-ml/experiments/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs/ag_atm_amip_r2b5_auto_tuned_baseline_20yrs_atm_2d_ml_19810101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>e941b1d0-ab58-11e8-ba4f-bdd1e82b9e6d</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasStartedBy>
+    <prov:activity prov:ref="task:zonal_means_pr/plot"/>
+    <prov:trigger prov:ref="recipe:recipe_basics_zonal_mean_lines.yml"/>
+    <prov:starter prov:ref="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  </prov:wasStartedBy>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/OBS/Tier2/GPCP-SG/OBS_GPCP-SG_atmos_2.3_Amon_pr_197901-202512.nc">
+    <attribute:Conventions>CF-1.7</attribute:Conventions>
+    <attribute:history>Created on 2026-02-06 08:12:39</attribute:history>
+    <attribute:host>levante0.lvt.dkrz.de</attribute:host>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>atmos</attribute:modeling_realm>
+    <attribute:project_id>OBS</attribute:project_id>
+    <attribute:reference>doi not found</attribute:reference>
+    <attribute:source>https://downloads.psl.noaa.gov/Datasets/gpcp/precip.mon.mean.nc</attribute:source>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/OBS/Tier2/GPCP-SG/OBS_GPCP-SG_atmos_2.3_Amon_pr_197901-202512.nc</attribute:source_file>
+    <attribute:tier>2</attribute:tier>
+    <attribute:title>GPCP-SG data reformatted for ESMValTool v2.13.0.dev158+gb65963621</attribute:title>
+    <attribute:user>b380103</attribute:user>
+    <attribute:version>2.3</attribute:version>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19810101.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/plot"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19810101.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/plot"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/output_iconeval/0004_test_20260331_083943UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260331_084001/preproc/zonal_means_pr/pr/ICON_ICON_ag-atm-amip-r2b5-auto-tuned-baseline-20yrs_atm-2d-ml_Amon_pr_19790101-19810101.nc"/>
+    <prov:activity prov:ref="task:zonal_means_pr/plot"/>
+  </prov:wasDerivedFrom>
+  <prov:activity prov:id="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+</prov:document>
