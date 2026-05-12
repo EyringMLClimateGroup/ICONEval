@@ -1,5 +1,7 @@
 """Publish ESMValTool results on public website using DKRZ's swift module."""
 
+from __future__ import annotations
+
 import logging
 import time
 from datetime import UTC, datetime
@@ -18,9 +20,9 @@ from iconeval.output_handling._summarize import summarize
 
 logger = logger.opt(colors=True)
 
-SWIFT_BASE = "https://swift.dkrz.de/"
-SWIFTENV = Path().home() / ".swiftenv"
-SWIFT = {}
+SWIFT_BASE_URL = "https://swift.dkrz.de/"
+SWIFT_ENV_FILE = Path().home() / ".swiftenv"
+SWIFT_ENV: dict[str, str] = {}
 
 MAX_FILE_SIZE_FOR_UPLOAD = 4_500_000_000  # 4.5 GB
 
@@ -135,7 +137,7 @@ def _create_swift_token() -> None:
     /sw/spack-levante/py-python-swiftclient-3.12.0-weclvr/bin/swift-token.
 
     """
-    logger.info(f"Creating new swift token ({SWIFTENV})")
+    logger.info(f"Creating new swift token ({SWIFT_ENV_FILE})")
     account = input("DKRZ account (can be username or project account): ")
     username = input("DKRZ username: ")
     password = getpass()
@@ -146,7 +148,7 @@ def _create_swift_token() -> None:
 
     try:
         response = requests.get(
-            SWIFT_BASE + "auth/v1.0",
+            SWIFT_BASE_URL + "auth/v1.0",
             headers={
                 "X-Auth-User": f"{account}:{username}",
                 "X-Auth-Key": password,
@@ -162,7 +164,7 @@ def _create_swift_token() -> None:
         expires = expires_at.strftime("%a %d. %b %H:%M:%S UTC %Y")
 
         if expires and token and storage_url:
-            SWIFTENV.write_text(
+            SWIFT_ENV_FILE.write_text(
                 f"#token expires on: {expires}\n"
                 f"setenv OS_AUTH_TOKEN {token}\n"
                 f"setenv OS_STORAGE_URL {storage_url}\n"
@@ -170,7 +172,7 @@ def _create_swift_token() -> None:
                 f'setenv OS_USERNAME " "\n'
                 f'setenv OS_PASSWORD " "\n',
             )
-            SWIFTENV.chmod(0o600)
+            SWIFT_ENV_FILE.chmod(0o600)
         else:
             msg = "Failed to create new swift token"
             raise ValueError(msg)
@@ -186,9 +188,9 @@ def _create_swift_token() -> None:
 def _load_swiftenv() -> None:
     """Load swiftenv into global SWIFT dict."""
     (token, url, _expire_dt) = _read_swiftenv()
-    SWIFT["TOKEN"] = token
-    SWIFT["OS_AUTH_TOKEN"] = token
-    SWIFT["OS_STORAGE_URL"] = url
+    SWIFT_ENV["TOKEN"] = token
+    SWIFT_ENV["OS_AUTH_TOKEN"] = token
+    SWIFT_ENV["OS_STORAGE_URL"] = url
 
 
 def _publish_html(
@@ -204,8 +206,8 @@ def _publish_html(
 
     logging.getLogger("swiftclient").setLevel(logging.WARNING)
     swift_opts = {
-        "os_auth_token": SWIFT["OS_AUTH_TOKEN"],
-        "os_storage_url": SWIFT["OS_STORAGE_URL"],
+        "os_auth_token": SWIFT_ENV["OS_AUTH_TOKEN"],
+        "os_storage_url": SWIFT_ENV["OS_STORAGE_URL"],
     }
     with SwiftService(swift_opts) as swift:
         logger.info("File upload started (this may take a while)")
@@ -244,7 +246,7 @@ def _publish_html(
         f"container '{container_name}' under directory '{dir_name}'",
     )
 
-    url = f"{SWIFT['OS_STORAGE_URL']}/{container_name}/{dir_name}/index.html"
+    url = f"{SWIFT_ENV['OS_STORAGE_URL']}/{container_name}/{dir_name}/index.html"
     logger.info(f"Published HTML to <cyan>{url}</cyan>")
 
     return url
@@ -252,7 +254,7 @@ def _publish_html(
 
 def _read_swiftenv() -> tuple[str, str, datetime]:
     """Read .swiftenv file."""
-    swiftenv_content = SWIFTENV.read_text()
+    swiftenv_content = SWIFT_ENV_FILE.read_text()
     swiftenv_lines = swiftenv_content.split("\n")
 
     expire_str = " ".join(swiftenv_lines[0].split(" ")[3:])
@@ -266,7 +268,7 @@ def _read_swiftenv() -> tuple[str, str, datetime]:
 
 def _valid_swift_token_available() -> bool:
     """Check if valid swift token is available."""
-    if not SWIFTENV.is_file():
+    if not SWIFT_ENV_FILE.is_file():
         logger.debug("No swift token available")
         return False
 
@@ -275,14 +277,14 @@ def _valid_swift_token_available() -> bool:
     # Check expiration
     now = datetime.now()
     if now > expire_dt:
-        logger.info(f"Swift token ({SWIFTENV}) expired on {expire_dt}")
+        logger.info(f"Swift token ({SWIFT_ENV_FILE}) expired on {expire_dt}")
         return False
 
     # Check token itself
     try:
         head_account(url, token)
     except ClientException:
-        logger.warning(f"Swift token ({SWIFTENV}) is corrupted")
+        logger.warning(f"Swift token ({SWIFT_ENV_FILE}) is corrupted")
         return False
 
     return True
