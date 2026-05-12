@@ -141,7 +141,11 @@ def test_publish_esmvaltool_html_files_to_large(
     # Avoid overwriting existing tokens
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "SWIFT_ENV_FILE",
+        swift_token,
+    )
 
     # Make all files to large
     monkeypatch.setattr(
@@ -204,7 +208,7 @@ def test_publish_esmvaltool_html_force(
         shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
         monkeypatch.setattr(
             iconeval.output_handling.publish_html,
-            "SWIFTENV",
+            "SWIFT_ENV_FILE",
             swift_token,
         )
 
@@ -284,7 +288,11 @@ def test_publish_esmvaltool_invalid_token_fail(
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(sample_data_path / "swift" / "expired_swiftenv", swift_token)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "SWIFT_ENV_FILE",
+        swift_token,
+    )
 
     # Raise error when token is created
     mocked_requests.get.return_value.headers["x-auth-token"] = None
@@ -308,7 +316,11 @@ def test_publish_esmvaltool_invalid_request_fail(
     swift_token = tmp_path / "swift" / "swiftenv"
     swift_token.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
-    monkeypatch.setattr(iconeval.output_handling.publish_html, "SWIFTENV", swift_token)
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "SWIFT_ENV_FILE",
+        swift_token,
+    )
 
     # Raise error when checking token to force creation of new token
     mocked_swift_head_account.side_effect = ClientException("corrupted token")
