@@ -186,11 +186,11 @@ def use_custom_swiftenv(
 ) -> None:
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
-        "SWIFT_BASE",
+        "SWIFT_BASE_URL",
         "url/to/swift_storage/",
     )
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
-        "SWIFTENV",
+        "SWIFT_ENV_FILE",
         sample_data_path / "swift" / "swiftenv",
     )

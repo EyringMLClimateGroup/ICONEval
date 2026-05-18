@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import shutil
 from typing import TYPE_CHECKING
 
 import pytest
 
 from iconeval.output_handling._summarize import summarize
-from tests.integration import assert_output
+from tests.integration import assert_output, copy_to_tmp_path
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -27,22 +26,9 @@ def test_summarize(
     sample_data_path: Path,
     tmp_path: Path,
 ) -> None:
-    # Copy sample output to temporary directory so files can be created
-    src_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-    esmvaltool_output = tmp_path / "recipes_zonal-means"
-    esmvaltool_output.mkdir(parents=True, exist_ok=True)
-    subdirs = [
-        "recipe_basics_zonal_mean_lines_20260318_093429",
-        "recipe_ocean_zonal_mean_lines_20260318_093429",
-    ]
-    for subdir in subdirs:
-        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
-
-    summarize(esmvaltool_output, description=description)
-
-    # Check output; for this, we remove the previously created subdirectories
-    for subdir in subdirs:
-        shutil.rmtree(esmvaltool_output / subdir)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        summarize(esmvaltool_output, description=description)
     assert_output(
         tmp_path,
         esmvaltool_output,
@@ -57,19 +43,9 @@ def test_summarize_empty_logs(
     sample_data_path: Path,
     tmp_path: Path,
 ) -> None:
-    # Copy sample output to temporary directory so files can be created
-    src_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    esmvaltool_output = tmp_path / "recipes_maps"
-    esmvaltool_output.mkdir(parents=True, exist_ok=True)
-    subdirs = ["recipe_basics_maps"]
-    for subdir in subdirs:
-        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
-
-    summarize(esmvaltool_output)
-
-    # Check output; for this, we remove the previously created subdirectories
-    for subdir in subdirs:
-        shutil.rmtree(esmvaltool_output / subdir)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        summarize(esmvaltool_output)
     assert_output(
         tmp_path,
         esmvaltool_output,
@@ -84,23 +60,13 @@ def test_summarize_no_debug_log(
     sample_data_path: Path,
     tmp_path: Path,
 ) -> None:
-    # Copy sample output to temporary directory so files can be created
-    src_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    esmvaltool_output = tmp_path / "recipes_maps"
-    esmvaltool_output.mkdir(parents=True, exist_ok=True)
-    subdirs = ["recipe_basics_maps"]
-    for subdir in subdirs:
-        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
-
-    # Remove debug log
-    debug_log = esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-    debug_log.unlink()
-
-    summarize(esmvaltool_output)
-
-    # Check output; for this, we remove the previously created subdirectories
-    for subdir in subdirs:
-        shutil.rmtree(esmvaltool_output / subdir)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        debug_log = (
+            esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
+        )
+        debug_log.unlink()
+        summarize(esmvaltool_output)
     assert_output(
         tmp_path,
         esmvaltool_output,
@@ -115,23 +81,15 @@ def test_summarize_debug_log_single_line(
     sample_data_path: Path,
     tmp_path: Path,
 ) -> None:
-    # Copy sample output to temporary directory so files can be created
-    src_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    esmvaltool_output = tmp_path / "recipes_maps"
-    esmvaltool_output.mkdir(parents=True, exist_ok=True)
-    subdirs = ["recipe_basics_maps"]
-    for subdir in subdirs:
-        shutil.copytree(src_dir / subdir, esmvaltool_output / subdir)
-
-    # Create debug log file with single line
-    debug_log = esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-    debug_log.write_text("this is a single line that cannot be used to infer runtime")
-
-    summarize(esmvaltool_output)
-
-    # Check output; for this, we remove the previously created subdirectories
-    for subdir in subdirs:
-        shutil.rmtree(esmvaltool_output / subdir)
+    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
+    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
+        debug_log = (
+            esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
+        )
+        debug_log.write_text(
+            "this is a single line that cannot be used to infer runtime",
+        )
+        summarize(esmvaltool_output)
     assert_output(
         tmp_path,
         esmvaltool_output,
