@@ -9,18 +9,19 @@ repos:
       - id: check-ast
       - id: check-case-conflict
       - id: check-merge-conflict
+      - id: check-illegal-windows-names
       - id: debug-statements
       - id: end-of-file-fixer
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.9
+    rev: v0.15.21
     hooks:
       - id: ruff-check
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.20.0
+    rev: v2.3.0
     hooks:
       - id: mypy
         additional_dependencies:
@@ -36,12 +37,12 @@ repos:
     hooks:
       - id: codespell
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.1
+    rev: 0.37.4
     hooks:
       - id: check-citation-file-format
       - id: check-github-workflows
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.23.1
+    rev: v1.26.1
     hooks:
       - id: zizmor
         args: [--fix=safe]
