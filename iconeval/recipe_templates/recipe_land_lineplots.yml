@@ -1,5 +1,6 @@
 # ESMValTool
-#TAGS landafs
+#TAGS land
+#TAGS timeseries
 ---
 documentation:
   title: Basic Evaluation of Land - Timeseries and Seasonal Cycles.

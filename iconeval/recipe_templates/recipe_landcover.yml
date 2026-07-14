@@ -10,28 +10,12 @@ documentation:
     for the full globe and large scale regions.
 
   authors:
-    - hagemann_stefan
-    - loew_alexander
-    - mueller_benjamin
-    - stacke_tobias
-
-  maintainer:
-    - righi_mattia
-
-  references:
-    - georgievski18tac
-
-  observation references:
-    - esacci-landcover
-
-  projects:
-    - crescendo
+    - gier_bettina
 
 datasets: "{{dataset_list}}"
 
 datasets_other: &datasets_other
   - {dataset: UKESM1-0-LL, project: CMIP6, exp: historical,  grid: gn, ensemble: r1i1p1f2}
-  #- {dataset: ICON-ESM-LR, project: CMIP6, exp: historical,  grid: gn, ensemble: r1i1p1f1} # baresoilfrac missing past 1859
   - {dataset: ESACCI-LANDCOVER, project: OBS,   type: sat,   version: L4-LCCS-Map-300m-P5Y-aggregated-0.500000Deg, tier: 2}
 
 preprocessors:
