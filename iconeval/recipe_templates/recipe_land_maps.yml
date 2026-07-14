@@ -5,7 +5,7 @@
 documentation:
   title: Basic Evaluation of Land Variables.
   description: >
-    Show plots of several land variables that can be used for 
+    Show plots of several land variables that can be used for
     the evaluations of coupled simulations containing
     land components ("sanity checks").
   authors:
