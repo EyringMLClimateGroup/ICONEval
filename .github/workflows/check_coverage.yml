@@ -11,10 +11,9 @@ on:
       - v*.x
   pull_request:
 
-# Required shell entrypoint to have properly configured bash shell
 defaults:
   run:
-    shell: bash -l {0}
+    shell: pixi run bash -e {0}
 
 jobs:
   check_coverage:
@@ -26,16 +25,10 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Setup Conda environment
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+      - name: Setup environment
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
-          activate-environment: iconeval
-          environment-file: environment.yml
-          python-version: ${{ matrix.python-version }}
-          miniforge-version: latest
-          use-mamba: true
-      - name: Install ICONEval
-        run: pip install --no-deps -e .[develop]
+          frozen: true
       - name: Run tests
         run: |
           pytest -n 2 --junitxml=pytest.xml --cov-report=xml:coverage.xml --cov-report=term-missing:skip-covered --cov=iconeval tests/
@@ -43,7 +36,7 @@ jobs:
         id: coverage
         uses: MishaKav/pytest-coverage-comment@fd9adbdca9fdfbe2b9bfa44a7340e6a83346ce6c # v1.10.0
         with:
-          coverage-path-prefix: iconeval/
+          coverage-path-prefix: src/iconeval/
           hide-comment: true
           junitxml-path: ./pytest.xml
           pytest-xml-coverage-path: ./coverage.xml
