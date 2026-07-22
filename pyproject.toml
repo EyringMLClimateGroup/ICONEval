@@ -49,9 +49,6 @@ iconeval = "iconeval.main:main"
 publish_html = "iconeval.output_handling.publish_html:main"
 
 
-[tool.setuptools]
-packages = ['iconeval']
-
 [tool.codespell]
 ignore-words-list = "emac,oce,pres"
 
