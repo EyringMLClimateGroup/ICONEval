@@ -5,8 +5,8 @@
 To avoid installing a development installation of ESMValTool in a conda/mamba
 environment that creates thousands of files, a containerized installation can
 be used. This can be done with [Apptainer](https://apptainer.org/) (formerly
-Singularity), which is an alternative to [Docker](https://www.docker.com/) more
-suitable for HPC systems.
+Singularity), which is an alternative to [Docker](https://www.docker.com/)
+better suited for HPC systems.
 
 ## Levante
 
