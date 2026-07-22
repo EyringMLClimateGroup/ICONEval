@@ -19,7 +19,7 @@ singularity run -B /work:/work,/scratch:/scratch esmvaltool.sif run /path/to/rec
 
 Make sure to `module load singularity` first.
 
-## Build custom Container
+## Build your own Container Image
 
 To build a custom container image, you need root access. Note that you can
 build the container image on another machine and then copy it to the machine of
