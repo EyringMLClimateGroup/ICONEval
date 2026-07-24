@@ -138,6 +138,7 @@ esmvaltool = { git = "https://github.com/ESMValGroup/ESMValTool.git", branch = "
 [tool.pixi.feature.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
+pytest-datadir = "*"
 pytest-mock = "*"
 pytest-xdist = "*"
 
