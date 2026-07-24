@@ -7,7 +7,7 @@ permissions:
 
 on:
   push:
-    branches: [main, complete_transfer]
+    branches: [main]
 
 defaults:
   run:
