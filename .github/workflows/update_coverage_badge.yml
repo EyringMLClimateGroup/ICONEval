@@ -3,10 +3,11 @@ name: Update Coverage Badge
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   push:
-    branches: [main]
+    branches: [main, complete_transfer]
 
 defaults:
   run:
@@ -51,16 +52,13 @@ jobs:
           else
             echo "Changes detected"
           fi
-      - name: Set name of target branch
-        run: |
-          export TARGET_BRANCH=update_coverage_badge_$(date +%s)
-          echo "TARGET_BRANCH=${TARGET_BRANCH}" >> ${GITHUB_ENV}
-          echo "Target branch: ${TARGET_BRANCH}"
-      - name: Commit changes
+      - name: Create Pull Request
         if: ${{ env.GIT_DIFF != '' }}
-        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          branch: ${{ env.TARGET_BRANCH }}
-          commit_message: Update coverage badge
-          create_branch: true
-          file_pattern: README.md
+          commit-message: Update coverage badge
+          delete-branch: true
+          title: Update coverage badge
+          labels: |
+            documentation
+          reviewers: schlunma
