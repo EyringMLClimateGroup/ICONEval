@@ -16,6 +16,7 @@ import iconeval._simulation_info
 import iconeval.main
 import iconeval.output_handling._summarize
 import iconeval.output_handling.publish_html
+from iconeval._logging import _add_console_handler
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -26,6 +27,9 @@ if TYPE_CHECKING:
 pytest.register_assert_rewrite("tests.integration")
 
 logger = logger.opt(colors=True)
+
+
+# Pytest configuration
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -40,23 +44,7 @@ def pytest_collection_modifyitems(items: list[pytest.Function]) -> None:
             item.add_marker("uses_expected_output")
 
 
-@pytest.fixture
-def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixture]:
-    """Overwrite default caplog feature so it works with loguru."""
-    handler_id = logger.add(
-        caplog.handler,
-        format="{message}",
-        level=0,
-        filter=lambda record: record["level"].no >= caplog.handler.level,
-        enqueue=False,
-    )
-    yield caplog
-    logger.remove(handler_id)
-
-
-@pytest.fixture
-def expected_output_dir() -> Path:
-    return Path(str(files("tests"))).resolve() / "expected_output"
+# Automatically used fixtures
 
 
 @pytest.fixture(autouse=True)
@@ -122,6 +110,19 @@ def fix_user_input(mocker: MockerFixture) -> None:
 
 
 @pytest.fixture(autouse=True)
+def ignore_user_debug_log(monkeypatch: pytest.MonkeyPatch) -> None:
+    def configure_logging(log_level: str, log_file: str | Path | None = None) -> None:
+        _add_console_handler(log_level)
+
+    monkeypatch.setattr(iconeval.main, "configure_logging", configure_logging)
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "configure_logging",
+        configure_logging,
+    )
+
+
+@pytest.fixture(autouse=True)
 def mocked_swift_head_account(mocker: MockerFixture) -> Mock:
     return mocker.patch.object(
         iconeval.output_handling.publish_html,
@@ -163,20 +164,10 @@ def mocked_swift_service(mocker: MockerFixture) -> Mock:
     )
 
 
-@pytest.fixture
-def recipe_template_dir() -> Path:
-    return Path(str(files("iconeval"))).resolve() / "recipe_templates"
-
-
 @pytest.fixture(autouse=True)
 def remove_default_logger_handlers() -> None:
     """Remove all potential logging handlers before running any test."""
     logger.remove()
-
-
-@pytest.fixture
-def sample_data_path() -> Path:
-    return Path(str(files("tests"))).resolve() / "sample_data"
 
 
 @pytest.fixture(autouse=True)
@@ -194,3 +185,35 @@ def use_custom_swiftenv(
         "SWIFT_ENV_FILE",
         sample_data_path / "swift" / "swiftenv",
     )
+
+
+# Manual fixtures
+
+
+@pytest.fixture
+def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixture]:
+    """Overwrite default caplog feature so it works with loguru."""
+    handler_id = logger.add(
+        caplog.handler,
+        format="{message}",
+        level=0,
+        filter=lambda record: record["level"].no >= caplog.handler.level,
+        enqueue=False,
+    )
+    yield caplog
+    logger.remove(handler_id)
+
+
+@pytest.fixture
+def expected_output_dir() -> Path:
+    return Path(str(files("tests"))).resolve() / "expected_output"
+
+
+@pytest.fixture
+def recipe_template_dir() -> Path:
+    return Path(str(files("iconeval"))).resolve() / "recipe_templates"
+
+
+@pytest.fixture
+def sample_data_path() -> Path:
+    return Path(str(files("tests"))).resolve() / "sample_data"

@@ -37,7 +37,7 @@ def test_publish_esmvaltool_html_multiple_recipes(
 ) -> None:
     sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        url = publish_esmvaltool_html(esmvaltool_output)
         expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
     assert (
@@ -87,7 +87,7 @@ def test_publish_esmvaltool_html_single_recipe(
     )
 
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        url = publish_esmvaltool_html(esmvaltool_output)
         expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
     assert (
@@ -157,7 +157,7 @@ def test_publish_esmvaltool_html_files_to_large(
     sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
 
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        url = publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        url = publish_esmvaltool_html(esmvaltool_output)
 
     assert url == "my-x-storage-url/iconeval/recipes_zonal-means/index.html"
 
@@ -217,7 +217,6 @@ def test_publish_esmvaltool_html_force(
             container_name="my_container",
             dir_name="my_dir",
             log_level="debug",
-            log_file=None,
             summary_description="this is a nice summary of the output",
             force_new_token=True,
         )
@@ -274,7 +273,7 @@ def test_publish_esmvaltool_html_no_dir_fail(
     esmvaltool_output = sample_data_path / "esmvaltool_output" / "non_existing_dir"
     msg = r"is not a directory"
     with pytest.raises(NotADirectoryError, match=re.escape(msg)):
-        publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        publish_esmvaltool_html(esmvaltool_output)
 
 
 def test_publish_esmvaltool_invalid_token_fail(
@@ -301,7 +300,7 @@ def test_publish_esmvaltool_invalid_token_fail(
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         msg = r"Failed to create new swift token"
         with pytest.raises(ValueError, match=re.escape(msg)):
-            publish_esmvaltool_html(esmvaltool_output, log_file=None)
+            publish_esmvaltool_html(esmvaltool_output)
 
 
 def test_publish_esmvaltool_invalid_request_fail(
@@ -334,10 +333,7 @@ def test_publish_esmvaltool_invalid_request_fail(
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         msg = r"Failed to create new swift token: failed request"
         with pytest.raises(requests.RequestException, match=re.escape(msg)):
-            publish_esmvaltool_html(
-                esmvaltool_output,
-                log_file=None,
-            )
+            publish_esmvaltool_html(esmvaltool_output)
 
     # Check logging output
     assert "is corrupted" in caplog.text
@@ -355,7 +351,4 @@ def test_publish_esmvaltool_upload_fail(
     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
         msg = r"Upload of {'success': False, 'error': 42} failed: 42"
         with pytest.raises(SwiftError, match=re.escape(msg)):
-            publish_esmvaltool_html(
-                esmvaltool_output,
-                log_file=None,
-            )
+            publish_esmvaltool_html(esmvaltool_output, log_file=None)

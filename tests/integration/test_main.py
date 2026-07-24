@@ -10,7 +10,6 @@ import pytest
 import iconeval._dependencies
 import iconeval._job
 import iconeval.main
-import iconeval.output_handling.publish_html
 from iconeval.main import icon_evaluation, main
 from tests.integration import assert_output
 
@@ -67,7 +66,6 @@ def test_icon_evaluation_single_input_success(
 
     actual_output = icon_evaluation(
         input_dir,
-        log_file=None,
         output_dir=output_dir,
         tags=tags,
     )
@@ -179,7 +177,6 @@ def test_icon_evaluation_multi_input_success(
             recipe_template_dir / "recipe_portrait_plot.yml",
         ],
         log_level="debug",
-        log_file=None,
         output_dir=output_dir,
         account="Slurm_account",
         esmvaltool_executable="ESMValTool executable",
@@ -322,7 +319,6 @@ def test_icon_evaluation_single_input_background(
     actual_output = icon_evaluation(
         input_dir,
         recipe_templates=recipe_template_dir / "recipe_basics_timeseries.yml",
-        log_file=None,
         output_dir=output_dir,
         background=True,
         dask=False,
@@ -424,7 +420,6 @@ def test_icon_evaluation_single_input_fail(
         input_dir,
         publish_html=True,
         recipe_templates=str(recipe_template_dir / "recipe_basics_timeseries.yml"),
-        log_file=None,
         output_dir=output_dir,
     )
 
@@ -570,7 +565,6 @@ def test_icon_evaluation_single_input_run_longer(
             str(recipe_template_dir / "recipe_basics_timeseries.yml"),
             recipe_template_dir / "recipe_basics_maps.yml",
         ],
-        log_file=None,
         output_dir=output_dir,
     )
 
@@ -679,7 +673,6 @@ def test_icon_evaluation_single_input_custom_recipe_options(
         / "recipe_templates"
         / "recipe_basics_zonal_mean_lines.yml",
         always_use_default_recipe_templates=True,
-        log_file=None,
         output_dir=output_dir,
         tags="_custom_tag_",
         project="EMAC",
@@ -791,7 +784,6 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
             / "recipe_basics_zonal_mean_lines.yml",
             sample_data_path / "recipe_templates" / "recipe_basics_maps.yml",
         ],
-        log_file=None,
         output_dir=output_dir,
         ignore_recipe_esmvaltool_options=True,
         ignore_recipe_srun_options=True,
@@ -884,7 +876,7 @@ def test_icon_evaluation_empty_input_dir_fail(tmp_path: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"No input directory given"
     with pytest.raises(ValueError, match=re.escape(msg)):
-        icon_evaluation(log_file=None, output_dir=output_dir)
+        icon_evaluation(output_dir=output_dir)
 
 
 def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
@@ -893,7 +885,7 @@ def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"does not exist"
     with pytest.raises(NotADirectoryError, match=re.escape(msg)):
-        icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
+        icon_evaluation(input_dir, output_dir=output_dir)
 
 
 def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
@@ -907,7 +899,7 @@ def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"Multiple experiments with the same name are not supported"
     with pytest.raises(ValueError, match=re.escape(msg)):
-        icon_evaluation(*input_dirs, log_file=None, output_dir=output_dir)
+        icon_evaluation(*input_dirs, output_dir=output_dir)
 
 
 def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
@@ -919,7 +911,6 @@ def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError, match=re.escape(msg)):
         icon_evaluation(
             input_dir,
-            log_file=None,
             output_dir=output_dir,
             recipe_templates=tmp_path / "non_existing_recipe.yml",
         )
@@ -945,7 +936,6 @@ def test_icon_evaluation_invalid_no_recipe_templates_fail(
     with pytest.raises(ValueError, match=re.escape(error_msg)):
         icon_evaluation(
             input_dir,
-            log_file=None,
             output_dir=output_dir,
             recipe_templates=[],
             tags=tags,
@@ -963,7 +953,6 @@ def test_icon_evaluation_invalid_recipe_template_invalid_glob_fail(
     with pytest.raises(FileNotFoundError, match=re.escape(msg)):
         icon_evaluation(
             input_dir,
-            log_file=None,
             output_dir=output_dir,
             recipe_templates=tmp_path / "*.yml",
         )
