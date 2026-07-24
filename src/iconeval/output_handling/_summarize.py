@@ -69,7 +69,6 @@ def get_html_description(session: Session, date: datetime) -> str:
             f"<li>{person}</li>"
             for person in [
                 "Manuel Schlund (manuel.schlund@dlr.de)",
-                "Veronika Eyring (veronika.eyring@dlr.de)",
             ]
         ],
     )

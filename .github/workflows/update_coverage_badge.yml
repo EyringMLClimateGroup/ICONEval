@@ -3,6 +3,7 @@ name: Update Coverage Badge
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   push:
@@ -18,7 +19,7 @@ jobs:
     name: Update Coverage Badge
     steps:
       - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: true  # necessary for git-auto-commit-action
@@ -42,25 +43,12 @@ jobs:
           sed -i "/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n${STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML}\n<!-- Pytest Coverage Comment:End -->" ./README.md
         env:
           STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
-      - name: Detect changes
-        run: |
-          export GIT_DIFF=$(git diff --stat | head -n 1)
-          echo "GIT_DIFF=${GIT_DIFF}" >> ${GITHUB_ENV}
-          if [ "${GIT_DIFF}" == '' ]; then
-            echo "No changes detected"
-          else
-            echo "Changes detected"
-          fi
-      - name: Set name of target branch
-        run: |
-          export TARGET_BRANCH=update_coverage_badge_$(date +%s)
-          echo "TARGET_BRANCH=${TARGET_BRANCH}" >> ${GITHUB_ENV}
-          echo "Target branch: ${TARGET_BRANCH}"
-      - name: Commit changes
-        if: ${{ env.GIT_DIFF != '' }}
-        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          branch: ${{ env.TARGET_BRANCH }}
-          commit_message: Update coverage badge
-          create_branch: true
-          file_pattern: README.md
+          commit-message: Update coverage badge
+          delete-branch: true
+          title: Update coverage badge
+          labels: |
+            documentation
+          reviewers: schlunma
