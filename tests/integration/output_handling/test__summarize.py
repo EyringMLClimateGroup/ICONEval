@@ -7,7 +7,6 @@ import pytest
 from iconeval.output_handling._summarize import summarize
 
 if TYPE_CHECKING:
-
     from pytest_datadir.plugin import LazyDataDir
 
     from tests.integration import OutputDirRegression
@@ -56,6 +55,6 @@ def test_summarize_debug_log_single_line(
 ) -> None:
     esmvaltool_output = lazy_shared_datadir / "recipes_maps"
     debug_log = esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-    debug_log.write_text("this is a single line that cannot be used to infer runtime")
+    debug_log.write_text("this is a single line that cannot be used to infer runtime\n")
     summarize(esmvaltool_output)
     output_dir_regression.check(esmvaltool_output)

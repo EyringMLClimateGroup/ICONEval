@@ -26,7 +26,7 @@ def tmp_input_dir(tmp_path: Path) -> Path:
 
 
 @pytest.fixture
-def tmp_input_dirs(tmp_path: Path) -> Path:
+def tmp_input_dirs(tmp_path: Path) -> list[Path]:
     input_dirs = [tmp_path / "input_1", tmp_path / "input_2"]
     for input_dir in input_dirs:
         input_dir.mkdir(parents=True, exist_ok=True)

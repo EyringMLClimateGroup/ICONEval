@@ -237,7 +237,7 @@ def test_publish_esmvaltool_html_force(
     assert mocked_service_instance.upload.call_count == 1
     upload_call = mocked_service_instance.upload.mock_calls[0]
     assert upload_call.args == ()
-    assert len(upload_call.kwargs) == 2
+    assert len(upload_call.kwargs) == 2  # noqa: PLR2004
     assert upload_call.kwargs["container"] == "my_container"
     objects_to_upload = [
         (str(f), str(Path("my_dir") / f.relative_to(esmvaltool_output)))

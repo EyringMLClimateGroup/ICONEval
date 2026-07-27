@@ -46,9 +46,9 @@ class OutputDirRegression:
         )
 
         regen_output = (
-            not self.expected_dir.is_dir() or
-            self.request.config.getoption("force_regen") or
-            self.request.config.getoption("regen_all")
+            not self.expected_dir.is_dir()
+            or self.request.config.getoption("force_regen")
+            or self.request.config.getoption("regen_all")
         )
         if regen_output:
             self._regenerate_output(obtained_dir, tmp_path)
@@ -114,14 +114,13 @@ class OutputDirRegression:
         if not self.request.config.getoption("regen_all"):
             if self.request.config.getoption("force_regen"):
                 msg = (
-                        f"--force-regen set, regenerating expected output "
-                        f"directory at: {self.expected_dir}"
-                    )
+                    f"--force-regen set, regenerating expected output "
+                    f"directory at: {self.expected_dir}"
+                )
             else:
                 msg = (
-                        f"Expected output directory not found, created "
-                        f"{self.expected_dir}"
-                    )
+                    f"Expected output directory not found, created {self.expected_dir}"
+                )
             pytest.fail(msg)
 
         # Sanitize text files

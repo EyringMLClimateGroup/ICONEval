@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import logging
-from textwrap import dedent
 import time
 from datetime import UTC, datetime
 from getpass import getpass
 from pathlib import Path
+from textwrap import dedent
 
 import fire
 import requests
