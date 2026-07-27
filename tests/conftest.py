@@ -48,7 +48,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         help=(
             "Regenerate all files, letting tests pass (use to regenerate "
             "everything in one run)."
-            ),
+        ),
     )
 
 

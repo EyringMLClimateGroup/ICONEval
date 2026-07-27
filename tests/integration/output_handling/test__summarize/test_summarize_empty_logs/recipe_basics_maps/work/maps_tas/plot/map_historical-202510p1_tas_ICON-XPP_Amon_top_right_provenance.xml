@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<prov:document xmlns:attribute="https://www.esmvaltool.org/attribute" xmlns:author="https://www.esmvaltool.org/author" xmlns:file="https://www.esmvaltool.org/file" xmlns:software="https://www.esmvaltool.org/software" xmlns:recipe="https://www.esmvaltool.org/recipe" xmlns:project="https://www.esmvaltool.org/project" xmlns:task="https://www.esmvaltool.org/task" xmlns:preprocessor="https://www.esmvaltool.org/preprocessor" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1991_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasStartedBy>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+    <prov:trigger prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:starter prov:ref="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  </prov:wasStartedBy>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1980_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:37:39 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data3/adaptor.mars.internal-1588063055.0490117-28598-31-15224bcb-95da-4782-8172-19d7f33bc1d3.nc /cache/tmp/15224bcb-95da-4782-8172-19d7f33bc1d3-adaptor.mars.internal-1588063055.0495949-28598-14-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1980_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1990_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1994_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:42:26 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data2/adaptor.mars.internal-1588063342.4154634-14240-29-b3073db8-8024-477e-85d5-0f3a8bd17c63.nc /cache/tmp/b3073db8-8024-477e-85d5-0f3a8bd17c63-adaptor.mars.internal-1588063342.4159622-14240-9-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1994_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1994_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1986_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:40:32 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data0/adaptor.mars.internal-1588063227.717167-10848-3-16e23323-c91b-43fc-98fa-5466999f647b.nc /cache/tmp/16e23323-c91b-43fc-98fa-5466999f647b-adaptor.mars.internal-1588063227.7177055-10848-2-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1986_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1979_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1985_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:40:24 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data5/adaptor.mars.internal-1588063217.6421845-9344-27-b1fb02a6-0603-4260-b84f-2f88f12e892a.nc /cache/tmp/b1fb02a6-0603-4260-b84f-2f88f12e892a-adaptor.mars.internal-1588063217.6427333-9344-10-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1985_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1998_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:43:53 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data0/adaptor.mars.internal-1588063428.3900936-12249-1-3d41e1d2-541c-44ca-9702-5004a3a66eb2.nc /cache/tmp/3d41e1d2-541c-44ca-9702-5004a3a66eb2-adaptor.mars.internal-1588063428.392098-12249-1-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1998_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1992_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1979_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:37:27 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data2/adaptor.mars.internal-1588063042.1066628-7870-35-eae05828-08e5-41d9-a8f9-498e8219a1bf.nc /cache/tmp/eae05828-08e5-41d9-a8f9-498e8219a1bf-adaptor.mars.internal-1588063042.1072505-7870-15-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1979_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_right.nc"/>
+    <prov:agent prov:ref="author:Schlund, Manuel"/>
+  </prov:wasAttributedTo>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1995_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:42:35 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data2/adaptor.mars.internal-1588063351.0292504-5380-35-1c789f20-7b93-45ad-9473-2d3ea5233eab.nc /cache/tmp/1c789f20-7b93-45ad-9473-2d3ea5233eab-adaptor.mars.internal-1588063351.0297968-5380-16-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1995_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Schlund, Manuel"/>
+  </prov:wasAttributedTo>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1990_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:25:42 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data2/adaptor.mars.internal-1588062338.6200206-15866-15-c407a814-a859-45b2-a529-33498ad1c160.nc /cache/tmp/c407a814-a859-45b2-a529-33498ad1c160-adaptor.mars.internal-1588062338.6205983-15866-7-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1990_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1993_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:42:14 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data2/adaptor.mars.internal-1588063330.213961-25717-15-c939d0d7-9260-4039-b7d5-5fe02d7bc364.nc /cache/tmp/c939d0d7-9260-4039-b7d5-5fe02d7bc364-adaptor.mars.internal-1588063330.2144775-25717-5-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1993_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1993_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_right.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:activity prov:ref="task:maps_tas/plot"/>
+  </prov:wasDerivedFrom>
+  <prov:wasStartedBy>
+    <prov:activity prov:ref="task:maps_tas/plot"/>
+    <prov:trigger prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:starter prov:ref="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  </prov:wasStartedBy>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_tas/plot/map_historical-202510p1_tas_ICON-XPP_Amon_top_right.nc">
+    <attribute:caption>Map plot of Near-Surface Air Temperature of dataset ERA5.</attribute:caption>
+    <attribute:facet_used_for_labels>alias</attribute:facet_used_for_labels>
+    <attribute:group_variables_by>variable_group</attribute:group_variables_by>
+    <attribute:long_names>['Near-Surface Air Temperature']</attribute:long_names>
+    <attribute:plot_filename>{plot_type}_{exp}_{real_name}_{dataset}_{mip}</attribute:plot_filename>
+    <attribute:plot_folder>{plot_dir}</attribute:plot_folder>
+    <attribute:plot_types>('world map',)</attribute:plot_types>
+    <attribute:plots>{'map': {'common_cbar': True, 'fontsize': 8, 'gridline_kwargs': {'color': 'darkgray', 'linewidth': 0.5, 'alpha': 0.3}, 'pyplot_kwargs': {'suptitle': '{title} (19790101/19990101)'}, 'plot_kwargs': {'default': {'cmap': 'plasma', 'levels': 12}}}}</attribute:plots>
+    <attribute:realms>('atmosphere',)</attribute:realms>
+    <attribute:scheduler_address>tcp://127.0.0.1:45983</attribute:scheduler_address>
+    <attribute:script>plot</attribute:script>
+    <attribute:script_file>monitor/multi_datasets.py</attribute:script_file>
+    <attribute:themes>('physics',)</attribute:themes>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1997_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:43:41 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data8/adaptor.mars.internal-1588063415.260371-11449-19-88aefb32-4ca2-49fe-bc44-2c537ec3e4f4.nc /cache/tmp/88aefb32-4ca2-49fe-bc44-2c537ec3e4f4-adaptor.mars.internal-1588063415.2609224-11449-5-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1997_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc">
+    <attribute:alias>ERA5</attribute:alias>
+    <attribute:automatic_regrid>True</attribute:automatic_regrid>
+    <attribute:dataset>ERA5</attribute:dataset>
+    <attribute:diagnostic>maps_tas</attribute:diagnostic>
+    <attribute:end_year>1999</attribute:end_year>
+    <attribute:family>E5</attribute:family>
+    <attribute:filename>/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc</attribute:filename>
+    <attribute:frequency>mon</attribute:frequency>
+    <attribute:grib_id>167</attribute:grib_id>
+    <attribute:level>sf</attribute:level>
+    <attribute:long_name>Near-Surface Air Temperature</attribute:long_name>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>['atmos']</attribute:modeling_realm>
+    <attribute:original_short_name>tas</attribute:original_short_name>
+    <attribute:preprocessor>create_map</attribute:preprocessor>
+    <attribute:project>native6</attribute:project>
+    <attribute:recipe_dataset_index>1</attribute:recipe_dataset_index>
+    <attribute:reference_for_monitor_diags>True</attribute:reference_for_monitor_diags>
+    <attribute:short_name>tas</attribute:short_name>
+    <attribute:standard_name>air_temperature</attribute:standard_name>
+    <attribute:start_year>1979</attribute:start_year>
+    <attribute:tier>3</attribute:tier>
+    <attribute:timerange>19790101/19990101</attribute:timerange>
+    <attribute:title>Near-Surface Air Temperature</attribute:title>
+    <attribute:tres>1M</attribute:tres>
+    <attribute:type>reanaly</attribute:type>
+    <attribute:typeid>00</attribute:typeid>
+    <attribute:units>K</attribute:units>
+    <attribute:variable_group>tas</attribute:variable_group>
+    <attribute:version>v1</attribute:version>
+    <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
+    <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
+    <preprocessor:remove_supplementary_variables>{}</preprocessor:remove_supplementary_variables>
+    <preprocessor:save>{'compress': False, 'compute': False, 'filename': PosixPath('/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc')}</preprocessor:save>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1997_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1989_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1996_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:43:24 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data9/adaptor.mars.internal-1588063399.732169-11763-13-c3502510-67f0-4a4e-bb42-be1b2042fa7c.nc /cache/tmp/c3502510-67f0-4a4e-bb42-be1b2042fa7c-adaptor.mars.internal-1588063399.732668-11763-6-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1996_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:activity prov:id="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Lauer, Axel"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1980_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Bonnet, Pauline"/>
+  </prov:wasAttributedTo>
+  <prov:agent prov:id="author:Lauer, Axel">
+    <attribute:email>axel.lauer@dlr.de</attribute:email>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0002-9270-1044</attribute:orcid>
+  </prov:agent>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1998_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1982_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1984_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:40:14 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data7/adaptor.mars.internal-1588063207.8925974-10755-3-c99d4ee6-a0ce-4b61-9779-3d7fbdeb9609.nc /cache/tmp/c99d4ee6-a0ce-4b61-9779-3d7fbdeb9609-adaptor.mars.internal-1588063207.893266-10755-2-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1984_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1999_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:44:04 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data1/adaptor.mars.internal-1588063438.7809196-19490-33-b1250a63-58a1-4b19-8dcc-661d824eea38.nc /cache/tmp/b1250a63-58a1-4b19-8dcc-661d824eea38-adaptor.mars.internal-1588063438.7818935-19490-15-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1999_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1983_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:40:03 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data3/adaptor.mars.internal-1588063198.2945013-22880-35-3fc72fe8-9203-4dc1-aeb5-ad58c05b94b0.nc /cache/tmp/3fc72fe8-9203-4dc1-aeb5-ad58c05b94b0-adaptor.mars.internal-1588063198.2950191-22880-16-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1983_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1999_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:activity prov:id="task:maps_tas/tas"/>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1981_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:39:42 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data9/adaptor.mars.internal-1588063176.5140355-8486-31-28311058-a34e-4db3-a18a-d263ac51af9c.nc /cache/tmp/28311058-a34e-4db3-a18a-d263ac51af9c-adaptor.mars.internal-1588063176.5146086-8486-12-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1981_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1983_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1987_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1985_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1989_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:41:43 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data0/adaptor.mars.internal-1588063299.0600302-5068-33-696a5574-c8e5-4314-bbf1-fe5ffbefb4fc.nc /cache/tmp/696a5574-c8e5-4314-bbf1-fe5ffbefb4fc-adaptor.mars.internal-1588063299.0606737-5068-10-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1989_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Hassler, Birgit"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1988_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="recipe:recipe_basics_maps.yml">
+    <attribute:description>Map plots of basic physical variables of the climate system.</attribute:description>
+    <attribute:references>[]</attribute:references>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1987_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:40:43 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data6/adaptor.mars.internal-1588063238.5872903-24555-17-b3246274-caf7-4c07-b901-0a34194fa5bc.nc /cache/tmp/b3246274-caf7-4c07-b901-0a34194fa5bc-adaptor.mars.internal-1588063238.5878236-24555-7-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1987_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1996_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:agent prov:id="author:Bonnet, Pauline">
+    <attribute:github>Paulinebonnet111</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0003-3780-0784</attribute:orcid>
+  </prov:agent>
+  <prov:agent prov:id="author:Schlund, Manuel">
+    <attribute:email>manuel.schlund@dlr.de</attribute:email>
+    <attribute:github>schlunma</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0001-5251-0158</attribute:orcid>
+  </prov:agent>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1984_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1981_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1986_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:activity prov:id="task:maps_tas/plot"/>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_tas/tas/native6_ERA5_reanaly_v1_Amon_tas_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1995_monthly.nc"/>
+    <prov:activity prov:ref="task:maps_tas/tas"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1982_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:39:52 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data3/adaptor.mars.internal-1588063187.8582919-25379-27-90b8f274-2fb9-43c1-9d81-700e6d4f0495.nc /cache/tmp/90b8f274-2fb9-43c1-9d81-700e6d4f0495-adaptor.mars.internal-1588063187.8588881-25379-13-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1982_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1992_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:42:05 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data5/adaptor.mars.internal-1588063320.076128-23868-23-3b661e1a-b812-4960-8710-5b40a92a6082.nc /cache/tmp/3b661e1a-b812-4960-8710-5b40a92a6082-adaptor.mars.internal-1588063320.076777-23868-11-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1992_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1991_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:41:56 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data3/adaptor.mars.internal-1588063310.9179254-25922-15-a8022549-e128-45ce-8718-ca78e010d37c.nc /cache/tmp/a8022549-e128-45ce-8718-ca78e010d37c-adaptor.mars.internal-1588063310.9188144-25922-7-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1991_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1988_monthly.nc">
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:history>2020-04-28 08:41:27 GMT by grib_to_netcdf-2.16.0: /opt/ecmwf/eccodes/bin/grib_to_netcdf -S param -o /cache/data9/adaptor.mars.internal-1588063283.0981028-20235-21-b2935e78-e12a-4eb6-8ed5-18cd821e9581.nc /cache/tmp/b2935e78-e12a-4eb6-8ed5-18cd821e9581-adaptor.mars.internal-1588063283.098674-20235-9-tmp.grib</attribute:history>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/RAWOBS/Tier3/ERA5/v1/mon/tas/era5_2m_temperature_1988_monthly.nc</attribute:source_file>
+  </prov:entity>
+  <prov:agent prov:id="author:Hassler, Birgit">
+    <attribute:github>hb326</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0003-2724-709X</attribute:orcid>
+  </prov:agent>
+</prov:document>

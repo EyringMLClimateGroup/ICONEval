@@ -1,59 +1,63 @@
 from __future__ import annotations
 
 import filecmp
+from pprint import pformat
+import re
 import shutil
 from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import yaml
+import pytest
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable
+
+    from pytest_datadir.plugin import LazyDataDir
 
 TMP_PATH_PLACEHOLDER = "((tmp_path))"
 
 
 class OutputDirRegression:
-    def __init__(self, *, generate_expected_output: str | None = None) -> None:
+    def __init__(self, original_datadir: Path, request: pytest.FixtureRequest) -> None:
         """Initialize class instance."""
-        self.generate_expected_output = generate_expected_output
+        subdir = re.sub(r"[\W]", "_", request.node.name)
+        self.expected_dir = original_datadir / subdir
+        self.request = request
 
-    def check(
-        self,
-        actual_output: Path,
-        expected_output: Path,
-        empty_dirs: list[str] | None = None,
-        ignore_top_level_files_and_dirs: Iterable[Path] | None = None,
-    ) -> None:
+    def check(self, obtained_dir: Path, empty_subdirs: list[str] | None = None) -> None:
         """Check if files and directories written by code match expected output."""
-        if empty_dirs is None:
-            empty_dirs = []
-        if ignore_top_level_files_and_dirs is None:
-            ignore_top_level_files_and_dirs = []
+        if empty_subdirs is None:
+            empty_subdirs = []
 
-        # If desired, write expected output instead of checking it
-        if self.generate_expected_output is not None:
-            target_dir = (
-                Path(self.generate_expected_output).resolve() / expected_output.name
-            )
-            if target_dir.is_dir():
-                msg = f"Directory {target_dir} already exists"
-                raise FileExistsError(msg)
-            target_dir.mkdir(parents=True, exist_ok=True)
-            for obj in actual_output.iterdir():
-                # if obj.name in ignore_top_level_files_and_dirs:
-                #     continue
-                if obj.is_dir():
-                    shutil.copytree(obj, target_dir / obj.name)
-                else:
-                    shutil.copy2(obj, target_dir)
+        regen_output = (
+            not self.expected_dir.is_dir() or
+            self.request.config.getoption("force_regen") or
+            self.request.config.getoption("regen_all")
+        )
+        if regen_output:
+            shutil.rmtree(self.expected_dir, ignore_errors=True)
+            shutil.copytree(obtained_dir, self.expected_dir)
 
-            # Delete empty directories (those cannot be checkout out on git)
-            subdirs = (d for d in target_dir.iterdir() if d.is_dir())
+            # Empty directories cannot be checked out on git, so we simply
+            # delete them here
+            subdirs = (d for d in self.expected_dir.iterdir() if d.is_dir())
             for subdir in subdirs:
                 if not list(subdir.iterdir()):
                     subdir.rmdir()
+
+            if not self.request.config.getoption("regen_all"):
+                if self.request.config.getoption("force_regen"):
+                    msg = (
+                        f"--force-regen set, regenerating expected output "
+                        f"directory at: {self.expected_dir}"
+                    )
+                else:
+                    msg = (
+                        f"Expected output directory not found, created "
+                        f"{self.expected_dir}"
+                    )
+                pytest.fail(msg)
 
             # Replace temporary directory with placeholder
             # for _root, _, _files in target_dir.walk():
@@ -65,31 +69,41 @@ class OutputDirRegression:
 
             return
 
-        # Empty directories cannot be checked out on git, so we need to account for
-        # this here
-        for empty_dir in empty_dirs:
-            empty_path = actual_output / empty_dir
-            assert empty_path.is_dir()
-            assert len(list(empty_path.iterdir())) == 0
+        # Empty directories cannot be checked out on git, so we need to account
+        # for this here
+        for empty_dir in empty_subdirs:
+            empty_path = obtained_dir / empty_dir
+            msg = f"Assumed empty directory {empty_dir} is not a directory"
+            assert empty_path.is_dir(), msg
+            msg = f"Assumed empty directory {empty_dir} is not empty"
+            assert len(list(empty_path.iterdir())) == 0, msg
             empty_path.rmdir()
 
         # Check that all files and directories are identical
-        for _root, _dirs, _files in expected_output.walk():
-            relative_actual_output = actual_output / _root.relative_to(expected_output)
-            n_objects = len(_dirs) + len(_files)
-            assert len(list(relative_actual_output.iterdir())) == n_objects
+        for _root, _dirs, _files in self.expected_dir.walk():
+            obtained_root = obtained_dir / _root.relative_to(self.expected_dir)
+            obtained_objects = [o.name for o in obtained_root.iterdir()]
+            expected_objects = _dirs + _files
+            msg = (
+                f"Expected {len(expected_objects)} objects in directory {_root}:\n"
+                f"{pformat(expected_objects)}\nGot {len(obtained_objects)}:\n"
+                f"{pformat(obtained_objects)}"
+            )
+            assert len(obtained_objects) == len(expected_objects), msg
             for _dir in _dirs:
-                actual_dir = actual_output / relative_actual_output / _dir
-                msg = f"Directory {actual_dir} does not exist"
+                obtained_subdir = obtained_root / _dir
+                actual_dir = obtained_dir / obtained_subdir
+                msg = f"Expected directory {obtained_subdir} does not exist"
                 assert actual_dir.is_dir(), msg
             for _file in _files:
-                actual_file = actual_output / relative_actual_output / _file
+                obtained_file = obtained_root / _file
+                actual_file = obtained_dir / obtained_file
                 expected_file = _root / _file
-                msg = f"File {actual_file} does not exist"
+                msg = f"Expected file {obtained_file} does not exist"
                 assert actual_file.is_file(), msg
                 msg = (
-                    f"File {actual_file} does not not match expected file "
-                    f"{expected_file}"
+                    f"Obtained file {actual_file} does not not match expected "
+                    f"file {expected_file}"
                 )
                 assert filecmp.cmp(actual_file, expected_file, shallow=False), msg
 
@@ -105,6 +119,7 @@ class OutputDirRegression:
 
                 # # Compare files
                 # assert actual_content == expected_content
+
 
 
 @contextmanager
