@@ -34,14 +34,22 @@ logger = logger.opt(colors=True)
 
 def pytest_addoption(parser: pytest.Parser) -> None:
     """Add pytest options."""
-    parser.addoption("--generate_expected_output")
-
-
-def pytest_collection_modifyitems(items: list[pytest.Function]) -> None:
-    """Automatically add markers to tests based on fixture usage."""
-    for item in items:
-        if "expected_output_dir" in getattr(item, "fixturenames", ()):
-            item.add_marker("uses_expected_output")
+    # Similar to https://github.com/ESSS/pytest-regressions
+    parser.addoption(
+        "--force-regen",
+        action="store_true",
+        default=False,
+        help="Regenerate regression data files, failing tests with different data.",
+    )
+    parser.addoption(
+        "--regen-all",
+        action="store_true",
+        default=False,
+        help=(
+            "Regenerate all files, letting tests pass (use to regenerate "
+            "everything in one run)."
+            ),
+    )
 
 
 # Automatically used fixtures
@@ -202,11 +210,6 @@ def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixtu
     )
     yield caplog
     logger.remove(handler_id)
-
-
-@pytest.fixture
-def expected_output_dir() -> Path:
-    return Path(str(files("tests"))).resolve() / "expected_output"
 
 
 @pytest.fixture
