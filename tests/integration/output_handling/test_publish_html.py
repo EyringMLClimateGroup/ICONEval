@@ -13,13 +13,14 @@ from swiftclient.service import ClientException, SwiftError
 
 import iconeval.output_handling.publish_html
 from iconeval.output_handling.publish_html import main, publish_esmvaltool_html
-from tests.integration import OutputDirRegression
 
 if TYPE_CHECKING:
     from unittest.mock import Mock
 
     import pytest_mock
     from pytest_datadir.plugin import LazyDataDir
+
+    from tests.integration import OutputDirRegression
 
 
 def test_main(mocker: pytest_mock.MockerFixture) -> None:
