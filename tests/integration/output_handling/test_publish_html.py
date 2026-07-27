@@ -245,6 +245,7 @@ def test_publish_esmvaltool_html_force(
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
 
+    assert oct(swift_token.stat().st_mode)[-3:] == "600"
     output_dir_regression.check(esmvaltool_output)
 
 

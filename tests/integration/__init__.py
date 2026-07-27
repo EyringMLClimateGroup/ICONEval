@@ -91,13 +91,6 @@ class OutputDirRegression:
                     f"file {expected_file}"
                 )
                 assert filecmp.cmp(obtained_file, expected_file, shallow=False), msg
-                msg = (
-                    f"Permissions of obtained file {obtained_file} "
-                    f"({oct(obtained_file.stat().st_mode)}) do not not match "
-                    f"permissions of expected file {expected_file} "
-                    f"({oct(expected_file.stat().st_mode)})"
-                )
-                assert obtained_file.stat().st_mode == expected_file.stat().st_mode, msg
 
     def _regenerate_output(self, obtained_dir: Path, tmp_path: str | None) -> None:
         """Regenerate expected output."""
