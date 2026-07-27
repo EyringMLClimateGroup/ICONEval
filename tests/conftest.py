@@ -230,8 +230,3 @@ def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixtu
 @pytest.fixture
 def recipe_template_dir() -> Path:
     return Path(str(files("iconeval"))).resolve() / "recipe_templates"
-
-
-@pytest.fixture
-def sample_data_path() -> Path:
-    return Path(str(files("tests"))).resolve() / "sample_data"

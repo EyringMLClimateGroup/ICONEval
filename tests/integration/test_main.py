@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from unittest.mock import Mock
 
     import pytest_mock
+    from pytest_datadir.plugin import LazyDataDir
     from pytest_mock import MockerFixture
 
     from tests.integration import OutputDirRegression
@@ -597,9 +598,9 @@ def test_icon_evaluation_single_input_run_longer(
 
 def test_icon_evaluation_single_input_custom_recipe_options(
     output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
     tmp_input_dir: Path,
     tmp_output_dir: Path,
-    sample_data_path: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
@@ -609,9 +610,7 @@ def test_icon_evaluation_single_input_custom_recipe_options(
 ) -> None:
     obtained_dir = icon_evaluation(
         tmp_input_dir,
-        recipe_templates=sample_data_path
-        / "recipe_templates"
-        / "recipe_basics_zonal_mean_lines.yml",
+        recipe_templates=lazy_shared_datadir / "recipe_basics_zonal_mean_lines.yml",
         always_use_default_recipe_templates=True,
         output_dir=tmp_output_dir,
         tags="_custom_tag_",
@@ -693,9 +692,9 @@ def test_icon_evaluation_single_input_custom_recipe_options(
 
 def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
     tmp_input_dir: Path,
     tmp_output_dir: Path,
-    sample_data_path: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
@@ -706,10 +705,8 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     obtained_dir = icon_evaluation(
         tmp_input_dir,
         recipe_templates=[
-            sample_data_path
-            / "recipe_templates"
-            / "recipe_basics_zonal_mean_lines.yml",
-            sample_data_path / "recipe_templates" / "recipe_basics_maps.yml",
+            lazy_shared_datadir / "recipe_basics_zonal_mean_lines.yml",
+            lazy_shared_datadir / "recipe_basics_maps.yml",
         ],
         output_dir=tmp_output_dir,
         ignore_recipe_esmvaltool_options=True,
