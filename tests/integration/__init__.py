@@ -1,19 +1,17 @@
 from __future__ import annotations
 
 import filecmp
-from pprint import pformat
 import re
 import shutil
 from contextlib import contextmanager
-from pathlib import Path
+from pprint import pformat
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
-    from collections.abc import Generator, Iterable
-
-    from pytest_datadir.plugin import LazyDataDir
+    from collections.abc import Generator
+    from pathlib import Path
 
 TMP_PATH_PLACEHOLDER = "((tmp_path))"
 
@@ -106,6 +104,13 @@ class OutputDirRegression:
                     f"file {expected_file}"
                 )
                 assert filecmp.cmp(actual_file, expected_file, shallow=False), msg
+                msg = (
+                    f"Permissions of obtained file {actual_file} "
+                    f"({oct(actual_file.stat().st_mode)}) do not not match "
+                    f"permissions of expected file {expected_file} "
+                    f"({oct(expected_file.stat().st_mode)})"
+                )
+                assert actual_file.stat().st_mode == expected_file.stat().st_mode, msg
 
                 # Replace placeholders
                 # actual_content = actual_file.read_text(encoding="utf-8")

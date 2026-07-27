@@ -12,12 +12,13 @@ from swiftclient.service import ClientException, SwiftError
 
 import iconeval.output_handling.publish_html
 from iconeval.output_handling.publish_html import main, publish_esmvaltool_html
-from tests.integration import copy_to_tmp_path
+from tests.integration import OutputDirRegression, copy_to_tmp_path
 
 if TYPE_CHECKING:
     from unittest.mock import Mock
 
     import pytest_mock
+    from pytest_datadir.plugin import LazyDataDir
 
 
 def test_main(mocker: pytest_mock.MockerFixture) -> None:
@@ -190,80 +191,72 @@ def test_publish_esmvaltool_html_files_to_large(
     assert "(> 4.5 GB)" in caplog.text
 
 
-# def test_publish_esmvaltool_html_force(
-#     pytestconfig: pytest.Config,
-#     expected_output_dir: Path,
-#     sample_data_path: Path,
-#     tmp_path: Path,
-#     mocked_requests: Mock,
-#     mocked_swift_head_account: Mock,
-#     mocked_swift_service: Mock,
-#     monkeypatch: pytest.MonkeyPatch,
-# ) -> None:
-#     sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-#     with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-#         # Do not overwrite existing swiftenv sample file, copy existing token to
-#         # make sure it is overwritten by force_new_token=True
-#         swift_token = esmvaltool_output / "swiftenv"
-#         shutil.copy(sample_data_path / "swift" / "swiftenv", swift_token)
-#         monkeypatch.setattr(
-#             iconeval.output_handling.publish_html,
-#             "SWIFT_ENV_FILE",
-#             swift_token,
-#         )
+def test_publish_esmvaltool_html_force(
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
+    mocked_requests: Mock,
+    mocked_swift_head_account: Mock,
+    mocked_swift_service: Mock,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    esmvaltool_output = lazy_shared_datadir / "recipes_zonal-means"
 
-#         url = publish_esmvaltool_html(
-#             esmvaltool_output,
-#             container_name="my_container",
-#             dir_name="my_dir",
-#             log_level="debug",
-#             summary_description="this is a nice summary of the output",
-#             force_new_token=True,
-#         )
-#         expected_dir_contents = list(esmvaltool_output.rglob("*"))
+    # Change location of swift token to output directory to be able to check it
+    # via output_dir_regression (we want to make sure that it is overwritten by
+    # force_new_token=True)
+    swift_token = esmvaltool_output / "swiftenv"
+    shutil.copy(lazy_shared_datadir / "swiftenv", swift_token)
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "SWIFT_ENV_FILE",
+        swift_token,
+    )
 
-#     assert url == "my-x-storage-url/my_container/my_dir/index.html"
+    url = publish_esmvaltool_html(
+        esmvaltool_output,
+        container_name="my_container",
+        dir_name="my_dir",
+        log_level="debug",
+        summary_description="this is a nice summary of the output",
+        force_new_token=True,
+    )
+    expected_dir_contents = list(esmvaltool_output.rglob("*"))
 
-#     # Check mock calls
-#     mocked_requests.get.assert_called_once_with(
-#         "url/to/swift_storage/auth/v1.0",
-#         headers={
-#             "X-Auth-User": "user input:user input",
-#             "X-Auth-Key": "super secret password",
-#         },
-#         timeout=30,
-#     )
-#     mocked_swift_head_account.assert_not_called()
-#     mocked_swift_service.assert_any_call(
-#         {
-#             "os_auth_token": "my-x-auth-token",
-#             "os_storage_url": "my-x-storage-url",
-#         },
-#     )
-#     mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
-#     assert mocked_service_instance.post.mock_calls == [
-#         call(container="my_container"),
-#         call(container="my_container", options={"read_acl": ".r:*"}),
-#     ]
-#     assert mocked_service_instance.upload.call_count == 1
-#     upload_call = mocked_service_instance.upload.mock_calls[0]
-#     assert upload_call.args == ()
-#     assert len(upload_call.kwargs) == 2
-#     assert upload_call.kwargs["container"] == "my_container"
-#     objects_to_upload = [
-#         (str(f), str(Path("my_dir") / f.relative_to(esmvaltool_output)))
-#         for f in expected_dir_contents
-#     ]
-#     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
+    assert url == "my-x-storage-url/my_container/my_dir/index.html"
 
-#     # Check output; for this, we remove the previously created subdirectories
-#     assert oct(swift_token.stat().st_mode)[-3:] == "600"
-#     assert_output(
-#         tmp_path,
-#         esmvaltool_output,
-#         expected_output_dir / "test_publish_esmvaltool_html_force",
-#         generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-#     )
+    # Check mock calls
+    mocked_requests.get.assert_called_once_with(
+        "url/to/swift_storage/auth/v1.0",
+        headers={
+            "X-Auth-User": "user input:user input",
+            "X-Auth-Key": "super secret password",
+        },
+        timeout=30,
+    )
+    mocked_swift_head_account.assert_not_called()
+    mocked_swift_service.assert_any_call(
+        {
+            "os_auth_token": "my-x-auth-token",
+            "os_storage_url": "my-x-storage-url",
+        },
+    )
+    mocked_service_instance = mocked_swift_service.return_value.__enter__.return_value
+    assert mocked_service_instance.post.mock_calls == [
+        call(container="my_container"),
+        call(container="my_container", options={"read_acl": ".r:*"}),
+    ]
+    assert mocked_service_instance.upload.call_count == 1
+    upload_call = mocked_service_instance.upload.mock_calls[0]
+    assert upload_call.args == ()
+    assert len(upload_call.kwargs) == 2
+    assert upload_call.kwargs["container"] == "my_container"
+    objects_to_upload = [
+        (str(f), str(Path("my_dir") / f.relative_to(esmvaltool_output)))
+        for f in expected_dir_contents
+    ]
+    assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
+
+    output_dir_regression.check(esmvaltool_output)
 
 
 def test_publish_esmvaltool_html_no_dir_fail(

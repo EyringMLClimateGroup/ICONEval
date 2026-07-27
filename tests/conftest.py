@@ -5,6 +5,7 @@ import locale
 from datetime import datetime
 from importlib.resources import files
 from pathlib import Path
+from textwrap import dedent
 from typing import TYPE_CHECKING
 
 import pytest
@@ -22,6 +23,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
     from unittest.mock import Mock
 
+    from pytest_datadir.plugin import LazyDataDir
     from pytest_mock import MockerFixture
 
 pytest.register_assert_rewrite("tests.integration")
@@ -181,17 +183,29 @@ def remove_default_logger_handlers() -> None:
 @pytest.fixture(autouse=True)
 def use_custom_swiftenv(
     monkeypatch: pytest.MonkeyPatch,
-    sample_data_path: Path,
+    lazy_shared_datadir: LazyDataDir,
 ) -> None:
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
         "SWIFT_BASE_URL",
         "url/to/swift_storage/",
     )
+    swiftenv = lazy_shared_datadir / "swiftenv"
+    swiftenv_contents = dedent(
+        """\
+        #token expires on: Sat 01. Jan 00:00:01 UTC 2000
+        setenv OS_AUTH_TOKEN this_is_a_very_nice_token
+        setenv OS_STORAGE_URL url/to/swift_storage/my_folder
+        setenv OS_AUTH_URL " "
+        setenv OS_USERNAME " "
+        setenv OS_PASSWORD " "
+        """,
+    )
+    swiftenv.write_text(swiftenv_contents, encoding="utf-8")
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
         "SWIFT_ENV_FILE",
-        sample_data_path / "swift" / "swiftenv",
+        swiftenv,
     )
 
 
