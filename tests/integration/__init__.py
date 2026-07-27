@@ -51,35 +51,7 @@ class OutputDirRegression:
             self.request.config.getoption("regen_all")
         )
         if regen_output:
-            shutil.rmtree(self.expected_dir, ignore_errors=True)
-            shutil.copytree(obtained_dir, self.expected_dir)
-
-            # Empty directories cannot be checked out on git, so we simply
-            # delete them here
-            subdirs = (d for d in self.expected_dir.iterdir() if d.is_dir())
-            for subdir in subdirs:
-                if not list(subdir.iterdir()):
-                    subdir.rmdir()
-
-            if not self.request.config.getoption("regen_all"):
-                if self.request.config.getoption("force_regen"):
-                    msg = (
-                        f"--force-regen set, regenerating expected output "
-                        f"directory at: {self.expected_dir}"
-                    )
-                else:
-                    msg = (
-                        f"Expected output directory not found, created "
-                        f"{self.expected_dir}"
-                    )
-                pytest.fail(msg)
-
-            # Sanitize text files
-            if tmp_path is not None:
-                for root, _, files in self.expected_dir.walk():
-                    for file in files:
-                        self._sanitize_file(root / file, tmp_path)
-
+            self._regenerate_output(obtained_dir, tmp_path)
             return
 
         # Empty directories cannot be checked out on git, so we need to account
@@ -127,8 +99,42 @@ class OutputDirRegression:
                 )
                 assert obtained_file.stat().st_mode == expected_file.stat().st_mode, msg
 
+    def _regenerate_output(self, obtained_dir: Path, tmp_path: str | None) -> None:
+        """Regenerate expected output."""
+        shutil.rmtree(self.expected_dir, ignore_errors=True)
+        shutil.copytree(obtained_dir, self.expected_dir)
+
+        # Empty directories cannot be checked out on git, so we simply delete
+        # them here
+        subdirs = (d for d in self.expected_dir.iterdir() if d.is_dir())
+        for subdir in subdirs:
+            if not list(subdir.iterdir()):
+                subdir.rmdir()
+
+        if not self.request.config.getoption("regen_all"):
+            if self.request.config.getoption("force_regen"):
+                msg = (
+                        f"--force-regen set, regenerating expected output "
+                        f"directory at: {self.expected_dir}"
+                    )
+            else:
+                msg = (
+                        f"Expected output directory not found, created "
+                        f"{self.expected_dir}"
+                    )
+            pytest.fail(msg)
+
+        # Sanitize text files
+        if tmp_path is not None:
+            for root, _, files in self.expected_dir.walk():
+                for file in files:
+                    self._sanitize_file(root / file, tmp_path)
+
     def _sanitize_file(self, file: Path, tmp_path: str) -> None:
         """Sanitize file (in-place)."""
-        content = file.read_text(encoding="utf-8")
+        try:
+            content = file.read_text(encoding="utf-8")
+        except UnicodeDecodeError:  # non-text files
+            return
         content = content.replace(tmp_path, TMP_PATH_PLACEHOLDER)
         file.write_text(content, encoding="utf-8")
