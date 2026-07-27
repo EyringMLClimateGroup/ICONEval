@@ -124,21 +124,3 @@ class OutputDirRegression:
 
                 # # Compare files
                 # assert actual_content == expected_content
-
-
-
-@contextmanager
-def copy_to_tmp_path(tmp_path: Path, dir_to_copy: Path) -> Generator[Path]:
-    """Copy contents of a directory to temporary location and remove them afterwards."""
-    original_contents = [obj.name for obj in dir_to_copy.iterdir()]
-    tmp_dir = tmp_path / dir_to_copy.name
-    shutil.copytree(dir_to_copy, tmp_dir)
-
-    yield tmp_dir
-
-    for obj in original_contents:
-        obj_path = tmp_dir / obj
-        if obj_path.is_file():
-            obj_path.unlink()
-        elif obj_path.is_dir():
-            shutil.rmtree(obj_path)

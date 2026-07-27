@@ -181,16 +181,16 @@ def remove_default_logger_handlers() -> None:
 
 
 @pytest.fixture(autouse=True)
-def use_custom_swiftenv(
+def temporary_swiftenv(
     monkeypatch: pytest.MonkeyPatch,
     lazy_shared_datadir: LazyDataDir,
-) -> None:
+) -> Path:
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
         "SWIFT_BASE_URL",
         "url/to/swift_storage/",
     )
-    swiftenv = lazy_shared_datadir / "swiftenv"
+    swiftenv_file = lazy_shared_datadir / "swiftenv"
     swiftenv_contents = dedent(
         """\
         #token expires on: Sat 01. Jan 00:00:01 UTC 2000
@@ -201,12 +201,13 @@ def use_custom_swiftenv(
         setenv OS_PASSWORD " "
         """,
     )
-    swiftenv.write_text(swiftenv_contents, encoding="utf-8")
+    swiftenv_file.write_text(swiftenv_contents, encoding="utf-8")
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
         "SWIFT_ENV_FILE",
-        swiftenv,
+        swiftenv_file,
     )
+    return swiftenv_file
 
 
 # Manual fixtures
