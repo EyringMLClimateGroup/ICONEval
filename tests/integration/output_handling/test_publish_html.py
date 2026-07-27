@@ -129,12 +129,12 @@ def test_publish_esmvaltool_html_single_recipe(
 
 def test_publish_esmvaltool_html_files_to_large(
     lazy_shared_datadir: LazyDataDir,
-    caplog: pytest.LogCaptureFixture,
     temporary_swiftenv: Path,
     mocked_requests: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
     monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     # Force creation of new token by deleting existing token
     temporary_swiftenv.unlink()
@@ -284,9 +284,9 @@ def test_publish_esmvaltool_invalid_token_fail(
 
 def test_publish_esmvaltool_invalid_request_fail(
     lazy_shared_datadir: LazyDataDir,
-    caplog: pytest.LogCaptureFixture,
     mocked_requests: Mock,
     mocked_swift_head_account: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     # Raise error when checking token to force creation of new token
     mocked_swift_head_account.side_effect = ClientException("corrupted token")
