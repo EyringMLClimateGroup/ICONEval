@@ -8,6 +8,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: 0 5 1 * *
+  push:
+    branches: [update_lock_files_in_gha]
 
 jobs:
   pixi_update:
