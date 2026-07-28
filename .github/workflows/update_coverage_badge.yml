@@ -8,7 +8,7 @@ permissions:
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, update_lock_files_in_gha]
 
 defaults:
   run:
