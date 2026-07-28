@@ -162,7 +162,7 @@ def icon_evaluation(
         priority over selection. If not given or empty, run all recipes. An
         overview of all available tags in the default recipe templates can be
         found here
-        (https://github.com/EyringMLClimateGroup/ICONEval/blob/main/doc/tags.md).
+        (https://github.com/ESMValGroup/ICONEval/blob/main/doc/tags.md).
         To specify multiple tags, use the syntax `'["tag1", "tag2", "!tag3"]'`.
     setup_logging:
         If `True`, set up new logging handlers; if `False`, skip that step
