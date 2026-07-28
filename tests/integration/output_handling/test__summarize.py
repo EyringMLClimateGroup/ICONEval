@@ -5,94 +5,56 @@ from typing import TYPE_CHECKING
 import pytest
 
 from iconeval.output_handling._summarize import summarize
-from tests.integration import assert_output, copy_to_tmp_path
 
 if TYPE_CHECKING:
-    from pathlib import Path
+    from pytest_datadir.plugin import LazyDataDir
+
+    from tests.integration import OutputDirRegression
 
 
 @pytest.mark.parametrize(
-    ("description", "expected_output_name"),
+    "description",
     [
-        (None, "test_summarize_without_description"),
-        ("very short description", "test_summarize_with_description"),
+        pytest.param(None, id="without_description"),
+        pytest.param("very short description", id="with_description"),
     ],
 )
 def test_summarize(
     description: str | None,
-    expected_output_name: str,
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_zonal-means"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        summarize(esmvaltool_output, description=description)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / expected_output_name,
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    esmvaltool_output = lazy_shared_datadir / "recipes_zonal-means"
+    summarize(esmvaltool_output, description=description)
+    output_dir_regression.check(esmvaltool_output)
 
 
 def test_summarize_empty_logs(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        summarize(esmvaltool_output)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / "test_summarize_empty_logs",
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    esmvaltool_output = lazy_shared_datadir / "recipes_maps"
+    summarize(esmvaltool_output)
+    output_dir_regression.check(esmvaltool_output)
 
 
 def test_summarize_no_debug_log(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        debug_log = (
-            esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-        )
-        debug_log.unlink()
-        summarize(esmvaltool_output)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / "test_summarize_no_debug_log",
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    esmvaltool_output = lazy_shared_datadir / "recipes_maps"
+    debug_log = esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
+    debug_log.unlink()
+    summarize(esmvaltool_output)
+    output_dir_regression.check(esmvaltool_output)
 
 
 def test_summarize_debug_log_single_line(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
 ) -> None:
-    sample_dir = sample_data_path / "esmvaltool_output" / "recipes_maps"
-    with copy_to_tmp_path(tmp_path, sample_dir) as esmvaltool_output:
-        debug_log = (
-            esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
-        )
-        debug_log.write_text(
-            "this is a single line that cannot be used to infer runtime",
-        )
-        summarize(esmvaltool_output)
-    assert_output(
-        tmp_path,
-        esmvaltool_output,
-        expected_output_dir / "test_summarize_debug_log_single_line",
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    esmvaltool_output = lazy_shared_datadir / "recipes_maps"
+    debug_log = esmvaltool_output / "recipe_basics_maps" / "run" / "main_log_debug.txt"
+    debug_log.write_text("this is a single line that cannot be used to infer runtime\n")
+    summarize(esmvaltool_output)
+    output_dir_regression.check(esmvaltool_output)

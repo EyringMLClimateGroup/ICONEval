@@ -1,0 +1,217 @@
+# ESMValTool
+#DASK --memory_limit=7760MB
+#DASK --n_workers=4
+#TAGS atmosphere
+#TAGS basics
+#TAGS temperature
+#TAGS profile
+---
+documentation:
+  title: Basic Model Evaluation (Profiles).
+  description: Profiles of basic physical variables of the climate system.
+  authors:
+  - schlund_manuel
+  - lauer_axel
+  - hassler_birgit
+  - bonnet_pauline
+datasets_hus:
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  reference_for_monitor_diags: true
+  alias: ERA5
+  timerange: '*'
+datasets_ta:
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  reference_for_monitor_diags: true
+  alias: ERA5
+  timerange: '*'
+datasets_ua:
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  reference_for_monitor_diags: true
+  alias: ERA5
+  timerange: '*'
+plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  group_variables_by: variable_group
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+zonal_mean_profile_plot:
+  common_cbar: true
+  fontsize: 8
+  pyplot_kwargs:
+    suptitle: '{title} (*)'
+  plot_kwargs:
+    default:
+      cmap: plasma
+      levels: 12
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: input
+  project: ICON
+preprocessors:
+  create_zonal_mean_profile:
+    custom_order: true
+    extract_levels:
+      levels:
+        cmor_table: CMIP6
+        coordinate: plev19
+      scheme: linear
+      coordinate: air_pressure
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    zonal_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+diagnostics:
+  zonal_mean_profiles_hus:
+    description: Zonal mean profile plots of specific humidity.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      hus:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Specific Humidity
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          reference_for_monitor_diags: true
+          alias: ERA5
+          timerange: '*'
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          zonal_mean_profile:
+            common_cbar: true
+            fontsize: 8
+            pyplot_kwargs:
+              suptitle: '{title} (*)'
+            plot_kwargs:
+              default:
+                cmap: Blues
+                norm: log
+                levels:
+                - 1.0e-07
+                - 3.16e-07
+                - 1.0e-06
+                - 3.16e-06
+                - 1.0e-05
+                - 3.16e-05
+                - 0.0001
+                - 0.000316
+                - 0.001
+                - 0.00316
+                - 0.01
+                - 0.0316
+                - 0.1
+            plot_kwargs_bias:
+              levels: 12
+  zonal_mean_profiles_ta:
+    description: Zonal mean profile plots of temperature.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      ta:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Air Temperature
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          reference_for_monitor_diags: true
+          alias: ERA5
+          timerange: '*'
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          zonal_mean_profile:
+            common_cbar: true
+            fontsize: 8
+            pyplot_kwargs:
+              suptitle: '{title} (*)'
+            plot_kwargs:
+              default:
+                cmap: plasma
+                levels: 12
+  zonal_mean_profiles_ua:
+    description: Zonal mean profile plots of eastward wind.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      ua:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Eastward Wind
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          reference_for_monitor_diags: true
+          alias: ERA5
+          timerange: '*'
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          zonal_mean_profile:
+            common_cbar: true
+            fontsize: 8
+            pyplot_kwargs:
+              suptitle: '{title} (*)'
+            plot_kwargs:
+              default:
+                cmap: PuOr
+                norm: centered

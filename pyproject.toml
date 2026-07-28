@@ -138,6 +138,7 @@ esmvaltool = { git = "https://github.com/ESMValGroup/ESMValTool.git", branch = "
 [tool.pixi.feature.test.dependencies]
 pytest = "*"
 pytest-cov = "*"
+pytest-datadir = "*"
 pytest-mock = "*"
 pytest-xdist = "*"
 
@@ -155,9 +156,6 @@ skip = "pixi.lock"
 
 [tool.pytest.ini_options]
 addopts = ["-ra", "--strict-config", "--strict-markers"]
-markers = [
-    "uses_expected_output: Test uses pre-calculated expected output",
-]
 minversion = "6.0"
 xfail_strict = true
 
