@@ -316,4 +316,4 @@ def test_publish_esmvaltool_upload_fail(
     esmvaltool_output = lazy_shared_datadir / "recipes_zonal-means"
     msg = r"Upload of {'success': False, 'error': 42} failed: 42"
     with pytest.raises(SwiftError, match=re.escape(msg)):
-        publish_esmvaltool_html(esmvaltool_output, log_file=None)
+        publish_esmvaltool_html(esmvaltool_output)
