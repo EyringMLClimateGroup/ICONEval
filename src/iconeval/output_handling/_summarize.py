@@ -146,7 +146,7 @@ def _generate_overview(realm: RealmType, output_dir: Path) -> list[str]:
 
     # Select most recent versions of recipes
     for name, recipe_dirs in all_recipes.items():
-        recipes[name] = sorted(recipe_dirs, key=_get_recipe_date)[-1]
+        recipes[name] = max(recipe_dirs, key=_get_recipe_date)
 
     logger.debug(
         f"Found {len(recipes)} recipe(s) while generating summary HTML",
@@ -177,10 +177,12 @@ def _generate_overview(realm: RealmType, output_dir: Path) -> list[str]:
                             "\n".join(
                                 [
                                     f'<h5 class="card-title">{title}</h5>',
-                                    f'<p class="card-text">{description} '
-                                    f'<a href="{recipe_url}">'
-                                    '<i class="bi bi-arrow-right-circle"></i>'
-                                    "</a></p>",
+                                    (
+                                        f'<p class="card-text">{description} '
+                                        f'<a href="{recipe_url}">'
+                                        '<i class="bi bi-arrow-right-circle"></i>'
+                                        "</a></p>"
+                                    ),
                                 ],
                             ),
                             "card-body",
