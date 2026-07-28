@@ -7,6 +7,7 @@ import time
 from datetime import UTC, datetime
 from getpass import getpass
 from pathlib import Path
+from textwrap import dedent
 
 import fire
 import requests
@@ -164,14 +165,17 @@ def _create_swift_token() -> None:
         expires = expires_at.strftime("%a %d. %b %H:%M:%S UTC %Y")
 
         if expires and token and storage_url:
-            SWIFT_ENV_FILE.write_text(
-                f"#token expires on: {expires}\n"
-                f"setenv OS_AUTH_TOKEN {token}\n"
-                f"setenv OS_STORAGE_URL {storage_url}\n"
-                f'setenv OS_AUTH_URL " "\n'
-                f'setenv OS_USERNAME " "\n'
-                f'setenv OS_PASSWORD " "\n',
+            swiftenv_contents = dedent(
+                f"""\
+                #token expires on: {expires}
+                setenv OS_AUTH_TOKEN {token}
+                setenv OS_STORAGE_URL {storage_url}
+                setenv OS_AUTH_URL " "
+                setenv OS_USERNAME " "
+                setenv OS_PASSWORD " "
+                """,
             )
+            SWIFT_ENV_FILE.write_text(swiftenv_contents)
             SWIFT_ENV_FILE.chmod(0o600)
         else:
             msg = "Failed to create new swift token"

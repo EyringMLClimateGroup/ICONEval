@@ -1,0 +1,1112 @@
+# ESMValTool
+#TAGS atmosphere
+#TAGS tuning
+#TAGS timeseries
+---
+documentation:
+  title: Model Evaluation with Focus on Tuning (Time Series).
+  description: Time series of variables relevant for tuning.
+  authors:
+  - schlund_manuel
+  - lauer_axel
+datasets_cmip6:
+- project: CMIP6
+  dataset: '*'
+  exp: historical
+  ensemble: r1i1p1f1
+  grid: '*'
+  institute: '*'
+  timerange: 19790101/20141231
+datasets_asr:
+- project: OBS
+  dataset: CERES-EBAF
+  type: sat
+  version: Ed4.2
+  tier: 2
+  timerange: 20000331/20231130
+- project: OBS
+  dataset: ISCCP-FH
+  type: sat
+  version: v0
+  tier: 2
+  timerange: 19840101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+datasets_clivi:
+- project: OBS
+  dataset: CLARA-AVHRR
+  type: sat
+  version: V002-01
+  tier: 3
+  timerange: 19820101/20181231
+- project: OBS
+  dataset: CLOUDSAT-L2
+  type: sat
+  version: P1-R05-gridbox-average-noprecip
+  tier: 3
+  timerange: 20060101/20171231
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20191231
+- project: OBS
+  dataset: ESACCI-CLOUD
+  type: sat
+  version: AVHRR-AMPM-fv3.0
+  tier: 2
+  timerange: 19820101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+- project: OBS
+  dataset: MODIS
+  type: sat
+  version: MYD08-M3
+  tier: 3
+  timerange: 20020701/20190101
+datasets_clt:
+- project: OBS
+  dataset: CLARA-AVHRR
+  type: sat
+  version: V002-01
+  tier: 3
+  timerange: 19820101/20181231
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20211231
+- project: OBS
+  dataset: ESACCI-CLOUD
+  type: sat
+  version: AVHRR-AMPM-fv3.0
+  tier: 2
+  timerange: 19820101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20221231
+- project: OBS
+  dataset: MODIS
+  type: sat
+  version: MYD08-M3
+  tier: 3
+  timerange: 20020701/20190101
+- project: OBS
+  dataset: PATMOS-x
+  type: sat
+  version: NOAA
+  tier: 2
+  timerange: 19820101/20161231
+datasets_clwvi:
+- project: OBS
+  dataset: CLARA-AVHRR
+  type: sat
+  version: V002-01
+  tier: 3
+  timerange: 19820101/20181231
+- project: OBS
+  dataset: CLOUDSAT-L2
+  type: sat
+  version: P1-R05-gridbox-average-noprecip
+  tier: 3
+  timerange: 20060101/20171231
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20191231
+- project: OBS
+  dataset: ESACCI-CLOUD
+  type: sat
+  version: AVHRR-AMPM-fv3.0
+  tier: 2
+  timerange: 19820101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20221231
+- project: OBS
+  dataset: MODIS
+  type: sat
+  version: MYD08-M3
+  tier: 3
+  timerange: 20020701/20190101
+datasets_lwcre:
+- project: OBS
+  dataset: CERES-EBAF
+  type: sat
+  version: Ed4.2
+  tier: 2
+  timerange: 20000331/20231130
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20211231
+- project: OBS
+  dataset: ESACCI-CLOUD
+  type: sat
+  version: AVHRR-AMPM-fv3.0
+  tier: 2
+  timerange: 19820101/20161231
+- project: OBS
+  dataset: ISCCP-FH
+  type: sat
+  version: v0
+  tier: 2
+  timerange: 19840101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+datasets_lwp:
+- project: OBS
+  dataset: CLARA-AVHRR
+  type: sat
+  version: V002-01
+  tier: 3
+  timerange: 19820101/20181231
+- project: OBS
+  dataset: CLOUDSAT-L2
+  type: sat
+  version: P1-R05-gridbox-average-noprecip
+  tier: 3
+  timerange: 20060101/20171231
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20191231
+- project: OBS
+  dataset: ESACCI-CLOUD
+  type: sat
+  version: AVHRR-AMPM-fv3.0
+  tier: 2
+  timerange: 19820101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20221231
+- project: OBS
+  dataset: MODIS
+  type: sat
+  version: MYD08-M3
+  tier: 3
+  timerange: 20020701/20190101
+datasets_prw:
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20211231
+- project: OBS6
+  dataset: ESACCI-WATERVAPOUR
+  type: sat
+  version: CDR2-L3-COMBI-05deg-fv3.1
+  tier: 3
+  timerange: 20020731/20171231
+- project: OBS
+  dataset: ISCCP-FH
+  type: sat
+  version: v0
+  tier: 2
+  timerange: 19840101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+datasets_rlut:
+- project: OBS
+  dataset: CERES-EBAF
+  type: sat
+  version: Ed4.2
+  tier: 2
+  timerange: 20000331/20231130
+- project: OBS
+  dataset: ISCCP-FH
+  type: sat
+  version: v0
+  tier: 2
+  timerange: 19840101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+datasets_swcre:
+- project: OBS
+  dataset: CERES-EBAF
+  type: sat
+  version: Ed4.2
+  tier: 2
+  timerange: 20000331/20231130
+- project: OBS
+  dataset: ESACCI-CLOUD
+  type: sat
+  version: AVHRR-AMPM-fv3.0
+  tier: 2
+  timerange: 19820101/20161231
+- project: OBS
+  dataset: ISCCP-FH
+  type: sat
+  version: v0
+  tier: 2
+  timerange: 19840101/20161231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+datasets_tauu:
+- project: native6
+  dataset: ERA5
+  type: reanaly
+  version: v1
+  tier: 3
+  timerange: 19790101/20211231
+- project: OBS6
+  dataset: MERRA2
+  type: reanaly
+  version: 5.12.4
+  tier: 3
+  timerange: 19800101/20220731
+supplementary_variables:
+- short_name: areacella
+  skip: true
+- short_name: areacello
+  skip: true
+- short_name: sftlf
+  skip: true
+- short_name: sftof
+  skip: true
+plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  figure_kwargs:
+    figsize:
+    - 7
+    - 5
+  group_variables_by: variable_group
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+timeseries_plot:
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor:
+    - 0.5
+    - -0.4
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: '{title}'
+  plot_kwargs:
+    ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    default:
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: '{project}'
+    CMIP6_CESM2:
+      label: '{project}'
+    OBS:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    native6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    OBS_CERES-EBAF:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS_CLARA-AVHRR:
+      color: gray
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashed
+    OBS_CLOUDSAT-L2:
+      color: gray
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    OBS_ESACCI-CLOUD:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashed
+    OBS_GPCP-SG:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS_ISCCP-FH:
+      color: gray
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS_MODIS:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS_PATMOS-x:
+      color: gray
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    OBS6_ESACCI-WATERVAPOUR:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6_MERRA2:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    native6_ERA5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    ERA5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: input
+  project: ICON
+preprocessors:
+  create_global_annual_mean_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+  create_northatlantic_annual_mean_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear
+    extract_shape:
+      shapefile: World_Seas_IHO_v3/World_Seas_IHO_v3.shp
+      method: contains
+      crop: true
+      ids:
+      - North Atlantic Ocean
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+  create_southernocean_annual_mean_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear
+    extract_shape:
+      shapefile: World_Seas_IHO_v3/World_Seas_IHO_v3.shp
+      method: contains
+      crop: true
+      ids:
+      - Southern Ocean
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+diagnostics:
+  timeseries:
+    description: Time series for multiple variables.
+    themes:
+    - phys
+    - clouds
+    realms:
+    - atmos
+    variables:
+      asr:
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Absorbed Shortwave Radiation
+        additional_datasets:
+        - project: OBS
+          dataset: CERES-EBAF
+          type: sat
+          version: Ed4.2
+          tier: 2
+          timerange: 20000331/20231130
+        - project: OBS
+          dataset: ISCCP-FH
+          type: sat
+          version: v0
+          tier: 2
+          timerange: 19840101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      clivi:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Ice Water Path
+        additional_datasets:
+        - project: OBS
+          dataset: CLARA-AVHRR
+          type: sat
+          version: V002-01
+          tier: 3
+          timerange: 19820101/20181231
+        - project: OBS
+          dataset: CLOUDSAT-L2
+          type: sat
+          version: P1-R05-gridbox-average-noprecip
+          tier: 3
+          timerange: 20060101/20171231
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20191231
+        - project: OBS
+          dataset: ESACCI-CLOUD
+          type: sat
+          version: AVHRR-AMPM-fv3.0
+          tier: 2
+          timerange: 19820101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        - project: OBS
+          dataset: MODIS
+          type: sat
+          version: MYD08-M3
+          tier: 3
+          timerange: 20020701/20190101
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      clt:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Total Cloud Cover
+        additional_datasets:
+        - project: OBS
+          dataset: CLARA-AVHRR
+          type: sat
+          version: V002-01
+          tier: 3
+          timerange: 19820101/20181231
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20211231
+        - project: OBS
+          dataset: ESACCI-CLOUD
+          type: sat
+          version: AVHRR-AMPM-fv3.0
+          tier: 2
+          timerange: 19820101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20221231
+        - project: OBS
+          dataset: MODIS
+          type: sat
+          version: MYD08-M3
+          tier: 3
+          timerange: 20020701/20190101
+        - project: OBS
+          dataset: PATMOS-x
+          type: sat
+          version: NOAA
+          tier: 2
+          timerange: 19820101/20161231
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      clwvi:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Condensed Water Path
+        additional_datasets:
+        - project: OBS
+          dataset: CLARA-AVHRR
+          type: sat
+          version: V002-01
+          tier: 3
+          timerange: 19820101/20181231
+        - project: OBS
+          dataset: CLOUDSAT-L2
+          type: sat
+          version: P1-R05-gridbox-average-noprecip
+          tier: 3
+          timerange: 20060101/20171231
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20191231
+        - project: OBS
+          dataset: ESACCI-CLOUD
+          type: sat
+          version: AVHRR-AMPM-fv3.0
+          tier: 2
+          timerange: 19820101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20221231
+        - project: OBS
+          dataset: MODIS
+          type: sat
+          version: MYD08-M3
+          tier: 3
+          timerange: 20020701/20190101
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      lwcre:
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Longwave Cloud Radiative Effect
+        additional_datasets:
+        - project: OBS
+          dataset: CERES-EBAF
+          type: sat
+          version: Ed4.2
+          tier: 2
+          timerange: 20000331/20231130
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20211231
+        - project: OBS
+          dataset: ESACCI-CLOUD
+          type: sat
+          version: AVHRR-AMPM-fv3.0
+          tier: 2
+          timerange: 19820101/20161231
+        - project: OBS
+          dataset: ISCCP-FH
+          type: sat
+          version: v0
+          tier: 2
+          timerange: 19840101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      lwp:
+        mip: Amon
+        derive: true
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Liquid Water Path
+        additional_datasets:
+        - project: OBS
+          dataset: CLARA-AVHRR
+          type: sat
+          version: V002-01
+          tier: 3
+          timerange: 19820101/20181231
+        - project: OBS
+          dataset: CLOUDSAT-L2
+          type: sat
+          version: P1-R05-gridbox-average-noprecip
+          tier: 3
+          timerange: 20060101/20171231
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20191231
+        - project: OBS
+          dataset: ESACCI-CLOUD
+          type: sat
+          version: AVHRR-AMPM-fv3.0
+          tier: 2
+          timerange: 19820101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20221231
+        - project: OBS
+          dataset: MODIS
+          type: sat
+          version: MYD08-M3
+          tier: 3
+          timerange: 20020701/20190101
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      prw:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Water Vapor Path
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20211231
+        - project: OBS6
+          dataset: ESACCI-WATERVAPOUR
+          type: sat
+          version: CDR2-L3-COMBI-05deg-fv3.1
+          tier: 3
+          timerange: 20020731/20171231
+        - project: OBS
+          dataset: ISCCP-FH
+          type: sat
+          version: v0
+          tier: 2
+          timerange: 19840101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      rlut:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Outgoing Longwave Radiation
+        additional_datasets:
+        - project: OBS
+          dataset: CERES-EBAF
+          type: sat
+          version: Ed4.2
+          tier: 2
+          timerange: 20000331/20231130
+        - project: OBS
+          dataset: ISCCP-FH
+          type: sat
+          version: v0
+          tier: 2
+          timerange: 19840101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      rtmt:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Net Downward Total Radiation
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      swcre:
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Shortwave Cloud Radiative Effect
+        additional_datasets:
+        - project: OBS
+          dataset: CERES-EBAF
+          type: sat
+          version: Ed4.2
+          tier: 2
+          timerange: 20000331/20231130
+        - project: OBS
+          dataset: ESACCI-CLOUD
+          type: sat
+          version: AVHRR-AMPM-fv3.0
+          tier: 2
+          timerange: 19820101/20161231
+        - project: OBS
+          dataset: ISCCP-FH
+          type: sat
+          version: v0
+          tier: 2
+          timerange: 19840101/20161231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      tauu_northatlantic:
+        short_name: tauu
+        mip: Amon
+        preprocessor: create_northatlantic_annual_mean_time_series
+        title: North Atlantic Mean Surface Downward Eastward Wind Stress
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20211231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      tauu_southernocean:
+        short_name: tauu
+        mip: Amon
+        preprocessor: create_southernocean_annual_mean_time_series
+        title: Southern Ocean Mean Surface Downward Eastward Wind Stress
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          type: reanaly
+          version: v1
+          tier: 3
+          timerange: 19790101/20211231
+        - project: OBS6
+          dataset: MERRA2
+          type: reanaly
+          version: 5.12.4
+          tier: 3
+          timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+    additional_datasets:
+    - project: CMIP6
+      dataset: '*'
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: '*'
+      institute: '*'
+      timerange: 19790101/20141231
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              title: '{title}'
+            plot_kwargs:
+              ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              default:
+                color: lightgray
+                label: null
+                linewidth: 0.75
+                zorder: 1.0
+              CMIP6:
+                label: '{project}'
+              CMIP6_CESM2:
+                label: '{project}'
+              OBS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              native6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              OBS_CERES-EBAF:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS_CLARA-AVHRR:
+                color: gray
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashed
+              OBS_CLOUDSAT-L2:
+                color: gray
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              OBS_ESACCI-CLOUD:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashed
+              OBS_GPCP-SG:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS_ISCCP-FH:
+                color: gray
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS_MODIS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS_PATMOS-x:
+                color: gray
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              OBS6_ESACCI-WATERVAPOUR:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6_MERRA2:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              native6_ERA5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              ERA5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted

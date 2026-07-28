@@ -1,0 +1,451 @@
+# ESMValTool
+#DASK --memory_limit=7760MB
+#DASK --n_workers=4
+#TAGS atmosphere
+#TAGS precipitation
+#TAGS diurnal-cycle
+#TAGS subdaily
+---
+documentation:
+  title: Model Evaluation of Subdaily Precipitation (Diurnal Cycles).
+  description: Diurnal cycles of precipitation.
+  authors:
+  - bock_lisa
+  - schlund_manuel
+datasets_pr:
+- project: native6
+  dataset: ERA5
+  alias: ERA5
+  type: reanaly
+  version: v1
+  frequency: 1hr
+  tier: 3
+  timerange: '*'
+supplementary_variables:
+- short_name: areacella
+  skip: true
+- short_name: areacello
+  skip: true
+- short_name: sftlf
+  skip: true
+- short_name: sftof
+  skip: true
+line_plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  figure_kwargs:
+    figsize:
+    - 7
+    - 5
+  group_variables_by: variable_group
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+diurnal_cycle_line_plot:
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor:
+    - 0.5
+    - -0.4
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: '{title}'
+    ylabel: '{short_name} [{units}]'
+  plot_kwargs:
+    ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    default:
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: '{project}'
+    CMIP6_CESM2:
+      label: '{project}'
+    OBS:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    native6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    native6_ERA5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    ERA5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+map_plot_script:
+  script: hydrology/hour_of_max_precipitation.py
+  caption: "Hour of daily maximum precipitation in the Tropics (30\xB0S-30\xB0N) for\
+    \ {alias}."
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: input
+  project: ICON
+preprocessors:
+  diurnal_cycle_tropics_ocean:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    extract_region:
+      start_longitude: 0
+      end_longitude: 360
+      start_latitude: -30
+      end_latitude: 30
+    mask_landsea:
+      mask_out: land
+    local_solar_time: null
+    area_statistics:
+      operator: mean
+    climate_statistics:
+      period: hourly
+    convert_units:
+      units: mm day-1
+  diurnal_cycle_tropics_land:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    extract_region:
+      start_longitude: 0
+      end_longitude: 360
+      start_latitude: -30
+      end_latitude: 30
+    mask_landsea:
+      mask_out: sea
+    local_solar_time: null
+    area_statistics:
+      operator: mean
+    climate_statistics:
+      period: hourly
+    convert_units:
+      units: mm day-1
+  diurnal_cycle_north_jja_land:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    extract_region:
+      start_longitude: 0
+      end_longitude: 360
+      start_latitude: 20
+      end_latitude: 70
+    mask_landsea:
+      mask_out: sea
+    local_solar_time: null
+    area_statistics:
+      operator: mean
+    extract_season:
+      season: JJA
+    climate_statistics:
+      period: hourly
+    convert_units:
+      units: mm day-1
+  diurnal_cycle_south_djf_land:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    extract_region:
+      start_longitude: 0
+      end_longitude: 360
+      start_latitude: -70
+      end_latitude: -20
+    mask_landsea:
+      mask_out: sea
+    local_solar_time: null
+    area_statistics:
+      operator: mean
+    extract_season:
+      season: DJF
+    climate_statistics:
+      period: hourly
+    convert_units:
+      units: mm day-1
+  diurnal_cycle_map_tropics:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    extract_region:
+      start_latitude: -30
+      end_latitude: 30
+      start_longitude: 0
+      end_longitude: 360
+    local_solar_time: null
+    climate_statistics:
+      period: hourly
+    convert_units:
+      units: mm day-1
+diagnostics:
+  diurnal_cycles:
+    description: Diurnal cycles of precipitation.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      pr_tropical_ocean:
+        short_name: pr
+        mip: 3hr
+        preprocessor: diurnal_cycle_tropics_ocean
+        title: Precipitation over Ocean (Tropics, 30S-30N)
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          alias: ERA5
+          type: reanaly
+          version: v1
+          frequency: 1hr
+          tier: 3
+          timerange: '*'
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      pr_tropical_land:
+        short_name: pr
+        mip: 3hr
+        preprocessor: diurnal_cycle_tropics_land
+        title: Precipitation over Land (Tropics, 30S-30N)
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          alias: ERA5
+          type: reanaly
+          version: v1
+          frequency: 1hr
+          tier: 3
+          timerange: '*'
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      pr_north_jja_land:
+        short_name: pr
+        mip: 3hr
+        preprocessor: diurnal_cycle_north_jja_land
+        title: Precipitation over Land (Northern Extratropics, 20-70N, JJA)
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          alias: ERA5
+          type: reanaly
+          version: v1
+          frequency: 1hr
+          tier: 3
+          timerange: '*'
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      pr_south_djf_land:
+        short_name: pr
+        mip: 3hr
+        preprocessor: diurnal_cycle_south_djf_land
+        title: Precipitation over Land (Southern Extratropics, 20-70S, DJF)
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          alias: ERA5
+          type: reanaly
+          version: v1
+          frequency: 1hr
+          tier: 3
+          timerange: '*'
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          diurnal_cycle:
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              title: '{title}'
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              default:
+                color: lightgray
+                label: null
+                linewidth: 0.75
+                zorder: 1.0
+              CMIP6:
+                label: '{project}'
+              CMIP6_CESM2:
+                label: '{project}'
+              OBS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              native6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              native6_ERA5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              ERA5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+  hour_of_maximum_precipitation:
+    description: Hour of maximum precipitation.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      pr:
+        mip: 3hr
+        preprocessor: diurnal_cycle_map_tropics
+        additional_datasets:
+        - project: native6
+          dataset: ERA5
+          alias: ERA5
+          type: reanaly
+          version: v1
+          frequency: 1hr
+          tier: 3
+          timerange: '*'
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+    scripts:
+      plot:
+        script: hydrology/hour_of_max_precipitation.py
+        caption: "Hour of daily maximum precipitation in the Tropics (30\xB0S-30\xB0\
+          N) for {alias}."

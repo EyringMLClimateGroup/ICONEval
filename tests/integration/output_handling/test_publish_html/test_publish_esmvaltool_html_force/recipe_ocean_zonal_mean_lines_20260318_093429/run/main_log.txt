@@ -1,0 +1,336 @@
+INFO    [2190093]
+______________________________________________________________________
+          _____ ____  __  ____     __    _ _____           _
+         | ____/ ___||  \/  \ \   / /_ _| |_   _|__   ___ | |
+         |  _| \___ \| |\/| |\ \ / / _` | | | |/ _ \ / _ \| |
+         | |___ ___) | |  | | \ V / (_| | | | | (_) | (_) | |
+         |_____|____/|_|  |_|  \_/ \__,_|_| |_|\___/ \___/|_|
+______________________________________________________________________
+
+Earth System Model Evaluation Tool
+
+A community tool for the evaluation of Earth system models.
+
+https://esmvaltool.org
+
+The Earth System Model Evaluation Tool (ESMValTool) is a community
+diagnostics and performance metrics tool for the evaluation of Earth
+System Models (ESMs) that allows for routine comparison of single or
+multiple models, either against predecessor versions or against
+observations.
+
+Tutorial: https://tutorial.esmvaltool.org
+Documentation: https://docs.esmvaltool.org
+Contact: esmvaltool-dev@listserv.dfn.de
+
+If you find this software useful for your research, please cite it using
+https://doi.org/10.5281/zenodo.3387139 for ESMValCore or
+https://doi.org/10.5281/zenodo.3401363 for ESMValTool or
+any of the reference papers listed at https://esmvaltool.org/references/.
+
+Have fun!
+
+INFO    [2190093] Package versions
+INFO    [2190093] ----------------
+INFO    [2190093] ESMValCore: 2.15.0.dev5+g3208f5f3a
+INFO    [2190093] ESMValTool: 2.14.0.dev82+gd48ea2ab7
+INFO    [2190093] ----------------
+INFO    [2190093] Reading configuration files from:
+/home/b/b309141/repos/ESMValCore/esmvalcore/config/configurations/defaults (defaults)
+/work/bd1179/output_iconeval/0001_test_20260318_093407UTC/config/recipe_ocean_zonal_mean_lines (ESMVALTOOL_CONFIG_DIR environment variable)
+INFO    [2190093] Writing program log files to:
+/work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/run/main_log.txt
+/work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/run/main_log_debug.txt
+/work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/run/cmor_log.txt
+INFO    [2190093] Starting the Earth System Model Evaluation Tool at time: 2026-03-18 09:34:30 UTC
+INFO    [2190093] ----------------------------------------------------------------------
+INFO    [2190093] RECIPE   = /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/recipes/recipe_ocean_zonal_mean_lines.yml
+INFO    [2190093] RUNDIR     = /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/run
+INFO    [2190093] WORKDIR    = /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/work
+INFO    [2190093] PREPROCDIR = /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/preproc
+INFO    [2190093] PLOTDIR    = /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/plots
+INFO    [2190093] ----------------------------------------------------------------------
+INFO    [2190093] Running tasks using at most 4 processes
+INFO    [2190093] If your system hangs during execution, it may not have enough memory for keeping this number of tasks in memory.
+INFO    [2190093] If you experience memory problems, try reducing 'max_parallel_tasks' in your configuration.
+INFO    [2190093] Creating tasks from recipe
+INFO    [2190093] Creating tasks for diagnostic zonal_means_tos
+INFO    [2190093] Creating diagnostic task zonal_means_tos/plot
+INFO    [2190093] Creating preprocessor task zonal_means_tos/tos
+INFO    [2190093] Creating preprocessor 'create_zonal_mean' task for variable 'tos'
+INFO    [2190093] Found input files for Dataset: tos, Omon, ICON, ICON-XPP, historical-202510p1, mon
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, TaiESM1, historical, r1i1p1f1, mon, gn, v20200630
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, AWI-CM-1-1-MR, historical, r1i1p1f1, mon, gn, v20181218
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, AWI-ESM-1-1-LR, historical, r1i1p1f1, mon, gn, v20200212
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, BCC-CSM2-MR, historical, r1i1p1f1, mon, gn, v20181126
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, BCC-ESM1, historical, r1i1p1f1, mon, gn, v20181129
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CAMS-CSM1-0, historical, r1i1p1f1, mon, gn, v20190708
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CAS-ESM2-0, historical, r1i1p1f1, mon, gn, v20201228
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, FGOALS-f3-L, historical, r1i1p1f1, mon, gn, v20191007
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, FGOALS-g3, historical, r1i1p1f1, mon, gn, v20191107
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, IITM-ESM, historical, r1i1p1f1, mon, gn, v20200915
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CanESM5, historical, r1i1p1f1, mon, gn, v20190429
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CMCC-CM2-HR4, historical, r1i1p1f1, mon, gn, v20200904
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CMCC-CM2-SR5, historical, r1i1p1f1, mon, gn, v20200616
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CMCC-ESM2, historical, r1i1p1f1, mon, gn, v20210114
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, ACCESS-ESM1-5, historical, r1i1p1f1, mon, gn, v20191115
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, ACCESS-CM2, historical, r1i1p1f1, mon, gn, v20191108
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, EC-Earth3, historical, r1i1p1f1, mon, gn, v20200918
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, EC-Earth3-AerChem, historical, r1i1p1f1, mon, gn, v20200624
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, EC-Earth3-CC, historical, r1i1p1f1, mon, gn, v20210113
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, EC-Earth3-Veg, historical, r1i1p1f1, mon, gn, v20200919
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, EC-Earth3-Veg-LR, historical, r1i1p1f1, mon, gn, v20200919
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, FIO-ESM-2-0, historical, r1i1p1f1, mon, gn, v20191122
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, MPI-ESM-1-2-HAM, historical, r1i1p1f1, mon, gn, v20190627
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, IPSL-CM5A2-INCA, historical, r1i1p1f1, mon, gn, v20200729
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, IPSL-CM6A-LR, historical, r1i1p1f1, mon, gn, v20180803
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, MIROC6, historical, r1i1p1f1, mon, gn, v20181212
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, ICON-ESM-LR, historical, r1i1p1f1, mon, gn, v20210215
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, MPI-ESM1-2-HR, historical, r1i1p1f1, mon, gn, v20190710
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, MPI-ESM1-2-LR, historical, r1i1p1f1, mon, gn, v20190710
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, MRI-ESM2-0, historical, r1i1p1f1, mon, gn, v20190904
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, GISS-E2-1-G, historical, r1i1p1f1, mon, gn, v20180827
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, GISS-E2-1-G-CC, historical, r1i1p1f1, mon, gn, v20190815
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, GISS-E2-1-H, historical, r1i1p1f1, mon, gn, v20190403
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CESM2, historical, r1i1p1f1, mon, gn, v20190308
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CESM2-FV2, historical, r1i1p1f1, mon, gn, v20191120
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CESM2-WACCM, historical, r1i1p1f1, mon, gn, v20190808
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CESM2-WACCM-FV2, historical, r1i1p1f1, mon, gn, v20191120
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, NorCPM1, historical, r1i1p1f1, mon, gn, v20200724
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, NorESM2-LM, historical, r1i1p1f1, mon, gn, v20190815
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, NorESM2-MM, historical, r1i1p1f1, mon, gn, v20191108
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, GFDL-CM4, historical, r1i1p1f1, mon, gn, v20180701
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, GFDL-ESM4, historical, r1i1p1f1, mon, gn, v20190726
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, NESM3, historical, r1i1p1f1, mon, gn, v20190703
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, SAM0-UNICON, historical, r1i1p1f1, mon, gn, v20190323
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, CIESM, historical, r1i1p1f1, mon, gn, ['v20191228', 'v20200220']
+INFO    [2190093] Found input files for Dataset: tos, Omon, CMIP6, MCM-UA-1-0, historical, r1i1p1f1, mon, gn, v20190731
+INFO    [2190093] Found input files for Dataset: tos, Omon, OBS6, ESACCI-SST, mon, 3.0-L4-analysis
+INFO    [2190093] Found input files for Dataset: tos, Omon, OBS, HadISST, mon, 1
+INFO    [2190093] Found input files for Dataset: tos, Omon, OBS6, NOAA-ERSSTv5, mon, v5
+INFO    [2190093] Found input files for Dataset: tos, Omon, OBS6, WOA, mon, 2018
+INFO    [2190093] PreprocessingTask zonal_means_tos/tos created.
+INFO    [2190093] Creating tasks for diagnostic zonal_means_sos
+INFO    [2190093] Creating diagnostic task zonal_means_sos/plot
+INFO    [2190093] Creating preprocessor task zonal_means_sos/so
+INFO    [2190093] Creating preprocessor 'create_zonal_mean_sos' task for variable 'so'
+INFO    [2190093] Found input files for Dataset: so, Omon, ICON, ICON-XPP, historical-202510p1, mon
+INFO    [2190093] Found input files for Dataset: so, Omon, OBS6, WOA, mon, 2018
+INFO    [2190093] PreprocessingTask zonal_means_sos/so created.
+INFO    [2190093] These tasks will be executed: zonal_means_tos/tos, zonal_means_sos/plot, zonal_means_sos/so, zonal_means_tos/plot
+INFO    [2190093] Wrote recipe with version numbers and wildcards to:
+file:///work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_ocean_zonal_mean_lines_20260318_093429/run/recipe_ocean_zonal_mean_lines_filled.yml
+INFO    [2190093] Using Dask distributed scheduler (address: tcp://127.0.0.1:40773, dashboard link: http://127.0.0.1:33573/status)
+INFO    [2190093] Running 4 tasks using 4 processes
+INFO    [2190841] Starting task zonal_means_sos/so in process [2190841]
+INFO    [2190839] Starting task zonal_means_tos/tos in process [2190839]
+INFO    [2190093] Progress: 2 tasks running, 2 tasks waiting for ancestors, 0/4 done
+ERROR   [2190841] Failed to run preprocessor function 'cmor_check_metadata' on the data
+[<iris 'Cube' of sea_water_salinity / (0.001) (time: 21; depth: 72; first spatial index for variables stored on an unstructured grid: 935760)>]
+loaded from original input file(s)
+[LocalFile('/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_oce_def_19790101T000000Z.nc'),
+ LocalFile('/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_oce_def_19800101T000000Z.nc'),
+ LocalFile('/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_oce_def_19810101T000000Z.nc'),
+ LocalFile('/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_oce_def_19820101T000000Z.nc')]
+(and 17 further file(s) not shown here; refer to the debug log for a full list)
+with function argument(s)
+check_level = <CheckLevels.DEFAULT: 3>,
+cmor_table = 'ICON',
+mip = 'Omon',
+frequency = 'mon',
+short_name = 'so',
+branding_suffix = None
+INFO    [2190093] Maximum memory used (estimate): 7.3 GB
+INFO    [2190093] Sampled every second. It may be inaccurate if short but high spikes in memory consumption occur.
+ERROR   [2190093] Program terminated abnormally, see stack trace below for more information:
+multiprocessing.pool.RemoteTraceback:
+"""
+Traceback (most recent call last):
+  File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ~~~~^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 1004, in _run_task
+    output_files = task.run()
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 301, in run
+    self.output_files = self._run(input_files)
+                        ~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 885, in _run
+    product.apply(step, self.debug)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 701, in apply
+    self.cubes,
+    ^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 713, in cubes
+    self._cubes = [ds.load() for ds in self.datasets]  # type: ignore
+                   ~~~~~~~^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/dataset.py", line 805, in load
+    cube = self._load()
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/dataset.py", line 887, in _load
+    result = preprocess(
+        result,
+    ...<4 lines>...
+        **kwargs,
+    )
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 580, in preprocess
+    _run_preproc_function(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        function,
+        ^^^^^^^^^
+    ...<2 lines>...
+        input_files=input_files,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ),
+    ^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 510, in _run_preproc_function
+    return function(items, **kwargs)
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/cmor/check.py", line 1022, in cmor_check_metadata
+    return checker(cube).check_metadata()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/cmor/check.py", line 161, in check_metadata
+    self.report_errors()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/cmor/check.py", line 221, in report_errors
+    raise CMORCheckError(msg)
+esmvalcore.cmor.check.CMORCheckError: There were errors in variable so:
+ time: Frequency mon does not match input data
+in cube:
+sea_water_salinity / (0.001)                                             (time: 21; depth: 72; first spatial index for variables stored on an unstructured grid: 935760)
+    Dimension coordinates:
+        time                                                                  x          -                                                                     -
+        depth                                                                 -          x                                                                     -
+        first spatial index for variables stored on an unstructured grid      -          -                                                                     x
+    Mesh coordinates:
+        latitude                                                              -          -                                                                     x
+        longitude                                                             -          -                                                                     x
+    Mesh:
+        name                                                             unknown
+        location                                                         face
+    Attributes:
+        CDI                                                              'Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)'
+        CDI_grid_type                                                    'unstructured'
+        Conventions                                                      'CF-1.6'
+        grid_file_uri                                                    'http://icon-downloads.mpimet.mpg.de/grids/public/mpim/0062/icon_grid_0 ...'
+        institution                                                      'Max Planck Institute for Meteorology/Deutscher Wetterdienst'
+        number_of_grid_in_reference                                      np.int32(1)
+        number_of_grid_used                                              np.int32(62)
+        param                                                            '21.4.10'
+        references                                                       'see MPIM/DWD publications'
+        source                                                           'version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; ...'
+        title                                                            'ICON simulation'
+        uuidOfHGrid                                                      '5797407c-1c47-11ea-ae87-f7ba6feb63f1'
+loaded from file
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_main.py", line 786, in run
+    fire.Fire(ESMValTool())
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/site-packages/fire/core.py", line 135, in Fire
+    component_trace = _Fire(component, args, parsed_flag_args, context, name)
+  File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/site-packages/fire/core.py", line 468, in _Fire
+    component, remaining_args = _CallAndUpdateTrace(
+                                ~~~~~~~~~~~~~~~~~~~^
+        component,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        treatment='class' if is_class else 'routine',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        target=component.__name__)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/site-packages/fire/core.py", line 684, in _CallAndUpdateTrace
+    component = fn(*varargs, **kwargs)
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_main.py", line 620, in run
+    self._run(recipe, session, cli_config_dir)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_main.py", line 675, in _run
+    process_recipe(recipe_file=recipe, session=session)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_main.py", line 156, in process_recipe
+    recipe.run()
+    ~~~~~~~~~~^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_recipe/recipe.py", line 1336, in run
+    self.tasks.run(max_parallel_tasks=self.session["max_parallel_tasks"])
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 852, in run
+    self._run_parallel(address, max_parallel_tasks)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 962, in _run_parallel
+    _copy_results(task, running[task])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 992, in _copy_results
+    task.output_files, task.products = future.get()
+                                       ~~~~~~~~~~^^
+  File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/multiprocessing/pool.py", line 774, in get
+    raise self._value
+  File "/home/b/b309141/micromamba/envs/esm/lib/python3.13/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+    ^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 1004, in _run_task
+    output_files = task.run()
+    ^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/_task.py", line 301, in run
+    self.output_files = self._run(input_files)
+    ^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 885, in _run
+    product.apply(step, self.debug)
+
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 701, in apply
+    self.cubes,
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 713, in cubes
+    self._cubes = [ds.load() for ds in self.datasets]  # type: ignore
+    ^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/dataset.py", line 805, in load
+    cube = self._load()
+    ^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/dataset.py", line 887, in _load
+    result = preprocess(
+    ^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 580, in preprocess
+    _run_preproc_function(
+    ^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/preprocessor/__init__.py", line 510, in _run_preproc_function
+    return function(items, **kwargs)
+    ^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/cmor/check.py", line 1022, in cmor_check_metadata
+    return checker(cube).check_metadata()
+      ^^^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/cmor/check.py", line 161, in check_metadata
+    self.report_errors()
+    ^^^^^^^^^^^^^^^
+  File "/home/b/b309141/repos/ESMValCore/esmvalcore/cmor/check.py", line 221, in report_errors
+    raise CMORCheckError(msg)
+    ^^^^^^^^^^^
+esmvalcore.cmor.check.CMORCheckError: There were errors in variable so:
+ time: Frequency mon does not match input data
+in cube:
+sea_water_salinity / (0.001)                                             (time: 21; depth: 72; first spatial index for variables stored on an unstructured grid: 935760)
+    Dimension coordinates:
+        time                                                                  x          -                                                                     -
+        depth                                                                 -          x                                                                     -
+        first spatial index for variables stored on an unstructured grid      -          -                                                                     x
+    Mesh coordinates:
+        latitude                                                              -          -                                                                     x
+        longitude                                                             -          -                                                                     x
+    Mesh:
+        name                                                             unknown
+        location                                                         face
+    Attributes:
+        CDI                                                              'Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)'
+        CDI_grid_type                                                    'unstructured'
+        Conventions                                                      'CF-1.6'
+        grid_file_uri                                                    'http://icon-downloads.mpimet.mpg.de/grids/public/mpim/0062/icon_grid_0 ...'
+        institution                                                      'Max Planck Institute for Meteorology/Deutscher Wetterdienst'
+        number_of_grid_in_reference                                      np.int32(1)
+        number_of_grid_used                                              np.int32(62)
+        param                                                            '21.4.10'
+        references                                                       'see MPIM/DWD publications'
+        source                                                           'version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; ...'
+        title                                                            'ICON simulation'
+        uuidOfHGrid                                                      '5797407c-1c47-11ea-ae87-f7ba6feb63f1'
+loaded from file
+INFO    [2190093]
+If you have a question or need help, please start a new discussion on https://github.com/ESMValGroup/ESMValTool/discussions
+If you suspect this is a bug, please open an issue on https://github.com/ESMValGroup/ESMValTool/issues
+To make it easier to find out what the problem is, please consider attaching the files run/recipe_*.yml and run/main_log_debug.txt from the output directory.
