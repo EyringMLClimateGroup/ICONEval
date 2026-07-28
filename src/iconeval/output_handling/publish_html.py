@@ -30,12 +30,12 @@ MAX_FILE_SIZE_FOR_UPLOAD = 4_500_000_000  # 4.5 GB
 
 def publish_esmvaltool_html(
     esmvaltool_output_dir: str | Path,
+    *,
     container_name: str | None = None,
     dir_name: str | None = None,
     log_level: str = "info",
     log_file: str | Path | None = "~/.iconeval/debug.log",
     summary_description: str | None = None,
-    *,
     force_new_token: bool = False,
     force_new_summary: bool = False,
     setup_logging: bool = True,

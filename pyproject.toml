@@ -165,6 +165,7 @@ select = ["ALL"]
 ignore = [
     "ANN401",     # Dynamically typed expressions (typing.Any) are disallowed
     "C901",       # Function is too complex
+    "CPY001",     # Missing copyright notice at top of file
     "DTZ",        # Missing timezone information
     "G004",       # Logging statement uses f-string
     "PLR0912",    # Too many branches
@@ -183,6 +184,7 @@ future-annotations = true
     "D103",       # Missing docstring in public function
     "D104",       # Missing docstring in public package
     "FBT001",     # Boolean-typed positional argument in function definition
+    "PLR0917",    # Too many positional arguments
     "S101",       # Use of `assert` detected
     "SLF001",     # Private member accessed
 ]
