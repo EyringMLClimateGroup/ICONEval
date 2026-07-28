@@ -13,7 +13,8 @@ logger = logger.opt(colors=True)
 def configure_logging(log_level: str, log_file: str | Path | None = None) -> None:
     """Configure logging."""
     _add_console_handler(log_level)
-    _add_file_handler(log_file)
+    if log_file is not None:
+        _add_file_handler(log_file)
 
 
 def _add_console_handler(log_level: str) -> None:
@@ -25,10 +26,8 @@ def _add_console_handler(log_level: str) -> None:
     logger.add(sys.stdout, level=log_level.upper(), format=format_str, colorize=True)
 
 
-def _add_file_handler(log_file: str | Path | None) -> None:
+def _add_file_handler(log_file: str | Path) -> None:
     """Add file logging handler."""
-    if log_file is None:
-        return
     log_file = Path(log_file).expanduser().resolve()
     log_file.parent.mkdir(parents=True, exist_ok=True)
     logger.add(log_file, level="DEBUG", rotation="500 MB", retention=10)
