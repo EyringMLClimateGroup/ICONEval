@@ -1,0 +1,795 @@
+documentation:
+  title: Ocean Evaluation (Zonal Means).
+  description: '<p>Zonal mean line plots of ocean variables.</p> <p><i>Note</i></p>
+    <p>Time ranges for the different datasets differ: <ul> <li>ICON-XPP: 19790101/19990101</li>
+    <li>ESACCI-SST: 20020101/20211231</li> <li>HadISST: 20020101/20211231</li> <li>NOAA-ERSSTv5:
+    20010101/20201231</li> <li>WOA: 20000101/20001231</li> </ul></p>'
+  authors:
+  - bock_lisa
+  - weigel_katja
+datasets_cmip6:
+- project: CMIP6
+  dataset: '*'
+  exp: historical
+  ensemble: r1i1p1f1
+  grid: gn
+  institute: '*'
+  timerange: 19950101/20141231
+datasets_tos:
+- project: OBS6
+  dataset: ESACCI-SST
+  type: sat
+  version: 3.0-L4-analysis
+  tier: 2
+  timerange: 20020101/20211231
+- project: OBS
+  dataset: HadISST
+  type: reanaly
+  version: '1'
+  tier: 2
+  timerange: 20020101/20211231
+- project: OBS6
+  dataset: NOAA-ERSSTv5
+  type: reanaly
+  version: v5
+  tier: 2
+  timerange: 20010101/20201231
+- project: OBS6
+  dataset: WOA
+  type: clim
+  version: '2018'
+  tier: 2
+  timerange: 20000101/20001231
+datasets_so:
+- project: OBS6
+  dataset: WOA
+  type: clim
+  version: '2018'
+  tier: 2
+  timerange: 20000101/20001231
+plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  figure_kwargs:
+    figsize:
+    - 7
+    - 5
+  group_variables_by: variable_group
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+variable_vs_lat_plot:
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor:
+    - 0.5
+    - -0.4
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: '{title}'
+  plot_kwargs:
+    ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_historical-202510p1:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON-XPP:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON-XPP_historical-202510p1:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    default:
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: '{project}'
+    CMIP6_CESM2:
+      label: '{project}'
+    OBS:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    native6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+    OBS_HadISST:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6_ESACCI-SST:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashed
+    OBS6_NOAA-ERSSTv5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    OBS6_WOA:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+preprocessors:
+  create_zonal_mean:
+    custom_order: true
+    regrid:
+      scheme: linear
+      target_grid: 2x2
+    extract_region:
+      start_longitude: 0
+      end_longitude: 360
+      start_latitude: -77
+      end_latitude: 90
+    zonal_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: degC
+  create_zonal_mean_sos:
+    custom_order: true
+    extract_levels:
+      coordinate: depth
+      levels: 0
+      scheme: nearest_extrapolate
+    regrid:
+      scheme: linear
+      target_grid: 2x2
+    extract_region:
+      start_longitude: 0
+      end_longitude: 360
+      start_latitude: -77
+      end_latitude: 90
+    zonal_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: g/kg
+  default: {}
+diagnostics:
+  zonal_means_tos:
+    description: Zonal mean line plots of sea surface temperature.
+    themes:
+    - phys
+    realms:
+    - ocean
+    variables:
+      tos:
+        mip: Omon
+        preprocessor: create_zonal_mean
+        title: Sea Surface Temperature
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          variable_vs_lat:
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              title: '{title}'
+            plot_kwargs:
+              ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_historical-202510p1:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON-XPP:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON-XPP_historical-202510p1:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              default:
+                color: lightgray
+                label: null
+                linewidth: 0.75
+                zorder: 1.0
+              CMIP6:
+                label: '{project}'
+              CMIP6_CESM2:
+                label: '{project}'
+              OBS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              native6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              OBS_HadISST:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6_ESACCI-SST:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashed
+              OBS6_NOAA-ERSSTv5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              OBS6_WOA:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+    additional_datasets:
+    - project: CMIP6
+      dataset: ACCESS-CM2
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CSIRO-ARCCSS
+      timerange: 19950101/20141231
+      version: v20191108
+    - project: CMIP6
+      dataset: ACCESS-ESM1-5
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CSIRO
+      timerange: 19950101/20141231
+      version: v20191115
+    - project: CMIP6
+      dataset: AWI-CM-1-1-MR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: AWI
+      timerange: 19950101/20141231
+      version: v20181218
+    - project: CMIP6
+      dataset: AWI-ESM-1-1-LR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: AWI
+      timerange: 19950101/20141231
+      version: v20200212
+    - project: CMIP6
+      dataset: BCC-CSM2-MR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: BCC
+      timerange: 19950101/20141231
+      version: v20181126
+    - project: CMIP6
+      dataset: BCC-ESM1
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: BCC
+      timerange: 19950101/20141231
+      version: v20181129
+    - project: CMIP6
+      dataset: CAMS-CSM1-0
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CAMS
+      timerange: 19950101/20141231
+      version: v20190708
+    - project: CMIP6
+      dataset: CAS-ESM2-0
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CAS
+      timerange: 19950101/20141231
+      version: v20201228
+    - project: CMIP6
+      dataset: CESM2
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCAR
+      timerange: 19950101/20141231
+      version: v20190308
+    - project: CMIP6
+      dataset: CESM2-FV2
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCAR
+      timerange: 19950101/20141231
+      version: v20191120
+    - project: CMIP6
+      dataset: CESM2-WACCM
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCAR
+      timerange: 19950101/20141231
+      version: v20190808
+    - project: CMIP6
+      dataset: CESM2-WACCM-FV2
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCAR
+      timerange: 19950101/20141231
+      version: v20191120
+    - project: CMIP6
+      dataset: CIESM
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: THU
+      timerange: 19950101/20141231
+      version:
+      - v20191228
+      - v20200220
+    - project: CMIP6
+      dataset: CMCC-CM2-HR4
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CMCC
+      timerange: 19950101/20141231
+      version: v20200904
+    - project: CMIP6
+      dataset: CMCC-CM2-SR5
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CMCC
+      timerange: 19950101/20141231
+      version: v20200616
+    - project: CMIP6
+      dataset: CMCC-ESM2
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CMCC
+      timerange: 19950101/20141231
+      version: v20210114
+    - project: CMIP6
+      dataset: CanESM5
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CCCma
+      timerange: 19950101/20141231
+      version: v20190429
+    - project: CMIP6
+      dataset: EC-Earth3
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: EC-Earth-Consortium
+      timerange: 19950101/20141231
+      version: v20200918
+    - project: CMIP6
+      dataset: EC-Earth3-AerChem
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: EC-Earth-Consortium
+      timerange: 19950101/20141231
+      version: v20200624
+    - project: CMIP6
+      dataset: EC-Earth3-CC
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: EC-Earth-Consortium
+      timerange: 19950101/20141231
+      version: v20210113
+    - project: CMIP6
+      dataset: EC-Earth3-Veg
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: EC-Earth-Consortium
+      timerange: 19950101/20141231
+      version: v20200919
+    - project: CMIP6
+      dataset: EC-Earth3-Veg-LR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: EC-Earth-Consortium
+      timerange: 19950101/20141231
+      version: v20200919
+    - project: OBS6
+      dataset: ESACCI-SST
+      type: sat
+      version: 3.0-L4-analysis
+      tier: 2
+      timerange: 20020101/20211231
+    - project: CMIP6
+      dataset: FGOALS-f3-L
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CAS
+      timerange: 19950101/20141231
+      version: v20191007
+    - project: CMIP6
+      dataset: FGOALS-g3
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CAS
+      timerange: 19950101/20141231
+      version: v20191107
+    - project: CMIP6
+      dataset: FIO-ESM-2-0
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: FIO-QLNM
+      timerange: 19950101/20141231
+      version: v20191122
+    - project: CMIP6
+      dataset: GFDL-CM4
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NOAA-GFDL
+      timerange: 19950101/20141231
+      version: v20180701
+    - project: CMIP6
+      dataset: GFDL-ESM4
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NOAA-GFDL
+      timerange: 19950101/20141231
+      version: v20190726
+    - project: CMIP6
+      dataset: GISS-E2-1-G
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NASA-GISS
+      timerange: 19950101/20141231
+      version: v20180827
+    - project: CMIP6
+      dataset: GISS-E2-1-G-CC
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NASA-GISS
+      timerange: 19950101/20141231
+      version: v20190815
+    - project: CMIP6
+      dataset: GISS-E2-1-H
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NASA-GISS
+      timerange: 19950101/20141231
+      version: v20190403
+    - project: OBS
+      dataset: HadISST
+      type: reanaly
+      version: '1'
+      tier: 2
+      timerange: 20020101/20211231
+    - project: CMIP6
+      dataset: ICON-ESM-LR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: MPI-M
+      timerange: 19950101/20141231
+      version: v20210215
+    - project: CMIP6
+      dataset: IITM-ESM
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: CCCR-IITM
+      timerange: 19950101/20141231
+      version: v20200915
+    - project: CMIP6
+      dataset: IPSL-CM5A2-INCA
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: IPSL
+      timerange: 19950101/20141231
+      version: v20200729
+    - project: CMIP6
+      dataset: IPSL-CM6A-LR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: IPSL
+      timerange: 19950101/20141231
+      version: v20180803
+    - project: CMIP6
+      dataset: MCM-UA-1-0
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: UA
+      timerange: 19950101/20141231
+      version: v20190731
+    - project: CMIP6
+      dataset: MIROC6
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: MIROC
+      timerange: 19950101/20141231
+      version: v20181212
+    - project: CMIP6
+      dataset: MPI-ESM-1-2-HAM
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: HAMMOZ-Consortium
+      timerange: 19950101/20141231
+      version: v20190627
+    - project: CMIP6
+      dataset: MPI-ESM1-2-HR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: MPI-M
+      timerange: 19950101/20141231
+      version: v20190710
+    - project: CMIP6
+      dataset: MPI-ESM1-2-LR
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: MPI-M
+      timerange: 19950101/20141231
+      version: v20190710
+    - project: CMIP6
+      dataset: MRI-ESM2-0
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: MRI
+      timerange: 19950101/20141231
+      version: v20190904
+    - project: CMIP6
+      dataset: NESM3
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NUIST
+      timerange: 19950101/20141231
+      version: v20190703
+    - project: OBS6
+      dataset: NOAA-ERSSTv5
+      type: reanaly
+      version: v5
+      tier: 2
+      timerange: 20010101/20201231
+    - project: CMIP6
+      dataset: NorCPM1
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCC
+      timerange: 19950101/20141231
+      version: v20200724
+    - project: CMIP6
+      dataset: NorESM2-LM
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCC
+      timerange: 19950101/20141231
+      version: v20190815
+    - project: CMIP6
+      dataset: NorESM2-MM
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: NCC
+      timerange: 19950101/20141231
+      version: v20191108
+    - project: CMIP6
+      dataset: SAM0-UNICON
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: SNU
+      timerange: 19950101/20141231
+      version: v20190323
+    - project: CMIP6
+      dataset: TaiESM1
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: AS-RCEC
+      timerange: 19950101/20141231
+      version: v20200630
+  zonal_means_sos:
+    description: Zonal mean line plots of sea surface salinity.
+    themes:
+    - phys
+    realms:
+    - ocean
+    variables:
+      so:
+        mip: Omon
+        preprocessor: create_zonal_mean_sos
+        title: Sea Surface Salinity
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          variable_vs_lat:
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              title: '{title}'
+            plot_kwargs:
+              ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_historical-202510p1:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON-XPP:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON-XPP_historical-202510p1:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              default:
+                color: lightgray
+                label: null
+                linewidth: 0.75
+                zorder: 1.0
+              CMIP6:
+                label: '{project}'
+              CMIP6_CESM2:
+                label: '{project}'
+              OBS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              native6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+              OBS_HadISST:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6_ESACCI-SST:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashed
+              OBS6_NOAA-ERSSTv5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              OBS6_WOA:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
+datasets:
+- dataset: ICON-XPP
+  exp: historical-202510p1
+  project: ICON
+  timerange: 19790101/19990101
+- project: OBS6
+  dataset: WOA
+  type: clim
+  version: '2018'
+  tier: 2
+  timerange: 20000101/20001231
