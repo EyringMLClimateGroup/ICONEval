@@ -33,63 +33,63 @@ def output_dir(tmp_path: Path) -> Path:
     return output_dir
 
 
-# def test___repr__(input_dirs: list[Path], output_dir: Path) -> None:
-#     session = Session(input_dirs, output_dir, "my_run_name")
-#     expected_output_dir = output_dir / "my_run_name_20000101_000000UTC"
-#     assert repr(session) == (
-#         f"Session(input_dirs={input_dirs!r}, output_dir="
-#         f"{expected_output_dir!r}, name='my_run_name')"
-#     )
+def test___repr__(input_dirs: list[Path], output_dir: Path) -> None:
+    session = Session(input_dirs, output_dir, "my_run_name")
+    expected_output_dir = output_dir / "my_run_name_20000101_000000UTC"
+    assert repr(session) == (
+        f"Session(input_dirs={input_dirs!r}, output_dir="
+        f"{expected_output_dir!r}, name='my_run_name')"
+    )
 
 
-# def test_input_dirs(input_dirs: list[Path], output_dir: Path) -> None:
-#     session = Session(input_dirs, output_dir, "my_run_name")
-#     assert session.input_dirs == input_dirs
+def test_input_dirs(input_dirs: list[Path], output_dir: Path) -> None:
+    session = Session(input_dirs, output_dir, "my_run_name")
+    assert session.input_dirs == input_dirs
 
 
-# def test_no_output_dir(
-#     input_dirs: list[Path],
-#     tmp_path: Path,
-#     monkeypatch: pytest.MonkeyPatch,
-# ) -> None:
-#     monkeypatch.setattr(iconeval._session.Path, "cwd", lambda: tmp_path)
-#     session = Session(input_dirs, None, None)
-#     assert (
-#         session.output_dir
-#         == tmp_path / "output_iconeval" / "input_1_input_2_20000101_000000UTC"
-#     )
-#     assert session.name == "input_1_input_2"
+def test_no_output_dir(
+    input_dirs: list[Path],
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(iconeval._session.Path, "cwd", lambda: tmp_path)
+    session = Session(input_dirs, None, None)
+    assert (
+        session.output_dir
+        == tmp_path / "output_iconeval" / "input_1_input_2_20000101_000000UTC"
+    )
+    assert session.name == "input_1_input_2"
 
 
-# def test_configure_logging(tmp_path: Path, mocker: pytest_mock.MockerFixture) -> None:
-#     mocked_logging = mocker.patch.object(iconeval._logging, "logger", autospec=True)
-#     log_file = tmp_path / "log" / "debug.log"
+def test_configure_logging(tmp_path: Path, mocker: pytest_mock.MockerFixture) -> None:
+    mocked_logging = mocker.patch.object(iconeval._logging, "logger", autospec=True)
+    log_file = tmp_path / "log" / "debug.log"
 
-#     iconeval._logging.configure_logging("warning", log_file=log_file)
+    iconeval._logging.configure_logging("warning", log_file=log_file)
 
-#     assert log_file.parent.is_dir()
-#     expected_format_str = (
-#         "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-#         "<level>{level: <8}</level> |  <level>{message}</level>"
-#     )
-#     assert mocked_logging.add.mock_calls == [
-#         call(sys.stdout, level="WARNING", format=expected_format_str, colorize=True),
-#         call(log_file, level="DEBUG", rotation="500 MB", retention=10),
-#     ]
+    assert log_file.parent.is_dir()
+    expected_format_str = (
+        "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+        "<level>{level: <8}</level> |  <level>{message}</level>"
+    )
+    assert mocked_logging.add.mock_calls == [
+        call(sys.stdout, level="WARNING", format=expected_format_str, colorize=True),
+        call(log_file, level="DEBUG", rotation="500 MB", retention=10),
+    ]
 
 
-# def test_configure_logging_no_log_file(mocker: pytest_mock.MockerFixture) -> None:
-#     mocked_logging = mocker.patch.object(iconeval._logging, "logger", autospec=True)
+def test_configure_logging_no_log_file(mocker: pytest_mock.MockerFixture) -> None:
+    mocked_logging = mocker.patch.object(iconeval._logging, "logger", autospec=True)
 
-#     iconeval._logging.configure_logging("warning")
+    iconeval._logging.configure_logging("warning")
 
-#     expected_format_str = (
-#         "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-#         "<level>{level: <8}</level> |  <level>{message}</level>"
-#     )
-#     mocked_logging.add.assert_called_once_with(
-#         sys.stdout,
-#         level="WARNING",
-#         format=expected_format_str,
-#         colorize=True,
-#     )
+    expected_format_str = (
+        "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
+        "<level>{level: <8}</level> |  <level>{message}</level>"
+    )
+    mocked_logging.add.assert_called_once_with(
+        sys.stdout,
+        level="WARNING",
+        format=expected_format_str,
+        colorize=True,
+    )
