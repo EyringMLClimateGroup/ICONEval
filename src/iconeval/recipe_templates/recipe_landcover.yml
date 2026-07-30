@@ -15,8 +15,8 @@ documentation:
 datasets: "{{dataset_list}}"
 
 datasets_other: &datasets_other
-  - {dataset: UKESM1-0-LL, project: CMIP6, exp: historical,  grid: gn, ensemble: r1i1p1f2}
-  - {dataset: ESACCI-LANDCOVER, project: OBS,   type: sat,   version: L4-LCCS-Map-300m-P5Y-aggregated-0.500000Deg, tier: 2}
+  - {dataset: UKESM1-0-LL, project: CMIP6, exp: historical, grid: gn, ensemble: r1i1p1f2}
+  - {dataset: ESACCI-LANDCOVER, project: OBS, type: sat, version: L4-LCCS-Map-300m-P5Y-aggregated-0.500000Deg, tier: 2}
 
 preprocessors:
   prep0:
