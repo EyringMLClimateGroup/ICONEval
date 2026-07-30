@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - v*.x
+      - land
   pull_request:
 
 defaults:
