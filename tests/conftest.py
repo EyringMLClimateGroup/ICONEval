@@ -5,6 +5,7 @@ import locale
 from datetime import datetime
 from importlib.resources import files
 from pathlib import Path
+from textwrap import dedent
 from typing import TYPE_CHECKING
 
 import pytest
@@ -16,11 +17,13 @@ import iconeval._simulation_info
 import iconeval.main
 import iconeval.output_handling._summarize
 import iconeval.output_handling.publish_html
+from iconeval._logging import _add_console_handler
 
 if TYPE_CHECKING:
     from collections.abc import Generator
     from unittest.mock import Mock
 
+    from pytest_datadir.plugin import LazyDataDir
     from pytest_mock import MockerFixture
 
 pytest.register_assert_rewrite("tests.integration")
@@ -28,35 +31,30 @@ pytest.register_assert_rewrite("tests.integration")
 logger = logger.opt(colors=True)
 
 
+# Pytest configuration
+
+
 def pytest_addoption(parser: pytest.Parser) -> None:
     """Add pytest options."""
-    parser.addoption("--generate_expected_output")
-
-
-def pytest_collection_modifyitems(items: list[pytest.Function]) -> None:
-    """Automatically add markers to tests based on fixture usage."""
-    for item in items:
-        if "expected_output_dir" in getattr(item, "fixturenames", ()):
-            item.add_marker("uses_expected_output")
-
-
-@pytest.fixture
-def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixture]:
-    """Overwrite default caplog feature so it works with loguru."""
-    handler_id = logger.add(
-        caplog.handler,
-        format="{message}",
-        level=0,
-        filter=lambda record: record["level"].no >= caplog.handler.level,
-        enqueue=False,
+    # Similar to https://github.com/ESSS/pytest-regressions
+    parser.addoption(
+        "--force-regen",
+        action="store_true",
+        default=False,
+        help="Regenerate regression data files, failing tests with different data.",
     )
-    yield caplog
-    logger.remove(handler_id)
+    parser.addoption(
+        "--regen-all",
+        action="store_true",
+        default=False,
+        help=(
+            "Regenerate all files, letting tests pass (use to regenerate "
+            "everything in one run)."
+        ),
+    )
 
 
-@pytest.fixture
-def expected_output_dir() -> Path:
-    return Path(str(files("tests"))).resolve() / "expected_output"
+# Automatically used fixtures
 
 
 @pytest.fixture(autouse=True)
@@ -122,6 +120,19 @@ def fix_user_input(mocker: MockerFixture) -> None:
 
 
 @pytest.fixture(autouse=True)
+def ignore_user_debug_log(monkeypatch: pytest.MonkeyPatch) -> None:
+    def configure_logging(log_level: str, log_file: str | Path | None = None) -> None:
+        _add_console_handler(log_level)
+
+    monkeypatch.setattr(iconeval.main, "configure_logging", configure_logging)
+    monkeypatch.setattr(
+        iconeval.output_handling.publish_html,
+        "configure_logging",
+        configure_logging,
+    )
+
+
+@pytest.fixture(autouse=True)
 def mocked_swift_head_account(mocker: MockerFixture) -> Mock:
     return mocker.patch.object(
         iconeval.output_handling.publish_html,
@@ -163,34 +174,59 @@ def mocked_swift_service(mocker: MockerFixture) -> Mock:
     )
 
 
-@pytest.fixture
-def recipe_template_dir() -> Path:
-    return Path(str(files("iconeval"))).resolve() / "recipe_templates"
-
-
 @pytest.fixture(autouse=True)
 def remove_default_logger_handlers() -> None:
     """Remove all potential logging handlers before running any test."""
     logger.remove()
 
 
-@pytest.fixture
-def sample_data_path() -> Path:
-    return Path(str(files("tests"))).resolve() / "sample_data"
-
-
 @pytest.fixture(autouse=True)
-def use_custom_swiftenv(
+def temporary_swiftenv(
     monkeypatch: pytest.MonkeyPatch,
-    sample_data_path: Path,
-) -> None:
+    lazy_shared_datadir: LazyDataDir,
+) -> Path:
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
         "SWIFT_BASE_URL",
         "url/to/swift_storage/",
     )
+    swiftenv_file = lazy_shared_datadir / "swiftenv"
+    swiftenv_contents = dedent(
+        """\
+        #token expires on: Sat 01. Jan 00:00:01 UTC 2000
+        setenv OS_AUTH_TOKEN this_is_a_very_nice_token
+        setenv OS_STORAGE_URL url/to/swift_storage/my_folder
+        setenv OS_AUTH_URL " "
+        setenv OS_USERNAME " "
+        setenv OS_PASSWORD " "
+        """,
+    )
+    swiftenv_file.write_text(swiftenv_contents, encoding="utf-8")
     monkeypatch.setattr(
         iconeval.output_handling.publish_html,
         "SWIFT_ENV_FILE",
-        sample_data_path / "swift" / "swiftenv",
+        swiftenv_file,
     )
+    return swiftenv_file
+
+
+# Manual fixtures
+
+
+@pytest.fixture
+def caplog(caplog: pytest.LogCaptureFixture) -> Generator[pytest.LogCaptureFixture]:
+    """Overwrite default caplog feature so it works with loguru."""
+    handler_id = logger.add(
+        caplog.handler,
+        format="{message}",
+        level=0,
+        filter=lambda record: record["level"].no >= caplog.handler.level,
+        enqueue=False,
+    )
+    yield caplog
+    logger.remove(handler_id)
+
+
+@pytest.fixture
+def recipe_template_dir() -> Path:
+    return Path(str(files("iconeval"))).resolve() / "recipe_templates"

@@ -1,0 +1,1465 @@
+# ESMValTool
+#TAGS sanity-consistency-check
+#TAGS precipitation
+#TAGS temperature
+#TAGS timeseries
+---
+documentation:
+  title: Basic sanity checks.
+  description: 'Calculate basic sanity checks on monthly output e.g. for monitoring
+    new model runs.
+
+    '
+  authors:
+  - bock_lisa
+  - lauer_axel
+plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: legend_label
+  figure_kwargs:
+    figsize:
+    - 7
+    - 5
+  group_variables_by: alias
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+timeseries_plot:
+  caption: 'Time series of global mean (solid line) and global minimum/maximum (dashed
+    lines) {long_name}. Red horizontal lines show "reasonable" ranges for the global
+    mean calculated from minimum and maximum global mean values found in reference
+    datasets (observations, reanalyses) across all months and all reference datasets.
+
+    '
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor:
+    - 0.5
+    - -0.4
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    ylabel: '{short_name} [{units}]'
+  plot_kwargs:
+    global mean:
+      color: C0
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+    global sum:
+      color: C0
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 3
+    global min:
+      color: C0
+      label: null
+      linestyle: dashed
+      linewidth: 1.25
+    global max:
+      color: C0
+      label: null
+      linestyle: dashed
+      linewidth: 1.25
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: input
+  project: ICON
+preprocessors:
+  global_mean:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+  global_mean_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    convert_units:
+      units: mm day-1
+  global_min:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: min
+  global_min_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: min
+    convert_units:
+      units: mm day-1
+  global_max:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: max
+  global_max_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: max
+    convert_units:
+      units: mm day-1
+diagnostics:
+  asr:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      asr_mean:
+        short_name: asr
+        legend_label: global mean
+        preprocessor: global_mean
+        derive: true
+        force_derivation: true
+        mip: Amon
+      asr_min:
+        short_name: asr
+        legend_label: global min
+        preprocessor: global_min
+        derive: true
+        force_derivation: true
+        mip: Amon
+      asr_max:
+        short_name: asr
+        legend_label: global max
+        preprocessor: global_max
+        derive: true
+        force_derivation: true
+        mip: Amon
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 215.4
+              color: C3
+              linewidth: 1.0
+            - y: 248.7
+              color: C3
+              linewidth: 1.0
+  clivi:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      clivi_mean:
+        short_name: clivi
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      clivi_min:
+        short_name: clivi
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      clivi_max:
+        short_name: clivi
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 0.092597
+              color: C3
+              linewidth: 1.0
+            - y: 0.0290555
+              color: C3
+              linewidth: 1.0
+  clt:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      clt_mean:
+        short_name: clt
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      clt_min:
+        short_name: clt
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      clt_max:
+        short_name: clt
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 58.7
+              color: C3
+              linewidth: 1.0
+            - y: 74.9
+              color: C3
+              linewidth: 1.0
+  hfls:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      hfls_mean:
+        short_name: hfls
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      hfls_min:
+        short_name: hfls
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      hfls_max:
+        short_name: hfls
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 76.4
+              color: C3
+              linewidth: 1.0
+            - y: 92.3
+              color: C3
+              linewidth: 1.0
+  hfss:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      hfss_mean:
+        short_name: hfss
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      hfss_min:
+        short_name: hfss
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      hfss_max:
+        short_name: hfss
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 21.5
+              color: C3
+              linewidth: 1.0
+            - y: 15.8
+              color: C3
+              linewidth: 1.0
+  lwcre:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      lwcre_mean:
+        short_name: lwcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_mean
+        legend_label: global mean
+      lwcre_min:
+        short_name: lwcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_min
+        legend_label: global min
+      lwcre_max:
+        short_name: lwcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 30.5
+              color: C3
+              linewidth: 1.0
+            - y: 23.6
+              color: C3
+              linewidth: 1.0
+  lwp:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      lwp_mean:
+        short_name: lwp
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_mean
+        legend_label: global mean
+      lwp_min:
+        short_name: lwp
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_min
+        legend_label: global min
+      lwp_max:
+        short_name: lwp
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 0.1569
+              color: C3
+              linewidth: 1.0
+            - y: 0.0229
+              color: C3
+              linewidth: 1.0
+  netcre:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      netcre_mean:
+        short_name: netcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_mean
+        legend_label: global mean
+      netcre_min:
+        short_name: netcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_min
+        legend_label: global min
+      netcre_max:
+        short_name: netcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: -12.3
+              color: C3
+              linewidth: 1.0
+            - y: -47.1
+              color: C3
+              linewidth: 1.0
+  pr:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      pr_mean:
+        short_name: pr
+        mip: Amon
+        preprocessor: global_mean_pr
+        legend_label: global mean
+      pr_min:
+        short_name: pr
+        mip: Amon
+        preprocessor: global_min_pr
+        legend_label: global min
+      pr_max:
+        short_name: pr
+        mip: Amon
+        preprocessor: global_max_pr
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 2.5
+              color: C3
+              linewidth: 1.0
+            - y: 3.21
+              color: C3
+              linewidth: 1.0
+  prw:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      prw_mean:
+        short_name: prw
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      prw_min:
+        short_name: prw
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      prw_max:
+        short_name: prw
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 28.7
+              color: C3
+              linewidth: 1.0
+            - y: 22.3
+              color: C3
+              linewidth: 1.0
+  rlut:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      rlut_mean:
+        short_name: rlut
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      rlut_min:
+        short_name: rlut
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      rlut_max:
+        short_name: rlut
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 246.3
+              color: C3
+              linewidth: 1.0
+            - y: 226.4
+              color: C3
+              linewidth: 1.0
+  rtnt:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      rtnt_mean:
+        short_name: rtnt
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_mean
+        legend_label: global mean
+      rtnt_min:
+        short_name: rtnt
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_min
+        legend_label: global min
+      rtnt_max:
+        short_name: rtnt
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 13.4
+              color: C3
+              linewidth: 1.0
+            - y: -22.7
+              color: C3
+              linewidth: 1.0
+  rsut:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      rsut_mean:
+        short_name: rsut
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      rsut_min:
+        short_name: rsut
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      rsut_max:
+        short_name: rsut
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 128.8
+              color: C3
+              linewidth: 1.0
+            - y: 91.1
+              color: C3
+              linewidth: 1.0
+  swcre:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      swcre_mean:
+        short_name: swcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_mean
+        legend_label: global mean
+      swcre_min:
+        short_name: swcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_min
+        legend_label: global min
+      swcre_max:
+        short_name: swcre
+        mip: Amon
+        derive: true
+        force_derivation: true
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: -40.6
+              color: C3
+              linewidth: 1.0
+            - y: -73.5
+              color: C3
+              linewidth: 1.0
+  tas:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      tas_mean:
+        short_name: tas
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      tas_min:
+        short_name: tas
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      tas_max:
+        short_name: tas
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 293.7
+              color: C3
+              linewidth: 1.0
+            - y: 283.9
+              color: C3
+              linewidth: 1.0
+  tauu:
+    description: Time series of global min/max/mean including "reasonable" ranges.
+    themes:
+    - phys
+    realms:
+    - atmos
+    variables:
+      tauu_mean:
+        short_name: tauu
+        mip: Amon
+        preprocessor: global_mean
+        legend_label: global mean
+      tauu_min:
+        short_name: tauu
+        mip: Amon
+        preprocessor: global_min
+        legend_label: global min
+      tauu_max:
+        short_name: tauu
+        mip: Amon
+        preprocessor: global_max
+        legend_label: global max
+    scripts:
+      timeseries:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: legend_label
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: alias
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            caption: 'Time series of global mean (solid line) and global minimum/maximum
+              (dashed lines) {long_name}. Red horizontal lines show "reasonable" ranges
+              for the global mean calculated from minimum and maximum global mean
+              values found in reference datasets (observations, reanalyses) across
+              all months and all reference datasets.
+
+              '
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              ylabel: '{short_name} [{units}]'
+            plot_kwargs:
+              global mean:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+              global sum:
+                color: C0
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 3
+              global min:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+              global max:
+                color: C0
+                label: null
+                linestyle: dashed
+                linewidth: 1.25
+            hlines:
+            - y: 0.0198
+              color: C3
+              linewidth: 1.0
+            - y: -0.0528
+              color: C3
+              linewidth: 1.0
