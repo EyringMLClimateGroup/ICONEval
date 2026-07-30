@@ -36,7 +36,7 @@ jobs:
       - name: Check if tag table is up-to-date
         run: |
           export GIT_DIFF=$(git diff --stat | head -n 1)
-          echo "GIT_DIFF=${GIT_DIFF}" >> ${GITHUB_ENV}
+          echo "${GIT_DIFF}"
           if [ "${GIT_DIFF}" == '' ]; then
             echo "Tag table is up-to-date ✅"
             echo "Tag table is up-to-date ✅" >> ${GITHUB_STEP_SUMMARY}
