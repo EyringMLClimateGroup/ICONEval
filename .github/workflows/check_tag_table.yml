@@ -30,19 +30,21 @@ jobs:
         uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
           frozen: true
-      - name: Run script to generate tag table
+      - name: Run script to regenerate tag table
         run: |
+          git diff --stat
           python doc/generate_tag_table.py
-      - name: Check if tag table is up-to-date
+      - name: Check if tag table has changed
         run: |
           export GIT_DIFF=$(git diff --stat | head -n 1)
+          git diff --stat
           echo "${GIT_DIFF}"
           if [ "${GIT_DIFF}" == '' ]; then
             echo "Tag table is up-to-date ✅"
             echo "Tag table is up-to-date ✅" >> ${GITHUB_STEP_SUMMARY}
           else
-            echo "Tag table need to be updated ❌"
-            echo "Tag table need to be updated ❌" >> ${GITHUB_STEP_SUMMARY}
+            echo "Tag table needs to be updated ❌"
+            echo "Tag table needs to be updated ❌" >> ${GITHUB_STEP_SUMMARY}
             echo "Run 'python doc/generate_tag_table.py' and push the changes"
             echo "Run 'python doc/generate_tag_table.py' and push the changes" >> ${GITHUB_STEP_SUMMARY}
             exit 1
