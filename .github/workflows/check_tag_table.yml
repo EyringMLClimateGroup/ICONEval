@@ -9,7 +9,6 @@ on:
     branches:
       - main
       - v*.x
-      - land
   pull_request:
 
 defaults:
@@ -41,5 +40,6 @@ jobs:
             echo "Tag table is up-to-date ✅" >> ${GITHUB_STEP_SUMMARY}
           else
             echo "Tag table need to be updated ❌" >> ${GITHUB_STEP_SUMMARY}
-            echo "Run `python doc/generate_tag_table.py` and push the changes" >> ${GITHUB_STEP_SUMMARY}
+            echo "Run 'python doc/generate_tag_table.py' and push the changes" >> ${GITHUB_STEP_SUMMARY}
+            exit 1
           fi
