@@ -1,0 +1,320 @@
+# ESMValTool
+#TAGS land
+#TAGS timeseries
+---
+documentation:
+  title: Basic Evaluation of Land - Timeseries and Seasonal Cycles.
+  description: 'Show lineplots of several land variables that can be used for the
+    evaluations of coupled simulations containing land components.
+
+    '
+  authors:
+  - gier_bettina
+  - hassler_birgit
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: input
+  project: ICON
+datasets_cmip6:
+- project: CMIP6
+  dataset: UKESM1-0-LL
+  exp: historical
+  grid: gn
+  ensemble: r1i1p1f2
+datasets_gpp:
+- dataset: MTE
+  project: OBS
+  type: reanaly
+  version: May12
+  tier: 3
+  timerange: 19820101/20111231
+datasets_lai:
+- dataset: LAI3g
+  project: OBS
+  type: reanaly
+  version: 1-regridded
+  tier: 3
+  timerange: 19810701/20181231
+supplementary_variables:
+- short_name: areacella
+  skip: true
+- short_name: areacello
+  skip: true
+- short_name: sftlf
+  skip: true
+- short_name: sftof
+  skip: true
+annual_cycle_plot:
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor:
+    - 0.5
+    - -0.4
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: '{title}'
+  plot_kwargs:
+    ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    default:
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: '{project}'
+    CMIP6_CESM2:
+      label: '{project}'
+    OBS:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    OBS_LAI3g:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashed
+    OBS_MTE:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dotted
+preprocessors:
+  regrid:
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+  annual_cycle:
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: month
+diagnostics:
+  timeseries:
+    description: Plot time series
+    variables:
+      gpp:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: regrid
+        additional_datasets:
+        - dataset: MTE
+          project: OBS
+          type: reanaly
+          version: May12
+          tier: 3
+          timerange: 19820101/20111231
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      lai:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: regrid
+        additional_datasets:
+        - dataset: LAI3g
+          project: OBS
+          type: reanaly
+          version: 1-regridded
+          tier: 3
+          timerange: 19810701/20181231
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+    additional_datasets:
+    - project: CMIP6
+      dataset: UKESM1-0-LL
+      exp: historical
+      grid: gn
+      ensemble: r1i1p1f2
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          timeseries:
+            annual_mean_kwargs: false
+  seasonal_cycles:
+    description: Plot seasonal cycles
+    variables:
+      gpp:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: annual_cycle
+        title: Gross Primary Production (GPP)
+        additional_datasets:
+        - dataset: MTE
+          project: OBS
+          type: reanaly
+          version: May12
+          tier: 3
+          timerange: 19820101/20111231
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      lai:
+        mip: Lmon
+        ensemble: r1i1p1f1
+        var_type: jsb_2d
+        preprocessor: annual_cycle
+        title: Leaf Area Index (LAI)
+        additional_datasets:
+        - dataset: LAI3g
+          project: OBS
+          type: reanaly
+          version: 1-regridded
+          tier: 3
+          timerange: 19810701/20181231
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+    additional_datasets:
+    - project: CMIP6
+      dataset: UKESM1-0-LL
+      exp: historical
+      grid: gn
+      ensemble: r1i1p1f2
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          annual_cycle:
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              title: '{title}'
+            plot_kwargs:
+              ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              default:
+                color: lightgray
+                label: null
+                linewidth: 0.75
+                zorder: 1.0
+              CMIP6:
+                label: '{project}'
+              CMIP6_CESM2:
+                label: '{project}'
+              OBS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              OBS_LAI3g:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashed
+              OBS_MTE:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dotted
