@@ -1,0 +1,48 @@
+---
+name: Check Tag Table
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+      - v*.x
+  pull_request:
+
+defaults:
+  run:
+    shell: pixi run bash -e {0}
+
+jobs:
+  check_tag_table:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup environment
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+        with:
+          frozen: true
+      - name: Run script to regenerate tag table
+        run: |
+          python doc/generate_tag_table.py
+      - name: Check if tag table has changed
+        run: |
+          export GIT_DIFF=$(git diff --stat | head -n 1)
+          git diff
+          echo "${GIT_DIFF}"
+          if [ "${GIT_DIFF}" == '' ]; then
+            echo "Tag table is up-to-date ✅"
+            echo "Tag table is up-to-date ✅" >> ${GITHUB_STEP_SUMMARY}
+          else
+            echo "Tag table needs to be updated ❌"
+            echo "Tag table needs to be updated ❌" >> ${GITHUB_STEP_SUMMARY}
+            echo "Run 'python doc/generate_tag_table.py' and push the changes"
+            echo "Run 'python doc/generate_tag_table.py' and push the changes" >> ${GITHUB_STEP_SUMMARY}
+            exit 1
+          fi
