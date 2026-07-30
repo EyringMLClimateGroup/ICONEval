@@ -487,7 +487,7 @@ def map_tags_to_recipes(
 ) -> dict[str, list[RecipeTemplate]]:
     """Extract tags from recipe templates and map tags to recipe templates."""
     tag_map: dict[str, list[RecipeTemplate]] = defaultdict(list)
-    for recipe_template_path in recipe_template_paths:
+    for recipe_template_path in sorted(recipe_template_paths):
         recipe_template = RecipeTemplate(recipe_template_path)
         for tag in recipe_template.tags:
             tag_map[tag].append(recipe_template)
