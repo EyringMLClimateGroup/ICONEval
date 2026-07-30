@@ -64,7 +64,7 @@ def main() -> None:
     }
     table_str = markdown_table(table).set_params(**markdown_options).get_markdown()
 
-    file_contents = HEADER + table_str
+    file_contents = HEADER + table_str + "\n"
     TAGS_FILE.write_text(file_contents, encoding="utf-8")
     print(f"Wrote {TAGS_FILE}")  # noqa: T201
 
