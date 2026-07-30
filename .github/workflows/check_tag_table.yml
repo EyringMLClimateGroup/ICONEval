@@ -32,12 +32,11 @@ jobs:
           frozen: true
       - name: Run script to regenerate tag table
         run: |
-          git diff --stat
           python doc/generate_tag_table.py
       - name: Check if tag table has changed
         run: |
           export GIT_DIFF=$(git diff --stat | head -n 1)
-          git diff --stat
+          git diff
           echo "${GIT_DIFF}"
           if [ "${GIT_DIFF}" == '' ]; then
             echo "Tag table is up-to-date ✅"
