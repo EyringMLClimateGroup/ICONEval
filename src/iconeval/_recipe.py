@@ -13,14 +13,14 @@ if TYPE_CHECKING:
     from iconeval._typing import FacetType
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Recipe:
     """Manage ESMValTool recipe."""
 
-    path: Path = field(kw_only=True)
-    template: RecipeTemplate = field(repr=False, kw_only=True)
-    simulations_info: list[SimulationInfo] = field(repr=False, kw_only=True)
-    timerange: FacetType = field(repr=False, kw_only=True)
+    path: Path
+    template: RecipeTemplate = field(repr=False)
+    simulations_info: list[SimulationInfo] = field(repr=False)
+    timerange: FacetType = field(repr=False)
 
     @property
     def name(self) -> str:
