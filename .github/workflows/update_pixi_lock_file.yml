@@ -1,0 +1,43 @@
+# See https://pixi.prefix.dev/latest/integration/ci/updates_github_actions/#how-to-use
+name: Update Pixi Lock File
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 5 1 * *
+
+jobs:
+  pixi_update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup environment
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+        with:
+          run-install: false
+      - name: Update lock files
+        run: |
+          set -o pipefail
+          pixi update --json | pixi exec pixi-diff-to-markdown >> diff.md
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          add-paths: pixi.lock
+          base: main
+          body-path: diff.md
+          branch: update-pixi
+          commit-message: Update pixi lock file
+          delete-branch: true
+          labels: |
+            auto pr
+            dependencies
+          reviewers: schlunma
+          title: Update pixi lock file

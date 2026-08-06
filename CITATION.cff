@@ -11,6 +11,10 @@ authors:
   family-names: Bock
   given-names: Lisa
   orcid: https://orcid.org/0000-0001-7058-5938
+- affiliation: University of Bremen, Institute of Environmental Physics (IUP), Bremen, Germany
+  family-names: Gier
+  given-names: Bettina K.
+  orcid: https://orcid.org/0000-0002-2928-8664
 cff-version: 1.2.0
 date-released: 2026-03-10
 doi: 10.5281/zenodo.18937450
@@ -22,5 +26,5 @@ license: Apache-2.0
 message: If you use this software, please cite it using the metadata from this file.
 title: ICONEval
 type: software
-url: https://github.com/EyringMLClimateGroup/ICONEval
+url: https://github.com/ESMValGroup/ICONEval
 version: v0.10.0

@@ -1,0 +1,71 @@
+#TAGS land
+---
+documentation:
+  title: Land Cover Evaluation.
+  description: >
+    <p>Plots of the accumulated area, average fraction and bias of land cover
+    classes in comparison to ESA-CCI data for the full globe and large scale
+    regions.</p>
+    <p><i>Note</i></p>
+    <p>Time ranges for the different datasets differ:
+    <ul>
+    <li>{{dataset}}: {{timerange}}</li>
+    <li>ESACCI-LANDCOVER: 19980101/20121231</li>
+    </ul></p>
+  authors:
+    - gier_bettina
+
+
+# YAML anchors for later use
+
+datasets_obs: &datasets_obs
+  - {project: OBS, dataset: ESACCI-LANDCOVER, type: sat, version: L4-LCCS-Map-300m-P5Y-aggregated-0.500000Deg, tier: 2, timerange: 19980101/20121231}  # 19980101/20121231
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  regrid:
+    regrid:
+      target_grid: ESACCI-LANDCOVER
+      scheme: area_weighted
+
+
+diagnostics:
+
+  landcover:
+    description: Bar plots of land cover fractions.
+    themes:
+      - bgchem
+      - carbon
+    realms:
+      - land
+    variables:
+      baresoilFrac:
+        mip: Lmon
+        preprocessor: regrid
+        reference_dataset: ESACCI-LANDCOVER
+      grassFrac:
+        mip: Lmon
+        preprocessor: regrid
+        reference_dataset: ESACCI-LANDCOVER
+      treeFrac:
+        mip: Lmon
+        preprocessor: regrid
+        reference_dataset: ESACCI-LANDCOVER
+      shrubFrac:
+        mip: Lmon
+        preprocessor: regrid
+        reference_dataset: ESACCI-LANDCOVER
+      cropFrac:
+        mip: Lmon
+        preprocessor: regrid
+        reference_dataset: ESACCI-LANDCOVER
+    additional_datasets: *datasets_obs
+    scripts:
+      landcover:
+        script: landcover/landcover.py
+        comparison: variable
+        colorscheme: seaborn-v0_8-ticks

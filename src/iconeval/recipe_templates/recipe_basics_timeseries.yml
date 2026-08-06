@@ -1,0 +1,220 @@
+#TAGS atmosphere
+#TAGS basics
+#TAGS precipitation
+#TAGS temperature
+#TAGS timeseries
+---
+documentation:
+  title: Basic Model Evaluation (Time series).
+  description: Time series of basic physical variables of the climate system.
+  authors:
+    - schlund_manuel
+    - lauer_axel
+    - hassler_birgit
+    - bonnet_pauline
+
+
+# YAML anchors for later use
+
+datasets_cmip6: &datasets_cmip6
+  - {project: CMIP6, dataset: "*", exp: historical, ensemble: r1i1p1f1, grid: "*", institute: "*", timerange: 19790101/20141231}  # 18500101/20141231
+
+datasets_hfls: &datasets_hfls
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+
+datasets_hfss: &datasets_hfss
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+
+datasets_pr: &datasets_pr
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 19790101/20211231}  # 19590101/20211231
+  - {project: OBS, dataset: GPCP-SG, type: atmos, version: 2.3, tier: 2, timerange: 19790101/20230430}  # 19790101/20230430
+
+datasets_rlut: &datasets_rlut
+  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20000331/20231130}  # 20000331/20231130
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19840101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+
+datasets_rsut: &datasets_rsut
+  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20000331/20231130}  # 20000331/20231130
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19840101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+
+datasets_tas: &datasets_tas
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 19790101/20211231}  # 19590101/20211231
+  - {project: OBS, dataset: HadCRUT5, type: ground, version: 5.0.1.0-analysis, tier: 2, timerange: 19790101/20211231}  # 18500101/20211231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
+
+supplementary_variables: &supplementary_variables
+  - {short_name: areacella, skip: true}
+  - {short_name: areacello, skip: true}
+  - {short_name: sftlf, skip: true}
+  - {short_name: sftof, skip: true}
+
+plot_script: &plot_script
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  figure_kwargs:
+    figsize: [7, 5]
+  group_variables_by: variable_group
+  plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+  plot_folder: "{plot_dir}"
+
+timeseries_plot: &timeseries_plot
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor: [0.5, -0.4]
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: "{title}"
+    ylabel: "{ylabel} [{ylabel_units}]"
+  plot_kwargs:
+    "{{alias_plot_kwargs}}":
+      label: "{dataset} ({exp})"
+      linewidth: 1.25
+      zorder: 2.5
+    default:  # These will be used for CMIP6 models
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: "{project}"  # just to have one label for the gray lines
+    CMIP6_CESM2:
+      label: "{project}"  # just to have one label for the gray lines
+    OBS: &obs_format
+      color: black
+      label: "{dataset}"
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6: &obs6_format
+      <<: *obs_format
+      linestyle: dashdot
+    native6: &native6_format
+      <<: *obs_format
+      linestyle: dotted
+    OBS_CERES-EBAF: *obs_format
+    OBS_GPCP-SG: *obs_format
+    OBS_HadCRUT5: *obs_format
+    OBS_ISCCP-FH:
+      <<: *obs_format
+      linestyle: dashed
+    OBS6_MERRA2: *obs6_format
+    native6_ERA5: *native6_format
+    ERA5: *native6_format
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  create_global_annual_mean_time_series:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+
+  create_global_annual_mean_time_series_pr:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+    convert_units:
+      units: mm day-1
+
+  create_global_annual_mean_time_series_tas:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    area_statistics:
+      operator: mean
+    annual_statistics:
+      operator: mean
+    convert_units:
+      units: celsius
+
+
+diagnostics:
+
+  timeseries:
+    description: Time series for multiple variables.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      hfls:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Surface Upward Latent Heat Flux
+        additional_datasets: *datasets_hfls
+        supplementary_variables: *supplementary_variables
+        ylabel: hfls
+        ylabel_units: W m-2
+      hfss:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean Surface Upward Sensible Heat Flux
+        additional_datasets: *datasets_hfss
+        supplementary_variables: *supplementary_variables
+        ylabel: hfss
+        ylabel_units: W m-2
+      pr:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series_pr
+        title: Global Mean Precipitation
+        additional_datasets: *datasets_pr
+        supplementary_variables: *supplementary_variables
+        ylabel: Precipitation
+        ylabel_units: mm/day
+      rlut:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Outgoing Longwave Radiation
+        additional_datasets: *datasets_rlut
+        supplementary_variables: *supplementary_variables
+        ylabel: rlut
+        ylabel_units: W m-2
+      rsut:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Outgoing Shortwave Radiation
+        additional_datasets: *datasets_rsut
+        supplementary_variables: *supplementary_variables
+        ylabel: rsut
+        ylabel_units: W m-2
+      rtmt:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: Global Mean TOA Net Downward Total Radiation
+        supplementary_variables: *supplementary_variables
+        ylabel: rtmt
+        ylabel_units: W m-2
+      tas:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series_tas
+        title: Global Mean Near-Surface Air Temperature
+        additional_datasets: *datasets_tas
+        supplementary_variables: *supplementary_variables
+        ylabel: T
+        ylabel_units: °C
+    additional_datasets: *datasets_cmip6
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          timeseries:
+            <<: *timeseries_plot

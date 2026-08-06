@@ -1,0 +1,135 @@
+#DASK --memory_limit=7760MB
+#DASK --n_workers=4
+#TAGS atmosphere
+#TAGS clouds
+#TAGS profile
+---
+documentation:
+  title: Model Evaluation with Focus on Clouds (Profiles).
+  description: >
+    <p>Profiles of several cloud-related variables.</p>
+    <p><i>Note</i></p>
+    <p>Time ranges for the different datasets differ:
+    <ul>
+    <li>{{dataset}}: {{timerange}}</li>
+    <li>CALIPSO-ICECLOUD: 20070101/20151231</li>
+    <li>CLOUDSAT-L2: 20060101/20171231</li>
+    <li>ERA5: 20020101/20211231</li>
+    </ul></p>
+  authors:
+    - schlund_manuel
+    - lauer_axel
+    - hassler_birgit
+    - bonnet_pauline
+
+
+# YAML anchors for later use
+
+datasets_cl: &datasets_cl
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20020101/20211231}  # 19790101/20211231
+
+datasets_clw: &datasets_clw
+  - {project: OBS, dataset: CLOUDSAT-L2, type: sat, version: P1-R05-gridbox-average-noprecip, tier: 3, reference_for_monitor_diags: true, alias: CLOUDSAT-L2, timerange: 20060101/20171231}  # 20060101/20171231
+
+datasets_cli: &datasets_cli
+  - {project: OBS, dataset: CALIPSO-ICECLOUD, type: sat, version: 1-00, tier: 3, reference_for_monitor_diags: true, alias: CALIPSO-ICECLOUD, timerange: 20070101/20151231}  # 20070101/20151231
+
+plot_script: &plot_script
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  group_variables_by: variable_group
+  plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+  plot_folder: "{plot_dir}"
+
+zonal_mean_profile_plot: &zonal_mean_profile_plot
+  common_cbar: true
+  fontsize: 8
+  pyplot_kwargs:
+    suptitle: "{title}"
+    ylim: [1000, 50]
+  plot_kwargs:
+    default:
+      cmap: Blues
+      levels: 12
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  create_zonal_mean_profile:
+    custom_order: true
+    extract_levels:
+      levels: {cmor_table: CMIP6, coordinate: plev19}
+      scheme: linear
+      coordinate: air_pressure
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    zonal_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+
+
+diagnostics:
+
+  zonal_mean_profiles_cl:
+    description: Zonal mean profile plots of cloud cover.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      cl:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Cloud Cover
+        additional_datasets: *datasets_cl
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          zonal_mean_profile:
+            <<: *zonal_mean_profile_plot
+
+  zonal_mean_profiles_cli:
+    description: Zonal mean profile plots of cloud ice.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      cli:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Mass Fraction of Cloud Ice
+        additional_datasets: *datasets_cli
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          zonal_mean_profile:
+            <<: *zonal_mean_profile_plot
+
+  zonal_mean_profiles_clw:
+    description: Zonal mean profile plots of cloud liquid water.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      clw:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Mass Fraction of Cloud Liquid Water
+        additional_datasets: *datasets_clw
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          zonal_mean_profile:
+            <<: *zonal_mean_profile_plot

@@ -3,49 +3,38 @@ name: Update Coverage Badge
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
 
-# Required shell entrypoint to have properly configured bash shell
 defaults:
   run:
-    shell: bash -l {0}
+    shell: pixi run bash -e {0}
 
 jobs:
   update_badge:
     runs-on: ubuntu-latest
-    name: Update Coverage Badge
     steps:
-      - name: Set name of target branch
-        run: |
-          export TARGET_BRANCH=update_coverage_badge_$(date +%s)
-          echo "TARGET_BRANCH=${TARGET_BRANCH}" >> ${GITHUB_ENV}
-          echo "Target branch: ${TARGET_BRANCH}"
       - name: Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          persist-credentials: true  # necessary for git-auto-commit-action
-      - name: Setup Conda environment
-        uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4.0.1
+          persist-credentials: false
+      - name: Setup environment
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
-          activate-environment: iconeval
-          environment-file: environment.yml
-          python-version: ${{ matrix.python-version }}
-          miniforge-version: latest
-          use-mamba: true
-      - name: Install ICONEval
-        run: pip install --no-deps -e .[develop]
+          frozen: true
       - name: Run tests
         run: |
           pytest -n 2 --junitxml=pytest.xml --cov-report=xml:coverage.xml --cov-report=term-missing --cov=iconeval tests/
       - name: Comment coverage
         id: coverage
-        uses: MishaKav/pytest-coverage-comment@dd5b80bde6d16941f336518e92929e89069d8451 # v1.7.2
+        uses: MishaKav/pytest-coverage-comment@fd9adbdca9fdfbe2b9bfa44a7340e6a83346ce6c # v1.10.0
         with:
-          coverage-path-prefix: iconeval/
+          coverage-path-prefix: src/iconeval/
           hide-comment: true
           junitxml-path: ./pytest.xml
           pytest-xml-coverage-path: ./coverage.xml
@@ -54,20 +43,17 @@ jobs:
           sed -i "/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n${STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML}\n<!-- Pytest Coverage Comment:End -->" ./README.md
         env:
           STEPS_COVERAGE_OUTPUTS_COVERAGE_HTML: ${{ steps.coverage.outputs.coverageHtml }}
-      - name: Detect changes
-        run: |
-          export GIT_DIFF=$(git diff --stat | head -n 1)
-          echo "GIT_DIFF=${GIT_DIFF}" >> ${GITHUB_ENV}
-          if [ "${GIT_DIFF}" == '' ]; then
-            echo "No changes detected"
-          else
-            echo "Changes detected"
-          fi
-      - name: Commit changes
-        if: ${{ env.GIT_DIFF != '' }}
-        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          branch: ${{ env.TARGET_BRANCH }}
-          commit_message: Update coverage badge
-          create_branch: true
-          file_pattern: README.md
+          add-paths: README.md
+          base: main
+          body: This pull request updates the coverage badge in README.md.
+          branch: update-coverage-badge
+          commit-message: Update coverage badge
+          delete-branch: true
+          labels: |
+            auto pr
+            documentation
+          reviewers: schlunma
+          title: Update coverage badge

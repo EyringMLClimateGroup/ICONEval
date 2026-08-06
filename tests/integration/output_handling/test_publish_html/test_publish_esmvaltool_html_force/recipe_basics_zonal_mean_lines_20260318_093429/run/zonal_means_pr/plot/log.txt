@@ -1,0 +1,190 @@
+INFO:esmvaltool.diag_scripts.shared._base:Starting diagnostic script plot with configuration:
+auxiliary_data_dir: /work/bd0854/DATA/ESMValTool2/AUX
+facet_used_for_labels: alias
+figure_kwargs:
+  figsize:
+  - 7
+  - 5
+group_variables_by: variable_group
+input_data:
+  ? /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc
+  : alias: ICON
+    dataset: ICON-XPP
+    diagnostic: zonal_means_pr
+    end_year: 1999
+    exp: historical-202510p1
+    filename: /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc
+    frequency: mon
+    long_name: Precipitation
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_zonal_mean_pr
+    project: ICON
+    raw_name: tot_prec_rate
+    recipe_dataset_index: 0
+    short_name: pr
+    standard_name: lwe_precipitation_rate
+    start_year: 1979
+    timerange: 19790101/19990101
+    title: Precipitation
+    units: mm day-1
+    var_type: atm_2d_ml
+    variable_group: pr
+  ? /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc
+  : alias: OBS
+    dataset: GPCP-SG
+    diagnostic: zonal_means_pr
+    end_year: 1999
+    filename: /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc
+    frequency: mon
+    long_name: Precipitation
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_zonal_mean_pr
+    project: OBS
+    recipe_dataset_index: 2
+    reference_for_monitor_diags: true
+    short_name: pr
+    standard_name: lwe_precipitation_rate
+    start_year: 1979
+    tier: 2
+    timerange: 19790101/19990101
+    title: Precipitation
+    type: atmos
+    units: mm day-1
+    variable_group: pr
+    version: '2.3'
+  ? /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19990101.nc
+  : alias: native6
+    automatic_regrid: true
+    dataset: ERA5
+    diagnostic: zonal_means_pr
+    end_year: 1999
+    family: E5
+    filename: /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19990101.nc
+    frequency: mon
+    long_name: Precipitation
+    mip: Amon
+    modeling_realm:
+    - atmos
+    preprocessor: create_zonal_mean_pr
+    project: native6
+    recipe_dataset_index: 1
+    reference_for_monitor_diags: true
+    short_name: pr
+    standard_name: lwe_precipitation_rate
+    start_year: 1979
+    tier: 3
+    timerange: 19790101/19990101
+    title: Precipitation
+    tres: 1M
+    type: reanaly
+    typeid: '00'
+    units: mm day-1
+    variable_group: pr
+    version: v1
+input_files:
+- /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/metadata.yml
+log_level: info
+output_file_type: png
+plot_dir: /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/plots/zonal_means_pr/plot
+plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+plot_folder: '{plot_dir}'
+plots:
+  variable_vs_lat:
+    gridline_kwargs:
+      alpha: 0.3
+      color: darkgray
+      linewidth: 0.5
+    legend_kwargs:
+      bbox_to_anchor:
+      - 0.5
+      - -0.4
+      borderaxespad: 0.0
+      loc: upper center
+    plot_kwargs:
+      CMIP6:
+        label: '{project}'
+      CMIP6_CESM2:
+        label: '{project}'
+      ERA5:
+        color: black
+        label: '{dataset}'
+        linestyle: dotted
+        linewidth: 1.0
+        zorder: 2.4
+      ICON:
+        color: C0
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+      ICON_ICON-XPP:
+        color: C0
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+      ICON_ICON-XPP_historical-202510p1:
+        color: C0
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+      ICON_historical-202510p1:
+        color: C0
+        label: '{dataset} ({exp})'
+        linewidth: 1.25
+        zorder: 2.5
+      OBS:
+        color: black
+        label: '{dataset}'
+        linewidth: 1.0
+        zorder: 2.4
+      OBS6:
+        color: black
+        label: '{dataset}'
+        linestyle: dashdot
+        linewidth: 1.0
+        zorder: 2.4
+      default:
+        color: lightgray
+        label: null
+        linewidth: 0.75
+        zorder: 1.0
+      native6:
+        color: black
+        label: '{dataset}'
+        linestyle: dotted
+        linewidth: 1.0
+        zorder: 2.4
+      native6_ERA5:
+        color: black
+        label: '{dataset}'
+        linestyle: dotted
+        linewidth: 1.0
+        zorder: 2.4
+    pyplot_kwargs:
+      title: '{title} (19790101/19990101)'
+realms:
+- atmos
+recipe: recipe_basics_zonal_mean_lines.yml
+run_dir: /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/run/zonal_means_pr/plot
+scheduler_address: tcp://127.0.0.1:34033
+script: plot
+themes:
+- phys
+version: 2.15.0.dev5+g3208f5f3a
+work_dir: /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/work/zonal_means_pr/plot
+
+INFO:esmvaltool.diag_scripts.shared._base:Creating /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/work/zonal_means_pr/plot
+INFO:esmvaltool.diag_scripts.shared._base:Creating /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/plots/zonal_means_pr/plot
+INFO:multi_datasets:Using facet 'variable_group' to group variables
+INFO:multi_datasets:Using facet 'alias' to create labels
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc
+INFO:multi_datasets:Loading /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/native6_ERA5_reanaly_v1_Amon_pr_19790101-19990101.nc
+INFO:multi_datasets:Plotting variable_vs_lat
+INFO:multi_datasets:Processing variable pr
+INFO:multi_datasets:Wrote /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/plots/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.png
+INFO:esmvaltool.diag_scripts.shared.io:Wrote /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/work/zonal_means_pr/plot/variable_vs_lat_ambiguous_exp_pr_ambiguous_dataset_Amon.nc
+INFO:esmvaltool.diag_scripts.shared._base:End of diagnostic script run.

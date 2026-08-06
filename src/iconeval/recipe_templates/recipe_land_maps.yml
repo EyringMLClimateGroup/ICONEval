@@ -1,0 +1,189 @@
+#TAGS land
+#TAGS map
+---
+documentation:
+  title: Land Evaluation (Maps).
+  description: >
+    <p>Line plots of several land variables that can be used for the evaluations
+    of coupled simulations containing land components.</p>
+    <p><i>Note</i></p>
+    <p>Time ranges for the different datasets differ:
+    <ul>
+    <li>{{dataset}}: {{timerange}}</li>
+    <li>ERA5: 20020101/20211231</li>
+    <li>LAI3g: 19990101/20181231</li>
+    <li>MTE: 19920101/20111231</li>
+    </ul></p>
+  authors:
+    - hassler_birgit
+    - gier_bettina
+    - bock_lisa
+
+
+# YAML anchors for later use
+
+datasets_evspsbl: &datasets_evspsbl
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20020101/20211231}  # 19790701/20211231
+
+datasets_gpp: &datasets_gpp
+  - {project: OBS, dataset: MTE, type: reanaly, version: May12, tier: 3, reference_for_monitor_diags: true, alias: MTE, timerange: 19920101/20111231}  # 19820101/20111231
+
+datasets_lai: &datasets_lai
+  - {project: OBS, dataset: LAI3g, type: reanaly, version: 1-regridded, tier: 3, reference_for_monitor_diags: true, alias: LAI3g, timerange: 19990101/20181231}  # 19810701/20181231
+
+datasets_ts: &datasets_ts
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20020101/20211231}  # 19590701/20211231
+
+plot_script: &plot_script
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  group_variables_by: variable_group
+  plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+  plot_folder: "{plot_dir}"
+
+map_plot: &map_plot
+  common_cbar: true
+  fontsize: 8
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  pyplot_kwargs:
+    suptitle: "{title}"
+  plot_kwargs:
+    default:
+      cmap: Greens
+      levels: 12
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  create_land_map:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: area_weighted
+    mask_landsea:
+      mask_out: sea
+    climate_statistics:
+      operator: mean
+      period: full
+
+  create_land_map_evspsbl:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: area_weighted
+    mask_landsea:
+      mask_out: sea
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: mm day-1
+
+  create_land_map_gpp:
+    custom_order: true
+    regrid:
+      target_grid: 2x2
+      scheme: area_weighted
+    mask_landsea:
+      mask_out: sea
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: kg m-2 yr-1
+
+
+diagnostics:
+
+  maps_evspsbl:
+    description: Map plots of evapotranspiration.
+    themes:
+      - bgphys
+    realms:
+      - land
+    variables:
+      evspsbl:
+        mip: Amon
+        preprocessor: create_land_map_evspsbl
+        title: Evapotranspiration
+        additional_datasets: *datasets_evspsbl
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+            plot_kwargs:
+              default:
+                cmap: Blues
+                levels: 12
+
+  maps_gpp:
+    description: Map plots of gross primary production.
+    themes:
+      - bgchem
+      - carbon
+    realms:
+      - land
+    variables:
+      gpp:
+        mip: Lmon
+        preprocessor: create_land_map_gpp
+        title: Gross Primary Production (GPP)
+        additional_datasets: *datasets_gpp
+    scripts:
+      plot:
+        <<: *plot_script
+        cbar_label: gpp [kgC m-2 yr-1]
+        plots:
+          map:
+            <<: *map_plot
+
+  maps_lai:
+    description: Map plots of leaf area index.
+    themes:
+      - bgchem
+      - carbon
+    realms:
+      - land
+    variables:
+      lai:
+        mip: Lmon
+        preprocessor: create_land_map
+        title: Leaf Area Index (LAI)
+        additional_datasets: *datasets_lai
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+
+  maps_ts:
+    description: Map plots of land surface temperature.
+    themes:
+      - bgphys
+    realms:
+      - land
+    variables:
+      ts:
+        mip: Amon
+        preprocessor: create_land_map
+        title: Land Surface Temperature
+        additional_datasets: *datasets_ts
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+            plot_kwargs:
+              default:
+                cmap: plasma
+                levels: 12

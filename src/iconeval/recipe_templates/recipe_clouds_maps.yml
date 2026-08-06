@@ -1,0 +1,275 @@
+#TAGS atmosphere
+#TAGS clouds
+#TAGS map
+---
+documentation:
+  title: Model Evaluation with Focus on Clouds (Maps).
+  description: >
+    <p>Maps of several cloud-related variables.</p>
+    <p><i>Note</i></p>
+    <p>Time range for {{dataset}} output: {{timerange}}</p>
+    </p>The references are multi-observational means from the following datasets:
+    <ul>
+    <li>clivi: CLARA-AVHRR (19990101/20181231), CLOUDSAT-L2 (20060101/20171231), ERA5 (20000101/20191231), ESACCI-CLOUD (19970101/20161231), MERRA2 (20020101/20211231), MODIS (20030101/20181231)</li>
+    <li>clt: CLARA-AVHRR (19990101/20181231), ERA5 (20020101/20211231), ESACCI-CLOUD (19970101/20161231), MERRA2 (20020101/20211231), MODIS (20030101/20181231), PATMOS-x (19970101/20161231)</li>
+    <li>clwvi: CLARA-AVHRR (19990101/20181231), CLOUDSAT-L2 (20060101/20171231), ERA5 (20000101/20191231), ESACCI-CLOUD (19970101/20161231), MERRA2 (20030101/20221231), MODIS (20030101/20181231)</li>
+    <li>lwcre: CERES-EBAF (20030101/20221231), ERA5 (20020101/20211231), ESACCI-CLOUD (19970101/20161231), ISCCP-FH (19970101/20161231), MERRA2 (20020101/20211231)</li>
+    <li>lwp: CLARA-AVHRR (19990101/20181231), CLOUDSAT-L2 (20060101/20171231), ERA5 (20000101/20191231), ESACCI-CLOUD (19970101/20161231), MERRA2 (20030101/20221231), MODIS (20030101/20181231)</li>
+    <li>prw: ERA5 (20020101/20211231), ESACCI-WATERVAPOUR (20030101/20171231), ISCCP-FH (19970101/20161231), MERRA2 (20020101/20211231)</li>
+    <li>swcre: CERES-EBAF (20030101/20221231), ESACCI-CLOUD (19970101/20161231), ISCCP-FH (19970101/20161231), MERRA2 (20020101/20211231)</li>
+    </ul></p>
+  authors:
+    - schlund_manuel
+    - lauer_axel
+    - hassler_birgit
+    - bonnet_pauline
+
+
+# YAML anchors for later use
+
+datasets_clivi: &datasets_clivi
+  - {project: OBS, dataset: CLARA-AVHRR, type: sat, version: V002-01, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19990101/20181231}  # 19820101/20181231
+  - {project: OBS, dataset: CLOUDSAT-L2, type: sat, version: P1-R05-gridbox-average-noprecip, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20060101/20171231}  # 20060101/20171231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20000101/20191231}  # 19790101/20191231
+  - {project: OBS, dataset: ESACCI-CLOUD, type: sat, version: AVHRR-AMPM-fv3.0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19800101/20220731
+  - {project: OBS, dataset: MODIS, type: sat, version: MYD08-M3, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20181231}  # 20020701/20190131
+
+datasets_clt: &datasets_clt
+  - {project: OBS, dataset: CLARA-AVHRR, type: sat, version: V002-01, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19990101/20181231}  # 19820101/20181231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19790101/20211231
+  - {project: OBS, dataset: ESACCI-CLOUD, type: sat, version: AVHRR-AMPM-fv3.0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19800101/20220731
+  - {project: OBS, dataset: MODIS, type: sat, version: MYD08-M3, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20181231}  # 20020701/20190131
+  - {project: OBS, dataset: PATMOS-x, type: sat, version: NOAA, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+
+datasets_clwvi: &datasets_clwvi
+  - {project: OBS, dataset: CLARA-AVHRR, type: sat, version: V002-01, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19990101/20181231}  # 19820101/20181231
+  - {project: OBS, dataset: CLOUDSAT-L2, type: sat, version: P1-R05-gridbox-average-noprecip, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20060101/20171231}  # 20060101/20171231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20000101/20191231}  # 19790101/20191231
+  - {project: OBS, dataset: ESACCI-CLOUD, type: sat, version: AVHRR-AMPM-fv3.0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20221231}  # 19800101/20221231
+  - {project: OBS, dataset: MODIS, type: sat, version: MYD08-M3, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20181231}  # 20020701/20190131
+
+datasets_lwcre: &datasets_lwcre
+  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20221231}  # 20000331/20231130
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19790101/20211231
+  - {project: OBS, dataset: ESACCI-CLOUD, type: sat, version: AVHRR-AMPM-fv3.0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19800101/20220731
+
+datasets_lwp: &datasets_lwp
+  - {project: OBS, dataset: CLARA-AVHRR, type: sat, version: V002-01, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19990101/20181231}  # 19820101/20181231
+  - {project: OBS, dataset: CLOUDSAT-L2, type: sat, version: P1-R05-gridbox-average-noprecip, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20060101/20171231}  # 20060101/20171231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20000101/20191231}  # 19790101/20191231
+  - {project: OBS, dataset: ESACCI-CLOUD, type: sat, version: AVHRR-AMPM-fv3.0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20221231}  # 19800101/20221231
+  - {project: OBS, dataset: MODIS, type: sat, version: MYD08-M3, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20181231}  # 20020701/20190131
+
+datasets_prw: &datasets_prw
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19790101/20211231
+  - {project: OBS6, dataset: ESACCI-WATERVAPOUR, type: sat, version: CDR2-L3-COMBI-05deg-fv3.1, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20171231}  # 20020731/20171231
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19800101/20220731
+
+datasets_swcre: &datasets_swcre
+  - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20030101/20221231}  # 20000331/20231130
+  - {project: OBS, dataset: ESACCI-CLOUD, type: sat, version: AVHRR-AMPM-fv3.0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19820101/20161231
+  - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 19970101/20161231}  # 19840101/20161231
+  - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, reference_for_monitor_diags: true, alias: MultiObsMean, timerange: 20020101/20211231}  # 19800101/20220731
+
+plot_script: &plot_script
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  group_variables_by: variable_group
+  plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+  plot_folder: "{plot_dir}"
+
+map_plot: &map_plot
+  common_cbar: true
+  fontsize: 8
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  pyplot_kwargs:
+    suptitle: "{title}"
+  plot_kwargs:
+    default:
+      cmap: Blues
+      levels: 12
+
+map_plot_cre: &map_plot_cre
+  common_cbar: true
+  fontsize: 8
+  pyplot_kwargs:
+    suptitle: "{title}"
+  plot_kwargs:
+    default:
+      cmap: bwr
+      norm: centered
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  create_map:
+    custom_order: true
+    align_metadata:
+      target_project: OBS6
+    regrid:
+      target_grid: 2x2
+      scheme:
+        reference: esmf_regrid.schemes:ESMFAreaWeighted
+    climate_statistics:
+      operator: mean
+      period: full
+    multi_model_statistics:
+      statistics: [mean]
+      span: full
+      keep_input_datasets: false
+      ignore_scalar_coords: true
+      exclude: ["{{dataset}}", EMAC, ICON, ICON-XPP]
+
+
+diagnostics:
+
+  maps_clivi:
+    description: Map plots of ice water path.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      clivi:
+        mip: Amon
+        preprocessor: create_map
+        title: Ice Water Path
+        additional_datasets: *datasets_clivi
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+
+  maps_clt:
+    description: Map plots of total cloud cover.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      clt:
+        mip: Amon
+        preprocessor: create_map
+        title: Total Cloud Cover
+        additional_datasets: *datasets_clt
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+
+  maps_clwvi:
+    description: Map plots of condensed water path.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      clwvi:
+        mip: Amon
+        preprocessor: create_map
+        title: Condensed Water Path
+        additional_datasets: *datasets_clwvi
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+
+  # maps_lwcre:
+  #   description: Map plots of TOA longwave cloud radiative effect.
+  #   themes:
+  #     - clouds
+  #   realms:
+  #     - atmos
+  #   variables:
+  #     lwcre:
+  #       mip: Amon
+  #       derive: true
+  #       force_derivation: true
+  #       preprocessor: create_map
+  #       title: TOA Longwave Cloud Radiative Effect
+  #       additional_datasets: *datasets_lwcre
+  #   scripts:
+  #     plot:
+  #       <<: *plot_script
+  #       plots:
+  #         map:
+  #           <<: *map_plot_cre
+
+  maps_lwp:
+    description: Map plots of liquid water path.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      lwp:
+        mip: Amon
+        derive: true
+        preprocessor: create_map
+        title: Liquid Water Path
+        additional_datasets: *datasets_lwp
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+
+  maps_prw:
+    description: Map plots of water vapor path.
+    themes:
+      - clouds
+    realms:
+      - atmos
+    variables:
+      prw:
+        mip: Amon
+        preprocessor: create_map
+        title: Water Vapor Path
+        additional_datasets: *datasets_prw
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          map:
+            <<: *map_plot
+
+  # maps_swcre:
+  #   description: Map plots of TOA shortwave cloud radiative effect.
+  #   themes:
+  #     - clouds
+  #   realms:
+  #     - atmos
+  #   variables:
+  #     swcre:
+  #       mip: Amon
+  #       derive: true
+  #       force_derivation: true
+  #       preprocessor: create_map
+  #       title: TOA Shortwave Cloud Radiative Effect
+  #       additional_datasets: *datasets_swcre
+  #   scripts:
+  #     plot:
+  #       <<: *plot_script
+  #       plots:
+  #         map:
+  #           <<: *map_plot_cre

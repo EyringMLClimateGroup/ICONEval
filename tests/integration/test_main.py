@@ -10,16 +10,17 @@ import pytest
 import iconeval._dependencies
 import iconeval._job
 import iconeval.main
-import iconeval.output_handling.publish_html
 from iconeval.main import icon_evaluation, main
-from tests.integration import assert_output
 
 if TYPE_CHECKING:
     from pathlib import Path
     from unittest.mock import Mock
 
     import pytest_mock
+    from pytest_datadir.plugin import LazyDataDir
     from pytest_mock import MockerFixture
+
+    from tests.integration import OutputDirRegression
 
 
 @pytest.fixture(autouse=True)
@@ -50,37 +51,25 @@ def test_main(mocker: pytest_mock.MockerFixture) -> None:
 @pytest.mark.parametrize("tags", [[], None])
 def test_icon_evaluation_single_input_success(
     tags: list[str] | None,
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        input_dir,
-        log_file=None,
-        output_dir=output_dir,
+    obtained_dir = icon_evaluation(
+        tmp_input_dir,
+        output_dir=tmp_output_dir,
         tags=tags,
     )
 
     # Check output
-    expected_output = expected_output_dir / "test_icon_evaluation_single_input_success"
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    assert obtained_dir.name == "input_20000101_000000UTC"
+    output_dir_regression.check(obtained_dir, empty_subdirs=["slurm"])
 
     # Check mock calls
     assert mocked_subprocess__dependencies.run.mock_calls == [
@@ -98,7 +87,7 @@ def test_icon_evaluation_single_input_success(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
@@ -116,17 +105,17 @@ def test_icon_evaluation_single_input_success(
             "--partition=interactive",
             "--time=03:00:00",
             "--account=bd1179",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "esmvaltool",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
         ]
         if "portrait_plot" in recipe.stem:
             cmd.append("--max_parallel_tasks=1")
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -141,36 +130,30 @@ def test_icon_evaluation_single_input_success(
     mocked_swift_service.assert_not_called()
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    assert f"- {tmp_input_dir.stem}" in caplog.text
+    assert f"(Path: {tmp_input_dir})" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
         assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
 
 
 def test_icon_evaluation_multi_input_success(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
+    output_dir_regression: OutputDirRegression,
+    tmp_input_dirs: list[Path],
+    tmp_output_dir: Path,
     recipe_template_dir: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
-    input_dirs = [tmp_path / "input_1", tmp_path / "input_2"]
-    output_dir = tmp_path / "output"
-    for input_dir in input_dirs:
-        input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        *input_dirs,
+    obtained_dir = icon_evaluation(
+        *tmp_input_dirs,
         publish_html=True,
         html_name="my_html_name",
         recipe_templates=[
@@ -179,8 +162,7 @@ def test_icon_evaluation_multi_input_success(
             recipe_template_dir / "recipe_portrait_plot.yml",
         ],
         log_level="debug",
-        log_file=None,
-        output_dir=output_dir,
+        output_dir=tmp_output_dir,
         account="Slurm_account",
         esmvaltool_executable="ESMValTool executable",
         srun_executable="srun executable",
@@ -196,14 +178,8 @@ def test_icon_evaluation_multi_input_success(
     )
 
     # Check output
-    expected_output = expected_output_dir / "test_icon_evaluation_multi_input_success"
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    assert obtained_dir.name == "my_html_name_20000101_000000UTC"
+    output_dir_regression.check(obtained_dir, empty_subdirs=["slurm"])
 
     # Check mock calls
     assert mocked_subprocess__dependencies.run.mock_calls == [
@@ -221,7 +197,7 @@ def test_icon_evaluation_multi_input_success(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
@@ -239,16 +215,16 @@ def test_icon_evaluation_multi_input_success(
             "--partition=interactive",
             "--time=03:00:00",
             "--account=Slurm_account",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "ESMValTool executable",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
             "--auxiliary_data_dir=/path/to/a",
         ]
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -281,63 +257,53 @@ def test_icon_evaluation_multi_input_success(
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (
-            str(actual_output / "esmvaltool_output" / f.name),
+            str(obtained_dir / "esmvaltool_output" / f.name),
             f"my_html_name/{f.name}",
         )
-        for f in (expected_output / "esmvaltool_output").iterdir()
+        for f in (output_dir_regression.expected_dir / "esmvaltool_output").iterdir()
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    for input_dir in tmp_input_dirs:
+        assert f"- {input_dir.stem}" in caplog.text
+        assert f"(Path: {input_dir})" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
         assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
 
 
 def test_icon_evaluation_single_input_background(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
+    output_dir_regression: OutputDirRegression,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     recipe_template_dir: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
     monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     monkeypatch.setenv("SLURM_JOB_ACCOUNT", "custom_slurm_account")
 
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        input_dir,
+    obtained_dir = icon_evaluation(
+        tmp_input_dir,
         recipe_templates=recipe_template_dir / "recipe_basics_timeseries.yml",
-        log_file=None,
-        output_dir=output_dir,
+        output_dir=tmp_output_dir,
         background=True,
         dask=False,
     )
 
     # Check output
-    expected_output = (
-        expected_output_dir / "test_icon_evaluation_single_input_background"
-    )
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["esmvaltool_output", "slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
+    assert obtained_dir.name == "input_20000101_000000UTC"
+    output_dir_regression.check(
+        obtained_dir,
+        empty_subdirs=["esmvaltool_output", "slurm"],
     )
 
     # Check mock calls
@@ -356,7 +322,7 @@ def test_icon_evaluation_single_input_background(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     mocked_subprocess__job.Popen.return_value.communicate.assert_not_called()
     mocked_subprocess__job.Popen.return_value.terminate.assert_not_called()
@@ -367,15 +333,15 @@ def test_icon_evaluation_single_input_background(
             "--mpi=cray_shasta",
             "--ntasks=1",
             "--account=custom_slurm_account",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "esmvaltool",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
         ]
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -390,53 +356,41 @@ def test_icon_evaluation_single_input_background(
     mocked_swift_service.assert_not_called()
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    assert f"- {tmp_input_dir.stem}" in caplog.text
+    assert f"(Path: {tmp_input_dir})" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
         assert f"[+] Job {recipe.stem} finished successfully" not in caplog.text
 
 
 def test_icon_evaluation_single_input_fail(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
+    output_dir_regression: OutputDirRegression,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     recipe_template_dir: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     mocked_subprocess__job.Popen.return_value.returncode = 42
     mocked_subprocess__job.Popen.return_value.poll.return_value = 42
 
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        input_dir,
+    obtained_dir = icon_evaluation(
+        tmp_input_dir,
         publish_html=True,
         recipe_templates=str(recipe_template_dir / "recipe_basics_timeseries.yml"),
-        log_file=None,
-        output_dir=output_dir,
+        output_dir=tmp_output_dir,
     )
 
     # Check output
-    expected_output = expected_output_dir / "test_icon_evaluation_single_input_fail"
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    assert obtained_dir.name == "input_20000101_000000UTC"
+    output_dir_regression.check(obtained_dir, empty_subdirs=["slurm"])
 
     # Check mock calls
     assert mocked_subprocess__dependencies.run.mock_calls == [
@@ -454,7 +408,7 @@ def test_icon_evaluation_single_input_fail(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
@@ -472,15 +426,15 @@ def test_icon_evaluation_single_input_fail(
             "--partition=interactive",
             "--time=03:00:00",
             "--account=bd1179",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "esmvaltool",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
         ]
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -513,35 +467,35 @@ def test_icon_evaluation_single_input_fail(
     assert upload_call.kwargs["container"] == "iconeval"
     objects_to_upload = [
         (
-            str(actual_output / "esmvaltool_output" / f.name),
-            f"{actual_output.name}/{f.name}",
+            str(obtained_dir / "esmvaltool_output" / f.name),
+            f"{obtained_dir.name}/{f.name}",
         )
-        for f in (expected_output / "esmvaltool_output").iterdir()
+        for f in (output_dir_regression.expected_dir / "esmvaltool_output").iterdir()
     ]
     assert set(upload_call.kwargs["objects"]) == set(objects_to_upload)
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    assert f"- {tmp_input_dir.stem}" in caplog.text
+    assert f"(Path: {tmp_input_dir})" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
         assert f"[-] Job {recipe.stem} failed with code 42" in caplog.text
 
 
 def test_icon_evaluation_single_input_run_longer(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
+    output_dir_regression: OutputDirRegression,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     recipe_template_dir: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     # Let one job wait for a sec, the other finish immediately
     mocked_subprocess__job.Popen.return_value.poll.side_effect = [
@@ -559,32 +513,18 @@ def test_icon_evaluation_single_input_run_longer(
         1,  # call to is_running of second job within finally block
     ]
 
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        input_dir,
+    obtained_dir = icon_evaluation(
+        tmp_input_dir,
         recipe_templates=[
             str(recipe_template_dir / "recipe_basics_timeseries.yml"),
             recipe_template_dir / "recipe_basics_maps.yml",
         ],
-        log_file=None,
-        output_dir=output_dir,
+        output_dir=tmp_output_dir,
     )
 
     # Check output
-    expected_output = (
-        expected_output_dir / "test_icon_evaluation_single_input_run_longer"
-    )
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    assert obtained_dir.name == "input_20000101_000000UTC"
+    output_dir_regression.check(obtained_dir, empty_subdirs=["slurm"])
 
     # Check mock calls
     assert mocked_subprocess__dependencies.run.mock_calls == [
@@ -602,7 +542,7 @@ def test_icon_evaluation_single_input_run_longer(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
@@ -620,17 +560,17 @@ def test_icon_evaluation_single_input_run_longer(
             "--partition=interactive",
             "--time=03:00:00",
             "--account=bd1179",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "esmvaltool",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
         ]
         if "portrait_plot" in recipe.stem:
             cmd.append("--max_parallel_tasks=1")
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -645,58 +585,42 @@ def test_icon_evaluation_single_input_run_longer(
     mocked_swift_service.assert_not_called()
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    assert f"- {tmp_input_dir.stem}" in caplog.text
+    assert f"(Path: {tmp_input_dir})" in caplog.text
     assert "[-] Job recipe_basics_timeseries failed with code 0" in caplog.text
     assert "[+] Job recipe_basics_maps finished successfully" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
 
 
 def test_icon_evaluation_single_input_custom_recipe_options(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        input_dir,
-        recipe_templates=sample_data_path
-        / "recipe_templates"
-        / "recipe_basics_zonal_mean_lines.yml",
+    obtained_dir = icon_evaluation(
+        tmp_input_dir,
+        recipe_templates=lazy_shared_datadir / "recipe_basics_zonal_mean_lines.yml",
         always_use_default_recipe_templates=True,
-        log_file=None,
-        output_dir=output_dir,
+        output_dir=tmp_output_dir,
         tags="_custom_tag_",
         project="EMAC",
         dataset="EMAC",
     )
 
     # Check output
-    expected_output = (
-        expected_output_dir / "test_icon_evaluation_single_input_custom_recipe_options"
-    )
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    assert obtained_dir.name == "input_20000101_000000UTC"
+    output_dir_regression.check(obtained_dir, empty_subdirs=["slurm"])
 
     # Check mock calls
     assert mocked_subprocess__dependencies.run.mock_calls == [
@@ -714,7 +638,7 @@ def test_icon_evaluation_single_input_custom_recipe_options(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
@@ -732,16 +656,16 @@ def test_icon_evaluation_single_input_custom_recipe_options(
             "--partition=interactive",
             "--time=03:00:00",
             "--account=bd1179",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "esmvaltool",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
             "--max_parallel_tasks=1",
         ]
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -756,43 +680,35 @@ def test_icon_evaluation_single_input_custom_recipe_options(
     mocked_swift_service.assert_not_called()
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    assert f"- {tmp_input_dir.stem}" in caplog.text
+    assert f"(Path: {tmp_input_dir})" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
         assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
 
 
 def test_icon_evaluation_single_input_custom_recipe_options_ignore(
-    pytestconfig: pytest.Config,
-    expected_output_dir: Path,
-    sample_data_path: Path,
-    caplog: pytest.LogCaptureFixture,
-    tmp_path: Path,
+    output_dir_regression: OutputDirRegression,
+    lazy_shared_datadir: LazyDataDir,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     mocked_requests: Mock,
     mocked_subprocess__dependencies: Mock,
     mocked_subprocess__job: Mock,
     mocked_swift_head_account: Mock,
     mocked_swift_service: Mock,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    actual_output = icon_evaluation(
-        input_dir,
+    obtained_dir = icon_evaluation(
+        tmp_input_dir,
         recipe_templates=[
-            sample_data_path
-            / "recipe_templates"
-            / "recipe_basics_zonal_mean_lines.yml",
-            sample_data_path / "recipe_templates" / "recipe_basics_maps.yml",
+            lazy_shared_datadir / "recipe_basics_zonal_mean_lines.yml",
+            lazy_shared_datadir / "recipe_basics_maps.yml",
         ],
-        log_file=None,
-        output_dir=output_dir,
+        output_dir=tmp_output_dir,
         ignore_recipe_esmvaltool_options=True,
         ignore_recipe_srun_options=True,
         ignore_recipe_dask_options=True,
@@ -800,17 +716,8 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     )
 
     # Check output
-    expected_output = (
-        expected_output_dir
-        / "test_icon_evaluation_single_input_custom_recipe_options_ignore"
-    )
-    assert_output(
-        tmp_path,
-        actual_output,
-        expected_output,
-        empty_dirs=["slurm"],
-        generate_expected_output=pytestconfig.getoption("generate_expected_output"),
-    )
+    assert obtained_dir.name == "input_20000101_000000UTC"
+    output_dir_regression.check(obtained_dir, empty_subdirs=["slurm"])
 
     # Check mock calls
     assert mocked_subprocess__dependencies.run.mock_calls == [
@@ -828,7 +735,7 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
         ),
     ]
 
-    recipes = list((expected_output / "recipes").glob("*.yml"))
+    recipes = list((output_dir_regression.expected_dir / "recipes").glob("*.yml"))
     assert mocked_subprocess__job.Popen.call_count == len(recipes)
     assert mocked_subprocess__job.Popen.return_value.communicate.call_count == len(
         recipes,
@@ -846,15 +753,15 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
             "--partition=interactive",
             "--time=03:00:00",
             "--account=bd1179",
-            f"--output={actual_output / 'slurm' / f'{recipe.stem}.log'}",
+            f"--output={obtained_dir / 'slurm' / f'{recipe.stem}.log'}",
             "--",
             "esmvaltool",
             "run",
-            str(actual_output / "recipes" / recipe.name),
+            str(obtained_dir / "recipes" / recipe.name),
         ]
         env = dict(os.environ)
         env["ESMVALTOOL_USE_NEW_DASK_CONFIG"] = "TRUE"
-        env["ESMVALTOOL_CONFIG_DIR"] = str(actual_output / "config" / recipe.stem)
+        env["ESMVALTOOL_CONFIG_DIR"] = str(obtained_dir / "config" / recipe.stem)
         mocked_subprocess__job.Popen.assert_any_call(
             cmd,
             shell=False,
@@ -869,58 +776,54 @@ def test_icon_evaluation_single_input_custom_recipe_options_ignore(
     mocked_swift_service.assert_not_called()
 
     # Check logging output
-    assert f"- {input_dir.stem}" in caplog.text
-    assert f"(Path: {input_dir})" in caplog.text
+    assert f"- {tmp_input_dir.stem}" in caplog.text
+    assert f"(Path: {tmp_input_dir})" in caplog.text
     for recipe in recipes:
         assert (
-            f"- Job {recipe.stem} (Log: {actual_output / 'slurm' / recipe.stem}.log)"
+            f"- Job {recipe.stem} (Log: {obtained_dir / 'slurm' / recipe.stem}.log)"
             in caplog.text
         )
         assert f"[+] Job {recipe.stem} finished successfully" in caplog.text
 
 
-def test_icon_evaluation_empty_input_dir_fail(tmp_path: Path) -> None:
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
+def test_icon_evaluation_empty_input_dir_fail(tmp_output_dir: Path) -> None:
     msg = r"No input directory given"
     with pytest.raises(ValueError, match=re.escape(msg)):
-        icon_evaluation(log_file=None, output_dir=output_dir)
+        icon_evaluation(output_dir=tmp_output_dir)
 
 
-def test_icon_evaluation_invalid_input_dir_fail(tmp_path: Path) -> None:
-    input_dir = tmp_path / "this_dir_does_not_exist"
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
+def test_icon_evaluation_invalid_input_dir_fail(
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
+) -> None:
+    tmp_input_dir.rmdir()
     msg = r"does not exist"
     with pytest.raises(NotADirectoryError, match=re.escape(msg)):
-        icon_evaluation(input_dir, log_file=None, output_dir=output_dir)
+        icon_evaluation(tmp_input_dir, output_dir=tmp_output_dir)
 
 
-def test_icon_evaluation_invalid_exps_fail(tmp_path: Path) -> None:
-    input_dirs = [
-        tmp_path / "input_1" / "exp",
-        tmp_path / "input_2" / "exp",
-    ]
+def test_icon_evaluation_invalid_exps_fail(
+    tmp_input_dirs: list[Path],
+    tmp_output_dir: Path,
+) -> None:
+    input_dirs = [d / "exp" for d in tmp_input_dirs]
     for input_dir in input_dirs:
         input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir = tmp_path / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"Multiple experiments with the same name are not supported"
     with pytest.raises(ValueError, match=re.escape(msg)):
-        icon_evaluation(*input_dirs, log_file=None, output_dir=output_dir)
+        icon_evaluation(*input_dirs, output_dir=tmp_output_dir)
 
 
-def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
+def test_icon_evaluation_invalid_recipe_template_fail(
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
+    tmp_path: Path,
+) -> None:
     msg = r"No recipe template matching"
     with pytest.raises(FileNotFoundError, match=re.escape(msg)):
         icon_evaluation(
-            input_dir,
-            log_file=None,
-            output_dir=output_dir,
+            tmp_input_dir,
+            output_dir=tmp_output_dir,
             recipe_templates=tmp_path / "non_existing_recipe.yml",
         )
 
@@ -936,34 +839,27 @@ def test_icon_evaluation_invalid_recipe_template_fail(tmp_path: Path) -> None:
 def test_icon_evaluation_invalid_no_recipe_templates_fail(
     tags: list[str] | None,
     error_msg: str,
-    tmp_path: Path,
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
 ) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
     with pytest.raises(ValueError, match=re.escape(error_msg)):
         icon_evaluation(
-            input_dir,
-            log_file=None,
-            output_dir=output_dir,
+            tmp_input_dir,
+            output_dir=tmp_output_dir,
             recipe_templates=[],
             tags=tags,
         )
 
 
 def test_icon_evaluation_invalid_recipe_template_invalid_glob_fail(
+    tmp_input_dir: Path,
+    tmp_output_dir: Path,
     tmp_path: Path,
 ) -> None:
-    input_dir = tmp_path / "input"
-    output_dir = tmp_path / "output"
-    input_dir.mkdir(parents=True, exist_ok=True)
-    output_dir.mkdir(parents=True, exist_ok=True)
     msg = r"No recipe template matching"
     with pytest.raises(FileNotFoundError, match=re.escape(msg)):
         icon_evaluation(
-            input_dir,
-            log_file=None,
-            output_dir=output_dir,
+            tmp_input_dir,
+            output_dir=tmp_output_dir,
             recipe_templates=tmp_path / "*.yml",
         )

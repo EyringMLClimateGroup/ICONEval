@@ -1,0 +1,566 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<prov:document xmlns:attribute="https://www.esmvaltool.org/attribute" xmlns:author="https://www.esmvaltool.org/author" xmlns:file="https://www.esmvaltool.org/file" xmlns:software="https://www.esmvaltool.org/software" xmlns:recipe="https://www.esmvaltool.org/recipe" xmlns:project="https://www.esmvaltool.org/project" xmlns:task="https://www.esmvaltool.org/task" xmlns:preprocessor="https://www.esmvaltool.org/preprocessor" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19970101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19880101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l118 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 013600</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19880101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_pr/plot/map_historical-202510p1_pr_ICON-XPP_Amon_bottom.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:activity prov:ref="task:maps_pr/plot"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc">
+    <attribute:alias>GPCP-SG</attribute:alias>
+    <attribute:dataset>GPCP-SG</attribute:dataset>
+    <attribute:diagnostic>maps_pr</attribute:diagnostic>
+    <attribute:end_year>1999</attribute:end_year>
+    <attribute:filename>/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc</attribute:filename>
+    <attribute:frequency>mon</attribute:frequency>
+    <attribute:long_name>Precipitation</attribute:long_name>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>['atmos']</attribute:modeling_realm>
+    <attribute:original_short_name>pr</attribute:original_short_name>
+    <attribute:preprocessor>create_map_pr</attribute:preprocessor>
+    <attribute:project>OBS</attribute:project>
+    <attribute:recipe_dataset_index>1</attribute:recipe_dataset_index>
+    <attribute:reference_for_monitor_diags>True</attribute:reference_for_monitor_diags>
+    <attribute:short_name>pr</attribute:short_name>
+    <attribute:standard_name>precipitation_flux</attribute:standard_name>
+    <attribute:start_year>1979</attribute:start_year>
+    <attribute:tier>2</attribute:tier>
+    <attribute:timerange>19790101/19990101</attribute:timerange>
+    <attribute:title>Precipitation</attribute:title>
+    <attribute:type>atmos</attribute:type>
+    <attribute:units>kg m-2 s-1</attribute:units>
+    <attribute:variable_group>pr</attribute:variable_group>
+    <attribute:version>2.3</attribute:version>
+    <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
+    <preprocessor:convert_units>{'units': 'mm day-1'}</preprocessor:convert_units>
+    <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
+    <preprocessor:remove_supplementary_variables>{}</preprocessor:remove_supplementary_variables>
+    <preprocessor:save>{'compress': False, 'compute': False, 'filename': PosixPath('/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc')}</preprocessor:save>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19820101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:activity prov:id="task:maps_pr/pr"/>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19920101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l210 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 064905</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19920101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19990101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l160 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 153712</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19990101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19790101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19830101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Schlund, Manuel"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19920101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19940101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l320 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 091839</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19940101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/DATA/ESMValTool2/OBS/Tier2/GPCP-SG/OBS_GPCP-SG_atmos_2.3_Amon_pr_197901-202512.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19930101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l103 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 080234</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19930101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/DATA/ESMValTool2/OBS/Tier2/GPCP-SG/OBS_GPCP-SG_atmos_2.3_Amon_pr_197901-202512.nc">
+    <attribute:Conventions>CF-1.7</attribute:Conventions>
+    <attribute:history>Created on 2026-02-06 08:12:39</attribute:history>
+    <attribute:host>levante0.lvt.dkrz.de</attribute:host>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>atmos</attribute:modeling_realm>
+    <attribute:project_id>OBS</attribute:project_id>
+    <attribute:reference>doi not found</attribute:reference>
+    <attribute:source>https://downloads.psl.noaa.gov/Datasets/gpcp/precip.mon.mean.nc</attribute:source>
+    <attribute:source_file>/work/bd0854/DATA/ESMValTool2/OBS/Tier2/GPCP-SG/OBS_GPCP-SG_atmos_2.3_Amon_pr_197901-202512.nc</attribute:source_file>
+    <attribute:tier>2</attribute:tier>
+    <attribute:title>GPCP-SG data reformatted for ESMValTool v2.13.0.dev158+gb65963621</attribute:title>
+    <attribute:user>b380103</attribute:user>
+    <attribute:version>2.3</attribute:version>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19870101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_pr/plot/map_historical-202510p1_pr_ICON-XPP_Amon_bottom.nc">
+    <attribute:caption>Map plot of Precipitation of dataset ICON - GPCP-SG.</attribute:caption>
+    <attribute:facet_used_for_labels>alias</attribute:facet_used_for_labels>
+    <attribute:group_variables_by>variable_group</attribute:group_variables_by>
+    <attribute:long_names>['Precipitation']</attribute:long_names>
+    <attribute:plot_filename>{plot_type}_{exp}_{real_name}_{dataset}_{mip}</attribute:plot_filename>
+    <attribute:plot_folder>{plot_dir}</attribute:plot_folder>
+    <attribute:plot_types>('world map',)</attribute:plot_types>
+    <attribute:plots>{'map': {'common_cbar': True, 'fontsize': 8, 'gridline_kwargs': {'color': 'darkgray', 'linewidth': 0.5, 'alpha': 0.3}, 'pyplot_kwargs': {'suptitle': '{title} (19790101/19990101)'}, 'plot_kwargs': {'default': {'cmap': 'Greens', 'levels': [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0], 'extend': 'max'}}, 'plot_kwargs_bias': {'cmap': 'BrBG', 'levels': [-3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0], 'extend': 'both'}}}</attribute:plots>
+    <attribute:realms>('atmosphere',)</attribute:realms>
+    <attribute:scheduler_address>tcp://127.0.0.1:45983</attribute:scheduler_address>
+    <attribute:script>plot</attribute:script>
+    <attribute:script_file>monitor/multi_datasets.py</attribute:script_file>
+    <attribute:themes>('physics',)</attribute:themes>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19940101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19840101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l364 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 203311</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19840101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19850101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:activity prov:id="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Lauer, Axel"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19860101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Bonnet, Pauline"/>
+  </prov:wasAttributedTo>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19860101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l148 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 230627</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19860101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19980101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l263 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 142107</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19980101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:agent prov:id="author:Lauer, Axel">
+    <attribute:email>axel.lauer@dlr.de</attribute:email>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0002-9270-1044</attribute:orcid>
+  </prov:agent>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19840101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19870101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l364 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 002135</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19870101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19890101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19910101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasStartedBy>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+    <prov:trigger prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:starter prov:ref="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  </prov:wasStartedBy>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19810101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l103 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 164652</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19810101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19830101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l286 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 191742</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19830101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19950101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l288 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 103256</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19950101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc">
+    <attribute:alias>ICON</attribute:alias>
+    <attribute:dataset>ICON-XPP</attribute:dataset>
+    <attribute:diagnostic>maps_pr</attribute:diagnostic>
+    <attribute:end_year>1999</attribute:end_year>
+    <attribute:exp>historical-202510p1</attribute:exp>
+    <attribute:filename>/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc</attribute:filename>
+    <attribute:frequency>mon</attribute:frequency>
+    <attribute:long_name>Precipitation</attribute:long_name>
+    <attribute:mip>Amon</attribute:mip>
+    <attribute:modeling_realm>['atmos']</attribute:modeling_realm>
+    <attribute:original_short_name>pr</attribute:original_short_name>
+    <attribute:preprocessor>create_map_pr</attribute:preprocessor>
+    <attribute:project>ICON</attribute:project>
+    <attribute:raw_name>tot_prec_rate</attribute:raw_name>
+    <attribute:recipe_dataset_index>0</attribute:recipe_dataset_index>
+    <attribute:short_name>pr</attribute:short_name>
+    <attribute:standard_name>precipitation_flux</attribute:standard_name>
+    <attribute:start_year>1979</attribute:start_year>
+    <attribute:timerange>19790101/19990101</attribute:timerange>
+    <attribute:title>Precipitation</attribute:title>
+    <attribute:units>kg m-2 s-1</attribute:units>
+    <attribute:var_type>atm_2d_ml</attribute:var_type>
+    <attribute:variable_group>pr</attribute:variable_group>
+    <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
+    <preprocessor:convert_units>{'units': 'mm day-1'}</preprocessor:convert_units>
+    <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
+    <preprocessor:remove_supplementary_variables>{}</preprocessor:remove_supplementary_variables>
+    <preprocessor:save>{'compress': False, 'compute': False, 'filename': PosixPath('/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc')}</preprocessor:save>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19800101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l356 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 152340</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19800101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19910101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l338 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 053153</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19910101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19950101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasStartedBy>
+    <prov:activity prov:ref="task:maps_pr/plot"/>
+    <prov:trigger prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:starter prov:ref="software:esmvaltool==2.15.0.dev5+g3208f5f3a"/>
+  </prov:wasStartedBy>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19790101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l182 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 140643</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19790101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19960101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l203 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 115157</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19960101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19890101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l359 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 025213</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19890101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19930101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19980101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19800101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19850101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l352 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 215001</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19850101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19900101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="recipe:recipe_basics_maps.yml"/>
+    <prov:agent prov:ref="author:Hassler, Birgit"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19960101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="recipe:recipe_basics_maps.yml">
+    <attribute:description>Map plots of basic physical variables of the climate system.</attribute:description>
+    <attribute:references>[]</attribute:references>
+  </prov:entity>
+  <prov:activity prov:id="task:maps_pr/plot"/>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19820101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l140 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260219 180152</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19820101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:agent prov:id="author:Bonnet, Pauline">
+    <attribute:github>Paulinebonnet111</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0003-3780-0784</attribute:orcid>
+  </prov:agent>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19990101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:agent prov:id="author:Schlund, Manuel">
+    <attribute:email>manuel.schlund@dlr.de</attribute:email>
+    <attribute:github>schlunma</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0001-5251-0158</attribute:orcid>
+  </prov:agent>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_pr/plot/map_historical-202510p1_pr_ICON-XPP_Amon_bottom.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc"/>
+    <prov:activity prov:ref="task:maps_pr/plot"/>
+  </prov:wasDerivedFrom>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19880101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:wasAttributedTo>
+    <prov:entity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/work/maps_pr/plot/map_historical-202510p1_pr_ICON-XPP_Amon_bottom.nc"/>
+    <prov:agent prov:ref="author:Schlund, Manuel"/>
+  </prov:wasAttributedTo>
+  <prov:wasDerivedFrom>
+    <prov:generatedEntity prov:ref="file:/work/bd1179/output_iconeval/0002_test_20260319_084555UTC/esmvaltool_output/recipe_basics_maps_20260319_084611/preproc/maps_pr/pr/ICON_ICON-XPP_historical-202510p1_atm-2d-ml_Amon_pr_19790101-19990101.nc"/>
+    <prov:usedEntity prov:ref="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19810101T000000Z.nc"/>
+    <prov:activity prov:ref="task:maps_pr/pr"/>
+  </prov:wasDerivedFrom>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19900101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l187 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 040551</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19900101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:entity prov:id="file:/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19970101T000000Z.nc">
+    <attribute:CDI>Climate Data Interface version 2.5.2.1 (https://mpimet.mpg.de/cdi)</attribute:CDI>
+    <attribute:Conventions>CF-1.6</attribute:Conventions>
+    <attribute:comment>Dr. Guang Zeng, KU11a (gzeng) on vh1l205 (Linux 4.18.0-553.8.1.el8_10.x86_64 x86_64)</attribute:comment>
+    <attribute:grid_file_uri>http://icon-downloads.mpimet.mpg.de/grids/public/icon_grid_0030_R02B05_G.nc</attribute:grid_file_uri>
+    <attribute:history>/hpc/uwork/icon-sml/icon-xpp-cmip7/EXEs/icon-release-202510.vh at 20260220 130631</attribute:history>
+    <attribute:institution>Max Planck Institute for Meteorology/Deutscher Wetterdienst</attribute:institution>
+    <attribute:number_of_grid_used>30</attribute:number_of_grid_used>
+    <attribute:references>see MPIM/DWD publications</attribute:references>
+    <attribute:source>version: 2025.10-1; revision: icon-2025.10-1-public-0-g23d6e890306d15e9c2d8cbcb58e59b4d584f288d; URL: git@gitlab.dkrz.de:icon/icon-model.git</attribute:source>
+    <attribute:source_file>/work/bd0854/b380103/dwd_icon_data/historical-202510p1/historical-202510p1_atm_2d_ml_19970101T000000Z.nc</attribute:source_file>
+    <attribute:title>ICON simulation</attribute:title>
+    <attribute:uuidOfHGrid>a668eac0-fe2e-11e4-9a47-e3e5371a87a7</attribute:uuidOfHGrid>
+  </prov:entity>
+  <prov:agent prov:id="author:Hassler, Birgit">
+    <attribute:github>hb326</attribute:github>
+    <attribute:institute>DLR, Germany</attribute:institute>
+    <attribute:orcid>https://orcid.org/0000-0003-2724-709X</attribute:orcid>
+  </prov:agent>
+</prov:document>

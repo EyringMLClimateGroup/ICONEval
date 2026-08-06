@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
 from iconeval._simulation_info import SimulationInfo
+
+if TYPE_CHECKING:
+    from pytest_datadir.plugin import LazyDataDir
 
 
 @pytest.mark.parametrize(
@@ -39,12 +43,12 @@ def test_from_path(
     dataset: str,
     project: str,
     namelist_files: list[str | Path],
-    sample_data_path: Path,
+    lazy_datadir: LazyDataDir,
 ) -> None:
-    sample_data = sample_data_path / "icon_output" / exp
-    namelist_files = [sample_data / n for n in namelist_files]
+    simulation_output = lazy_datadir / exp
+    namelist_files = [simulation_output / n for n in namelist_files]
 
-    simulation_info = SimulationInfo.from_path(sample_data)
+    simulation_info = SimulationInfo.from_path(simulation_output)
 
     assert simulation_info.date == "2000-01-01 00:00:00"
     assert simulation_info.exp == exp
@@ -56,7 +60,7 @@ def test_from_path(
     }
     assert simulation_info.namelist_files == namelist_files
     assert simulation_info.owner == "ICONEval User"
-    assert simulation_info.path == sample_data
+    assert simulation_info.path == simulation_output
 
 
 @pytest.mark.parametrize(
@@ -66,9 +70,9 @@ def test_from_path(
         ("icon-xpp_example_run", "ICON-XPP"),
     ],
 )
-def test__guess_dataset(exp: str, dataset: str, sample_data_path: Path) -> None:
-    path = sample_data_path / "icon_output" / exp
-    assert SimulationInfo._guess_dataset(path) == dataset
+def test__guess_dataset(exp: str, dataset: str, lazy_datadir: LazyDataDir) -> None:
+    simulation_output = lazy_datadir / exp
+    assert SimulationInfo._guess_dataset(simulation_output) == dataset
 
 
 def test_icon__guess_project() -> None:

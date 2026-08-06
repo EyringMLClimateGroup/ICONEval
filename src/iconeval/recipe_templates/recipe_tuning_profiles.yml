@@ -1,0 +1,244 @@
+#DASK --memory_limit=7760MB
+#DASK --n_workers=4
+#TAGS atmosphere
+#TAGS tuning
+#TAGS temperature
+#TAGS profile
+---
+documentation:
+  title: Model Evaluation with Focus on Tuning (Profiles).
+  description: >
+    <p>Profiles of variables relevant for tuning.</p>
+    <p><i>Note</i></p>
+    <p>Time ranges for the different datasets differ:
+    <ul>
+    <li>{{dataset}}: {{timerange}}</li>
+    <li>CMIP6: 19950101/20141231</li>
+    <li>ERA5: 20010101/20201231</li>
+    </ul></p>
+  authors:
+    - schlund_manuel
+    - lauer_axel
+
+
+# YAML anchors for later use
+
+datasets_cmip6: &datasets_cmip6
+  - {project: CMIP6, dataset: "*", exp: historical, ensemble: r1i1p1f1, grid: "*", institute: "*", timerange: 19950101/20141231}  # 18500101/20141231
+
+datasets_ta: &datasets_ta
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20010101/20201231}  # 19790101/20201231
+
+datasets_ua: &datasets_ua
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, reference_for_monitor_diags: true, alias: ERA5, timerange: 20010101/20201231}  # 19790101/20201231
+
+supplementary_variables: &supplementary_variables
+  - {short_name: areacella, skip: true}
+  - {short_name: areacello, skip: true}
+  - {short_name: sftlf, skip: true}
+  - {short_name: sftof, skip: true}
+
+plot_script: &plot_script
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  group_variables_by: variable_group
+  plot_filename: "{plot_type}_{exp}_{real_name}_{dataset}_{mip}"
+  plot_folder: "{plot_dir}"
+
+1d_profile_plot: &1d_profile_plot
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor: [0.5, -0.4]
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: "{title}"
+  plot_kwargs:
+    "{{alias_plot_kwargs}}":
+      label: "{dataset} ({exp})"
+      linewidth: 1.25
+      zorder: 2.5
+    default:  # These will be used for CMIP6 models
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: "{project}"  # just to have one label for the gray lines
+    CMIP6_CESM2:
+      label: "{project}"  # just to have one label for the gray lines
+    OBS: &obs_format
+      color: black
+      label: "{dataset}"
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6: &obs6_format
+      <<: *obs_format
+      linestyle: dashdot
+    native6: &native6_format
+      <<: *obs_format
+      linestyle: dotted
+    OBS_CERES-EBAF: *obs_format
+    OBS_CLARA-AVHRR:
+      <<: *obs_format
+      color: gray
+      linestyle: dashed
+    OBS_CLOUDSAT-L2:
+      <<: *obs_format
+      color: gray
+      linestyle: dotted
+    OBS_ESACCI-CLOUD:
+      <<: *obs_format
+      linestyle: dashed
+    OBS_GPCP-SG: *obs_format
+    OBS_ISCCP-FH:
+      <<: *obs_format
+      color: gray
+    OBS_MODIS: *obs_format
+    OBS_PATMOS-x:
+      <<: *obs_format
+      color: gray
+      linestyle: dotted
+    OBS6_ESACCI-WATERVAPOUR: *obs_format
+    OBS6_MERRA2: *obs6_format
+    native6_ERA5: *native6_format
+    ERA5: *native6_format
+
+zonal_mean_profile_plot: &zonal_mean_profile_plot
+  common_cbar: true
+  fontsize: 8
+  pyplot_kwargs:
+    suptitle: "{title}"
+  plot_kwargs:
+    default:
+      cmap: plasma
+      levels: 12
+
+
+datasets: "{{dataset_list}}"
+
+
+preprocessors:
+
+  create_1d_profile_60n:
+    custom_order: true
+    extract_levels:
+      levels: {cmor_table: CMIP6, coordinate: plev19}
+      scheme: linear
+      coordinate: air_pressure
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    extract_region:
+      start_longitude: 0.
+      end_longitude: 360.
+      start_latitude: 59.
+      end_latitude: 61.
+    area_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+
+  create_1d_profile_60s:
+    custom_order: true
+    extract_levels:
+      levels: {cmor_table: CMIP6, coordinate: plev19}
+      scheme: linear
+      coordinate: air_pressure
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    extract_region:
+      start_longitude: 0.
+      end_longitude: 360.
+      start_latitude: -61.
+      end_latitude: -59.
+    area_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+
+  create_zonal_mean_profile:
+    custom_order: true
+    extract_levels:
+      levels: {cmor_table: CMIP6, coordinate: plev19}
+      scheme: linear
+      coordinate: air_pressure
+    regrid:
+      target_grid: 2x2
+      scheme: linear  # some models do not work with ESMFAreaWeighted
+    zonal_statistics:
+      operator: mean
+    climate_statistics:
+      operator: mean
+      period: full
+
+
+diagnostics:
+
+  1d_profile_ua_60n:
+    description: 1D profile plot of eastward wind at 60N.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      ua:
+        mip: Amon
+        preprocessor: create_1d_profile_60n
+        title: Eastward Wind at 60N
+        additional_datasets: *datasets_ua
+        supplementary_variables: *supplementary_variables
+    additional_datasets: *datasets_cmip6
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          1d_profile:
+            <<: *1d_profile_plot
+
+  1d_profile_ua_60s:
+    description: 1D profile plot of eastward wind at 60S.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      ua:
+        mip: Amon
+        preprocessor: create_1d_profile_60s
+        title: Eastward Wind at 60S
+        additional_datasets: *datasets_ua
+        supplementary_variables: *supplementary_variables
+    additional_datasets: *datasets_cmip6
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          1d_profile:
+            <<: *1d_profile_plot
+
+  zonal_mean_profiles_ta:
+    description: Zonal mean profile plots of temperature.
+    themes:
+      - phys
+    realms:
+      - atmos
+    variables:
+      ta:
+        mip: Amon
+        preprocessor: create_zonal_mean_profile
+        title: Air Temperature
+        additional_datasets: *datasets_ta
+    additional_datasets: *datasets_cmip6
+    scripts:
+      plot:
+        <<: *plot_script
+        plots:
+          zonal_mean_profile:
+            <<: *zonal_mean_profile_plot
