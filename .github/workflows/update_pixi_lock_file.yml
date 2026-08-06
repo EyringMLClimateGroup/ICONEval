@@ -1,5 +1,6 @@
 # See https://pixi.prefix.dev/latest/integration/ci/updates_github_actions/#how-to-use
 name: Update Pixi Lock File
+
 permissions:
   contents: write
   pull-requests: write

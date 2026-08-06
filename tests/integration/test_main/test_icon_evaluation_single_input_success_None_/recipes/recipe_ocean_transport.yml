@@ -1,0 +1,256 @@
+# ESMValTool
+#TAGS ocean
+#TAGS map
+#TAGS zonal-mean
+---
+documentation:
+  title: Ocean Transport Evaluation.
+  description: '<p>Evaluation of ocean transport.</p> <p><i>Note</i></p> <p>Time ranges
+    for the different datasets differ: <ul> <li>ICON: *</li> <li>CMIP6: 19950101/20141231</li>
+    </ul></p>
+
+    '
+  authors:
+  - debeire_kevin
+  references:
+  - demora2018gmd
+datasets_cmip6:
+- project: CMIP6
+  dataset: '*'
+  exp: historical
+  ensemble: r1i1p1f1
+  grid: gn
+  institute: '*'
+  timerange: 19950101/20141231
+plot_script:
+  script: monitor/multi_datasets.py
+  facet_used_for_labels: alias
+  figure_kwargs:
+    figsize:
+    - 7
+    - 5
+  group_variables_by: variable_group
+  plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+  plot_folder: '{plot_dir}'
+variable_vs_lat_plot:
+  gridline_kwargs:
+    color: darkgray
+    linewidth: 0.5
+    alpha: 0.3
+  legend_kwargs:
+    loc: upper center
+    bbox_to_anchor:
+    - 0.5
+    - -0.4
+    borderaxespad: 0.0
+  pyplot_kwargs:
+    title: '{title} (*)'
+  plot_kwargs:
+    ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    ICON_ICON_input:
+      label: '{dataset} ({exp})'
+      linewidth: 1.25
+      zorder: 2.5
+      color: C0
+    default:
+      color: lightgray
+      label: null
+      linewidth: 0.75
+      zorder: 1.0
+    CMIP6:
+      label: '{project}'
+    CMIP6_MPI-ESM1-2-LR:
+      label: '{project}'
+    OBS:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    OBS6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+      linestyle: dashdot
+    native6:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    native6_ORAS5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+    ORAS5:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
+datasets:
+- supplementary_variables:
+  - short_name: areacella
+    skip: true
+  - short_name: areacello
+    skip: true
+  - short_name: sftlf
+    skip: true
+  - short_name: sftof
+    skip: true
+  dataset: ICON
+  exp: input
+  project: ICON
+preprocessors:
+  create_atlantic_arctic_ocean_zonal_mean_hfbasin:
+    custom_order: true
+    extract_named_regions:
+      regions: atlantic_arctic_ocean
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: PW
+  create_indian_pacific_ocean_zonal_mean_hfbasin:
+    custom_order: true
+    extract_named_regions:
+      regions: indian_pacific_ocean
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: PW
+  create_global_ocean_zonal_mean_hfbasin:
+    custom_order: true
+    extract_named_regions:
+      regions: global_ocean
+    climate_statistics:
+      operator: mean
+      period: full
+    convert_units:
+      units: PW
+diagnostics:
+  ocean_heat_transport:
+    description: Zonal mean line plots of ocean northward heat transport.
+    themes:
+    - phys
+    realms:
+    - ocean
+    variables:
+      hfbasin_atlantic_arctic_ocean:
+        short_name: hfbasin
+        mip: Omon
+        preprocessor: create_atlantic_arctic_ocean_zonal_mean_hfbasin
+        title: Northward Atlantic/Arctic Ocean Heat Transport
+      hfbasin_indian_pacific_ocean:
+        short_name: hfbasin
+        mip: Omon
+        preprocessor: create_indian_pacific_ocean_zonal_mean_hfbasin
+        title: Northward Indian/Pacific Ocean Heat Transport
+      hfbasin_global_ocean:
+        short_name: hfbasin
+        mip: Omon
+        preprocessor: create_global_ocean_zonal_mean_hfbasin
+        title: Northward Global Ocean Heat Transport
+    additional_datasets:
+    - project: CMIP6
+      dataset: '*'
+      exp: historical
+      ensemble: r1i1p1f1
+      grid: gn
+      institute: '*'
+      timerange: 19950101/20141231
+    scripts:
+      plot:
+        script: monitor/multi_datasets.py
+        facet_used_for_labels: alias
+        figure_kwargs:
+          figsize:
+          - 7
+          - 5
+        group_variables_by: variable_group
+        plot_filename: '{plot_type}_{exp}_{real_name}_{dataset}_{mip}'
+        plot_folder: '{plot_dir}'
+        plots:
+          variable_vs_lat:
+            gridline_kwargs:
+              color: darkgray
+              linewidth: 0.5
+              alpha: 0.3
+            legend_kwargs:
+              loc: upper center
+              bbox_to_anchor:
+              - 0.5
+              - -0.4
+              borderaxespad: 0.0
+            pyplot_kwargs:
+              title: '{title} (*)'
+            plot_kwargs:
+              ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              ICON_ICON_input:
+                label: '{dataset} ({exp})'
+                linewidth: 1.25
+                zorder: 2.5
+                color: C0
+              default:
+                color: lightgray
+                label: null
+                linewidth: 0.75
+                zorder: 1.0
+              CMIP6:
+                label: '{project}'
+              CMIP6_MPI-ESM1-2-LR:
+                label: '{project}'
+              OBS:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              OBS6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+                linestyle: dashdot
+              native6:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              native6_ORAS5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
+              ORAS5:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
