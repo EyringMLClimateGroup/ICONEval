@@ -13,7 +13,7 @@
    - `outdata/{exp}_{var_type}_*.nc`
    - `output/{exp}_{var_type}_*.nc`
 
-   If you want to use a custom input file pattern for your ICON data, you can
+   If you want to use custom input file patterns for your ICON data, you can
    use the command line option `--path_templates`. For example,
 
    ```bash
