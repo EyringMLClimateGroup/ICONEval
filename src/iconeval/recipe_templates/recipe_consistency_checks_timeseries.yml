@@ -167,7 +167,6 @@ diagnostics:
     description: Time series of moisture flux into the atmosphere.
     variables:
       qep:
-        var_type: atm_2d_ml  # workaround; should be added to ICON extra facets
         mip: Amon
         derive: true
         force_derivation: true
