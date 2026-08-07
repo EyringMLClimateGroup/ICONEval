@@ -465,9 +465,9 @@ class ESMValToolConfigTemplate(Template):
         # ICON
         if path_templates is None:
             icon_path_templates = [
-                "{exp}_{var_type}_*.nc",
-                "outdata/{exp}_{var_type}_*.nc",
-                "output/{exp}_{var_type}_*.nc",
+                "{exp}_{var_type}*.nc",
+                "outdata/{exp}_{var_type}*.nc",
+                "output/{exp}_{var_type}*.nc",
             ]
         else:
             icon_path_templates = list(path_templates)
