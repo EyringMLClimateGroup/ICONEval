@@ -36,4 +36,3 @@ jobs:
           coverage-path-prefix: src/iconeval/
           junitxml-path: ./pytest.xml
           pytest-xml-coverage-path: ./coverage.xml
-          report-only-changed-files: true

@@ -142,7 +142,8 @@ class Session:
         additional_esmvaltool_options: dict | None,
         additional_srun_options: dict | None,
         additional_dask_options: dict | None,
-        tags: str | list[str] | None,
+        tags: str | Iterable[str] | None,
+        path_templates: str | Iterable[str] | None,
         **extra_facets: FacetType,
     ) -> list[Job]:
         """Get jobs."""
@@ -181,9 +182,10 @@ class Session:
             esmvaltool_config_path = esmvaltool_config_dir / "config-user.yml"
             esmvaltool_config = esmvaltool_config_template.write_config(
                 esmvaltool_config_path,
-                recipe.simulations_info,
-                self.output_dir_esmvaltool,
-                dask_config,
+                simulations_info=recipe.simulations_info,
+                output_dir=self.output_dir_esmvaltool,
+                dask_config=dask_config,
+                path_templates=path_templates,
             )
             job = Job(
                 recipe=recipe,
@@ -300,7 +302,7 @@ class Session:
     def _get_recipe_templates(
         self,
         recipe_template_paths: str | Path | Iterable[str | Path] | None,
-        tags: str | list[str] | None,
+        tags: str | Iterable[str] | None,
         *,
         always_use_default_recipe_templates: bool,
     ) -> list[RecipeTemplate]:

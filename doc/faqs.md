@@ -4,14 +4,26 @@
 
 1. My ICON data is not found or the wrong data is found.
 
-   The directory you specify as main argument to ICONEval will be used as the
-   `exp` facet.
+   The directories you specify as positional arguments to ICONEval will be used
+   as the `exp` facets.
    [By default](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/find_data.html#icon),
    ESMValTool will search for files using the following patterns:
 
-   - `{exp}/{exp}_{var_type}_*.nc`
-   - `{exp}/outdata/{exp}_{var_type}_*.nc`
-   - `{exp}/output/{exp}_{var_type}_*.nc`
+   - `{exp}_{var_type}_*.nc`
+   - `outdata/{exp}_{var_type}_*.nc`
+   - `output/{exp}_{var_type}_*.nc`
+
+   If you want to use custom input file patterns for your ICON data, you can
+   use the command line option `--path_templates`. For example,
+
+   ```bash
+   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{var_type}_*.nc"]'
+   ```
+
+   will search for files using the patterns:
+
+   - `{exp}_*.nc`
+   - `my_output/{var_type}_*.nc`
 
    `var_type` can be defined in the recipe or as custom [extra
    facets](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/configure.html#extra-facets)
@@ -40,27 +52,6 @@
    ```
 
    and running ICONEval with
-
-   ```bash
-   iconeval path/to/ICON_output --esmvaltool_options='{"--config_dir": "/path/to/config/dir"}'
-   ```
-
-   If you want to use a custom input file pattern for your ICON data, you can
-   use the following configuration options:
-
-   ```yaml
-   # Contents of /path/to/config/dir/my_custom_config_file.yml
-   projects:
-     ICON:
-       data:
-         my_custom_paths:
-           type: esmvalcore.io.local.LocalDataSource
-           rootpath: path/to/ICON_output  # path you use as argument for ICONEval
-           dirname_template: "my/icon_output"
-           filename_template: "{exp}_{var_type}_custom_info_*.nc"
-   ```
-
-   Again, run ICONEval with
 
    ```bash
    iconeval path/to/ICON_output --esmvaltool_options='{"--config_dir": "/path/to/config/dir"}'
