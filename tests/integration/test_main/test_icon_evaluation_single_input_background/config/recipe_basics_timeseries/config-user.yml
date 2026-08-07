@@ -106,26 +106,28 @@ projects:
         filename_template: '{project}_{dataset}_{type}_{version}_{mip}_{short_name}[_.]*nc'
   ICON:
     data:
-      input:
+      input-0:
         dirname_template: ''
         filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
-      input-outdata:
+      input-1:
         dirname_template: outdata
         filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
-      input-output:
+      input-2:
         dirname_template: output
         filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
   EMAC:
     data:
-      input:
+      input-0:
         dirname_template: '{channel}'
         filename_template: '{exp}*{channel}{postproc_flag}.nc'
+        rootpath: ((tmp_path))/input
+        type: esmvalcore.io.local.LocalDataSource
         ignore_warnings:
         - message: 'Ignored formula of unrecognised type: .*'
           module: iris
@@ -137,7 +139,5 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
-        rootpath: ((tmp_path))/input
-        type: esmvalcore.io.local.LocalDataSource
 dask: {}
 output_dir: ((tmp_path))/output/input_20000101_000000UTC/esmvaltool_output
