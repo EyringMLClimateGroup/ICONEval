@@ -126,12 +126,38 @@ More information on these settings is given in the following three sections.
 
 By default, an ESMValTool configuration template is read from the [installation
 directory of this
-tool](https://github.com/ESMValGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml)
-and filled with information from the current ICONEval run.
+tool](https://github.com/ESMValGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml).
 
-The configuration options `dask`, `output_dir`, and `rootpath` must not be
-overwritten in the [custom ESMValTool
+The configuration options `dask`, `output_dir`, `project.ICON` and
+`projects.EMAC` are automatically filled with information from the current
+ICONEval run and must not be overwritten in the [custom ESMValTool
 configuration](#custom-esmvaltool-configuration)!
+
+### Custom input path templates
+
+By default, ICONEval will search for files using the following patterns:
+
+**ICON**:
+
+- `{exp}_{var_type}_*.nc`
+- `outdata/{exp}_{var_type}_*.nc`
+- `output/{exp}_{var_type}_*.nc`
+
+**EMAC**:
+
+- `{channel}/{exp}*{channel}{postproc_flag}.nc`
+
+This can be customized with the command line option `--path_templates`. For
+example,
+
+```bash
+iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{exp}_*.nc"]'
+```
+
+will search for files using the patterns (ICON and EMAC):
+
+- `{exp}_*.nc`
+- `my_output/{exp}_*.nc`
 
 ### Custom ESMValTool Configuration
 

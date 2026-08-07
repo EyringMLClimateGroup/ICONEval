@@ -69,12 +69,13 @@ follow the subsequent criteria as closely as possible.
 
 The output files should follow one of the following naming conventions:
 
-- `{exp}/{exp}_{var_type}_*.nc`
-- `{exp}/outdata/{exp}_{var_type}_*.nc`
-- `{exp}/output/{exp}_{var_type}_*.nc`
+- `{exp}_{var_type}_*.nc`
+- `outdata/{exp}_{var_type}_*.nc`
+- `output/{exp}_{var_type}_*.nc`
 
-`{exp}` corresponds to the name of your experiment, and `{var_type}` to the
-type of the output variable (see namelist in table above; e.g., `atm_2d_ml`).
+`{exp}` corresponds to the name of your experiment (i.e., the name of your
+output directory), and `{var_type}` to the type of the output variable (see
+namelist in table above; e.g., `atm_2d_ml`).
 
 If possible, one file should contain one simulated year. Less than that is fine
 (e.g., one file per time step) but makes the evaluation slower; more than that
