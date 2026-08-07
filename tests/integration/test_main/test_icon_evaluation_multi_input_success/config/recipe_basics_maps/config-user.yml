@@ -108,39 +108,29 @@ projects:
     data:
       input_1-0:
         dirname_template: ''
-        filename_template: '{exp}_{var_type}_*.nc'
+        filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_1-1:
-        dirname_template: outdata
-        filename_template: '{exp}_{var_type}_*.nc'
-        rootpath: ((tmp_path))/input_1
-        type: esmvalcore.io.local.LocalDataSource
-      input_1-2:
-        dirname_template: output
-        filename_template: '{exp}_{var_type}_*.nc'
+        dirname_template: '{var_type}'
+        filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_2-0:
         dirname_template: ''
-        filename_template: '{exp}_{var_type}_*.nc'
+        filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
       input_2-1:
-        dirname_template: outdata
-        filename_template: '{exp}_{var_type}_*.nc'
-        rootpath: ((tmp_path))/input_2
-        type: esmvalcore.io.local.LocalDataSource
-      input_2-2:
-        dirname_template: output
-        filename_template: '{exp}_{var_type}_*.nc'
+        dirname_template: '{var_type}'
+        filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
   EMAC:
     data:
       input_1-0:
-        dirname_template: '{channel}'
-        filename_template: '{exp}*{channel}{postproc_flag}.nc'
+        dirname_template: ''
+        filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
         ignore_warnings: &id001
@@ -154,9 +144,21 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
+      input_1-1:
+        dirname_template: '{var_type}'
+        filename_template: my_{exp}_of_icon_xpp*.nc
+        rootpath: ((tmp_path))/input_1
+        type: esmvalcore.io.local.LocalDataSource
+        ignore_warnings: *id001
       input_2-0:
-        dirname_template: '{channel}'
-        filename_template: '{exp}*{channel}{postproc_flag}.nc'
+        dirname_template: ''
+        filename_template: my_icon_sim.yml
+        rootpath: ((tmp_path))/input_2
+        type: esmvalcore.io.local.LocalDataSource
+        ignore_warnings: *id001
+      input_2-1:
+        dirname_template: '{var_type}'
+        filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
         ignore_warnings: *id001
