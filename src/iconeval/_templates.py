@@ -396,9 +396,11 @@ class ESMValToolConfigTemplate(Template):
     def write_config(
         self,
         path: Path,
+        *,
         simulations_info: list[SimulationInfo],
         output_dir: Path,
         dask_config: dict[str, Any],
+        path_templates: str | Iterable[str] | None,
     ) -> ESMValToolConfig:
         """Write ESMValTool configuration from template."""
         config_yaml = yaml.safe_load(self.content)
@@ -406,7 +408,11 @@ class ESMValToolConfigTemplate(Template):
         # Add information from current ICONEval run
         config_yaml["dask"] = dask_config
         config_yaml["output_dir"] = str(output_dir)
-        config_yaml = self._fill_projects(config_yaml, simulations_info)
+        config_yaml["projects"] = self._get_project_config(
+            config_yaml,
+            simulations_info,
+            path_templates=path_templates,
+        )
 
         path.write_text(
             yaml.safe_dump(config_yaml, sort_keys=False),
@@ -420,66 +426,88 @@ class ESMValToolConfigTemplate(Template):
             dask_config=dask_config,
         )
 
-    def _fill_projects(
+    def _get_data_sources(
+        self,
+        simulations_info: list[SimulationInfo],
+        path_templates: Iterable[str],
+        **kwargs: Any,
+    ) -> dict[str, dict[str, Any]]:
+        """Get ESMValTool data sources configuration."""
+        data_sources: dict[str, Any] = {}
+        for simulation_info in simulations_info:
+            for data_source_id, path_template in enumerate(path_templates):
+                split_path_template = path_template.rsplit("/", 1)
+                dirname_template = (
+                    "" if len(split_path_template) == 1 else split_path_template[0]
+                )
+                filename_template = split_path_template[-1]
+                data_sources[f"{simulation_info.exp}-{data_source_id}"] = {
+                    "dirname_template": dirname_template,
+                    "filename_template": filename_template,
+                    "rootpath": str(simulation_info.path),
+                    "type": "esmvalcore.io.local.LocalDataSource",
+                    **kwargs,
+                }
+        return {"data": data_sources}
+
+    def _get_project_config(
         self,
         config_yaml: Any,
         simulations_info: list[SimulationInfo],
-    ) -> Any:
-        """Fill `projects` in ESMValTool configuration."""
-        config_yaml = deepcopy(config_yaml)
-        projects: dict[str, dict[str, Any]] = config_yaml.get("projects", {})
+        *,
+        path_templates: str | Iterable[str] | None,
+    ) -> dict[str, dict[str, Any]]:
+        """Get ESMValTool `projects` configuration."""
+        if isinstance(path_templates, str):
+            path_templates = [path_templates]
+        projects: dict[str, dict[str, Any]] = deepcopy(config_yaml).get("projects", {})
 
         # ICON
-        icon_config: dict[str, Any] = {}
-        for simulation_info in simulations_info:
-            dirname_templates: dict[str, str] = {
-                f"{simulation_info.exp}": "",
-                f"{simulation_info.exp}-outdata": "outdata",
-                f"{simulation_info.exp}-output": "output",
-            }
-            for data_name, dirname_template in dirname_templates.items():
-                icon_config[data_name] = {
-                    "dirname_template": dirname_template,
-                    "filename_template": "{exp}_{var_type}_*.nc",
-                    "rootpath": str(simulation_info.path),
-                    "type": "esmvalcore.io.local.LocalDataSource",
-                }
-        projects["ICON"] = {"data": icon_config}
+        if path_templates is None:
+            icon_path_templates = [
+                "{exp}_{var_type}_*.nc",
+                "outdata/{exp}_{var_type}_*.nc",
+                "output/{exp}_{var_type}_*.nc",
+            ]
+        else:
+            icon_path_templates = list(path_templates)
+        projects["ICON"] = self._get_data_sources(simulations_info, icon_path_templates)
 
         # EMAC
-        emac_config: dict[str, Any] = {}
-        for simulation_info in simulations_info:
-            emac_config[simulation_info.exp] = {
-                "dirname_template": "{channel}",
-                "filename_template": "{exp}*{channel}{postproc_flag}.nc",
-                "ignore_warnings": [
-                    {
-                        "message": r"Ignored formula of unrecognised type: .*",
-                        "module": "iris",
-                    },
-                    {
-                        "message": r"Ignoring formula terms variable .* referenced by "
-                        "data variable .* via variable .*",
-                        "module": "iris",
-                    },
-                    {
-                        "message": r"Missing CF-netCDF formula term variable .*, "
-                        "referenced by netCDF variable .*",
-                        "module": "iris",
-                    },
-                    {
-                        "message": r"NetCDF variable .* contains unknown cell method "
-                        r".*",
-                        "module": "iris",
-                    },
-                ],
-                "rootpath": str(simulation_info.path),
-                "type": "esmvalcore.io.local.LocalDataSource",
-            }
-        projects["EMAC"] = {"data": emac_config}
+        if path_templates is None:
+            emac_path_templates = [
+                "{channel}/{exp}*{channel}{postproc_flag}.nc",
+            ]
+        else:
+            emac_path_templates = list(path_templates)
+        ignore_warnings = [
+            {
+                "message": r"Ignored formula of unrecognised type: .*",
+                "module": "iris",
+            },
+            {
+                "message": r"Ignoring formula terms variable .* referenced by "
+                "data variable .* via variable .*",
+                "module": "iris",
+            },
+            {
+                "message": r"Missing CF-netCDF formula term variable .*, "
+                "referenced by netCDF variable .*",
+                "module": "iris",
+            },
+            {
+                "message": r"NetCDF variable .* contains unknown cell method "
+                r".*",
+                "module": "iris",
+            },
+        ]
+        projects["EMAC"] = self._get_data_sources(
+            simulations_info,
+            emac_path_templates,
+            ignore_warnings=ignore_warnings,
+        )
 
-        config_yaml["projects"] = projects
-        return config_yaml
+        return projects
 
 
 def map_tags_to_recipes(
