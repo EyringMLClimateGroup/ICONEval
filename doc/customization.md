@@ -139,9 +139,9 @@ By default, ICONEval will search for files using the following patterns:
 
 **ICON**:
 
-- `{exp}_{var_type}_*.nc`
-- `outdata/{exp}_{var_type}_*.nc`
-- `output/{exp}_{var_type}_*.nc`
+- `{exp}_{var_type}*.nc`
+- `outdata/{exp}_{var_type}*.nc`
+- `output/{exp}_{var_type}*.nc`
 
 **EMAC**:
 
