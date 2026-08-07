@@ -52,6 +52,7 @@ def icon_evaluation(
     log_level: str = "info",
     log_file: str | Path | None = "~/.iconeval/debug.log",
     output_dir: str | Path | None = None,
+    path_templates: Iterable[str] | None = None,
     account: str | None = None,
     background: bool = False,
     dask: bool = True,
@@ -114,6 +115,15 @@ def icon_evaluation(
         be created. Output from individual ICONEval runs is not stored directly
         in the `--output_dir`, but rather in a subdirectory whose name is
         determined by the option `--html_name`.
+    path_templates:
+        Input path templates that are used to read input data. This determines
+        the `dirname_template` and `filename_template` used in ESMValTools data
+        source configuration
+        (https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/
+        configure.html#data-sources). By default, uses
+        `["{exp}_{var_type}_*.nc", "outdata/{exp}_{var_type}_*.nc",
+        "output/{exp}_{var_type}_*.nc"] for ICON data and
+        `["{channel}/{exp}*{channel}{postproc_flag}.nc"]` for EMAC data.
     account:
         Account that is charged for the Slurm jobs. By default, use account
         that is used for `sbatch`/`salloc` (if ICONEval is run within `sbatch`
@@ -277,6 +287,7 @@ def icon_evaluation(
         additional_srun_options=srun_options,
         additional_dask_options=dask_options,
         tags=tags,
+        path_templates=path_templates,
         **extra_facets,
     )
     logger.debug("Recipes:")

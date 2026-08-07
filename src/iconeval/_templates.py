@@ -396,9 +396,11 @@ class ESMValToolConfigTemplate(Template):
     def write_config(
         self,
         path: Path,
+        *,
         simulations_info: list[SimulationInfo],
         output_dir: Path,
         dask_config: dict[str, Any],
+        path_templates: Iterable[str] | None,
     ) -> ESMValToolConfig:
         """Write ESMValTool configuration from template."""
         config_yaml = yaml.safe_load(self.content)
@@ -406,7 +408,11 @@ class ESMValToolConfigTemplate(Template):
         # Add information from current ICONEval run
         config_yaml["dask"] = dask_config
         config_yaml["output_dir"] = str(output_dir)
-        config_yaml = self._fill_projects(config_yaml, simulations_info)
+        config_yaml = self._fill_projects(
+            config_yaml,
+            simulations_info,
+            path_templates=path_templates,
+        )
 
         path.write_text(
             yaml.safe_dump(config_yaml, sort_keys=False),
@@ -425,7 +431,7 @@ class ESMValToolConfigTemplate(Template):
         config_yaml: Any,
         simulations_info: list[SimulationInfo],
         *,
-        path_templates: Iterable[str] | None = None,
+        path_templates: Iterable[str] | None,
     ) -> Any:
         """Fill `projects` in ESMValTool configuration."""
         config_yaml = deepcopy(config_yaml)
