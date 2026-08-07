@@ -408,7 +408,7 @@ class ESMValToolConfigTemplate(Template):
         # Add information from current ICONEval run
         config_yaml["dask"] = dask_config
         config_yaml["output_dir"] = str(output_dir)
-        config_yaml = self._fill_projects(
+        config_yaml["projects"] = self._get_project_config(
             config_yaml,
             simulations_info,
             path_templates=path_templates,
@@ -426,16 +426,39 @@ class ESMValToolConfigTemplate(Template):
             dask_config=dask_config,
         )
 
-    def _fill_projects(
+    def _get_data_sources(
+        self,
+        simulations_info: list[SimulationInfo],
+        path_templates: Iterable[str],
+        **kwargs: Any,
+    ) -> dict[str, dict[str, Any]]:
+        """Get ESMValTool data sources configuration."""
+        data_sources: dict[str, Any] = {}
+        for simulation_info in simulations_info:
+            for data_source_id, path_template in enumerate(path_templates):
+                split_path_template = path_template.rsplit("/", 1)
+                dirname_template = (
+                    "" if len(split_path_template) == 1 else split_path_template[0]
+                )
+                filename_template = split_path_template[-1]
+                data_sources[f"{simulation_info.exp}-{data_source_id}"] = {
+                    "dirname_template": dirname_template,
+                    "filename_template": filename_template,
+                    "rootpath": str(simulation_info.path),
+                    "type": "esmvalcore.io.local.LocalDataSource",
+                    **kwargs,
+                }
+        return {"data": data_sources}
+
+    def _get_project_config(
         self,
         config_yaml: Any,
         simulations_info: list[SimulationInfo],
         *,
         path_templates: Iterable[str] | None,
-    ) -> Any:
-        """Fill `projects` in ESMValTool configuration."""
-        config_yaml = deepcopy(config_yaml)
-        projects: dict[str, dict[str, Any]] = config_yaml.get("projects", {})
+    ) -> dict[str, dict[str, Any]]:
+        """Get ESMValTool `projects` configuration."""
+        projects: dict[str, dict[str, Any]] = deepcopy(config_yaml).get("projects", {})
 
         # ICON
         if path_templates is None:
@@ -482,32 +505,7 @@ class ESMValToolConfigTemplate(Template):
             ignore_warnings=ignore_warnings,
         )
 
-        config_yaml["projects"] = projects
-        return config_yaml
-
-    def _get_data_sources(
-        self,
-        simulations_info: list[SimulationInfo],
-        path_templates: Iterable[str],
-        **kwargs: Any,
-    ) -> dict[str, dict[str, Any]]:
-        """Get data sources for ESMValTool configuration."""
-        data_sources: dict[str, Any] = {}
-        for simulation_info in simulations_info:
-            for data_source_id, path_template in enumerate(path_templates):
-                split_path_template = path_template.rsplit("/", 1)
-                dirname_template = (
-                    "" if len(split_path_template) == 1 else split_path_template[0]
-                )
-                filename_template = split_path_template[-1]
-                data_sources[f"{simulation_info.exp}-{data_source_id}"] = {
-                    "dirname_template": dirname_template,
-                    "filename_template": filename_template,
-                    "rootpath": str(simulation_info.path),
-                    "type": "esmvalcore.io.local.LocalDataSource",
-                    **kwargs,
-                }
-        return {"data": data_sources}
+        return projects
 
 
 def map_tags_to_recipes(
