@@ -142,7 +142,7 @@ class Session:
         additional_esmvaltool_options: dict | None,
         additional_srun_options: dict | None,
         additional_dask_options: dict | None,
-        tags: str | list[str] | None,
+        tags: str | Iterable[str] | None,
         path_templates: Iterable[str] | None,
         **extra_facets: FacetType,
     ) -> list[Job]:
@@ -302,7 +302,7 @@ class Session:
     def _get_recipe_templates(
         self,
         recipe_template_paths: str | Path | Iterable[str | Path] | None,
-        tags: str | list[str] | None,
+        tags: str | Iterable[str] | None,
         *,
         always_use_default_recipe_templates: bool,
     ) -> list[RecipeTemplate]:

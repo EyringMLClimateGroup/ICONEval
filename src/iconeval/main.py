@@ -64,7 +64,7 @@ def icon_evaluation(
     esmvaltool_options: dict | None = None,
     srun_options: dict | None = None,
     dask_options: dict | None = None,
-    tags: str | list[str] | None = None,
+    tags: str | Iterable[str] | None = None,
     setup_logging: bool = True,
     **extra_facets: FacetType,
 ) -> Path:
@@ -168,7 +168,7 @@ def icon_evaluation(
     tags:
         Only recipes with the given tags are run (e.g., `--tags=tag`).  To not
         run specific recipes, use the syntax `!tag` (e.g., `--tags='!tag'`;
-        make sure to properly escape the string via `'`).  Deselection takes
+        make sure to properly escape the string via `'`). Deselection takes
         priority over selection. If not given or empty, run all recipes. An
         overview of all available tags in the default recipe templates can be
         found here
