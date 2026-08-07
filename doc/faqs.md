@@ -13,6 +13,18 @@
    - `outdata/{exp}_{var_type}_*.nc`
    - `output/{exp}_{var_type}_*.nc`
 
+   If you want to use a custom input file pattern for your ICON data, you can
+   use the command line option `--path_templates`. For example,
+
+   ```bash
+   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{var_type}_*.nc"]'
+   ```
+
+   will search for files using the patterns:
+
+   - `{exp}_*.nc`
+   - `my_output/{var_type}_*.nc`
+
    `var_type` can be defined in the recipe or as custom [extra
    facets](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/configure.html#extra-facets)
    passed to ICONEval via [custom ESMValTool configuration
@@ -45,19 +57,7 @@
    iconeval path/to/ICON_output --esmvaltool_options='{"--config_dir": "/path/to/config/dir"}'
    ```
 
-   If you want to use a custom input file pattern for your ICON data, you can
-   use the command line option `--path_templates`. For example,
-
-     ```bash
-   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{exp}_*.nc"]'
-   ```
-
-   will search for the patterns:
-
-   - `{exp}_*.nc`
-   - `my_output/{exp}_*.nc`
-
-2. ESMValTool does not find my variable (e.g., `Unable to load CMOR table
+1. ESMValTool does not find my variable (e.g., `Unable to load CMOR table
    (project) 'ICON' for variable ...`).
 
    Without further changes, ESMValTool can only use variables defined in the
@@ -109,7 +109,7 @@
      iconeval path/to/ICON_output --esmvaltool_options='{"--config_dir": "/path/to/config/dir"}'
      ```
 
-3. ESMValTool misses a vertical coordinate in the data (e.g.,
+1. ESMValTool misses a vertical coordinate in the data (e.g.,
    `esmvalcore.cmor.check.CMORCheckError: There were errors in variable ...:
    alevel: does not exist`).
 
@@ -134,7 +134,7 @@
        coordinate: air_pressure
    ```
 
-4. ESMValTool cannot find the horizontal grid file (e.g., `Cube does not
+1. ESMValTool cannot find the horizontal grid file (e.g., `Cube does not
    contain the attribute 'grid_file_uri' necessary to download the ICON
    horizontal grid file`).
 
@@ -143,7 +143,7 @@
    [here](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/find_data.html#icon)
    for more details on this.
 
-5. I get weird certificate errors when trying to publish the summary HTML
+1. I get weird certificate errors when trying to publish the summary HTML
    (e.g., `HTTPSConnectionPool(host='swift.dkrz.de', port=443): Max retries
    exceeded with url: ... (Caused by SSLError(SSLCertVerificationError(1,
    '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate
@@ -152,7 +152,7 @@
    Try using a different Levante login node. E.g., if you are on `levante1`,
    try `levante2` via `ssh levante2`.
 
-6. ESMValTool cannot find observational data from *Tier 3* (e.g., `- Missing data for Dataset: tas, Amon, OBS6, MERRA2, 5.12.4`).
+1. ESMValTool cannot find observational data from *Tier 3* (e.g., `- Missing data for Dataset: tas, Amon, OBS6, MERRA2, 5.12.4`).
 
    You are probably not a member of the ESMValTool project on DKRZ (*bd0854*).
    To join this, select project "854: Erdsystemmodellevaluierung (DLR-Institut
@@ -162,12 +162,12 @@
    any resources (computation time and/or storage) of that project without
    consulting the project admins.
 
-7. I get an `OSError: File name too long`.
+1. I get an `OSError: File name too long`.
 
    This happens when you try to evaluate lots of simulations without specifying
    an `--html_name`. Please specify a `--html_name` in these cases.
 
-8. My jobs don't start with the error `FATAL: while extracting
+1. My jobs don't start with the error `FATAL: while extracting
    /work/bd1179/iconeval/0.0.5/esmvaltool/bin/esmvaltool: root filesystem
    extraction failed: failed to copy content in staging file: write
    /tmp/rootfs-3224830439/archive-104220727: no space left on device`.
@@ -175,7 +175,7 @@
    This happens when the temporary file system is full. Login to a different
    Levante login node and try again, this should fix it.
 
-9. My Swift token expired and I want to renew it without running ICONEval.
+1. My Swift token expired and I want to renew it without running ICONEval.
 
    On DKRZ's Levante, run
 
