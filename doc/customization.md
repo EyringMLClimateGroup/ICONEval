@@ -128,7 +128,7 @@ By default, an ESMValTool configuration template is read from the [installation
 directory of this
 tool](https://github.com/ESMValGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml).
 
-The configuration options `dask`, `output_dir`, `project.ICON` and
+The configuration options `dask`, `output_dir`, `projects.ICON` and
 `projects.EMAC` are automatically filled with information from the current
 ICONEval run and must not be overwritten in the [custom ESMValTool
 configuration](#custom-esmvaltool-configuration)!
