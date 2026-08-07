@@ -108,32 +108,32 @@ projects:
     data:
       input_1:
         dirname_template: ''
-        filename_template: '{exp}_{var_type}*.nc'
+        filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_1-outdata:
         dirname_template: outdata
-        filename_template: '{exp}_{var_type}*.nc'
+        filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_1-output:
         dirname_template: output
-        filename_template: '{exp}_{var_type}*.nc'
+        filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_2:
         dirname_template: ''
-        filename_template: '{exp}_{var_type}*.nc'
+        filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
       input_2-outdata:
         dirname_template: outdata
-        filename_template: '{exp}_{var_type}*.nc'
+        filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
       input_2-output:
         dirname_template: output
-        filename_template: '{exp}_{var_type}*.nc'
+        filename_template: '{exp}_{var_type}_*.nc'
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
   EMAC:
