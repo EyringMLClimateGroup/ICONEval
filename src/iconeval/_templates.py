@@ -400,7 +400,7 @@ class ESMValToolConfigTemplate(Template):
         simulations_info: list[SimulationInfo],
         output_dir: Path,
         dask_config: dict[str, Any],
-        path_templates: Iterable[str] | None,
+        path_templates: str | Iterable[str] | None,
     ) -> ESMValToolConfig:
         """Write ESMValTool configuration from template."""
         config_yaml = yaml.safe_load(self.content)
@@ -455,9 +455,11 @@ class ESMValToolConfigTemplate(Template):
         config_yaml: Any,
         simulations_info: list[SimulationInfo],
         *,
-        path_templates: Iterable[str] | None,
+        path_templates: str | Iterable[str] | None,
     ) -> dict[str, dict[str, Any]]:
         """Get ESMValTool `projects` configuration."""
+        if isinstance(path_templates, str):
+            path_templates = [path_templates]
         projects: dict[str, dict[str, Any]] = deepcopy(config_yaml).get("projects", {})
 
         # ICON

@@ -296,6 +296,7 @@ def test_icon_evaluation_single_input_background(
         tmp_input_dir,
         recipe_templates=recipe_template_dir / "recipe_basics_timeseries.yml",
         output_dir=tmp_output_dir,
+        path_templates="my_icon_sim.yml",
         background=True,
         dask=False,
     )

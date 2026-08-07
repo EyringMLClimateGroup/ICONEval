@@ -143,7 +143,7 @@ class Session:
         additional_srun_options: dict | None,
         additional_dask_options: dict | None,
         tags: str | Iterable[str] | None,
-        path_templates: Iterable[str] | None,
+        path_templates: str | Iterable[str] | None,
         **extra_facets: FacetType,
     ) -> list[Job]:
         """Get jobs."""

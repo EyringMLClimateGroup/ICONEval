@@ -52,7 +52,7 @@ def icon_evaluation(
     log_level: str = "info",
     log_file: str | Path | None = "~/.iconeval/debug.log",
     output_dir: str | Path | None = None,
-    path_templates: Iterable[str] | None = None,
+    path_templates: str | Iterable[str] | None = None,
     account: str | None = None,
     background: bool = False,
     dask: bool = True,
