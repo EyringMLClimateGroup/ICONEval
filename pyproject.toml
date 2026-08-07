@@ -64,8 +64,8 @@ pre-commit = "*"
 py-markdown-table = "*"
 
 [tool.pixi.feature.esmvaltool.dependencies]
-esmvalcore = ">=2.14.0"
-esmvaltool-python = ">=2.14.0"
+esmvalcore = ">=2.15.0"
+esmvaltool-python = ">=2.15.0"
 
 # Ensure that all ESMValTool dependencies are installed from conda-forge, not PyPI
 [tool.pixi.feature.esmvaltool-dev.dependencies]
