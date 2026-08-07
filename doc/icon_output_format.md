@@ -9,51 +9,51 @@ follow the subsequent criteria as closely as possible.
 
 2D variables should have the dimensions (*time*, *latitude*, *longitude*).
 
-| Description                                         | CMIP variable (units) | ICON-XPP variable (units) \[file\]     | ICON-A variable (units) \[file\] | Comments                           |
-| --------------------------------------------------- | --------------------- | -------------------------------------- | -------------------------------- | ---------------------------------- |
-| Ice Water Path                                      | clivi (kg/m2)         | tqi_dia (kg/m2) \[atm_2d_ml\]          | clivi (kg/m2) \[atm_2d_ml\]      | -                                  |
-| Total Cloud Cover                                   | clt (%)               | clct (%) \[atm_2d_ml\]                 | clt (%) \[atm_2d_ml\]            | -                                  |
-| Evaporation Including Sublimation and Transpiration | evspsbl (kg/m2/s)     | qhfl_s (kg/m2/s) \[atm_2d_ml\]         | evspsbl (kg/m2/s) \[atm_2d_ml\]  | -                                  |
-| Surface Upward Latent Heat Flux                     | hfls (W/m2)           | lhfl_s (W/m2) \[atm_2d_ml\]            | hfls (W/m2) \[atm_2d_ml\]        | ICON-A and ICON-XPP: opposite sign |
-| Surface Upward Sensible Heat Flux                   | hfss (W/m2)           | shfl_s (W/m2) \[atm_2d_ml\]            | hfss (W/m2) \[atm_2d_ml\]        | ICON-A and ICON-XPP: opposite sign |
-| Liquid Water Path                                   | lwp (kg/m2)           | tqc_dia (kg/m2) \[atm_2d_ml\]          | cllvi (kg/m2) \[atm_2d_ml\]      | -                                  |
-| Ocean Mixed Layer Thickness Defined by Sigma T      | mlotst (m)            | mld (m) \[oce_dbg\]                    | -                                | Not yet supported for ICON-A       |
-| Precipitation                                       | pr (kg/m2/s)          | tot_prec_rate  (kg/m2/s) \[atm_2d_ml\] | pr (kg/m2/s) \[atm_2d_ml\]       | -                                  |
-| Water Vapor Path                                    | prw (kg/m2)           | tqv_dia (kg/m2) \[atm_2d_ml\]          | prw (kg/m2) \[atm_2d_ml\]        | -                                  |
-| Surface Air Pressure                                | ps (Pa)               | pres_sfc (Pa) \[atm_2d_ml\]            | ps (Pa) \[atm_2d_ml\]            | -                                  |
-| Sea Level Pressure                                  | psl (Pa)              | pres_msl (Pa) \[atm_2d_ml\]            | psl (Pa) \[atm_2d_ml\]           | -                                  |
-| TOA Upward Longwave Radiation Flux                  | rlut (W/m2)           | thb_t (W/m2) \[atm_2d_ml\]             | rlut (W/m2) \[atm_2d_ml\]        | ICON-XPP: opposite sign            |
-| TOA Upward Clear-Sky Longwave Radiation Flux        | rlutcs (W/m2)         | lwflx_up_clr (W/m2) \[atm_2d_ml\]      | rlutcs (W/m2) \[atm_2d_ml\]      | ICON-XPP: level 0 of lwflx_up_clr  |
-| TOA Downward Shortwave Radiation Flux               | rsdt (W/m2)           | sod_t (W/m2) \[atm_2d_ml\]             | rsdt (W/m2) \[atm_2d_ml\]        | -                                  |
-| TOA Upward Shortwave Radiation Flux                 | rsut (W/m2)           | sou_t (W/m2) \[atm_2d_ml\]             | rsut (W/m2) \[atm_2d_ml\]        | -                                  |
-| TOA Upward Clear-Sky Shortwave Radiation Flux       | rsutcs (W/m2)         | swflx_up_clr (W/m2) \[atm_2d_ml\]      | rsutcs (W/m2) \[atm_2d_ml\]      | ICON-XPP: level 0 of swflx_up_clr  |
-| Sea-Ice Area Percentage                             | siconc (%)            | conc (1) \[oce_ice\]                   | sic (1) \[atm_2d_ml\]            | -                                  |
-| Near-Surface (2m) Air Temperature                   | tas (K)               | t_2m (K) \[atm_2d_ml\]                 | tas (K) \[atm_2d_ml\]            | -                                  |
-| Surface Downward Eastward Wind Stress               | tauu (Pa)             | umfl_s (N/m2) \[atm_2d_ml\]            | tauu (N/m2) \[atm_2d_ml\]        | -                                  |
-| Surface Downward Northward Wind Stress              | tauv (Pa)             | vmfl_s (N/m2) \[atm_2d_ml\]            | tauv (N/m2) \[atm_2d_ml\]        | -                                  |
-| Sea Surface Temperature                             | tos (degC)            | t_seasfc (K) \[atm_2d_ml\]             | -                                | Not yet supported for ICON-A       |
-| Surface Temperature                                 | ts (K)                | t_s (K) \[atm_2d_ml\]                  | ts (K) \[atm_2d_ml\]             | -                                  |
+| Description                                         | CMIP variable (units) | ICON-XPP variable (units) \[namelist\] | ICON-A variable (units) \[namelist\] | Comments                           |
+| --------------------------------------------------- | --------------------- | -------------------------------------- | ------------------------------------ | ---------------------------------- |
+| Ice Water Path                                      | clivi (kg/m2)         | tqi_dia (kg/m2) \[atm_2d_ml\]          | clivi (kg/m2) \[atm_2d_ml\]          | -                                  |
+| Total Cloud Cover                                   | clt (%)               | clct (%) \[atm_2d_ml\]                 | clt (%) \[atm_2d_ml\]                | -                                  |
+| Evaporation Including Sublimation and Transpiration | evspsbl (kg/m2/s)     | qhfl_s (kg/m2/s) \[atm_2d_ml\]         | evspsbl (kg/m2/s) \[atm_2d_ml\]      | -                                  |
+| Surface Upward Latent Heat Flux                     | hfls (W/m2)           | lhfl_s (W/m2) \[atm_2d_ml\]            | hfls (W/m2) \[atm_2d_ml\]            | ICON-A and ICON-XPP: opposite sign |
+| Surface Upward Sensible Heat Flux                   | hfss (W/m2)           | shfl_s (W/m2) \[atm_2d_ml\]            | hfss (W/m2) \[atm_2d_ml\]            | ICON-A and ICON-XPP: opposite sign |
+| Liquid Water Path                                   | lwp (kg/m2)           | tqc_dia (kg/m2) \[atm_2d_ml\]          | cllvi (kg/m2) \[atm_2d_ml\]          | -                                  |
+| Ocean Mixed Layer Thickness Defined by Sigma T      | mlotst (m)            | mld (m) \[oce_dbg\]                    | -                                    | Not yet supported for ICON-A       |
+| Precipitation                                       | pr (kg/m2/s)          | tot_prec_rate  (kg/m2/s) \[atm_2d_ml\] | pr (kg/m2/s) \[atm_2d_ml\]           | -                                  |
+| Water Vapor Path                                    | prw (kg/m2)           | tqv_dia (kg/m2) \[atm_2d_ml\]          | prw (kg/m2) \[atm_2d_ml\]            | -                                  |
+| Surface Air Pressure                                | ps (Pa)               | pres_sfc (Pa) \[atm_2d_ml\]            | ps (Pa) \[atm_2d_ml\]                | -                                  |
+| Sea Level Pressure                                  | psl (Pa)              | pres_msl (Pa) \[atm_2d_ml\]            | psl (Pa) \[atm_2d_ml\]               | -                                  |
+| TOA Upward Longwave Radiation Flux                  | rlut (W/m2)           | thb_t (W/m2) \[atm_2d_ml\]             | rlut (W/m2) \[atm_2d_ml\]            | ICON-XPP: opposite sign            |
+| TOA Upward Clear-Sky Longwave Radiation Flux        | rlutcs (W/m2)         | lwflx_up_clr (W/m2) \[atm_2d_ml\]      | rlutcs (W/m2) \[atm_2d_ml\]          | ICON-XPP: level 0 of lwflx_up_clr  |
+| TOA Downward Shortwave Radiation Flux               | rsdt (W/m2)           | sod_t (W/m2) \[atm_2d_ml\]             | rsdt (W/m2) \[atm_2d_ml\]            | -                                  |
+| TOA Upward Shortwave Radiation Flux                 | rsut (W/m2)           | sou_t (W/m2) \[atm_2d_ml\]             | rsut (W/m2) \[atm_2d_ml\]            | -                                  |
+| TOA Upward Clear-Sky Shortwave Radiation Flux       | rsutcs (W/m2)         | swflx_up_clr (W/m2) \[atm_2d_ml\]      | rsutcs (W/m2) \[atm_2d_ml\]          | ICON-XPP: level 0 of swflx_up_clr  |
+| Sea-Ice Area Percentage                             | siconc (%)            | conc (1) \[oce_ice\]                   | sic (1) \[atm_2d_ml\]                | -                                  |
+| Near-Surface (2m) Air Temperature                   | tas (K)               | t_2m (K) \[atm_2d_ml\]                 | tas (K) \[atm_2d_ml\]                | -                                  |
+| Surface Downward Eastward Wind Stress               | tauu (Pa)             | umfl_s (N/m2) \[atm_2d_ml\]            | tauu (N/m2) \[atm_2d_ml\]            | -                                  |
+| Surface Downward Northward Wind Stress              | tauv (Pa)             | vmfl_s (N/m2) \[atm_2d_ml\]            | tauv (N/m2) \[atm_2d_ml\]            | -                                  |
+| Sea Surface Temperature                             | tos (degC)            | t_seasfc (K) \[atm_2d_ml\]             | -                                    | Not yet supported for ICON-A       |
+| Surface Temperature                                 | ts (K)                | t_s (K) \[atm_2d_ml\]                  | ts (K) \[atm_2d_ml\]                 | -                                  |
 
 ## 3D Variables
 
 3D variables should have the dimensions (*time*, *height*/*depth*, *latitude*, *longitude*).
 
-| Description                                      | CMIP variable   | ICON-XPP variable                                                         | ICON-A variable | Comments                                     |
-| ------------------------------------------------ | --------------- | ------------------------------------------------------------------------- | --------------- | -------------------------------------------- |
-| Cloud Cover                                      | cl (%)          | clc (%)                                                                   | cl (%)          | -                                            |
-| Cloud Ice Mass Fraction                          | cli (kg/kg)     | tot_qi_dia (kg/kg)                                                        | cli (kg/kg)     | -                                            |
-| Cloud Liquid Water Mass Fraction                 | clw (kg/kg)     | tot_qc_dia (kg/kg)                                                        | clw (kg/kg)     | -                                            |
-| Specific Humidity                                | hus (1)         | qv (kg/kg)                                                                | hus (1)         | -                                            |
-| Ocean Meridional Overturning Mass Streamfunction | msftmz (kg s-1) | atlantic_moc \[oce_moc\], pacific_moc \[oce_moc\], global_moc \[oce_moc\] | -               | Not yet supported for ICON-A                 |
-| Pressure at Model Full-Levels                    | pfull (Pa)      | pres (Pa)                                                                 | pfull (Pa)      | -                                            |
-| Pressure on Model Half-Levels                    | phalf (Pa)      | -                                                                         | phalf (Pa)      | -                                            |
-| Sea Water Salinity                               | so (0.001)      | so (0.001)                                                                | -               | Not yet supported for ICON-A                 |
-| Air Temperature                                  | ta (K)          | temp (K)                                                                  | ta (K)          | -                                            |
-| Sea Water Potential Temperature                  | thetao (degC)   | to (degC) \[oce_def\]                                                     | -               | Not yet supported for ICON-A                 |
-| Eastward Wind                                    | ua (m/s)        | u (m/s)                                                                   | ua (m/s)        | -                                            |
-| Northward Wind                                   | va (m/s)        | v (m/s)                                                                   | va (m/s)        | -                                            |
-| Vertical velocity omega (=dp/dt)                 | wap (Pa/s)      | omega (Pa/s)                                                              | wap (Pa/s)      | -                                            |
-| Geopotential Height                              | zg (m)          | geopot (m2/s2)                                                            | zg (m)          | ICON-XPP: zg needs to be derived from geopot |
+| Description                                      | CMIP variable   | ICON-XPP variable \[namelist\]                                            | ICON-A variable \[namelist\] | Comments                                     |
+| ------------------------------------------------ | --------------- | ------------------------------------------------------------------------- | ---------------------------- | -------------------------------------------- |
+| Cloud Cover                                      | cl (%)          | clc (%) \[atm_3d_ml\]                                                     | cl (%) \[atm_3d_ml\]         | -                                            |
+| Cloud Ice Mass Fraction                          | cli (kg/kg)     | tot_qi_dia (kg/kg) \[atm_3d_ml\]                                          | cli (kg/kg) \[atm_3d_ml\]    | -                                            |
+| Cloud Liquid Water Mass Fraction                 | clw (kg/kg)     | tot_qc_dia (kg/kg) \[atm_3d_ml\]                                          | clw (kg/kg) \[atm_3d_ml\]    | -                                            |
+| Specific Humidity                                | hus (1)         | qv (kg/kg) \[atm_3d_ml\]                                                  | hus (1) \[atm_3d_ml\]        | -                                            |
+| Ocean Meridional Overturning Mass Streamfunction | msftmz (kg s-1) | atlantic_moc \[oce_moc\], pacific_moc \[oce_moc\], global_moc \[oce_moc\] | -                            | Not yet supported for ICON-A                 |
+| Pressure at Model Full-Levels                    | pfull (Pa)      | pres (Pa) \[atm_3d_ml\]                                                   | pfull (Pa) \[atm_3d_ml\]     | -                                            |
+| Pressure on Model Half-Levels                    | phalf (Pa)      | -                                                                         | phalf (Pa) \[atm_3d_ml\]     | -                                            |
+| Sea Water Salinity                               | so (0.001)      | so (0.001) \[oce_def\]                                                    | -                            | Not yet supported for ICON-A                 |
+| Air Temperature                                  | ta (K)          | temp (K) \[atm_3d_ml\]                                                    | ta (K) [atm_3d_ml\]          | -                                            |
+| Sea Water Potential Temperature                  | thetao (degC)   | to (degC) \[oce_def\]                                                     | -                            | Not yet supported for ICON-A                 |
+| Eastward Wind                                    | ua (m/s)        | u (m/s) \[atm_3d_ml\]                                                     | ua (m/s) [atm_3d_ml\]        | -                                            |
+| Northward Wind                                   | va (m/s)        | v (m/s) \[atm_3d_ml\]                                                     | va (m/s) [atm_3d_ml\]        | -                                            |
+| Vertical velocity omega (=dp/dt)                 | wap (Pa/s)      | omega (Pa/s) \[atm_3d_ml\]                                                | wap (Pa/s) [atm_3d_ml\]      | -                                            |
+| Geopotential Height                              | zg (m)          | geopot (m2/s2) \[atm_3d_ml\]                                              | zg (m) [atm_3d_ml\]          | ICON-XPP: zg needs to be derived from geopot |
 
 ## Output Frequency
 
@@ -74,7 +74,7 @@ The output files should follow one of the following naming conventions:
 - `{exp}/output/{exp}_{var_type}_*.nc`
 
 `{exp}` corresponds to the name of your experiment, and `{var_type}` to the
-type of the output variable (namelist; e.g., `atm_2d_ml`).
+type of the output variable (see namelist in table above; e.g., `atm_2d_ml`).
 
 If possible, one file should contain one simulated year. Less than that is fine
 (e.g., one file per time step) but makes the evaluation slower; more than that
