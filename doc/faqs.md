@@ -9,21 +9,21 @@
    [By default](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/find_data.html#icon),
    ESMValTool will search for files using the following patterns:
 
-   - `{exp}_{var_type}_*.nc`
-   - `outdata/{exp}_{var_type}_*.nc`
-   - `output/{exp}_{var_type}_*.nc`
+   - `{exp}_{var_type}*.nc`
+   - `outdata/{exp}_{var_type}*.nc`
+   - `output/{exp}_{var_type}*.nc`
 
    If you want to use custom input file patterns for your ICON data, you can
    use the command line option `--path_templates`. For example,
 
    ```bash
-   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{var_type}_*.nc"]'
+   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{var_type}_x*.nc"]'
    ```
 
    will search for files using the patterns:
 
    - `{exp}_*.nc`
-   - `my_output/{var_type}_*.nc`
+   - `my_output/{var_type}_x*.nc`
 
    `var_type` can be defined in the recipe or as custom [extra
    facets](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/configure.html#extra-facets)

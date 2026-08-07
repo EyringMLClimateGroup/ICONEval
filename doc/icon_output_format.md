@@ -69,9 +69,9 @@ follow the subsequent criteria as closely as possible.
 
 The output files should follow one of the following naming conventions:
 
-- `{exp}_{var_type}_*.nc`
-- `outdata/{exp}_{var_type}_*.nc`
-- `output/{exp}_{var_type}_*.nc`
+- `{exp}_{var_type}*.nc`
+- `outdata/{exp}_{var_type}*.nc`
+- `output/{exp}_{var_type}*.nc`
 
 `{exp}` corresponds to the name of your experiment (i.e., the name of your
 output directory), and `{var_type}` to the type of the output variable (see
