@@ -440,7 +440,7 @@ class ESMValToolConfigTemplate(Template):
             for data_name, dirname_template in dirname_templates.items():
                 icon_config[data_name] = {
                     "dirname_template": dirname_template,
-                    "filename_template": "{exp}_{var_type}*.nc",
+                    "filename_template": "{exp}_{var_type}_*.nc",
                     "rootpath": str(simulation_info.path),
                     "type": "esmvalcore.io.local.LocalDataSource",
                 }

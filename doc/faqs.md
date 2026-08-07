@@ -9,9 +9,9 @@
    [By default](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/find_data.html#icon),
    ESMValTool will search for files using the following patterns:
 
-   - `{exp}/{exp}_{var_type}*.nc`
-   - `{exp}/outdata/{exp}_{var_type}*.nc`
-   - `{exp}/output/{exp}_{var_type}*.nc`
+   - `{exp}/{exp}_{var_type}_*.nc`
+   - `{exp}/outdata/{exp}_{var_type}_*.nc`
+   - `{exp}/output/{exp}_{var_type}_*.nc`
 
    `var_type` can be defined in the recipe or as custom [extra
    facets](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/configure.html#extra-facets)

@@ -69,8 +69,9 @@ follow the subsequent criteria as closely as possible.
 
 The output files should follow one of the following naming conventions:
 
-- `{exp}/{exp}_{var_type}*.nc`
-- `{exp}/outdata/{exp}_{var_type}*.nc`
+- `{exp}/{exp}_{var_type}_*.nc`
+- `{exp}/outdata/{exp}_{var_type}_*.nc`
+- `{exp}/output/{exp}_{var_type}_*.nc`
 
 `{exp}` corresponds to the name of your experiment, and `{var_type}` to the
 type of the output variable (namelist; e.g., `atm_2d_ml`).
