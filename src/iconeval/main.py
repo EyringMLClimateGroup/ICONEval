@@ -228,12 +228,12 @@ def icon_evaluation(
     logger.debug(f"{'log_level':<35} = {log_level}")
     logger.debug(f"{'log_file':<35} = {log_file}")
     logger.debug(f"{'output_dir':<35} = {output_dir}")
+    logger.debug(f"{'path_templates':<35} = {path_templates}")
     logger.debug(f"{'account':<35} = {account}")
     logger.debug(f"{'background':<35} = {background}")
     logger.debug(f"{'dask':<35} = {dask}")
     logger.debug(f"{'esmvaltool_executable':<35} = {esmvaltool_executable}")
     logger.debug(f"{'srun_executable':<35} = {srun_executable}")
-    logger.debug(f"{'tags':<35} = {tags}")
     logger.debug(
         f"{'ignore_recipe_esmvaltool_options':<35} = "
         f"{ignore_recipe_esmvaltool_options}",
@@ -247,6 +247,8 @@ def icon_evaluation(
     logger.debug(f"{'esmvaltool_options':<35} = {esmvaltool_options}")
     logger.debug(f"{'srun_options':<35} = {srun_options}")
     logger.debug(f"{'dask_options':<35} = {dask_options}")
+    logger.debug(f"{'tags':<35} = {tags}")
+    logger.debug(f"{'setup_logging':<35} = {setup_logging}")
     if extra_facets:
         logger.debug("Extra facets:")
         for key, val in extra_facets.items():
