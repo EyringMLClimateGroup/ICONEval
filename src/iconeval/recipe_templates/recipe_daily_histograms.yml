@@ -16,10 +16,10 @@ documentation:
 # YAML anchors for later use
 
 datasets_pr: &datasets_pr
-  - {project: OBS6, dataset: ERA5, type: reanaly, version: "1", tier: 3, timerange: "{{timerange}}"}  # 19860101/20181231
+  - {project: OBS6, dataset: ERA5, type: reanaly, version: "1", tier: 3, timerange: 19990101/20181231}  # 19860101/20181231
 
 datasets_tas: &datasets_tas
-  - {project: OBS6, dataset: ERA5, type: reanaly, version: "1", tier: 3, timerange: "{{timerange}}"}  # 19800101/20181231
+  - {project: OBS6, dataset: ERA5, type: reanaly, version: "1", tier: 3, timerange: 19990101/20181231}  # 19800101/20181231
 
 
 datasets: "{{dataset_list}}"

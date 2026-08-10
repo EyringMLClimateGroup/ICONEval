@@ -15,7 +15,7 @@ documentation:
 # YAML anchors for later use
 
 datasets_pr: &datasets_pr
-  - {project: native6, dataset: ERA5, type: reanaly, version: v1, frequency: 1hr, tier: 3, timerange: "{{timerange}}"}  # 19790101/20201231
+  - {project: native6, dataset: ERA5, type: reanaly, version: v1, tier: 3, timerange: 20180101/20201231}  # 19790101/20201231
 
 
 datasets: "{{dataset_list}}"
@@ -56,6 +56,7 @@ diagnostics:
     variables:
       pr:
         mip: 3hr
+        frequency: 1hr
         preprocessor: histogram_tropics
         additional_datasets: *datasets_pr
     scripts:
