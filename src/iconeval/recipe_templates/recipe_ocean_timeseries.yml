@@ -167,15 +167,15 @@ preprocessors:
       operator: sum
     annual_statistics:
       operator: mean
-    anomalies:
-      period: full
-      reference:
-        start_year: 1979
-        start_month: 1
-        start_day: 1
-        end_year: 1988
-        end_month: 12
-        end_day: 31
+    # anomalies:
+    #   period: full
+    #   reference:
+    #     start_year: 1979
+    #     start_month: 1
+    #     start_day: 1
+    #     end_year: 1988
+    #     end_month: 12
+    #     end_day: 31
     convert_units:
       units: ZJ
 
@@ -196,15 +196,15 @@ preprocessors:
       operator: sum
     annual_statistics:
       operator: mean
-    anomalies:
-      period: full
-      reference:
-        start_year: 1979
-        start_month: 1
-        start_day: 1
-        end_year: 1988
-        end_month: 12
-        end_day: 31
+    # anomalies:
+    #   period: full
+    #   reference:
+    #     start_year: 1979
+    #     start_month: 1
+    #     start_day: 1
+    #     end_year: 1988
+    #     end_month: 12
+    #     end_day: 31
     convert_units:
       units: ZJ
 
@@ -225,15 +225,15 @@ preprocessors:
       operator: sum
     annual_statistics:
       operator: mean
-    anomalies:
-      period: full
-      reference:
-        start_year: 1979
-        start_month: 1
-        start_day: 1
-        end_year: 1988
-        end_month: 12
-        end_day: 31
+    # anomalies:
+    #   period: full
+    #   reference:
+    #     start_year: 1979
+    #     start_month: 1
+    #     start_day: 1
+    #     end_year: 1988
+    #     end_month: 12
+    #     end_day: 31
     convert_units:
       units: ZJ
 
