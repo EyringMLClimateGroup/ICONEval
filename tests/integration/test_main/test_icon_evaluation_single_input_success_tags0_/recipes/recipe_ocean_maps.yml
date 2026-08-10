@@ -13,7 +13,7 @@ documentation:
   authors:
   - bock_lisa
   - weigel_katja
-datasets_so:
+datasets_sos:
 - project: OBS6
   dataset: WOA
   type: clim
@@ -74,10 +74,6 @@ preprocessors:
       period: full
   create_map_sos:
     custom_order: true
-    extract_levels:
-      coordinate: depth
-      levels: 0
-      scheme: nearest_extrapolate
     regrid:
       target_grid: 2x2
       scheme:
@@ -97,7 +93,7 @@ diagnostics:
     realms:
     - ocean
     variables:
-      so:
+      sos:
         mip: Omon
         preprocessor: create_map_sos
         title: Sea Surface Salinity
