@@ -28,6 +28,7 @@ follow the subsequent criteria as closely as possible.
 | TOA Upward Shortwave Radiation Flux                 | rsut (W/m2)           | sou_t (W/m2) \[atm_2d_ml\]             | rsut (W/m2) \[atm_2d_ml\]            | -                                  |
 | TOA Upward Clear-Sky Shortwave Radiation Flux       | rsutcs (W/m2)         | swflx_up_clr (W/m2) \[atm_2d_ml\]      | rsutcs (W/m2) \[atm_2d_ml\]          | ICON-XPP: level 0 of swflx_up_clr  |
 | Sea-Ice Area Percentage                             | siconc (%)            | conc (1) \[oce_ice\]                   | sic (1) \[atm_2d_ml\]                | -                                  |
+| Sea Surface Salinity                                | sos (0.001)           | sos (0.001) \[oce_def\]                | -                                    | Not yet supported for ICON-A       |
 | Near-Surface (2m) Air Temperature                   | tas (K)               | t_2m (K) \[atm_2d_ml\]                 | tas (K) \[atm_2d_ml\]                | -                                  |
 | Surface Downward Eastward Wind Stress               | tauu (Pa)             | umfl_s (N/m2) \[atm_2d_ml\]            | tauu (N/m2) \[atm_2d_ml\]            | -                                  |
 | Surface Downward Northward Wind Stress              | tauv (Pa)             | vmfl_s (N/m2) \[atm_2d_ml\]            | tauv (N/m2) \[atm_2d_ml\]            | -                                  |
