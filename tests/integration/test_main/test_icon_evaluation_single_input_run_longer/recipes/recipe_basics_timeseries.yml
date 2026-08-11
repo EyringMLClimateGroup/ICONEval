@@ -67,6 +67,10 @@ datasets_rlut:
   version: 5.12.4
   tier: 3
   timerange: 19800101/20220731
+datasets_rsdt:
+- project: obs4MIPs
+  dataset: CERES-EBAF-4-2-1
+  timerange: 20030101/20241231
 datasets_rsut:
 - project: OBS
   dataset: CERES-EBAF
@@ -178,6 +182,11 @@ timeseries_plot:
       linewidth: 1.0
       zorder: 2.4
       linestyle: dashdot
+    obs4MIPs:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
     native6:
       color: black
       label: '{dataset}'
@@ -211,6 +220,11 @@ timeseries_plot:
       linewidth: 1.0
       zorder: 2.4
       linestyle: dashdot
+    obs4MIPs_CERES-EBAF-4-2-1:
+      color: black
+      label: '{dataset}'
+      linewidth: 1.0
+      zorder: 2.4
     native6_ERA5:
       color: black
       label: '{dataset}'
@@ -354,6 +368,23 @@ diagnostics:
           version: 5.12.4
           tier: 3
           timerange: 19800101/20220731
+        supplementary_variables:
+        - short_name: areacella
+          skip: true
+        - short_name: areacello
+          skip: true
+        - short_name: sftlf
+          skip: true
+        - short_name: sftof
+          skip: true
+      rsdt:
+        mip: Amon
+        preprocessor: create_global_annual_mean_time_series
+        title: TOA Incident Shortwave Radiation
+        additional_datasets:
+        - project: obs4MIPs
+          dataset: CERES-EBAF-4-2-1
+          timerange: 20030101/20241231
         supplementary_variables:
         - short_name: areacella
           skip: true
@@ -514,6 +545,11 @@ diagnostics:
                 linewidth: 1.0
                 zorder: 2.4
                 linestyle: dashdot
+              obs4MIPs:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
               native6:
                 color: black
                 label: '{dataset}'
@@ -547,6 +583,11 @@ diagnostics:
                 linewidth: 1.0
                 zorder: 2.4
                 linestyle: dashdot
+              obs4MIPs_CERES-EBAF-4-2-1:
+                color: black
+                label: '{dataset}'
+                linewidth: 1.0
+                zorder: 2.4
               native6_ERA5:
                 color: black
                 label: '{dataset}'
