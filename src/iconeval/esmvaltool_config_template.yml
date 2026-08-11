@@ -65,11 +65,6 @@ projects:
         filename_template: "{short_name}_{domain}_{driver}_{exp}_{ensemble}_{institute}-{dataset}_{rcm_version}_{mip}*.nc"
   obs4MIPs:
     data:
-      dkrz:
-        type: esmvalcore.io.local.LocalDataSource
-        rootpath: /work/bd0854/DATA/ESMValTool2/OBS
-        dirname_template: "Tier{tier}/{dataset}"
-        filename_template: "{short_name}_*.nc"
       esgf-cache:
         type: esmvalcore.io.local.LocalDataSource
         rootpath: /work/bd0854/DATA/ESMValTool2/download
