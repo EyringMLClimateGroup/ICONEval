@@ -36,7 +36,7 @@ TAGS_FILE: Path = Path(__file__).parent / "tags.md"
 def _get_link(recipe_template: RecipeTemplate) -> str:
     """Get link to recipe template."""
     return (
-        f"[{recipe_template.name}](https://github.com/ESMValGroup/ICONEval/"
+        f"[{recipe_template.name}](https://github.com/EyringMLClimateGroup/ICONEval/"
         f"blob/main/src/iconeval/recipe_templates/{recipe_template.path.name})"
     )
 
