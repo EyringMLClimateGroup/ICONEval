@@ -26,7 +26,7 @@ Environment](http://modules.sourceforge.net/).
          puts stderr ""
          puts stderr "iconeval -- --help"
          puts stderr ""
-         puts stderr "or visit https://github.com/ESMValGroup/ICONEval"
+         puts stderr "or visit https://github.com/EyringMLClimateGroup/ICONEval"
      }
 
      conflict mambaforge
@@ -58,7 +58,7 @@ Environment](http://modules.sourceforge.net/).
 
      iconeval -- --help
 
-     or visit https://github.com/ESMValGroup/ICONEval
+     or visit https://github.com/EyringMLClimateGroup/ICONEval
      ]==])
 
      whatis("ICON model output evaluation with ESMValTool.")
