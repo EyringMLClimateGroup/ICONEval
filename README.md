@@ -1,11 +1,3 @@
-> [!IMPORTANT]
-> Currently (March 2026), this repository contains an early version of
-> ICONEval, which is targeted to the evaluation of
-> [ICON](https://www.icon-model.org/) output on [DKRZ's
-> Levante](https://docs.dkrz.de/doc/levante/).
-
----
-
 [![LICENSE](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![DOI:10.5281/zenodo.18937450](https://zenodo.org/badge/DOI/10.5281/zenodo.18937450.svg)](https://doi.org/10.5281/zenodo.18937450)
 [![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
