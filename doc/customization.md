@@ -17,7 +17,7 @@ of ICONEval.
 ## ESMValTool Recipes
 
 By default, recipe templates are read from the [recipe template
-directory](https://github.com/ESMValGroup/ICONEval/tree/main/src/iconeval/recipe_templates)
+directory](https://github.com/EyringMLClimateGroup/ICONEval/tree/main/src/iconeval/recipe_templates)
 in the installation directory of this tool. To only run a custom recipe, use
 
 ```bash
@@ -126,7 +126,7 @@ More information on these settings is given in the following three sections.
 
 By default, an ESMValTool configuration template is read from the [installation
 directory of this
-tool](https://github.com/ESMValGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml).
+tool](https://github.com/EyringMLClimateGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml).
 
 The configuration options `dask`, `output_dir`, `projects.ICON` and
 `projects.EMAC` are automatically filled with information from the current
