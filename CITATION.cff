@@ -26,5 +26,5 @@ license: Apache-2.0
 message: If you use this software, please cite it using the metadata from this file.
 title: ICONEval
 type: software
-url: https://github.com/ESMValGroup/ICONEval
+url: https://github.com/EyringMLClimateGroup/ICONEval
 version: v0.10.0
