@@ -351,10 +351,10 @@ tags using the syntax
 ## Additional Command Line Options
 
 - `--publish_html`: Enable/Disable publishing of an ESMValTool summary HTML on
-  a **public** website using DKRZ's
-  [Python-swiftclient](https://docs.dkrz.de/doc/datastorage/swift/python-swiftclient.html)
-  (default: `False`). To delete existing websites, login to the [swift
-  web client](https://swiftbrowser.dkrz.de/) and delete the corresponding
+  a **public** website using [DKRZ's
+  Python-swiftclient](https://docs.dkrz.de/doc/datastorage/swift/python-swiftclient.html)
+  (default: `False`). To delete existing websites, login to the [swift web
+  client](https://swiftbrowser.dkrz.de/) and delete the corresponding
   directories in the *iconeval* container.
 - `--html_name`: Name that is used for the URL of the ESMValTool summary HTML;
   if `None`, use the name of the output directory (default: `None`). Use this
