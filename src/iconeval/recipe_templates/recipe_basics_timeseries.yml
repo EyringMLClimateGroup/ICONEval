@@ -34,6 +34,9 @@ datasets_rlut: &datasets_rlut
   - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19840101/20161231}  # 19840101/20161231
   - {project: OBS6, dataset: MERRA2, type: reanaly, version: 5.12.4, tier: 3, timerange: 19800101/20220731}  # 19800101/20220731
 
+datasets_rsdt: &datasets_rsdt
+  - {project: obs4MIPs, dataset: CERES-EBAF-4-2-1, timerange: 20030101/20241231}  # 20000301/20250931
+
 datasets_rsut: &datasets_rsut
   - {project: OBS, dataset: CERES-EBAF, type: sat, version: Ed4.2, tier: 2, timerange: 20000331/20231130}  # 20000331/20231130
   - {project: OBS, dataset: ISCCP-FH, type: sat, version: v0, tier: 2, timerange: 19840101/20161231}  # 19840101/20161231
@@ -93,6 +96,7 @@ timeseries_plot: &timeseries_plot
     OBS6: &obs6_format
       <<: *obs_format
       linestyle: dashdot
+    obs4MIPs: *obs_format
     native6: &native6_format
       <<: *obs_format
       linestyle: dotted
@@ -103,6 +107,7 @@ timeseries_plot: &timeseries_plot
       <<: *obs_format
       linestyle: dashed
     OBS6_MERRA2: *obs6_format
+    obs4MIPs_CERES-EBAF-4-2-1: *obs_format
     native6_ERA5: *native6_format
     ERA5: *native6_format
 

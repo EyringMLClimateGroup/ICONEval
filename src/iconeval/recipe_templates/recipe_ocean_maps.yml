@@ -63,10 +63,6 @@ preprocessors:
 
   create_map_sos:
     custom_order: true
-    extract_levels:
-      coordinate: depth
-      levels: 0
-      scheme: nearest_extrapolate
     regrid:
       target_grid: 2x2
       scheme:
@@ -93,7 +89,7 @@ diagnostics:
         mip: Oyr
         preprocessor: create_map_sos
         title: Sea Surface Salinity
-        additional_datasets: *datasets_so
+        additional_datasets: *datasets_sos
     scripts:
       plot:
         <<: *plot_script
