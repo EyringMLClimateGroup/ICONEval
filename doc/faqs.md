@@ -180,10 +180,9 @@
 
    User authentication for publishing results on [DKRZ's Swift object
    storage](https://docs.dkrz.de/doc/datastorage/swift/python-swiftclient.html)
-   works via a *Swift token* that needs to be renewed monthly.
-
-   ICONEval will automatically prompt you for your DKRZ account and password
-   information the next time you run it.
+   works via a *Swift token* that needs to be renewed monthly. If the token
+   expired, ICONEval will automatically prompt you for your DKRZ account and
+   password information the next time you run it.
 
    If you prefer to renew the token without running ICONEval (e.g., because you
    run ICONEval non-interactively), you can use:
