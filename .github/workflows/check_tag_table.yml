@@ -9,7 +9,13 @@ on:
     branches:
       - main
       - v*.x
+    paths:
+      - src/iconeval/recipe_templates/*.yml
   pull_request:
+    paths:
+      - src/iconeval/recipe_templates/*.yml
+  schedule:
+    - cron: 0 0 1 * *  # once per month
 
 defaults:
   run:
