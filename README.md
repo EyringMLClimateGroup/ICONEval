@@ -75,7 +75,7 @@ Options used here:
   command line
   *options](doc/customization.md#additional-command-line-options)).
 
-For more information on this and a list of all options, run
+For more information on this and a list of all options, run:
 
 ```bash
 iconeval -- --help
@@ -85,7 +85,7 @@ or have a look at the section on [Customization](doc/customization.md).
 
 Installing ICONEval also provides the command line tool `publish_html`, which
 can be used to publish a summary HTML on a public website for arbitrary
-ESMValTool output. For more information, run
+ESMValTool output. For more information, run:
 
 ```bash
 publish_html -- --help
@@ -113,7 +113,7 @@ is necessary.
 
 ### Levante
 
-To load the ICONEval module on Levante, use
+To load the ICONEval module on Levante, use:
 
 ```bash
 module use -a /work/bd1179/modulefiles
