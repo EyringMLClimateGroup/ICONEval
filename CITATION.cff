@@ -16,7 +16,7 @@ authors:
   given-names: Bettina K.
   orcid: https://orcid.org/0000-0002-2928-8664
 cff-version: 1.2.0
-date-released: 2026-03-10
+date-released: 2026-08-25
 doi: 10.5281/zenodo.18937450
 keywords:
 - ESMValTool
@@ -27,4 +27,4 @@ message: If you use this software, please cite it using the metadata from this f
 title: ICONEval
 type: software
 url: https://github.com/EyringMLClimateGroup/ICONEval
-version: v0.10.0
+version: v1.0.0
