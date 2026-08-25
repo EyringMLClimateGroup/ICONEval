@@ -52,6 +52,7 @@ def icon_evaluation(
     log_level: str = "info",
     log_file: str | Path | None = "~/.iconeval/debug.log",
     output_dir: str | Path | None = None,
+    path_templates: str | Iterable[str] | None = None,
     account: str | None = None,
     background: bool = False,
     dask: bool = True,
@@ -63,7 +64,7 @@ def icon_evaluation(
     esmvaltool_options: dict | None = None,
     srun_options: dict | None = None,
     dask_options: dict | None = None,
-    tags: str | list[str] | None = None,
+    tags: str | Iterable[str] | None = None,
     setup_logging: bool = True,
     **extra_facets: FacetType,
 ) -> Path:
@@ -114,6 +115,15 @@ def icon_evaluation(
         be created. Output from individual ICONEval runs is not stored directly
         in the `--output_dir`, but rather in a subdirectory whose name is
         determined by the option `--html_name`.
+    path_templates:
+        Input path templates that are used to read input data. This determines
+        the `dirname_template` and `filename_template` used in ESMValTools data
+        source configuration
+        (https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/
+        configure.html#data-sources). By default, uses
+        `["{exp}_{var_type}*.nc", "outdata/{exp}_{var_type}*.nc",
+        "output/{exp}_{var_type}*.nc"] for ICON data and
+        `["{channel}/{exp}*{channel}{postproc_flag}.nc"]` for EMAC data.
     account:
         Account that is charged for the Slurm jobs. By default, use account
         that is used for `sbatch`/`salloc` (if ICONEval is run within `sbatch`
@@ -158,11 +168,11 @@ def icon_evaluation(
     tags:
         Only recipes with the given tags are run (e.g., `--tags=tag`).  To not
         run specific recipes, use the syntax `!tag` (e.g., `--tags='!tag'`;
-        make sure to properly escape the string via `'`).  Deselection takes
+        make sure to properly escape the string via `'`). Deselection takes
         priority over selection. If not given or empty, run all recipes. An
         overview of all available tags in the default recipe templates can be
         found here
-        (https://github.com/ESMValGroup/ICONEval/blob/main/doc/tags.md).
+        (https://github.com/EyringMLClimateGroup/ICONEval/blob/main/doc/tags.md).
         To specify multiple tags, use the syntax `'["tag1", "tag2", "!tag3"]'`.
     setup_logging:
         If `True`, set up new logging handlers; if `False`, skip that step
@@ -218,12 +228,12 @@ def icon_evaluation(
     logger.debug(f"{'log_level':<35} = {log_level}")
     logger.debug(f"{'log_file':<35} = {log_file}")
     logger.debug(f"{'output_dir':<35} = {output_dir}")
+    logger.debug(f"{'path_templates':<35} = {path_templates}")
     logger.debug(f"{'account':<35} = {account}")
     logger.debug(f"{'background':<35} = {background}")
     logger.debug(f"{'dask':<35} = {dask}")
     logger.debug(f"{'esmvaltool_executable':<35} = {esmvaltool_executable}")
     logger.debug(f"{'srun_executable':<35} = {srun_executable}")
-    logger.debug(f"{'tags':<35} = {tags}")
     logger.debug(
         f"{'ignore_recipe_esmvaltool_options':<35} = "
         f"{ignore_recipe_esmvaltool_options}",
@@ -237,6 +247,8 @@ def icon_evaluation(
     logger.debug(f"{'esmvaltool_options':<35} = {esmvaltool_options}")
     logger.debug(f"{'srun_options':<35} = {srun_options}")
     logger.debug(f"{'dask_options':<35} = {dask_options}")
+    logger.debug(f"{'tags':<35} = {tags}")
+    logger.debug(f"{'setup_logging':<35} = {setup_logging}")
     if extra_facets:
         logger.debug("Extra facets:")
         for key, val in extra_facets.items():
@@ -277,6 +289,7 @@ def icon_evaluation(
         additional_srun_options=srun_options,
         additional_dask_options=dask_options,
         tags=tags,
+        path_templates=path_templates,
         **extra_facets,
     )
     logger.debug("Recipes:")

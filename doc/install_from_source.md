@@ -8,13 +8,13 @@
 1. Clone the ICONEval repository:
 
    ```bash
-   git clone https://github.com/ESMValGroup/ICONEval.git
+   git clone https://github.com/EyringMLClimateGroup/ICONEval.git
    ```
 
    or
 
    ```bash
-   git clone git@github.com:ESMValGroup/ICONEval.git
+   git clone git@github.com:EyringMLClimateGroup/ICONEval.git
    ```
 
    if you prefer to connect to the repository over SSH.

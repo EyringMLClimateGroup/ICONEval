@@ -17,7 +17,7 @@ of ICONEval.
 ## ESMValTool Recipes
 
 By default, recipe templates are read from the [recipe template
-directory](https://github.com/ESMValGroup/ICONEval/tree/main/src/iconeval/recipe_templates)
+directory](https://github.com/EyringMLClimateGroup/ICONEval/tree/main/src/iconeval/recipe_templates)
 in the installation directory of this tool. To only run a custom recipe, use
 
 ```bash
@@ -126,12 +126,38 @@ More information on these settings is given in the following three sections.
 
 By default, an ESMValTool configuration template is read from the [installation
 directory of this
-tool](https://github.com/ESMValGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml)
-and filled with information from the current ICONEval run.
+tool](https://github.com/EyringMLClimateGroup/ICONEval/blob/main/src/iconeval/esmvaltool_config_template.yml).
 
-The configuration options `dask`, `output_dir`, and `rootpath` must not be
-overwritten in the [custom ESMValTool
+The configuration options `dask`, `output_dir`, `projects.ICON` and
+`projects.EMAC` are automatically filled with information from the current
+ICONEval run and must not be overwritten in the [custom ESMValTool
 configuration](#custom-esmvaltool-configuration)!
+
+### Custom input path templates
+
+By default, ICONEval will search for files using the following patterns:
+
+**ICON**:
+
+- `{exp}_{var_type}*.nc`
+- `outdata/{exp}_{var_type}*.nc`
+- `output/{exp}_{var_type}*.nc`
+
+**EMAC**:
+
+- `{channel}/{exp}*{channel}{postproc_flag}.nc`
+
+This can be customized with the command line option `--path_templates`. For
+example,
+
+```bash
+iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{exp}_*.nc"]'
+```
+
+will search for files using the patterns (ICON and EMAC):
+
+- `{exp}_*.nc`
+- `my_output/{exp}_*.nc`
 
 ### Custom ESMValTool Configuration
 
@@ -182,8 +208,8 @@ job steps depending on how ICONEval is started:
 
 1. If ICONEval is run within an
    [`sbatch`](https://slurm.schedmd.com/sbatch.html) script or
-   [`salloc`](https://slurm.schedmd.com/salloc.html), one job step per recipe
-   is submitted. In this case, the only default option for `srun` is
+   [`salloc`](https://slurm.schedmd.com/salloc.html) session, one job step per
+   recipe is submitted. In this case, the only default option for `srun` is
    `--ntasks=1` (to ensure that each recipe is only run once). All other
    options are inherited from the `sbatch` script/`salloc` session.
 
@@ -325,10 +351,10 @@ tags using the syntax
 ## Additional Command Line Options
 
 - `--publish_html`: Enable/Disable publishing of an ESMValTool summary HTML on
-  a **public** website using DKRZ's
-  [Python-swiftclient](https://docs.dkrz.de/doc/datastorage/swift/python-swiftclient.html)
-  (default: `False`). To delete existing websites, login to the [swift
-  web client](https://swiftbrowser.dkrz.de/) and delete the corresponding
+  a **public** website using [DKRZ's
+  Python-swiftclient](https://docs.dkrz.de/doc/datastorage/swift/python-swiftclient.html)
+  (default: `False`). To delete existing websites, login to the [swift web
+  client](https://swiftbrowser.dkrz.de/) and delete the corresponding
   directories in the *iconeval* container.
 - `--html_name`: Name that is used for the URL of the ESMValTool summary HTML;
   if `None`, use the name of the output directory (default: `None`). Use this

@@ -1,6 +1,6 @@
 [project]
 name = "iconeval"
-version = "0.10.0"
+version = "1.0.0"
 description = "Convenient evaluation of ICON model output with ESMValTool"
 authors = [
     {name = "Manuel Schlund", email = "manuel.schlund@dlr.de"},
@@ -64,8 +64,8 @@ pre-commit = "*"
 py-markdown-table = "*"
 
 [tool.pixi.feature.esmvaltool.dependencies]
-esmvalcore = ">=2.14.0"
-esmvaltool-python = ">=2.14.0"
+esmvalcore = ">=2.15.0"
+esmvaltool-python = ">=2.15.0"
 
 # Ensure that all ESMValTool dependencies are installed from conda-forge, not PyPI
 [tool.pixi.feature.esmvaltool-dev.dependencies]

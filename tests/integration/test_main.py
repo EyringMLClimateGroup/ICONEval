@@ -163,6 +163,7 @@ def test_icon_evaluation_multi_input_success(
         ],
         log_level="debug",
         output_dir=tmp_output_dir,
+        path_templates=["my_icon_sim.yml", "{var_type}/my_{exp}_of_icon_xpp*.nc"],
         account="Slurm_account",
         esmvaltool_executable="ESMValTool executable",
         srun_executable="srun executable",
@@ -295,6 +296,7 @@ def test_icon_evaluation_single_input_background(
         tmp_input_dir,
         recipe_templates=recipe_template_dir / "recipe_basics_timeseries.yml",
         output_dir=tmp_output_dir,
+        path_templates="my_icon_sim.yml",
         background=True,
         dask=False,
     )

@@ -6,9 +6,9 @@
 version: 2
 updates:
   # Enable version updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/" # Location of package manifests
+  - package-ecosystem: github-actions
+    directory: / # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: weekly
     cooldown:
       default-days: 7  # minimum age of newly released dependency
