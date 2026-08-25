@@ -33,7 +33,7 @@ that shall be evaluated.
 
 ## Quick Start
 
-On Levante, load the module via
+On Levante, load the module via:
 
 ```bash
 module use -a /work/bd1179/modulefiles
@@ -48,8 +48,8 @@ iconeval path/to/ICON_output
 
 This path should point to the directory whose name is identical to the
 experiment name of the ICON simulation you want to evaluate, e.g.,
-`/root/to/my_amip_run` for the experiment `my_amip_run`. In this case, for
-example, the simulation output files should be named `my_amip_run_*_<date>.nc`.
+`/root/to/my_amip_run` for the experiment `my_amip_run`. In this case, the
+simulation output files should be named `my_amip_run_*_<date>.nc`.
 
 Multiple simulations can be evaluated simultaneously by specifying multiple
 ICON output paths.
