@@ -10,6 +10,8 @@ on:
       - main
       - v*.x
   pull_request:
+  schedule:
+  - cron: 0 0 * * *  # once per day
 
 defaults:
   run:
