@@ -67,13 +67,12 @@ Options used here:
   recipe templates marked with certain [tags](doc/customization.md#tags).
 - `--publish_html`: A summary HTML of the evaluation run will be published on a
   **public** website (see also [additional command line
-  *options](doc/customization.md#additional-command-line-options)).
+  options](doc/customization.md#additional-command-line-options)).
 - `--timerange`: The desired time period that shall be evaluated (see also
   [additional command line
-  *options](doc/customization.md#additional-command-line-options)).
+  options](doc/customization.md#additional-command-line-options)).
 - `--frequency`: The temporal frequency of the ICON data (see also [additional
-  command line
-  *options](doc/customization.md#additional-command-line-options)).
+  command line options](doc/customization.md#additional-command-line-options)).
 
 For more information on this and a list of all options, run:
 
