@@ -1,4 +1,4 @@
-"""Manage file templates."""
+"""Manage template files."""
 
 from __future__ import annotations
 
