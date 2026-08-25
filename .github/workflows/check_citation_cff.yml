@@ -1,0 +1,46 @@
+---
+name: Check CITATION.cff file
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+      - v*.x
+    paths:
+      - CITATION.cff
+  pull_request:
+    paths:
+      - CITATION.cff
+  schedule:
+    - cron: 0 0 1 * *  # once per month
+
+defaults:
+  run:
+    shell: pixi run bash -e {0}
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+        environment:
+          - test-py312
+          - test-py313
+    name: ${{ matrix.os }} ${{ matrix.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check whether the citation metadata from CITATION.cff is valid
+        uses: citation-file-format/cffconvert-github-action@4cf11baa70a673bfdf9dad0acc7ee33b3f4b6084 # 2.0.0
+        with:
+          args: "--validate"
