@@ -22,7 +22,7 @@ defaults:
     shell: pixi run bash -e {0}
 
 jobs:
-  test:
+  check_citation_cff:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
