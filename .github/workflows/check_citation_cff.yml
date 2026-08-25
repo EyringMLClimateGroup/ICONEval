@@ -11,11 +11,9 @@ on:
       - v*.x
     paths:
       - CITATION.cff
-      - doc/tags.md
   pull_request:
     paths:
       - CITATION.cff
-      - doc/tags.md
   schedule:
     - cron: 0 0 1 * *  # once per month
 
