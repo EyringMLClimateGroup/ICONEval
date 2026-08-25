@@ -208,8 +208,8 @@ job steps depending on how ICONEval is started:
 
 1. If ICONEval is run within an
    [`sbatch`](https://slurm.schedmd.com/sbatch.html) script or
-   [`salloc`](https://slurm.schedmd.com/salloc.html), one job step per recipe
-   is submitted. In this case, the only default option for `srun` is
+   [`salloc`](https://slurm.schedmd.com/salloc.html) session, one job step per
+   recipe is submitted. In this case, the only default option for `srun` is
    `--ntasks=1` (to ensure that each recipe is only run once). All other
    options are inherited from the `sbatch` script/`salloc` session.
 
