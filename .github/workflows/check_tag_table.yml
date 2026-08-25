@@ -11,9 +11,11 @@ on:
       - v*.x
     paths:
       - src/iconeval/recipe_templates/*.yml
+      - doc/tags.md
   pull_request:
     paths:
       - src/iconeval/recipe_templates/*.yml
+      - doc/tags.md
   schedule:
     - cron: 0 0 1 * *  # once per month
 
