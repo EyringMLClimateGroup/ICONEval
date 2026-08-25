@@ -152,7 +152,8 @@
    Try using a different Levante login node. E.g., if you are on `levante1`,
    try `levante2` via `ssh levante2`.
 
-1. ESMValTool cannot find observational data from *Tier 3* (e.g., `- Missing data for Dataset: tas, Amon, OBS6, MERRA2, 5.12.4`).
+1. ESMValTool cannot find observational data from *Tier 3* (e.g., `- Missing
+   data for Dataset: tas, Amon, OBS6, MERRA2, 5.12.4`).
 
    You are probably not a member of the ESMValTool project on DKRZ (*bd0854*).
    To join this, select project "854: Erdsystemmodellevaluierung (DLR-Institut
@@ -175,17 +176,48 @@
    This happens when the temporary file system is full. Login to a different
    Levante login node and try again, this should fix it.
 
-1. My Swift token expired and I want to renew it without running ICONEval.
+1. My Swift token expired.
 
-   On DKRZ's Levante, run
+   User authentication for publishing results on [DKRZ's Swift object
+   storage](https://docs.dkrz.de/doc/datastorage/swift/python-swiftclient.html)
+   works via a *Swift token* that needs to be renewed monthly. If the token
+   expired, ICONEval will automatically prompt you for your DKRZ account and
+   password information the next time you run it.
 
-   ```bash
-   module load py-python-swiftclient
-   swift-token new
-   ```
-
-   Alternatively, run
+   If you prefer to renew the token without running ICONEval (e.g., because you
+   run ICONEval non-interactively), you can use:
 
    ```bash
    publish_html --force_new_token=True /path/to/a/random/directory
    ```
+
+1. I want to access the raw files published via `--publish_html=True`.
+
+   Access them via DKRZ's [Swiftbrowser](https://swiftbrowser.dkrz.de/).
+
+1. I want to use ICONEval within an `sbatch` script or an `salloc` session.
+
+   If ICONEval is run as a standalone script, one
+   [Slurm](https://slurm.schedmd.com/) job per recipe is launched. If ICONEval
+   is run within an `sbatch` script or `salloc` session, one job step per
+   recipe is created.
+
+   For example, the following `sbatch` script can be used to submit a job on a
+   compute node of [DKRZ's Levante](https://docs.dkrz.de/doc/levante/) in which
+   8 recipes are run in parallel:
+
+   ```bash
+   #!/bin/bash -e
+   #SBATCH --mem=0
+   #SBATCH --nodes=1
+   #SBATCH --partition=compute
+   #SBATCH --time=03:00:00
+
+   iconeval path/to/ICON_output --srun_options='{"--cpus-per-task": 16, "--mem-per-cpu": "1940M"}'
+   ```
+
+   This will request all memory (`--mem=0`) of a single compute node
+   (`--nodes=1`, `--partition=compute`) with [128 CPUs and 256 GB of main
+   memory](https://docs.dkrz.de/doc/levante/configuration.html). Since 1 recipe
+   run = 1 task and 16 CPUs per task are requested, this results in 8 (= 128 /
+   16) recipe runs in parallel.
