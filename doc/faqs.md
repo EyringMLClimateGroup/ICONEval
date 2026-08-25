@@ -204,9 +204,7 @@
 
    For example, the following `sbatch` script can be used to submit a job on a
    compute node of [DKRZ's Levante](https://docs.dkrz.de/doc/levante/) in which
-   8 recipes are run in parallel (see
-   [here](customization.md#slurm-options-for-jobjob-step-submission) for
-   details on this):
+   8 recipes are run in parallel:
 
    ```bash
    #!/bin/bash -e
