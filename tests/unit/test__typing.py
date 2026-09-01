@@ -7,16 +7,16 @@ from iconeval._typing import FacetType, OptionValueType, RealmType
 
 
 def test_facet_type() -> None:
-    assert FacetType == None | bool | str | Path | int | float | list | dict
+    assert FacetType.__value__ == bool | str | Path | int | float | list | dict | None
 
 
 def test_option_value_type() -> None:
-    assert OptionValueType == str | int | float
+    assert OptionValueType.__value__ == str | int | float
 
 
 def test_realm_type() -> None:
     assert (
-        RealmType
+        RealmType.__value__
         == Literal[
             "all",
             "atmosphere",
