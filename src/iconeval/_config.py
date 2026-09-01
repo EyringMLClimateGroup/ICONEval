@@ -21,8 +21,9 @@ class ESMValToolConfig:
     simulations_info: list[SimulationInfo] = field(repr=False)
     output_dir: Path = field(repr=False)
     dask_config: dict[str, Any] = field(repr=False)
+    dir: str = field(init=False, repr=False, compare=False)
 
-    @property
-    def dir(self) -> Path:
-        """Configuration directory."""
-        return self.path.parent
+    def __post_init__(self) -> None:
+        """Initialize class instance."""
+        # See https://docs.python.org/3/library/dataclasses.html#frozen-instances
+        object.__setattr__(self, "dir", self.path.parent)

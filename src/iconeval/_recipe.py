@@ -21,8 +21,9 @@ class Recipe:
     template: RecipeTemplate = field(repr=False)
     simulations_info: list[SimulationInfo] = field(repr=False)
     timerange: FacetType = field(repr=False)
+    name: str = field(init=False, repr=False, compare=False)
 
-    @property
-    def name(self) -> str:
-        """Name of recipe."""
-        return self.path.stem
+    def __post_init__(self) -> None:
+        """Initialize class instance."""
+        # See https://docs.python.org/3/library/dataclasses.html#frozen-instances
+        object.__setattr__(self, "name", self.path.stem)
