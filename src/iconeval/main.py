@@ -323,7 +323,7 @@ def icon_evaluation(
 
     # Print summary
     TIMES["end"] = datetime.now(UTC)
-    logger.info("Ending ICONEval")
+    logger.debug("Ending ICONEval")
     logger.info(
         f"Time for running ICONEval was {TIMES['end'] - TIMES['start']}",
     )
