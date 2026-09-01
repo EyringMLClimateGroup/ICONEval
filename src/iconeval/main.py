@@ -209,7 +209,7 @@ def icon_evaluation(
     # Initialize tool
     if setup_logging:
         configure_logging(log_level, log_file=log_file)
-    logger.info("Starting ICONEval")
+    logger.debug("Starting ICONEval")
     logger.info(f"ICONEval version: {iconeval.__version__}")
     logger.info(f"Debug log: <cyan>{log_file}</cyan>")
     logger.info("")
@@ -302,7 +302,7 @@ def icon_evaluation(
     _run_jobs(jobs, background=background)
     if background:
         TIMES["end"] = datetime.now(UTC)
-        logger.info("Ending ICONEval")
+        logger.debug("Ending ICONEval")
         logger.info(
             f"Time for running ICONEval was {TIMES['end'] - TIMES['start']}",
         )
@@ -323,7 +323,7 @@ def icon_evaluation(
 
     # Print summary
     TIMES["end"] = datetime.now(UTC)
-    logger.info("Ending ICONEval")
+    logger.debug("Ending ICONEval")
     logger.info(
         f"Time for running ICONEval was {TIMES['end'] - TIMES['start']}",
     )
