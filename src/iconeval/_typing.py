@@ -5,11 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-FacetType = None | bool | str | Path | int | float | list | dict
+type FacetType = bool | str | Path | int | float | list | dict | None
 
-OptionValueType = str | int | float
+type OptionValueType = str | int | float
 
-RealmType = Literal[
+type RealmType = Literal[
     "all",
     "atmosphere",
     "ocean",
