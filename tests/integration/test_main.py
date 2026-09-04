@@ -163,7 +163,7 @@ def test_icon_evaluation_multi_input_success(
         ],
         log_level="debug",
         output_dir=tmp_output_dir,
-        path_templates=["my_icon_sim.yml", "{var_type}/my_{exp}_of_icon_xpp*.nc"],
+        path_templates=["my_icon_sim.yml", "{output_stream}/my_{exp}_of_icon_xpp*.nc"],
         account="Slurm_account",
         esmvaltool_executable="ESMValTool executable",
         srun_executable="srun executable",
