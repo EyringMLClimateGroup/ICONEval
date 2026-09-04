@@ -126,9 +126,9 @@ def icon_evaluation(
         "output/{exp}_{output_stream}*.nc"] for ICON data and
         `["{channel}/{exp}*{channel}{postproc_flag}.nc"]` for EMAC data.
     ignore_datetimes_in_filename:
-        When determining the time range of a file, ignore datetimes strings
-        from the file names. Instead, open the file and read the time range
-        from the metadata. This is necessary if the ICON output contains
+        When determining the time range of an ICON output file, ignore datetime
+        strings in file name. Instead, open the file and read the time range
+        from the time coordinate. This is necessary if the ICON output contains
         multiple years per file. This option might slow down ESMValTool runs.
     account:
         Account that is charged for the Slurm jobs. By default, use account
