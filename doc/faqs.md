@@ -9,23 +9,23 @@
    [By default](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/find_data.html#icon),
    ESMValTool will search for files using the following patterns:
 
-   - `{exp}_{var_type}*.nc`
-   - `outdata/{exp}_{var_type}*.nc`
-   - `output/{exp}_{var_type}*.nc`
+   - `{exp}_{output_stream}*.nc`
+   - `outdata/{exp}_{output_stream}*.nc`
+   - `output/{exp}_{output_stream}*.nc`
 
    If you want to use custom input file patterns for your ICON data, you can
    use the command line option `--path_templates`. For example,
 
    ```bash
-   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{var_type}_x*.nc"]'
+   iconeval path/to/ICON_output --path_templates='["{exp}_*.nc", "my_output/{output_stream}_x*.nc"]'
    ```
 
    will search for files using the patterns:
 
    - `{exp}_*.nc`
-   - `my_output/{var_type}_x*.nc`
+   - `my_output/{output_stream}_x*.nc`
 
-   `var_type` can be defined in the recipe or as custom [extra
+   `output_stream` can be defined in the recipe or as custom [extra
    facets](https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/configure.html#extra-facets)
    passed to ICONEval via [custom ESMValTool configuration
    options](customization.md#custom-esmvaltool-configuration). If not given,
@@ -35,7 +35,7 @@
 
    For example, if your output consists of individual files for each variable
    (e.g., `my-icon-run_tas_atm_2d_ml_20200101.nc`), you need to adapt the
-   `var_type` to `var_type: tas_atm_2d_ml`.
+   `output_stream` to `output_stream: tas_atm_2d_ml`.
 
    This can be done by creating a file `my_custom_config_file.yml` in a new
    directory `/path/to/config/dir` with the contents
@@ -48,7 +48,7 @@
          ICON:  # alternatively, ICON-XPP
            '*':
              tas:  # variable name goes here
-               var_type: tas_atm_2d_ml
+               output_stream: tas_atm_2d_ml
    ```
 
    and running ICONEval with

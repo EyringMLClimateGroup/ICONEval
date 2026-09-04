@@ -121,8 +121,8 @@ def icon_evaluation(
         source configuration
         (https://docs.esmvaltool.org/projects/ESMValCore/en/latest/quickstart/
         configure.html#data-sources). By default, uses
-        `["{exp}_{var_type}*.nc", "outdata/{exp}_{var_type}*.nc",
-        "output/{exp}_{var_type}*.nc"] for ICON data and
+        `["{exp}_{output_stream}*.nc", "outdata/{exp}_{output_stream}*.nc",
+        "output/{exp}_{output_stream}*.nc"] for ICON data and
         `["{channel}/{exp}*{channel}{postproc_flag}.nc"]` for EMAC data.
     account:
         Account that is charged for the Slurm jobs. By default, use account

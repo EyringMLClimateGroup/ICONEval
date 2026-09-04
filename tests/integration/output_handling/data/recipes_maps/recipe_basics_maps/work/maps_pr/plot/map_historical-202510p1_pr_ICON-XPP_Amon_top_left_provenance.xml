@@ -298,7 +298,7 @@
     <attribute:timerange>19790101/19990101</attribute:timerange>
     <attribute:title>Precipitation</attribute:title>
     <attribute:units>kg m-2 s-1</attribute:units>
-    <attribute:var_type>atm_2d_ml</attribute:var_type>
+    <attribute:output_stream>atm_2d_ml</attribute:output_stream>
     <attribute:variable_group>pr</attribute:variable_group>
     <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
     <preprocessor:convert_units>{'units': 'mm day-1'}</preprocessor:convert_units>

@@ -199,7 +199,7 @@
     <attribute:timerange>19790101/19990101</attribute:timerange>
     <attribute:title>Near-Surface Air Temperature</attribute:title>
     <attribute:units>K</attribute:units>
-    <attribute:var_type>atm_2d_ml</attribute:var_type>
+    <attribute:output_stream>atm_2d_ml</attribute:output_stream>
     <attribute:variable_group>tas</attribute:variable_group>
     <preprocessor:climate_statistics>{'operator': 'mean', 'period': 'full'}</preprocessor:climate_statistics>
     <preprocessor:regrid>{'target_grid': '2x2', 'scheme': {'reference': 'esmf_regrid.schemes:ESMFAreaWeighted'}}</preprocessor:regrid>
