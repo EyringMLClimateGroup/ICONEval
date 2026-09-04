@@ -363,7 +363,7 @@ tags using the syntax
 - `--log_level`: Log level for ICONEval (default: `info`).
 - `--output_dir`: Output directory for ICONEval (default: `./output_iconeval`).
 - `--ignore_datetimes_in_filename`: Ignore datetimes in filenames when
-  determininig the time range of ICON output files (default: `True`). This is
+  determininig the time range of ICON output files (default: `False`). This is
   necessary if the ICON output contains multiple years per file.
 - `--background`: Terminate ICONEval after submitting all jobs/job steps
   (default: `False`). Summary HTMLs cannot be published/written in this mode.
