@@ -128,7 +128,7 @@ def icon_evaluation(
     ignore_datetimes_in_filename:
         When determining the time range of a file, ignore datetimes strings
         from the file names. Instead, open the file and read the time range
-        from the metadata. This is necessary if your ICON data contains
+        from the metadata. This is necessary if the ICON output contains
         multiple years per file. This option might slow down ESMValTool runs.
     account:
         Account that is charged for the Slurm jobs. By default, use account
