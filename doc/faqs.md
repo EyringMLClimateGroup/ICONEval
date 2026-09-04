@@ -57,6 +57,21 @@
    iconeval path/to/ICON_output --esmvaltool_options='{"--config_dir": "/path/to/config/dir"}'
    ```
 
+1. ESMValTool fails with `No input data available for years ... in files ...`
+   even though the required years are present in the ICON output files.
+
+   This happens if you explicitly specified a ``--timerange`` when running
+   ICONEval and your ICON output contains multiple years per file.
+
+   To fix this, run ICONEval with the option
+
+   ```bash
+   iconeval path/to/ICON_output --ignore_datetimes_in_filename=True
+   ```
+
+   More details can be found in the corresponding [ESMValCore
+   issue](https://github.com/ESMValGroup/ESMValCore/issues/3208).
+
 1. ESMValTool does not find my variable (e.g., `Unable to load CMOR table
    (project) 'ICON' for variable ...`).
 

@@ -106,16 +106,19 @@ projects:
         filename_template: '{exp}_{output_stream}*.nc'
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: false
       input-1:
         dirname_template: outdata
         filename_template: '{exp}_{output_stream}*.nc'
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: false
       input-2:
         dirname_template: output
         filename_template: '{exp}_{output_stream}*.nc'
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: false
   EMAC:
     data:
       input-0:
@@ -134,6 +137,7 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
+        ignore_datetimes_in_filename: false
 dask:
   use: iconeval
   profiles:

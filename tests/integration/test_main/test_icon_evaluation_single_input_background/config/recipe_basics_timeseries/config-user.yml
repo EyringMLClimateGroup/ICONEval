@@ -106,6 +106,7 @@ projects:
         filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: false
   EMAC:
     data:
       input-0:
@@ -124,5 +125,6 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
+        ignore_datetimes_in_filename: false
 dask: {}
 output_dir: ((tmp_path))/output/input_20000101_000000UTC/esmvaltool_output

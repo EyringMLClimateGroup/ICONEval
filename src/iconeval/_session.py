@@ -144,6 +144,7 @@ class Session:
         additional_dask_options: dict | None,
         tags: str | Iterable[str] | None,
         path_templates: str | Iterable[str] | None,
+        ignore_datetimes_in_filename: bool,
         **extra_facets: FacetType,
     ) -> list[Job]:
         """Get jobs."""
@@ -186,6 +187,7 @@ class Session:
                 output_dir=self.output_dir_esmvaltool,
                 dask_config=dask_config,
                 path_templates=path_templates,
+                ignore_datetimes_in_filename=ignore_datetimes_in_filename,
             )
             job = Job(
                 recipe=recipe,

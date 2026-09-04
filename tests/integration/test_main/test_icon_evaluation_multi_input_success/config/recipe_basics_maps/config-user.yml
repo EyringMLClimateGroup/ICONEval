@@ -106,21 +106,25 @@ projects:
         filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: true
       input_1-1:
         dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: true
       input_2-0:
         dirname_template: ''
         filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: true
       input_2-1:
         dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
+        ignore_datetimes_in_filename: true
   EMAC:
     data:
       input_1-0:
@@ -139,24 +143,28 @@ projects:
           module: iris
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
+        ignore_datetimes_in_filename: true
       input_1-1:
         dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
         ignore_warnings: *id001
+        ignore_datetimes_in_filename: true
       input_2-0:
         dirname_template: ''
         filename_template: my_icon_sim.yml
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
         ignore_warnings: *id001
+        ignore_datetimes_in_filename: true
       input_2-1:
         dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
         ignore_warnings: *id001
+        ignore_datetimes_in_filename: true
 dask:
   use: iconeval
   profiles:
