@@ -29,7 +29,7 @@ input_data:
     timerange: 19790101/19990101
     title: Precipitation
     units: mm day-1
-    var_type: atm_2d_ml
+    output_stream: atm_2d_ml
     variable_group: pr
   ? /work/bd1179/output_iconeval/0001_test_20260318_093407UTC/esmvaltool_output/recipe_basics_zonal_mean_lines_20260318_093429/preproc/zonal_means_pr/pr/OBS_GPCP-SG_atmos_2-3_Amon_pr_19790101-19990101.nc
   : alias: OBS

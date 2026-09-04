@@ -107,7 +107,7 @@ projects:
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
       input_1-1:
-        dirname_template: '{var_type}'
+        dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
@@ -117,7 +117,7 @@ projects:
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
       input_2-1:
-        dirname_template: '{var_type}'
+        dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
@@ -140,7 +140,7 @@ projects:
         - message: NetCDF variable .* contains unknown cell method .*
           module: iris
       input_1-1:
-        dirname_template: '{var_type}'
+        dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_1
         type: esmvalcore.io.local.LocalDataSource
@@ -152,7 +152,7 @@ projects:
         type: esmvalcore.io.local.LocalDataSource
         ignore_warnings: *id001
       input_2-1:
-        dirname_template: '{var_type}'
+        dirname_template: '{output_stream}'
         filename_template: my_{exp}_of_icon_xpp*.nc
         rootpath: ((tmp_path))/input_2
         type: esmvalcore.io.local.LocalDataSource
