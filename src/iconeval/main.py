@@ -53,6 +53,7 @@ def icon_evaluation(
     log_file: str | Path | None = "~/.iconeval/debug.log",
     output_dir: str | Path | None = None,
     path_templates: str | Iterable[str] | None = None,
+    ignore_datetimes_in_filename: bool = False,
     account: str | None = None,
     background: bool = False,
     dask: bool = True,
@@ -124,6 +125,11 @@ def icon_evaluation(
         `["{exp}_{output_stream}*.nc", "outdata/{exp}_{output_stream}*.nc",
         "output/{exp}_{output_stream}*.nc"] for ICON data and
         `["{channel}/{exp}*{channel}{postproc_flag}.nc"]` for EMAC data.
+    ignore_datetimes_in_filename:
+        When determining the time range of a file, ignore datetimes strings
+        from the file names. Instead, open the file and read the time range
+        from the metadata. This is necessary if your ICON data contains
+        multiple years per file. This option might slow down ESMValTool runs.
     account:
         Account that is charged for the Slurm jobs. By default, use account
         that is used for `sbatch`/`salloc` (if ICONEval is run within `sbatch`
@@ -229,6 +235,9 @@ def icon_evaluation(
     logger.debug(f"{'log_file':<35} = {log_file}")
     logger.debug(f"{'output_dir':<35} = {output_dir}")
     logger.debug(f"{'path_templates':<35} = {path_templates}")
+    logger.debug(
+        f"{'ignore_datetimes_in_filename':<35} = {ignore_datetimes_in_filename}",
+    )
     logger.debug(f"{'account':<35} = {account}")
     logger.debug(f"{'background':<35} = {background}")
     logger.debug(f"{'dask':<35} = {dask}")
@@ -290,6 +299,7 @@ def icon_evaluation(
         additional_dask_options=dask_options,
         tags=tags,
         path_templates=path_templates,
+        ignore_datetimes_in_filename=ignore_datetimes_in_filename,
         **extra_facets,
     )
     logger.debug("Recipes:")

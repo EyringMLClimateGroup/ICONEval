@@ -401,6 +401,7 @@ class ESMValToolConfigTemplate(Template):
         output_dir: Path,
         dask_config: dict[str, Any],
         path_templates: str | Iterable[str] | None,
+        **additional_data_source_options: Any,
     ) -> ESMValToolConfig:
         """Write ESMValTool configuration from template."""
         config_yaml = yaml.safe_load(self.content)
@@ -412,6 +413,7 @@ class ESMValToolConfigTemplate(Template):
             config_yaml,
             simulations_info,
             path_templates=path_templates,
+            **additional_data_source_options,
         )
 
         path.write_text(
@@ -430,7 +432,7 @@ class ESMValToolConfigTemplate(Template):
         self,
         simulations_info: list[SimulationInfo],
         path_templates: Iterable[str],
-        **kwargs: Any,
+        **additional_data_source_options: Any,
     ) -> dict[str, dict[str, Any]]:
         """Get ESMValTool data sources configuration."""
         data_sources: dict[str, Any] = {}
@@ -446,7 +448,7 @@ class ESMValToolConfigTemplate(Template):
                     "filename_template": filename_template,
                     "rootpath": str(simulation_info.path),
                     "type": "esmvalcore.io.local.LocalDataSource",
-                    **kwargs,
+                    **additional_data_source_options,
                 }
         return {"data": data_sources}
 
@@ -456,6 +458,7 @@ class ESMValToolConfigTemplate(Template):
         simulations_info: list[SimulationInfo],
         *,
         path_templates: str | Iterable[str] | None,
+        **additional_data_source_options: Any,
     ) -> dict[str, dict[str, Any]]:
         """Get ESMValTool `projects` configuration."""
         if isinstance(path_templates, str):
@@ -471,7 +474,11 @@ class ESMValToolConfigTemplate(Template):
             ]
         else:
             icon_path_templates = list(path_templates)
-        projects["ICON"] = self._get_data_sources(simulations_info, icon_path_templates)
+        projects["ICON"] = self._get_data_sources(
+            simulations_info,
+            icon_path_templates,
+            **additional_data_source_options,
+        )
 
         # EMAC
         if path_templates is None:
@@ -505,6 +512,7 @@ class ESMValToolConfigTemplate(Template):
             simulations_info,
             emac_path_templates,
             ignore_warnings=ignore_warnings,
+            **additional_data_source_options,
         )
 
         return projects
