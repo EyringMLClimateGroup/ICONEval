@@ -12,3 +12,11 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7  # minimum age of newly released dependency
+    groups:
+      gha:
+        patterns:
+          - "*"  # Only one PR per week for all updates
+    labels:
+      - dependencies
+      - github_actions
+      - auto pr
