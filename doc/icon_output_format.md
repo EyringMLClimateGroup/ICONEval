@@ -5,6 +5,12 @@
 To ensure that ICONEval works smoothly, the ICON simulation output should
 follow the subsequent criteria as closely as possible.
 
+An overview of the mapping between CMIP and ICON variable names is given on
+[this website](https://cmiphub.dkrz.de/). For ICON-XPP, click on *Variable
+Mapping*, select project *CMIP7-AFT*, select model *ICON-XPP*, select the
+submodel for the appropriate domain (e.g., *ICON-NWP* for atmospheric
+variables), and click on *Generate*.
+
 ## 2D Variables
 
 2D variables should have the dimensions (*time*, *latitude*, *longitude*).
